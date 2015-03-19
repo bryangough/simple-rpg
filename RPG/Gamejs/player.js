@@ -3,9 +3,20 @@ var MovingCharacter = function (maingame, name)
     
     this.maingame = maingame;
     this.name = name;
-    this.sprite = this.maingame.make.sprite(0,0, "characters","movingPerson2.png");
+    this.sprite = this.maingame.make.sprite(0,0, "characters","movingPerson2_idle0001.png");
     this.sprite.anchor.x = 0.5;
     this.sprite.anchor.y = 1.0;
+    
+    //basic animations
+    //next proper direction facing
+    this.sprite.animations.add('idle', Phaser.Animation.generateFrameNames('movingPerson2_idle', 1, 2, '.png', 4), 1, true, false);
+    this.sprite.animations.add('walk', Phaser.Animation.generateFrameNames('movingPerson2_walk', 1, 4, '.png', 4), 8, true, false);
+    
+    this.sprite.animations.play("idle");
+    
+    /*this.sprite.animations.currentAnim.onComplete.add(function () {
+       this.sprite.animations.play('idle', 30, true);
+    }, this);*/
     
     this.oldTile;
     this.currentTile;
@@ -16,6 +27,11 @@ var MovingCharacter = function (maingame, name)
     
     this.dir = new Phaser.Point();
     this.walkspeed = 0.1875;
+    
+    
+    
+    this.inventory = [];
+    
 };
 MovingCharacter.prototype.setLocation = function(inx,iny) 
 {
@@ -38,12 +54,15 @@ MovingCharacter.prototype.setDirection = function()
 MovingCharacter.prototype.setPath = function(path) 
 {
     //
+    if(!path)
+        return;
+    if(path.length<=0)
+        return;
     this.path = path;
-    //console.log(this.path );
     this.pathlocation = 0;
     this.nextTile = this.maingame.getTileByCords(path[this.pathlocation].x,path[this.pathlocation].y);
     this.setDirection();
-    //this.path = null;
+    this.sprite.animations.play("walk");
 }
 MovingCharacter.prototype.step = function(elapseTime) 
 {
@@ -67,7 +86,7 @@ MovingCharacter.prototype.step = function(elapseTime)
                     this.pathlocation=this.path.length;
                     var testx = this.currentTile.tileImage.x+this.maingame.halfHex;
                     var testy = this.currentTile.tileImage.y+this.maingame.halfHex;
-                    var range = 1;
+                    var range = 3;
                     if(testx-range<this.sprite.x && testx+range>this.sprite.x && testy-range<this.sprite.y && testy+range>this.sprite.y)
                     {
                         this.sprite.x = testx;
@@ -76,6 +95,7 @@ MovingCharacter.prototype.step = function(elapseTime)
                         this.dir.x = 0;
                         this.dir.y = 0;
                         this.currentTile.enterTile();
+                        this.sprite.animations.play("idle");
                     }
                     this.setDirection();
                 }

@@ -8,8 +8,8 @@
 	<script src="Boot.js"></script>
 	<script src="Preloader.js"></script>
 	<script src="MainMenu.js"></script>
-	<script src="Game.js"></script>
-    <script src="GameWave.js"></script>
+	<!--script src="Game.js"></script-->
+    <script src="MainGame.js"></script>
     <script src="Instructions.js"></script>
     <script src="Gamejs/easystar-0.1.13-hex.js"></script>
     <script src="Gamejs/player.js"></script>
@@ -31,7 +31,6 @@ window.onload = function() {
 	game.state.add('Boot', BasicGame.Boot);
 	game.state.add('Preloader', BasicGame.Preloader);
 	game.state.add('MainMenu', BasicGame.MainMenu);
-	//game.state.add('Game', BasicGame.Game);
     game.state.add('Game', BasicGame.GameWave);
     game.state.add('Instructions', BasicGame.Instructions);
 

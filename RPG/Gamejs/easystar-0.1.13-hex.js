@@ -260,7 +260,7 @@ EasyStar.js = function() {
 				}
 			}
 		}
-        console.log("end");
+        //console.log("end");
 	};
 
 	/**
