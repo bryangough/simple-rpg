@@ -28,11 +28,13 @@ BasicGame.Preloader.prototype = {
         this.load.atlasJSONHash('ui', 'assets/simpleui.png', 'assets/simpleui.json');
         this.load.atlasJSONHash('tiles', 'assets/tiles.png', 'assets/tiles.json');
         this.load.atlasJSONHash('characters', 'assets/characters.png', 'assets/characters.json');
+        this.load.atlasJSONHash('dialogui', 'assets/dialogui.png', 'assets/dialogui.json');
 		this.load.image('loading', 'assets/loading.png');
         this.load.image('mainmenu', 'assets/mainmenu.png');
         this.load.image('mapselect', 'assets/mapselect.png');
         this.load.image('winscreen', 'assets/winscreen.png');
         this.load.image('instructions', 'assets/instructions.png');
+        this.load.bitmapFont("badabb", "assets/fonts/badabb.png", "assets/fonts/badabb.fnt")
         
 		//this.load.atlas('playButton', 'images/play_button.png', 'images/play_button.json');
 		//this.load.audio('titleMusic', ['audio/main_menu.mp3']);

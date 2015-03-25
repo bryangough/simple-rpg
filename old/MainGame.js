@@ -21,7 +21,6 @@ BasicGame.GameWave = function (game) {
     
     this.playerCharacter;
     this.halfHex = hexagonWidth/2;
-    this.diagpanel;
 };
 
 
@@ -37,7 +36,6 @@ BasicGame.GameWave = function (game) {
     var sectorHeight = hexagonHeight/4*3;
     var gradient = (hexagonHeight/4)/(hexagonWidth/2);
     
-    var uiGroup;
     var hexagonGroup;
     var characterGroup;
     var hexagonArray = [];
@@ -67,30 +65,20 @@ BasicGame.GameWave.prototype = {
         pathfinder = this.game.plugins.add(Phaser.Plugin.PathFinderPlugin);
         hexagonArray = [];
         waterTilesArray = [];
-        this.uiGroup = this.add.group();
         //
         this.mapData = JSON.parse(this.game.cache.getText('map'));
         startpos = this.mapData.startPos.split("_");
         var currentmap = this.mapData.maps[startpos[0]];
         this.createMapTiles(currentmap);
-        
-        //
-        this.diagpanel = new DialogPanel(this.game,this);
-	    this.game.add.existing(this.diagpanel);
-        
-        
-        this.uiGroup.add(this.diagpanel);
         //
         this.input.onDown.add(this.clickedHex, this);
         waveHandler = new WaveHandler();
-        
     },
     createMapTiles: function(passedMap){
         hexagonArray = [];
         walkableArray = [];
         hexagonGroup = this.add.group();
         characterGroup = this.add.group();
-        this.uiGroup.parent.bringToTop(this.uiGroup);//keeps ui group on top layer
         //
         var layer1 = passedMap[0];
         //
@@ -117,7 +105,6 @@ BasicGame.GameWave.prototype = {
                 
                 var hexagonY = (hexagonHeight/4*3)*i;
                 var hexagon = this.add.sprite(hexagonX,hexagonY, tilereference.spritesheet, tilereference.tile+".png"); 
-               // console.log(this.add.sprite);
                 hexagonGroup.add(hexagon);
 
                 if(tilereference.tile=="tileWater")
@@ -186,8 +173,6 @@ BasicGame.GameWave.prototype = {
         characterGroup.sort('y', Phaser.Group.SORT_ASCENDING);
         characterGroup.x = hexagonGroup.x;
         characterGroup.y = hexagonGroup.y;
-        
-        //var label = this.game.add.bitmapText(10, 10, "immortal", "TEST", 25);
     },
     userSteppedOnExit:function(data){
         //console.log(this.game,this);
@@ -233,26 +218,9 @@ BasicGame.GameWave.prototype = {
                 waterTilesArray[i].step(elapsedTime);
             }
         }
-        if(!this.game.global.pause)
-        {
-            this.playerCharacter.step(elapsedTime);
-        }
+        this.playerCharacter.step(elapsedTime);
     },
-    showDialog:function(dialogIn){
-        //this.diagpanel
-    },
-    pauseGame:function(){
-        //pause everything
-        if(!this.game.global.pause)
-        {
-            this.game.global.pause = true;
-        }
-        else if(this.game.global.pause)
-        {
 
-            this.game.global.pause = false;
-        }
-    },
     quitGame: function (pointer) {
         this.state.start('MainMenu');
     },
@@ -260,10 +228,6 @@ BasicGame.GameWave.prototype = {
     //emanueleferonato
     clickedHex:function()
     {
-        if(this.game.global.pause)
-        {
-            return;
-        }
         moveIndex =  this.checkHex(this.input.worldX-hexagonGroup.x,this.input.worldY-hexagonGroup.y);
         if(moveIndex!=null)
         {

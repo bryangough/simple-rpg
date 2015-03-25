@@ -70,14 +70,7 @@ MovingCharacter.prototype.step = function(elapseTime)
     {
         if(this.path.length>0)
         {
-            //console.log(this.path);
             this.currentTile = this.maingame.checkHex(this.sprite.x,this.sprite.y);
-            /*if(this.oldTile!=this.currentTile)
-            {
-                this.oldTile=this.currentTile;
-                this.currentTile.enterTile();
-            }*/
-            //console.log(this.currentTile,this.nextTile);
             if(this.currentTile.posx==this.nextTile.posx && this.currentTile.posy==this.nextTile.posy)
             {
                 this.pathlocation++;
@@ -109,9 +102,12 @@ MovingCharacter.prototype.step = function(elapseTime)
     }
     this.sprite.x += this.dir.x * this.walkspeed * elapseTime;
     this.sprite.y += this.dir.y * this.walkspeed * elapseTime;
-    //flip facing direction x?
+    
     if(this.dir.x<0)
         this.sprite.scale.x = -1;
     else if(this.dir.x>0)
         this.sprite.scale.x = 1;
 }
+//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript
+//Student.prototype = Object.create(Person.prototype); 
+//Student.prototype.constructor = Student;
