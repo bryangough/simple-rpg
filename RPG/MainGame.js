@@ -83,7 +83,7 @@ BasicGame.GameWave.prototype = {
         //
         this.input.onDown.add(this.clickedHex, this);
         waveHandler = new WaveHandler();
-        
+        this.showDialog();
     },
     createMapTiles: function(passedMap){
         hexagonArray = [];
@@ -239,18 +239,21 @@ BasicGame.GameWave.prototype = {
         }
     },
     showDialog:function(dialogIn){
-        //this.diagpanel
+        this.diagpanel.startDialog(dialogIn);
+        this.pauseGame();
     },
     pauseGame:function(){
-        //pause everything
         if(!this.game.global.pause)
         {
             this.game.global.pause = true;
+            //pause everything
         }
-        else if(this.game.global.pause)
+    },
+    unpauseGame:function(){
+        if(this.game.global.pause)
         {
-
             this.game.global.pause = false;
+            //unpause everything
         }
     },
     quitGame: function (pointer) {

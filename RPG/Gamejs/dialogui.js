@@ -64,18 +64,24 @@ DialogPanel.prototype.buttonOut = function(button){
 
 //
 DialogPanel.prototype.play1 = function(button){
+    this.endDialog();
 };
 DialogPanel.prototype.play2 = function(button){
+    this.endDialog();
 };
 DialogPanel.prototype.play3 = function(button){
+    this.endDialog();
 };
 
 //
 DialogPanel.prototype.startDialog = function(diagjsoninput){
+    this.visible = true;
     this.y = 250;
 };
 DialogPanel.prototype.endDialog = function(){
     //this.game.state.getCurrentState().playGame()}
     //unpause game!
+    this.maingame.unpauseGame();
+    this.visible = false;
     this.y = -1000;
 };
