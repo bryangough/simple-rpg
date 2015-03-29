@@ -387,14 +387,11 @@ EasyStar.js = function() {
 	* easystar.setIteratonsPerCalculation().
 	**/
 	this.calculate = function() {
-        //console.log("try",instances.length,collisionGrid,acceptableTiles);
 		if (instances.length === 0 || collisionGrid === undefined || acceptableTiles === undefined) {
 			return;
 		}
         
 		for (iterationsSoFar = 0; iterationsSoFar < iterationsPerCalculation; iterationsSoFar++) {
-            //console.log(iterationsSoFar,iterationsPerCalculation);
-            
 			if (instances.length === 0) {
 				return;
 			}
@@ -410,7 +407,6 @@ EasyStar.js = function() {
 			var searchNode = instances[0].openList.shiftHighestPriorityElement();
 			searchNode.list = EasyStar.Node.CLOSED_LIST;
             //
-            //console.log(searchNode.x,searchNode.y);
             if(searchNode.y % 2 == 1)
 			{
 				if(testNode(searchNode, 0,    -1))continue;
@@ -418,22 +414,21 @@ EasyStar.js = function() {
 				if(testNode(searchNode, 0,    +1))continue;
 				if(testNode(searchNode, +1,   +1))continue;
 				if(testNode(searchNode, +1,   0))continue;
-				if(testNode(searchNode, +1,   -1))continue;
+				if(testNode(searchNode, -1,   1))continue;
 			}
 			else
 			{
 				if(testNode(searchNode, -1,   -1))continue;
 				if(testNode(searchNode, -1,   0))continue;
-				if(testNode(searchNode, -1,   +1))continue;
 				if(testNode(searchNode, 0,    +1))continue;
 				if(testNode(searchNode, +1,   0))continue
 				if(testNode(searchNode, 0,    -1))continue;
+                if(testNode(searchNode, 1,   -1))continue;
 			}
 		}
 	};
     //didn't switch collisonGrid x/y, switched the rest!
     var testNode = function(searchNode,valx,valy){
-        //console.log(searchNode.x+valx,searchNode.y+valy);
         if(searchNode.x+valx > -1 && searchNode.x+valx < collisionGrid.length && searchNode.x+valy > -1 && searchNode.x+valy < collisionGrid[0].length)
             checkAdjacentNode(instances[0], searchNode, valx, valy, STRAIGHT_COST * 
                           costMap[collisionGrid[searchNode.x+valx][searchNode.y+valy]]);

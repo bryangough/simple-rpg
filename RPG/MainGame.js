@@ -22,6 +22,8 @@ BasicGame.GameWave = function (game) {
     this.playerCharacter;
     this.halfHex = hexagonWidth/2;
     this.diagpanel;
+    
+    this.neighborLights = [];
 };
 
 
@@ -55,7 +57,8 @@ BasicGame.GameWave = function (game) {
     var mapData;
 
     var pathfinder;
-
+    
+//
 // ----
 
 BasicGame.GameWave.prototype = {
@@ -73,17 +76,18 @@ BasicGame.GameWave.prototype = {
         startpos = this.mapData.startPos.split("_");
         var currentmap = this.mapData.maps[startpos[0]];
         this.createMapTiles(currentmap);
-        
         //
-        this.diagpanel = new DialogPanel(this.game,this);
+        this.dialoghandler = new DialogHandler(this,this.mapData.data.Conversations, this.mapData.data.Actors);
+        //
+        this.diagpanel = new DialogPanel(this.game,this,this.dialoghandler);
 	    this.game.add.existing(this.diagpanel);
-        
-        
         this.uiGroup.add(this.diagpanel);
         //
+        //
+        //this.input.addMoveCallback(this.showPath, this); 
         this.input.onDown.add(this.clickedHex, this);
         waveHandler = new WaveHandler();
-        this.showDialog();
+        //this.showDialog(1);
     },
     createMapTiles: function(passedMap){
         hexagonArray = [];
@@ -92,6 +96,7 @@ BasicGame.GameWave.prototype = {
         characterGroup = this.add.group();
         this.uiGroup.parent.bringToTop(this.uiGroup);//keeps ui group on top layer
         //
+        
         var layer1 = passedMap[0];
         //
         gridSizeY = layer1.height;
@@ -132,10 +137,11 @@ BasicGame.GameWave.prototype = {
                     hexagonArray[i][j]=temptile;
                 }
                 walkableArray[i][j] = layer1.walkable[i*gridSizeX+j];
-                /*var hexagonText = this.add.text(hexagonX+hexagonWidth/3+5,hexagonY+15,i+","+j);
+                //
+                var hexagonText = this.add.text(hexagonX+hexagonWidth/3+5,hexagonY+15,i+","+j);
                 hexagonText.font = "arial";
                 hexagonText.fontSize = 12;
-                hexagonGroup.add(hexagonText);*/
+                hexagonGroup.add(hexagonText);
 			}
 		}
         //console.log(walkableArray);
@@ -186,7 +192,21 @@ BasicGame.GameWave.prototype = {
         characterGroup.sort('y', Phaser.Group.SORT_ASCENDING);
         characterGroup.x = hexagonGroup.x;
         characterGroup.y = hexagonGroup.y;
-        
+        //
+        this.neighborLights = [];
+        for(var i=0;i<6;i++)
+        {
+            var light = this.add.group();
+            var high = this.game.add.sprite(0,0, "tiles","tileWater_tile.png");
+            this.neighborLights.push(light);
+            light.add(high);
+            hexagonGroup.add(light);
+            
+            var hexagonText = this.add.text(25,25,i+"");
+            hexagonText.font = "arial";
+            hexagonText.fontSize = 12;
+            light.add(hexagonText);
+        }
         //var label = this.game.add.bitmapText(10, 10, "immortal", "TEST", 25);
     },
     userSteppedOnExit:function(data){
@@ -259,8 +279,83 @@ BasicGame.GameWave.prototype = {
     quitGame: function (pointer) {
         this.state.start('MainMenu');
     },
-
-    //emanueleferonato
+    showPath:function()
+    {
+        if(this.game.global.pause)
+        {
+            return;
+        }
+        if(this.playerCharacter.isMoving)
+            return;
+        //
+        moveIndex =  this.checkHex(this.input.worldX-hexagonGroup.x,this.input.worldY-hexagonGroup.y);
+        if(moveIndex!=null)
+        {
+            if(moveIndex.walkable)
+            {
+                var playertile = this.checkHex(this.playerCharacter.sprite.x,this.playerCharacter.sprite.y);
+                if(playertile)
+                {
+                    pathfinder.setCallbackFunction(this.showPathCallback, this);
+                    pathfinder.preparePathCalculation( [playertile.posx,playertile.posy], [moveIndex.posx,moveIndex.posy] );
+                    pathfinder.calculatePath();
+                }
+            }
+            else
+            {
+                console.log("not walkable");
+            }
+        }
+    },
+    showPathCallback:function(path)
+    {
+        if(this.playerCharacter.isMoving)
+            return;
+    },
+    moveHex:function()
+    {
+        if(this.game.global.pause)
+        {
+            return;
+        }
+        moveIndex =  this.checkHex(this.input.worldX-hexagonGroup.x,this.input.worldY-hexagonGroup.y);
+        if(moveIndex==null)
+            return;
+        //console.log(moveIndex.posy);
+        
+        if(moveIndex.posx % 2 == 1)
+        {
+            this.highlightNeighbor(0, 0,    -1, moveIndex);
+            this.highlightNeighbor(1, -1,   0, moveIndex);
+            this.highlightNeighbor(2, 0,    +1, moveIndex);
+            this.highlightNeighbor(3, +1,   +1, moveIndex);
+            this.highlightNeighbor(4, +1,   0, moveIndex);
+            this.highlightNeighbor(5, -1,   1, moveIndex);
+        }
+        else
+        {
+            this.highlightNeighbor(0, -1,   -1, moveIndex);
+            this.highlightNeighbor(1, -1,   0, moveIndex);
+            this.highlightNeighbor(2, 0,    +1, moveIndex);
+            this.highlightNeighbor(3, +1,   0, moveIndex);
+            this.highlightNeighbor(4, 0,    -1, moveIndex);
+            this.highlightNeighbor(5, 1,   -1, moveIndex);
+        }
+    },
+    highlightNeighbor:function(i,x,y,currenttile)
+    {
+        var thetile = this.getTileByCords(currenttile.posx+x,currenttile.posy+y);
+        if(thetile!=null)
+        {
+            this.neighborLights[i].x = thetile.tileImage.x;
+            this.neighborLights[i].y = thetile.tileImage.y;
+        }
+        else
+        {
+            this.neighborLights[i].x = -1000;
+            this.neighborLights[i].y = 0;
+        }
+    },
     clickedHex:function()
     {
         if(this.game.global.pause)
@@ -276,7 +371,7 @@ BasicGame.GameWave.prototype = {
                 if(playertile)
                 {
                     pathfinder.setCallbackFunction(this.playercallback, this);
-                    pathfinder.preparePathCalculation( [playertile.posx,playertile.posy], [moveIndex.posx,moveIndex.posy]);
+                    pathfinder.preparePathCalculation( [playertile.posx,playertile.posy], [moveIndex.posx,moveIndex.posy] );
                     pathfinder.calculatePath();
                 }
             }
@@ -343,7 +438,10 @@ BasicGame.GameWave.prototype = {
     },
     getTileByCords:function(x,y)
     {
-        return hexagonArray[x][y];
+        if(hexagonArray[x])
+            if(hexagonArray[x][y])
+                return hexagonArray[x][y];
+        return null;
     },
     //ati,atj - position in array
     //locx,locy - position in world

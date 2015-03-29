@@ -3,7 +3,7 @@ var MovingCharacter = function (maingame, name)
     
     this.maingame = maingame;
     this.name = name;
-    this.sprite = this.maingame.make.sprite(0,0, "characters","movingPerson2_idle0001.png");
+    this.sprite = this.maingame.make.sprite(0,0, "actors","movingPerson2_idle0001.png");
     this.sprite.anchor.x = 0.5;
     this.sprite.anchor.y = 1.0;
     
@@ -33,6 +33,12 @@ var MovingCharacter = function (maingame, name)
     this.inventory = [];
     
 };
+MovingCharacter.prototype.isMoving = function() 
+{
+   if(this.dir.x == 0 && this.dir.y == 0)
+       return false;
+    return true;
+}
 MovingCharacter.prototype.setLocation = function(inx,iny) 
 {
     this.sprite.x = inx;

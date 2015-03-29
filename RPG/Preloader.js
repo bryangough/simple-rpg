@@ -27,7 +27,7 @@ BasicGame.Preloader.prototype = {
         
         this.load.atlasJSONHash('ui', 'assets/simpleui.png', 'assets/simpleui.json');
         this.load.atlasJSONHash('tiles', 'assets/tiles.png', 'assets/tiles.json');
-        this.load.atlasJSONHash('characters', 'assets/characters.png', 'assets/characters.json');
+        this.load.atlasJSONHash('actors', 'assets/actors.png', 'assets/actors.json');
         this.load.atlasJSONHash('dialogui', 'assets/dialogui.png', 'assets/dialogui.json');
 		this.load.image('loading', 'assets/loading.png');
         this.load.image('mainmenu', 'assets/mainmenu.png');
