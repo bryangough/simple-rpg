@@ -26,7 +26,7 @@
 },
 "dialog_20002.png":
 {
-	"frame": {"x":2,"y":467,"w":415,"h":52},
+	"frame": {"x":2,"y":362,"w":415,"h":52},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":415,"h":52},
@@ -50,11 +50,75 @@
 },
 "dialog_main.png":
 {
-	"frame": {"x":2,"y":362,"w":108,"h":103},
+	"frame": {"x":2,"y":416,"w":108,"h":103},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":103},
 	"sourceSize": {"w":108,"h":103}
+},
+"lookBtn0001.png":
+{
+	"frame": {"x":420,"y":2,"w":76,"h":94},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":76,"h":94},
+	"sourceSize": {"w":76,"h":94}
+},
+"lookBtn0002.png":
+{
+	"frame": {"x":420,"y":98,"w":76,"h":94},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":76,"h":94},
+	"sourceSize": {"w":76,"h":94}
+},
+"talkBtn0001.png":
+{
+	"frame": {"x":419,"y":194,"w":76,"h":94},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":76,"h":94},
+	"sourceSize": {"w":76,"h":94}
+},
+"talkBtn0002.png":
+{
+	"frame": {"x":419,"y":290,"w":76,"h":94},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":76,"h":94},
+	"sourceSize": {"w":76,"h":94}
+},
+"useBtn0001.png":
+{
+	"frame": {"x":112,"y":416,"w":76,"h":94},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":76,"h":94},
+	"sourceSize": {"w":76,"h":94}
+},
+"useBtn0002.png":
+{
+	"frame": {"x":190,"y":416,"w":76,"h":94},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":76,"h":94},
+	"sourceSize": {"w":76,"h":94}
+},
+"walkBtn0001.png":
+{
+	"frame": {"x":268,"y":416,"w":76,"h":94},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":76,"h":94},
+	"sourceSize": {"w":76,"h":94}
+},
+"walkBtn0002.png":
+{
+	"frame": {"x":346,"y":416,"w":76,"h":94},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":76,"h":94},
+	"sourceSize": {"w":76,"h":94}
 }},
 "meta": {
 	"app": "http://www.codeandweb.com/texturepacker",
@@ -63,6 +127,6 @@
 	"format": "RGBA8888",
 	"size": {"w":521,"h":521},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:be7a1d9ddbbb0b5c72bb03c47d10061d:2b70fe69f1d564019c41c749575ef6ab:04ddb4c920c402d71df97ca4243b87a6$"
+	"smartupdate": "$TexturePacker:SmartUpdate:7c9d307878da08c38dbdc517f9201fe2:12f5df41342fe47d5b194e938b1e3ac7:04ddb4c920c402d71df97ca4243b87a6$"
 }
 }

@@ -49,17 +49,20 @@ window.onload = function() {
         height = 600;
         scaleValue;
     };*/
-	game.state.start('Boot');
+	
+    //action enums
+    game.WALK = 0;
+    game.LOOK = 1;
+    game.USE = 2;
+    game.TALK = 3;
+    game.currentacion = game.WALK;
     //
     game.global = {
         mute: false,
         pause: false
     };
-    //action enums
-    game.WALK = 0;
-    game.LOOK = 1;
-    game.USE = 2;
     
+    game.state.start('Boot');
     /*var SIZE = {
   SMALL : {value: 0, name: "Small", code: "S"}, 
   MEDIUM: {value: 1, name: "Medium", code: "M"}, 

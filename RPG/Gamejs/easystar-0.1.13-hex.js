@@ -399,7 +399,7 @@ EasyStar.js = function() {
 			//Couldn't find a path.
 			if (instances[0].openList.length===0) {
                 console.log("can't find path");
-			    instances[0].callback.apply(instances[0].callbackObj,[null]);
+			    instances[0].callback.apply(instances[0].callbackObj,[path]);//try passing back the path so far
 				instances.shift();
 				continue;
 			}
@@ -429,7 +429,9 @@ EasyStar.js = function() {
 	};
     //didn't switch collisonGrid x/y, switched the rest!
     var testNode = function(searchNode,valx,valy){
-        if(searchNode.x+valx > -1 && searchNode.x+valx < collisionGrid.length && searchNode.x+valy > -1 && searchNode.x+valy < collisionGrid[0].length)
+        if(searchNode.x+valx > -1 && searchNode.x+valx < collisionGrid.length &&
+           searchNode.y+valy > -1 && searchNode.y+valy < collisionGrid[0].length)
+            //
             checkAdjacentNode(instances[0], searchNode, valx, valy, STRAIGHT_COST * 
                           costMap[collisionGrid[searchNode.x+valx][searchNode.y+valy]]);
         if (instances[0].isDoneCalculating===true) {

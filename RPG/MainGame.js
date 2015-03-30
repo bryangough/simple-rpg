@@ -22,18 +22,26 @@ BasicGame.GameWave = function (game) {
     this.playerCharacter;
     this.halfHex = hexagonWidth/2;
     this.diagpanel;
+    this.activeButtons;
     
     this.neighborLights = [];
+    //console.log(this.game);
+    // = this.game.WALK;
+    this.hexagonWidth = 63;
+	this.hexagonHeight = 65;
+
+    this.gridSizeX = 30;
+	this.gridSizeY = 15;
+
+    this.hexagonArray = [];
+    this.hexHandler;
+    this.graphics;
 };
-
-
 
     var hexagonWidth = 63;
 	var hexagonHeight = 65;
 
-	var gridSizeX = 30;
-	var gridSizeY = 15;
-	var columns = [Math.ceil(gridSizeX/2),Math.floor(gridSizeX/2)];
+	var columns = [Math.ceil(this.gridSizeX/2),Math.floor(this.gridSizeX/2)];
     var moveIndex;
     var sectorWidth = hexagonWidth;
     var sectorHeight = hexagonHeight/4*3;
@@ -42,8 +50,9 @@ BasicGame.GameWave = function (game) {
     var uiGroup;
     var hexagonGroup;
     var characterGroup;
-    var hexagonArray = [];
+    
     var waterTilesArray = [];
+    var interactiveObjects = [];
 //
     var tiles = ["tileGrass.png", "tileAutumn.png", "tileDirt.png", "tileMagic.png", "tileRock.png", "tileSand.png", "tileSnow.png", "tileStone.png"];
 
@@ -68,8 +77,9 @@ BasicGame.GameWave.prototype = {
     create: function () {
         this.stage.backgroundColor = "#666666"
         pathfinder = this.game.plugins.add(Phaser.Plugin.PathFinderPlugin);
-        hexagonArray = [];
+        this.hexagonArray = [];
         waterTilesArray = [];
+        interactiveObjects = [];
         this.uiGroup = this.add.group();
         //
         this.mapData = JSON.parse(this.game.cache.getText('map'));
@@ -84,13 +94,25 @@ BasicGame.GameWave.prototype = {
         this.uiGroup.add(this.diagpanel);
         //
         //
-        //this.input.addMoveCallback(this.showPath, this); 
+        this.input.addMoveCallback(this.drawLine, this); 
+        //this.input.onDown.add(this.drawLine, this); 
+        //MOVE
+        
+        
         this.input.onDown.add(this.clickedHex, this);
+        
+        this.activeButtons = new ActionButtons(this.game, this);
+        this.game.add.existing(this.activeButtons);
+        this.uiGroup.add(this.activeButtons);
+        
         waveHandler = new WaveHandler();
-        //this.showDialog(1);
+        
+        this.hexHandler = new HexHandler(this,this.game);
+        
+        this.graphics = this.game.add.graphics(0, 0);
     },
     createMapTiles: function(passedMap){
-        hexagonArray = [];
+        this.hexagonArray = [];
         walkableArray = [];
         hexagonGroup = this.add.group();
         characterGroup = this.add.group();
@@ -99,23 +121,23 @@ BasicGame.GameWave.prototype = {
         
         var layer1 = passedMap[0];
         //
-        gridSizeY = layer1.height;
-        gridSizeX = layer1.width;
+        this.gridSizeY = layer1.height;
+        this.gridSizeX = layer1.width;
         var tiles = layer1.data;
         var tilesetid = layer1.tilesetid;
         var objectName;
         var tilereference;
         var walkableArray = [];
         //
-        for(var i = 0; i < gridSizeY; i ++){
-	     	hexagonArray[i] = [];
+        for(var i = 0; i < this.gridSizeY; i ++){
+	     	this.hexagonArray[i] = [];
             walkableArray[i] = [];
-			for(var j = 0; j < gridSizeX; j ++)
+			for(var j = 0; j < this.gridSizeX; j ++)
             {
-                objectName = tiles[i*gridSizeX+j];
+                objectName = tiles[i*this.gridSizeX+j];
                 tilereference = this.getTile(objectName,tilesetid);
                 var hexagonX = hexagonWidth*j;
-                if(gridSizeY%2)
+                if(this.gridSizeY%2)
                     hexagonX += hexagonWidth/2*(i%2);
                 else
                     hexagonX -= hexagonWidth/2*(i%2);
@@ -129,14 +151,14 @@ BasicGame.GameWave.prototype = {
                 {
                     var temptile = new WaterTile(this, hexagon,i,j);
                     waterTilesArray.push(temptile);
-                    hexagonArray[i][j]=temptile;
+                    this.hexagonArray[i][j]=temptile;
                 }
                 else
                 {
                     var temptile = new WalkableTile(this,hexagon,i,j);
-                    hexagonArray[i][j]=temptile;
+                    this.hexagonArray[i][j]=temptile;
                 }
-                walkableArray[i][j] = layer1.walkable[i*gridSizeX+j];
+                walkableArray[i][j] = layer1.walkable[i*this.gridSizeX+j];
                 //
                 var hexagonText = this.add.text(hexagonX+hexagonWidth/3+5,hexagonY+15,i+","+j);
                 hexagonText.font = "arial";
@@ -152,19 +174,26 @@ BasicGame.GameWave.prototype = {
         var spotx,spoty;
         for(var i = 0; i < objects.length; i ++)
         {
-            var objectrefernce = this.getTile(objects[i].name,objects[i].tilesetid);
-            spotx = objects[i].x;
-            spoty = gridSizeY-objects[i].y-1;//gridSizeY-objects[i].y-1;
-            var tileobject = this.game.make.sprite(objects[i].offsetx*hexagonWidth,objects[i].offsety*hexagonHeight, objectrefernce.spritesheet, objectrefernce.tile+".png");
-            hexagonArray[spoty][spotx].tileImage.addChild(tileobject);
-            tileobject.anchor.x = 0.5;
-            tileobject.anchor.y = 1.0;
-            //characterGroup.add(tileobject);
+            if(objects[i].actions)//if have actions then is an interactive object
+            {
+                var interactiveobject = new InteractiveObject(this, objects[i],tileobject);
+                //interactiveObjects.
+            }
+            else
+            {
+                var objectreference = this.getTile(objects[i].name,objects[i].tilesetid);
+                spotx = objects[i].x;
+                spoty = this.gridSizeY-objects[i].y-1;//this.gridSizeY-objects[i].y-1;
+                var tileobject = this.game.make.sprite(objects[i].offsetx*hexagonWidth,objects[i].offsety*hexagonHeight, objectreference.spritesheet, objectreference.tile+".png");
+                this.hexagonArray[spoty][spotx].tileImage.addChild(tileobject);
+                tileobject.anchor.x = 0.5;
+                tileobject.anchor.y = 1.0;
+            }
         }
         var connected = layer1.connected;
         for(var i = 0; i < connected.length; i ++)
         {
-            var selectedtile = hexagonArray[gridSizeY-connected[i].fy-1][connected[i].fx];
+            var selectedtile = this.hexagonArray[this.gridSizeY-connected[i].fy-1][connected[i].fx];
             selectedtile.actionEnter = this.userSteppedOnExit;
             selectedtile.actionEnterData = connected[i];
             var doorImage = this.game.make.sprite(0,0, "tiles","mapexit.png");
@@ -172,12 +201,12 @@ BasicGame.GameWave.prototype = {
         }
         //
         hexagonGroup.sort('y', Phaser.Group.SORT_ASCENDING);
-		hexagonGroup.y = (600/2-hexagonHeight*Math.ceil(gridSizeY/2))/2;
-          if(gridSizeY%2==0){
+		hexagonGroup.y = (600/2-hexagonHeight*Math.ceil(this.gridSizeY/2))/2;
+          if(this.gridSizeY%2==0){
                hexagonGroup.y-=hexagonHeight/4;
           }
-        hexagonGroup.x = (900-Math.ceil(gridSizeX)*hexagonWidth)/2;
-          if(gridSizeX%2==0){
+        hexagonGroup.x = (900-Math.ceil(this.gridSizeX)*hexagonWidth)/2;
+          if(this.gridSizeX%2==0){
                hexagonGroup.x-=hexagonWidth/8;
           }
         
@@ -186,7 +215,7 @@ BasicGame.GameWave.prototype = {
         {
             this.playerCharacter = new MovingCharacter(this, "player");
             this.game.add.existing(this.playerCharacter.sprite);
-            this.playerCharacter.setLocationByTile(hexagonArray[gridSizeY-startpos[2]-1][startpos[1]]);
+            this.playerCharacter.setLocationByTile(this.hexagonArray[this.gridSizeY-startpos[2]-1][startpos[1]]);
         }
         characterGroup.add(this.playerCharacter.sprite);
         characterGroup.sort('y', Phaser.Group.SORT_ASCENDING);
@@ -194,7 +223,7 @@ BasicGame.GameWave.prototype = {
         characterGroup.y = hexagonGroup.y;
         //
         this.neighborLights = [];
-        for(var i=0;i<6;i++)
+        for(var i=0;i<8;i++)
         {
             var light = this.add.group();
             var high = this.game.add.sprite(0,0, "tiles","tileWater_tile.png");
@@ -206,6 +235,7 @@ BasicGame.GameWave.prototype = {
             hexagonText.font = "arial";
             hexagonText.fontSize = 12;
             light.add(hexagonText);
+            light.x = -1000;
         }
         //var label = this.game.add.bitmapText(10, 10, "immortal", "TEST", 25);
     },
@@ -227,17 +257,9 @@ BasicGame.GameWave.prototype = {
         this.createMapTiles(currentmap);        
     },
     flushEntireMap: function(){
-        //console.log("flush map");
-       /* for(var i = 0; i < gridSizeY; i ++){
-			for(var j = 0; j < gridSizeX; j ++)
-            {
-                hexagonArray[i][j].tileImage.destroy();
-                hexagonArray[i][j] = null;
-            }
-        }*/
         hexagonGroup.destroy();
         characterGroup.destroy();
-        hexagonArray = [];
+        this.hexagonArray = [];
         waterTilesArray = [];
         walkableArray = [];
         this.playerCharacter = null;
@@ -312,6 +334,15 @@ BasicGame.GameWave.prototype = {
         if(this.playerCharacter.isMoving)
             return;
     },
+    drawLine:function()
+    {
+        var playertile = this.checkHex(this.playerCharacter.sprite.x,this.playerCharacter.sprite.y);
+        var moveIndex =  this.checkHex(this.input.worldX-hexagonGroup.x,this.input.worldY-hexagonGroup.y);
+        if(moveIndex&&playertile)
+        {
+            this.hexHandler.lineTest(playertile,moveIndex);
+        }
+    },
     moveHex:function()
     {
         if(this.game.global.pause)
@@ -356,6 +387,21 @@ BasicGame.GameWave.prototype = {
             this.neighborLights[i].y = 0;
         }
     },
+    highlightpath:function(i,currenttile)
+    {
+        if(this.neighborLights[i]==null)
+            return;
+        if(currenttile!=null)
+        {
+            this.neighborLights[i].x = currenttile.tileImage.x;
+            this.neighborLights[i].y = currenttile.tileImage.y;
+        }
+        else
+        {
+            this.neighborLights[i].x = -1000;
+            this.neighborLights[i].y = 0;
+        }
+    },
     clickedHex:function()
     {
         if(this.game.global.pause)
@@ -365,19 +411,22 @@ BasicGame.GameWave.prototype = {
         moveIndex =  this.checkHex(this.input.worldX-hexagonGroup.x,this.input.worldY-hexagonGroup.y);
         if(moveIndex!=null)
         {
-            if(moveIndex.walkable)
+            if(this.game.currentacion==this.game.WALK)
             {
-                var playertile = this.checkHex(this.playerCharacter.sprite.x,this.playerCharacter.sprite.y);
-                if(playertile)
+                if(moveIndex.walkable)
                 {
-                    pathfinder.setCallbackFunction(this.playercallback, this);
-                    pathfinder.preparePathCalculation( [playertile.posx,playertile.posy], [moveIndex.posx,moveIndex.posy] );
-                    pathfinder.calculatePath();
+                    var playertile = this.checkHex(this.playerCharacter.sprite.x,this.playerCharacter.sprite.y);
+                    if(playertile)
+                    {
+                        pathfinder.setCallbackFunction(this.playercallback, this);
+                        pathfinder.preparePathCalculation( [playertile.posx,playertile.posy], [moveIndex.posx,moveIndex.posy] );
+                        pathfinder.calculatePath();
+                    }
                 }
-            }
-            else
-            {
-                console.log("not walkable");
+                else
+                {
+                    console.log("not walkable");
+                }
             }
         }
     },
@@ -390,7 +439,7 @@ BasicGame.GameWave.prototype = {
         } */    
     },
     checkHex:function(checkx, checky){
-        if(!hexagonArray)
+        if(!this.hexagonArray)
             return;
         
         var deltaX = (checkx)%sectorWidth;
@@ -422,25 +471,25 @@ BasicGame.GameWave.prototype = {
                     }
                }
           }
-        if(gridSizeY%2==0 && candidateY%2==1)
+        if(this.gridSizeY%2==0 && candidateY%2==1)
         {
            candidateX++;
             if(candidateX<0)
                 candidateX = 0;
         }
-        if(candidateX<0 || candidateY<0 || candidateY>=gridSizeY || candidateX>columns[candidateY%2]-1){
+        if(candidateX<0 || candidateY<0 || candidateY>=this.gridSizeY || candidateX>columns[candidateY%2]-1){
             return;
 		}
-        return hexagonArray[candidateY][candidateX]
+        return this.hexagonArray[candidateY][candidateX]
      },
     getTile: function(name, tilesetid){
         return {tile:this.mapData.tileSets[tilesetid][name],spritesheet:this.mapData.tileSets[tilesetid].tileset};
     },
     getTileByCords:function(x,y)
     {
-        if(hexagonArray[x])
-            if(hexagonArray[x][y])
-                return hexagonArray[x][y];
+        if(this.hexagonArray[x])
+            if(this.hexagonArray[x][y])
+                return this.hexagonArray[x][y];
         return null;
     },
     //ati,atj - position in array
@@ -448,7 +497,7 @@ BasicGame.GameWave.prototype = {
     addHex:function (ati,atj,tileName,locx,locy){
         var hexagon = this.add.sprite(locx,locy, "tiles", tileName); 
         hexagonGroup.add(hexagon);
-        hexagonArray[ati][atj]=hexagon;
+        this.hexagonArray[ati][atj]=hexagon;
     }
 };
 //
@@ -609,10 +658,95 @@ WaveHandler.prototype.getWave = function()
     this.allWaves.push(wave);
     wave.isActive = true;
     return wave;
-}
+};
 WaveHandler.prototype.returnWave = function(wave)
 {
     //this.closeWaves.splice(this.closeWaves.indexOf(wave),1);
     this.openWaves.push(wave);
-}
+};
+//
+var Point = function(x, y) {
+  this.x = x;
+  this.y = y;
+};
+//
+var HexHandler = function (maingame, game) 
+{
+    this.maingame = maingame;
+    this.game = game;
+};
+HexHandler.prototype.lineTest = function(tilestart,tileend)
+{
+    var p0 = new Point(tilestart.tileImage.x+this.maingame.halfHex,
+                       tilestart.tileImage.y+this.maingame.halfHex);
+    var p1 = new Point(tileend.tileImage.x+this.maingame.halfHex, 
+                       tileend.tileImage.y+this.maingame.halfHex);
+    //
+    this.maingame.graphics.clear();
+    this.maingame.graphics.lineStyle(10, 0xffd900, 1);
+    this.maingame.graphics.moveTo(tilestart.tileImage.x+hexagonGroup.x+this.maingame.halfHex, tilestart.tileImage.y+hexagonGroup.y+this.maingame.halfHex);
+    this.maingame.graphics.lineTo(tileend.tileImage.x+hexagonGroup.x+this.maingame.halfHex, tileend.tileImage.y+hexagonGroup.y+this.maingame.halfHex);
+    //
+    var N = this.game.math.distance(p0.x,p0.y,p1.x,p1.y);
+    N = N/this.maingame.hexagonWidth+1;
+    var points = [];
+    for (var step = 0; step <= N; step++) {
+            var t = N == 0? 0.0 : step / N;
+            points.push(this.lerp_point(p0, p1, t));
+    }
+    var tiles = [];
+   // console.log(points);
+    this.maingame.graphics.lineStyle(0);
+    this.maingame.graphics.beginFill(0x00FF0B, 0.5);
+    for(var i=0;i<points.length;i++)
+    {
+        var overtile = this.maingame.checkHex(points[i].x,points[i].y);
+        this.maingame.graphics.drawCircle(points[i].x+hexagonGroup.x,points[i].y+hexagonGroup.y, 10);
+        if(overtile!=null)
+        {
+            tiles.push(overtile);
+            this.maingame.highlightpath(i,overtile);//debug
+        }
+    }
+    this.maingame.graphics.endFill();
+    
+    //more debug
+    var emptyl = 8-points.length;
+    for(i = emptyl;i<8;i++)
+    {
+        this.maingame.highlightpath(i,null);
+    }
+    //    
+    return tiles;
+};
+HexHandler.prototype.round_point = function(p) {
+    return new Point(Math.round(p.x), Math.round(p.y));
+};
+HexHandler.prototype.lerp = function(start, end, t) {
+    return start + t * (end-start);
+};
+HexHandler.prototype.lerp_point = function(p0, p1, t) {
+    return new Point(this.lerp(p0.x, p1.x, t),
+                     this.lerp(p0.y, p1.y, t));
+}; 
+    
+    /*
+    
+    function diagonal_distance(p0, p1) {
+        var dx = p1.x - p0.x, dy = p1.y - p0.y;
+        return Math.max(Math.abs(dx), Math.abs(dy));
+    }
 
+    function round_point(p) {
+        return new Point(Math.round(p.x), Math.round(p.y));
+    }
+
+    function line(p0, p1) {
+        var points = [];
+        var N = diagonal_distance(p0, p1);
+        for (var step = 0; step <= N; step++) {
+            var t = N == 0? 0.0 : step / N;
+            points.push(round_point(lerp_point(p0, p1, t)));
+        }
+        return points;
+    }*/

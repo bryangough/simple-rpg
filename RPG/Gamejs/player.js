@@ -29,7 +29,6 @@ var MovingCharacter = function (maingame, name)
     this.walkspeed = 0.1875;
     
     
-    
     this.inventory = [];
     
 };
@@ -117,3 +116,66 @@ MovingCharacter.prototype.step = function(elapseTime)
 //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript
 //Student.prototype = Object.create(Person.prototype); 
 //Student.prototype.constructor = Student;
+
+var InteractiveObject = function (maingame, jsondata) 
+{
+    this.maingame = maingame;
+    this.game = maingame.game;
+    this.jsondata = jsondata;
+    //art for the object here
+    
+    //
+    var actions = this.jsondata.actions;
+    for(var i=0;i<actions.length;i++)
+    {
+        if(actions[i].type=="actionconvtrigger")
+            this.handleActionConvTrigger(actions[i]);
+        else if(actions[i].type=="actorset")
+            this.handleActorSet(actions[i]);
+        else if(actions[i].type=="actiontext")
+            this.handleActionText(actions[i]);
+    }
+    //
+    this.setupArt();
+}
+InteractiveObject.prototype.handleActorSet = function(json) 
+{
+}
+InteractiveObject.prototype.handleActionConvTrigger = function(json) 
+{
+}
+InteractiveObject.prototype.handleActionText = function(json) 
+{
+}
+InteractiveObject.prototype.step = function(elapseTime) 
+{
+}
+InteractiveObject.prototype.setupArt = function(json) 
+{
+    var objectreference = this.maingame.getTile(this.jsondata.name,this.jsondata.tilesetid);
+    var spotx = this.jsondata.x;
+    var spoty = this.maingame.gridSizeY-this.jsondata.y-1;//gridSizeY-jsondata.y-1;
+    var tileobject = this.game.make.sprite(this.jsondata.offsetx*this.maingame.hexagonWidth, this.jsondata.offsety*this.maingame.hexagonHeight, objectreference.spritesheet, objectreference.tile+".png");
+    this.maingame.hexagonArray[spoty][spotx].tileImage.addChild(tileobject);
+    tileobject.anchor.x = 0.5;
+    tileobject.anchor.y = 1.0;
+}
+/*
+ {
+    "type": "actionconvtrigger",
+    "trigger": "OnTalk",
+    "convid": 1,
+    "once": false,
+    "skipIfNoValidEntries": false
+},
+{
+    "type": "actorset",
+    "ActorName": "Crab"
+},
+{
+    "type": "actiontext",
+    "lookatactive": true,
+    "lookat": "A baby crab trying to get your attention."
+}
+
+*/

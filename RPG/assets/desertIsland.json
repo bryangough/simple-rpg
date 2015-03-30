@@ -69,6 +69,21 @@
                         "ty": 2
                     }
                 ],
+                "actionSpots": [
+                    {
+                        "x": 2,
+                        "y": 3,
+                        "actions": [
+                            {
+                                "type": "actionconvtrigger",
+                                "trigger": "OnEnter",
+                                "convid": 3,
+                                "once": true,
+                                "skipIfNoValidEntries": false
+                            }
+                        ]
+                    }
+                ],
                 "objects": [
                     {
                         "name": 0,
@@ -76,7 +91,25 @@
                         "y": 4,
                         "offsetx": 0.4304381,
                         "offsety": 0.2758627,
-                        "tilesetid": "interactiveactors"
+                        "tilesetid": "interactiveactors",
+                        "actions": [
+                            {
+                                "type": "actionconvtrigger",
+                                "trigger": "OnTalk",
+                                "convid": 1,
+                                "once": false,
+                                "skipIfNoValidEntries": false
+                            },
+                            {
+                                "type": "actorset",
+                                "ActorName": "Crab"
+                            },
+                            {
+                                "type": "actiontext",
+                                "lookatactive": true,
+                                "lookat": "A baby crab trying to get your attention."
+                            }
+                        ]
                     }
                 ]
             }
@@ -128,7 +161,7 @@
                     1,
                     1,
                     1,
-                    0,
+                    1,
                     1,
                     1,
                     1,
@@ -168,6 +201,7 @@
                         "ty": 0
                     }
                 ],
+                "actionSpots": [],
                 "objects": [
                     {
                         "name": 1,
@@ -175,7 +209,23 @@
                         "y": 1,
                         "offsetx": 0.5689629,
                         "offsety": 0.3534678,
-                        "tilesetid": "interactiveactors"
+                        "tilesetid": "interactiveactors",
+                        "actions": [
+                            {
+                                "type": "actionconvtrigger",
+                                "trigger": "OnTouch",
+                                "convid": 2,
+                                "once": false,
+                                "skipIfNoValidEntries": false
+                            },
+                            {
+                                "type": "actiontext",
+                                "lookatactive": true,
+                                "lookat": "A fire pit.",
+                                "talkactive": true,
+                                "talkMessage": "A fire pit."
+                            }
+                        ]
                     },
                     {
                         "name": 1,
@@ -335,6 +385,7 @@
                         "ty": 1
                     }
                 ],
+                "actionSpots": [],
                 "objects": [
                     {
                         "name": 6,
@@ -350,7 +401,12 @@
                         "y": 6,
                         "offsetx": 0.4262261,
                         "offsety": 0.2483232,
-                        "tilesetid": "interactiveactors"
+                        "tilesetid": "interactiveactors",
+                        "actions": [
+                            {
+                                "type": "interacttrigger"
+                            }
+                        ]
                     },
                     {
                         "name": 6,
@@ -598,6 +654,7 @@
                         "ty": 6
                     }
                 ],
+                "actionSpots": [],
                 "objects": [
                     {
                         "name": 0,
@@ -700,7 +757,7 @@
                 "Description": "",
                 "Success Description": "",
                 "Failure Description": "",
-                "Count": "",
+                "Count": "0",
                 "onTalk": ""
             },
             {
@@ -1131,7 +1188,7 @@
                         "Conversant": -1,
                         "Title": "START",
                         "MenuText": "",
-                        "DialogueText": "",
+                        "DialogueText": "You awake lying on a strange beach.",
                         "IsGroup": false,
                         "FalseConditionAction": "Block",
                         "ConditionPriority": "Normal",
@@ -1157,36 +1214,6 @@
                         "entrytag": "Player_3_1",
                         "ConvID": 3,
                         "ID": 1,
-                        "Actor": 1,
-                        "Conversant": -1,
-                        "Title": "New Dialogue Entry",
-                        "MenuText": "",
-                        "DialogueText": "",
-                        "IsGroup": false,
-                        "FalseConditionAction": "Block",
-                        "ConditionPriority": "Normal",
-                        "Conditions": "",
-                        "Script": "",
-                        "Sequence": "",
-                        "Pictures": "",
-                        "Description": "",
-                        "Parenthetical": "",
-                        "Audio Files": "",
-                        "Video File": "",
-                        "links": [
-                            {
-                                "OriginConvID": 3,
-                                "OriginID": 1,
-                                "DestConvID": 3,
-                                "DestID": 2,
-                                "ConditionPriority": "Normal"
-                            }
-                        ]
-                    },
-                    {
-                        "entrytag": "Player_3_2",
-                        "ConvID": 3,
-                        "ID": 2,
                         "Actor": 1,
                         "Conversant": -1,
                         "Title": "New Dialogue Entry",
