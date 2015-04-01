@@ -1,4 +1,16 @@
-//
+//***** GlobalHandler ********
+var GlobalHandler = function (game, maingame, variables, quests,items)
+{
+    this.game = game;
+    this.maingame = maingame;
+    //this.variables = variables
+    //this.quests = 
+    //this.items = 
+}
+
+
+
+//***** EventConv ********
 var EventConv = function (game, maingame, destroyfunc, json) 
 {
     //this.convid = json.convid;
@@ -53,7 +65,9 @@ Actors/enemies animations
 
 
 OTHER ACTIONS
-- load special animations - (array)
+- load special animations - (array) - animationid, animationname, #frames
+- create named object? 
+
 - destroy graphic(self)
 - hide graphic, show graphic 
 - change graphic/play animation

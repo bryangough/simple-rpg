@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<meta charset="UTF-8" />
+	<title>Phaser Basic Project Template</title>
+    <script src="js/phaser.min.js"></script>
+    <script src="js/easystar-0.1.13-hex.js"></script>
+    <script src="js/RPGSimple.min.js"></script>
+
+</head>
+<body>
+
+<div id="gameContainer"></div>
+
+<script type="text/javascript">
+
+window.onload = function() {
+
+	var game = new Phaser.Game(900, 600, Phaser.AUTO, 'gameContainer');
+
+    //game.scale.setGameSize(window.innerWidth, window.innerHeight);
+    
+   /* var widthScale = window.innerWidth / Game.width;
+    var heightScale = window.innerHeight / Game.height;
+
+    if(widthScale > heightScale) {
+        Game.scaleValue = heightScale;
+    } else {
+        Game.scaleValue = widthScale;
+    }*/
+    
+	game.state.add('Boot', BasicGame.Boot);
+	game.state.add('Preloader', BasicGame.Preloader);
+	game.state.add('MainMenu', BasicGame.MainMenu);
+    game.state.add('Game', BasicGame.GameWave);
+    game.state.add('Instructions', BasicGame.Instructions);
+    
+    //game.state.add('reset', onResize); //I don't know if this will actually work
+
+    /*Game = {
+        width = 900;
+        height = 600;
+        scaleValue;
+    };*/
+	
+    //action enums
+    game.WALK = 0;
+    game.LOOK = 1;
+    game.USE = 2;
+    game.TALK = 3;
+    game.currentacion = game.WALK;
+    //
+    game.global = {
+        mute: false,
+        pause: false
+    };
+    
+    game.state.start('Boot');
+    /*var SIZE = {
+  SMALL : {value: 0, name: "Small", code: "S"}, 
+  MEDIUM: {value: 1, name: "Medium", code: "M"}, 
+  LARGE : {value: 2, name: "Large", code: "L"}
+};*/
+    //
+};
+
+</script>
+
+</body>
+</html>

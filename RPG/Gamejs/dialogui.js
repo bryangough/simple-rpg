@@ -1,3 +1,5 @@
+//***** DialogHandler ********
+//handle conditions?
 var DialogHandler = function(game, conversations, actors){
     this.game = game;
     this.conversations = conversations;
@@ -101,6 +103,7 @@ DialogHandler.prototype.getPlayerActor = function(){
 - 
 
 */
+//***** DialogPanel ********
 var DialogPanel = function(game, maingame, dialogEngine, parent){
 	Phaser.Group.call(this, game, parent);
 
@@ -220,6 +223,7 @@ DialogPanel.prototype.endDialog = function(){
     this.visible = false;
     this.y = -1000;
 };
+//***** ActionButtons ********
 //Player select able buttons
 ActionButtons = function(game, maingame, parent){
 	Phaser.Group.call(this, game, parent);
@@ -288,7 +292,7 @@ ActionButtons.prototype.disableButton = function(ref){
     ref.up.visible = true;
     ref.active.visible = false;    
 }
-//
+//***** JustTextPopup ********
 JustTextPopup = function(game, maingame, dialogEngine, parent){
     Phaser.Group.call(this, game, parent);
     this.dialogEngine = dialogEngine;
@@ -336,8 +340,11 @@ JustTextPopup.prototype.closePopup = function(){
     this.maingame.unpauseGame();
 }
 //
-//pool of barks, handles placing them
+//***** BarkTextHandler ********
 BarkTextHandler = function(game,maingame){
+    this.pool = new BasicObjectPool();
+    this.game = game;
+    this.maingame=maingame;
 }
 BarkTextHandler.prototype.barkOverActor = function(over,json){
 }
@@ -349,12 +356,48 @@ BarkTextHandler.prototype.returnBarkToPool = function(over){
 BarkTextHandler.prototype.cleanupAllBarks = function(){
 }
 
+//***** BarkText ********
 //
 BarkText = function(){
     this.textfield;//
     this.timer;//
     this.over;
+    this.inUse = false;
 }
-BarkText.prototype = function(elapseTime){
+BarkText.prototype.step = function(elapseTime){
 }
-//
+BarkText.prototype.reset = function(elapseTime){
+}
+
+//***** BasicObjectPool ********
+// simple object pool to handle barks and other little things
+BasicObjectPool = function([])
+{
+    this.openArray = [];
+    this.allObjectsArray = [];
+    
+}
+BasicObjectPool.prototype.getObject = function(){
+    if(this.openArray.length>0)
+        return this.openArray.pop();
+    //else{
+        //var newObject = 
+        //this.openArray.push(newObject);
+        //this.allObjectsArray.push(newObject);
+        return newObject;
+    //}
+    return null;
+}
+BasicObjectPool.prototype.addObject = function(returnedobject){
+    this.openArray.push(returnedobject);
+    this.allObjectsArray.push(returnedobject);
+}
+BasicObjectPool.prototype.returnObject = function(returnedobject){
+    returnedobject.reset();
+    this.openArray.push(returnedobject);
+}
+BasicObjectPool.prototype.destroyself = function(returnedobject){
+    this.allObjectsArray = [];
+    this.openArray = [];
+}
+//*****  ********
