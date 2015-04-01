@@ -1181,10 +1181,10 @@
                 "Conversant": "-1",
                 "DialogueEntries": [
                     {
-                        "entrytag": "Player_3_0",
+                        "entrytag": "invalid_entrytag",
                         "ConvID": 3,
                         "ID": 0,
-                        "Actor": 1,
+                        "Actor": -1,
                         "Conversant": -1,
                         "Title": "START",
                         "MenuText": "",
@@ -1211,14 +1211,14 @@
                         ]
                     },
                     {
-                        "entrytag": "Player_3_1",
+                        "entrytag": "invalid_entrytag",
                         "ConvID": 3,
                         "ID": 1,
-                        "Actor": 1,
+                        "Actor": -1,
                         "Conversant": -1,
                         "Title": "New Dialogue Entry",
                         "MenuText": "",
-                        "DialogueText": "",
+                        "DialogueText": "That crab looks like it has something to say. How odd.",
                         "IsGroup": false,
                         "FalseConditionAction": "Block",
                         "ConditionPriority": "Normal",

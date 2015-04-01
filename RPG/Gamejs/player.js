@@ -122,8 +122,9 @@ var InteractiveObject = function (maingame, jsondata)
     this.maingame = maingame;
     this.game = maingame.game;
     this.jsondata = jsondata;
+    this.tileobject;
     //art for the object here
-    
+    this.actions = [];
     //
     var actions = this.jsondata.actions;
     for(var i=0;i<actions.length;i++)
@@ -136,46 +137,57 @@ var InteractiveObject = function (maingame, jsondata)
             this.handleActionText(actions[i]);
     }
     //
-    this.setupArt();
+    this.setupArt(this.jsondata);
 }
 InteractiveObject.prototype.handleActorSet = function(json) 
 {
+    
 }
 InteractiveObject.prototype.handleActionConvTrigger = function(json) 
 {
+    var action = json;
+    this.actions[json.trigger] = action;
+    
 }
 InteractiveObject.prototype.handleActionText = function(json) 
 {
+    //var action = json;
+    //this.actions[json.trigger] = action;
+    //if(json.lookatactive)
+    //{
+    //}
 }
 InteractiveObject.prototype.step = function(elapseTime) 
 {
+}
+InteractiveObject.prototype.setupReactToAction = function() 
+{
+    this.tileobject.events.onInputDown.add(handleClick, this);
+    //this.tileobject.events.onInputOver.add(, this);//for rollover
+    //this.tileobject.events.onInputOut.add(, this);
+}
+InteractiveObject.prototype.handleClick = function() 
+{
+    //this.game.currentacion
+    //if(this.game.currentacion==this.game.WALK)
+    //{
+    //}
+    
 }
 InteractiveObject.prototype.setupArt = function(json) 
 {
     var objectreference = this.maingame.getTile(this.jsondata.name,this.jsondata.tilesetid);
     var spotx = this.jsondata.x;
-    var spoty = this.maingame.gridSizeY-this.jsondata.y-1;//gridSizeY-jsondata.y-1;
-    var tileobject = this.game.make.sprite(this.jsondata.offsetx*this.maingame.hexagonWidth, this.jsondata.offsety*this.maingame.hexagonHeight, objectreference.spritesheet, objectreference.tile+".png");
-    this.maingame.hexagonArray[spoty][spotx].tileImage.addChild(tileobject);
-    tileobject.anchor.x = 0.5;
-    tileobject.anchor.y = 1.0;
-}
-/*
- {
-    "type": "actionconvtrigger",
-    "trigger": "OnTalk",
-    "convid": 1,
-    "once": false,
-    "skipIfNoValidEntries": false
-},
-{
-    "type": "actorset",
-    "ActorName": "Crab"
-},
-{
-    "type": "actiontext",
-    "lookatactive": true,
-    "lookat": "A baby crab trying to get your attention."
+    var spoty = this.maingame.gridSizeY-this.jsondata.y-1;
+    this.tileobject = this.game.make.sprite(this.jsondata.offsetx*this.maingame.hexagonWidth, this.jsondata.offsety*this.maingame.hexagonHeight, objectreference.spritesheet, objectreference.tile+".png");
+    this.maingame.hexagonArray[spoty][spotx].tileImage.addChild(this.tileobject);
+    this.tileobject.anchor.x = 0.5;
+    this.tileobject.anchor.y = 1.0;
 }
 
-*/
+var InventoryEngine = function (maingame, jsondata) 
+{
+}
+InventoryEngine.prototype.enterInventory = function() 
+{
+}

@@ -20,6 +20,7 @@ BasicGame.GameWave = function (game) {
     this.rnd;       //  the repeatable random number generator (Phaser.RandomDataGenerator)
     
     this.playerCharacter;
+    this.playerHex;
     this.halfHex = hexagonWidth/2;
     this.diagpanel;
     this.activeButtons;
@@ -36,6 +37,7 @@ BasicGame.GameWave = function (game) {
     this.hexagonArray = [];
     this.hexHandler;
     this.graphics;
+    this.justTextPopup;
 };
 
     var hexagonWidth = 63;
@@ -92,16 +94,20 @@ BasicGame.GameWave.prototype = {
         this.diagpanel = new DialogPanel(this.game,this,this.dialoghandler);
 	    this.game.add.existing(this.diagpanel);
         this.uiGroup.add(this.diagpanel);
+        
+        this.justTextPopup = new JustTextPopup(this.game,this,this.dialoghandler);
+        this.game.add.existing(this.justTextPopup);
+        this.uiGroup.add(this.justTextPopup);
         //
         //
-        this.input.addMoveCallback(this.drawLine, this); 
+        //this.input.addMoveCallback(this.drawLine, this); 
         //this.input.onDown.add(this.drawLine, this); 
         //MOVE
-        
         
         this.input.onDown.add(this.clickedHex, this);
         
         this.activeButtons = new ActionButtons(this.game, this);
+        this.activeButtons.y = 350;
         this.game.add.existing(this.activeButtons);
         this.uiGroup.add(this.activeButtons);
         
@@ -110,6 +116,12 @@ BasicGame.GameWave.prototype = {
         this.hexHandler = new HexHandler(this,this.game);
         
         this.graphics = this.game.add.graphics(0, 0);
+        this.uiGroup.add(this.graphics);
+        
+        
+        this.showJustTextDialog(3);
+        //this.showJustText("YEP");
+        //this.showDialog(1);
     },
     createMapTiles: function(passedMap){
         this.hexagonArray = [];
@@ -159,6 +171,10 @@ BasicGame.GameWave.prototype = {
                     this.hexagonArray[i][j]=temptile;
                 }
                 walkableArray[i][j] = layer1.walkable[i*this.gridSizeX+j];
+                if(walkableArray[i][j] == 0)
+                {
+                    this.hexagonArray[i][j].walkable = false;
+                }
                 //
                 var hexagonText = this.add.text(hexagonX+hexagonWidth/3+5,hexagonY+15,i+","+j);
                 hexagonText.font = "arial";
@@ -199,6 +215,12 @@ BasicGame.GameWave.prototype = {
             var doorImage = this.game.make.sprite(0,0, "tiles","mapexit.png");
             selectedtile.tileImage.addChild(doorImage);
         }
+        var actionSpots = layer1.actionSpots;
+        for(var i = 0; i < actionSpots.length; i ++)
+        {
+            var selectedtile = this.hexagonArray[this.gridSizeY-actionSpots[i].y-1][actionSpots[i].x];
+            //apply actionSpots action
+        }
         //
         hexagonGroup.sort('y', Phaser.Group.SORT_ASCENDING);
 		hexagonGroup.y = (600/2-hexagonHeight*Math.ceil(this.gridSizeY/2))/2;
@@ -223,7 +245,7 @@ BasicGame.GameWave.prototype = {
         characterGroup.y = hexagonGroup.y;
         //
         this.neighborLights = [];
-        for(var i=0;i<8;i++)
+        for(var i=0;i<40;i++)
         {
             var light = this.add.group();
             var high = this.game.add.sprite(0,0, "tiles","tileWater_tile.png");
@@ -237,7 +259,7 @@ BasicGame.GameWave.prototype = {
             light.add(hexagonText);
             light.x = -1000;
         }
-        //var label = this.game.add.bitmapText(10, 10, "immortal", "TEST", 25);
+        
     },
     userSteppedOnExit:function(data){
         //console.log(this.game,this);
@@ -278,10 +300,22 @@ BasicGame.GameWave.prototype = {
         if(!this.game.global.pause)
         {
             this.playerCharacter.step(elapsedTime);
+            this.playerHex = this.checkHex(this.playerCharacter.sprite.x,this.playerCharacter.sprite.y);
+            //var this.hexHandler.doFloodFill(this.playerHex,3);
         }
     },
     showDialog:function(dialogIn){
         this.diagpanel.startDialog(dialogIn);
+        this.pauseGame();
+    },
+    showJustText:function(textDisplay)
+    {
+        this.justTextPopup.showText(textDisplay);
+        this.pauseGame();
+    },
+    showJustTextDialog:function(convid)
+    {
+        this.justTextPopup.showTextFromHandler(convid);
         this.pauseGame();
     },
     pauseGame:function(){
@@ -313,6 +347,7 @@ BasicGame.GameWave.prototype = {
         moveIndex =  this.checkHex(this.input.worldX-hexagonGroup.x,this.input.worldY-hexagonGroup.y);
         if(moveIndex!=null)
         {
+            
             if(moveIndex.walkable)
             {
                 var playertile = this.checkHex(this.playerCharacter.sprite.x,this.playerCharacter.sprite.y);
@@ -325,6 +360,7 @@ BasicGame.GameWave.prototype = {
             }
             else
             {
+                
                 console.log("not walkable");
             }
         }
@@ -340,7 +376,7 @@ BasicGame.GameWave.prototype = {
         var moveIndex =  this.checkHex(this.input.worldX-hexagonGroup.x,this.input.worldY-hexagonGroup.y);
         if(moveIndex&&playertile)
         {
-            this.hexHandler.lineTest(playertile,moveIndex);
+            this.hexHandler.dolines(playertile,moveIndex,false);
         }
     },
     moveHex:function()
@@ -411,6 +447,9 @@ BasicGame.GameWave.prototype = {
         moveIndex =  this.checkHex(this.input.worldX-hexagonGroup.x,this.input.worldY-hexagonGroup.y);
         if(moveIndex!=null)
         {
+            //var fridges = this.hexHandler.doFloodFill(moveIndex,3);
+            //this.drawFridges(fridges);
+            //
             if(this.game.currentacion==this.game.WALK)
             {
                 if(moveIndex.walkable)
@@ -425,18 +464,29 @@ BasicGame.GameWave.prototype = {
                 }
                 else
                 {
-                    console.log("not walkable");
+                    //console.log(moveIndex);
+                    //console.log("not walkable");
                 }
             }
+        }
+    },
+    drawFridges:function(fridges){
+        var tempArray = [];
+        for(var i=0;i<fridges.length;i++)
+        {
+            for(var j=0;j<fridges[i].length;j++)
+            {
+                tempArray.push(fridges[i][j]);
+            }
+        }
+        for(var i=0;i<tempArray.length;i++)
+        {
+            this.highlightpath(i,tempArray[i]);
         }
     },
     playercallback:function(path){
         path = path || [];
         this.playerCharacter.setPath(path);
-        /*for(var i = 0, ilen = path.length; i < ilen; i++) {
-            //map.putTile(46, path[i].x, path[i].y);
-            console.log("callback ",path[i].x, path[i].y);
-        } */    
     },
     checkHex:function(checkx, checky){
         if(!this.hexagonArray)
@@ -508,6 +558,7 @@ var WalkableTile = function(game,tileImage,posx,posy)
 {
     this.game = game;
     this.walkable = true;  
+    this.openair = true;
     this.tileImage = tileImage;
     this.posx = posx;
     this.posy = posy;
@@ -530,6 +581,7 @@ WalkableTile.prototype.clicked = function()
 };
 WalkableTile.prototype.enterTile = function()
 {
+    //console.log("entertile");
     if(this.actionEnter)
     {
         this.actionEnter(this.actionEnterData);
@@ -540,8 +592,10 @@ var WaterTile = function (game, tileImage,posx,posy)
 {
     this.posx = posx;
     this.posy = posy;
-
+    //
     this.walkable = false;  
+    this.openair = true;
+    //
     this.game = game;
     this.tileImage = tileImage;
     this.starty = tileImage.y;
@@ -669,84 +723,4 @@ var Point = function(x, y) {
   this.x = x;
   this.y = y;
 };
-//
-var HexHandler = function (maingame, game) 
-{
-    this.maingame = maingame;
-    this.game = game;
-};
-HexHandler.prototype.lineTest = function(tilestart,tileend)
-{
-    var p0 = new Point(tilestart.tileImage.x+this.maingame.halfHex,
-                       tilestart.tileImage.y+this.maingame.halfHex);
-    var p1 = new Point(tileend.tileImage.x+this.maingame.halfHex, 
-                       tileend.tileImage.y+this.maingame.halfHex);
-    //
-    this.maingame.graphics.clear();
-    this.maingame.graphics.lineStyle(10, 0xffd900, 1);
-    this.maingame.graphics.moveTo(tilestart.tileImage.x+hexagonGroup.x+this.maingame.halfHex, tilestart.tileImage.y+hexagonGroup.y+this.maingame.halfHex);
-    this.maingame.graphics.lineTo(tileend.tileImage.x+hexagonGroup.x+this.maingame.halfHex, tileend.tileImage.y+hexagonGroup.y+this.maingame.halfHex);
-    //
-    var N = this.game.math.distance(p0.x,p0.y,p1.x,p1.y);
-    N = N/this.maingame.hexagonWidth+1;
-    var points = [];
-    for (var step = 0; step <= N; step++) {
-            var t = N == 0? 0.0 : step / N;
-            points.push(this.lerp_point(p0, p1, t));
-    }
-    var tiles = [];
-   // console.log(points);
-    this.maingame.graphics.lineStyle(0);
-    this.maingame.graphics.beginFill(0x00FF0B, 0.5);
-    for(var i=0;i<points.length;i++)
-    {
-        var overtile = this.maingame.checkHex(points[i].x,points[i].y);
-        this.maingame.graphics.drawCircle(points[i].x+hexagonGroup.x,points[i].y+hexagonGroup.y, 10);
-        if(overtile!=null)
-        {
-            tiles.push(overtile);
-            this.maingame.highlightpath(i,overtile);//debug
-        }
-    }
-    this.maingame.graphics.endFill();
-    
-    //more debug
-    var emptyl = 8-points.length;
-    for(i = emptyl;i<8;i++)
-    {
-        this.maingame.highlightpath(i,null);
-    }
-    //    
-    return tiles;
-};
-HexHandler.prototype.round_point = function(p) {
-    return new Point(Math.round(p.x), Math.round(p.y));
-};
-HexHandler.prototype.lerp = function(start, end, t) {
-    return start + t * (end-start);
-};
-HexHandler.prototype.lerp_point = function(p0, p1, t) {
-    return new Point(this.lerp(p0.x, p1.x, t),
-                     this.lerp(p0.y, p1.y, t));
-}; 
-    
-    /*
-    
-    function diagonal_distance(p0, p1) {
-        var dx = p1.x - p0.x, dy = p1.y - p0.y;
-        return Math.max(Math.abs(dx), Math.abs(dy));
-    }
 
-    function round_point(p) {
-        return new Point(Math.round(p.x), Math.round(p.y));
-    }
-
-    function line(p0, p1) {
-        var points = [];
-        var N = diagonal_distance(p0, p1);
-        for (var step = 0; step <= N; step++) {
-            var t = N == 0? 0.0 : step / N;
-            points.push(round_point(lerp_point(p0, p1, t)));
-        }
-        return points;
-    }*/

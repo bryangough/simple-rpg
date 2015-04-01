@@ -23,11 +23,14 @@ DialogHandler.prototype.startConvo = function(id){
     return null;
 }
 //for every other types (displaying the npcs text, players text as options, then going straight to next npc text)
-DialogHandler.prototype.getNextDialog = function(linkChoice){
-    if(linkChoice.links.length<=0||linkChoice.links[0]==null)
+//passing in selected link returns next npc
+//passing in current displayed return next npc or pc
+DialogHandler.prototype.getNextDialog = function(currentDialog){
+    if(currentDialog.links.length<=0||currentDialog.links[0]==null)
         return null;
-    return this.buildDialogByID(linkChoice.links[0].DestID);
+    return this.buildDialogByID(currentDialog.links[0].DestID);
 }
+//
 DialogHandler.prototype.buildDialogByID = function(id){
     var currentDiag = this.getDialogByID(id);
 
@@ -217,7 +220,7 @@ DialogPanel.prototype.endDialog = function(){
     this.visible = false;
     this.y = -1000;
 };
-//
+//Player select able buttons
 ActionButtons = function(game, maingame, parent){
 	Phaser.Group.call(this, game, parent);
     //
@@ -285,3 +288,73 @@ ActionButtons.prototype.disableButton = function(ref){
     ref.up.visible = true;
     ref.active.visible = false;    
 }
+//
+JustTextPopup = function(game, maingame, dialogEngine, parent){
+    Phaser.Group.call(this, game, parent);
+    this.dialogEngine = dialogEngine;
+    this.maingame = maingame;
+    this.textMain = this.game.make.bitmapText(0, 0, "badabb", "Text goes here.", 25);
+    this.textMain.tint = 0x00ffff;
+    this.add(this.textMain);
+    this.x = -1000;
+    //for if dialog
+    this.dialogData;
+}
+JustTextPopup.prototype = Object.create(Phaser.Group.prototype);
+JustTextPopup.constructor = JustTextPopup;
+//
+JustTextPopup.prototype.showText = function(texttodisplay){
+    this.x = 0;
+    this.textMain.text = texttodisplay;
+    this.dialogData = null;
+    this.game.input.onDown.add(this.nextPopup, this);
+}
+JustTextPopup.prototype.showTextFromHandler = function(convoid){
+    this.dialogData = this.dialogEngine.startConvo(convoid);
+    if(this.dialogData){
+        this.visible = true;
+        this.x = 0;
+        this.textMain.text = this.dialogData.current.DialogueText;
+        this.game.input.onDown.add(this.nextPopup, this);
+    }
+}
+JustTextPopup.prototype.nextPopup = function(){
+    if(this.dialogData)
+        this.dialogData = this.dialogEngine.getNextDialog(this.dialogData.current);
+    if(this.dialogData==null)
+    {
+        this.closePopup();
+        return;
+    }
+    this.textMain.text = this.dialogData.current.DialogueText;
+}
+JustTextPopup.prototype.closePopup = function(){
+    this.dialogData = null
+    this.x = -1000;
+    this.game.input.onDown.remove(this.nextPopup, this);
+    
+    this.maingame.unpauseGame();
+}
+//
+//pool of barks, handles placing them
+BarkTextHandler = function(game,maingame){
+}
+BarkTextHandler.prototype.barkOverActor = function(over,json){
+}
+BarkTextHandler.prototype.barkOverActor = function(over,json){
+}
+BarkTextHandler.prototype.returnBarkToPool = function(over){
+}
+//map change
+BarkTextHandler.prototype.cleanupAllBarks = function(){
+}
+
+//
+BarkText = function(){
+    this.textfield;//
+    this.timer;//
+    this.over;
+}
+BarkText.prototype = function(elapseTime){
+}
+//
