@@ -4,14 +4,14 @@ module.exports = function(grunt){
         concat:{
             dist:{
                 src:[
-                    'Gamejs/*.js'
+                    'src/*.js'
                 ],
-                dest: 'Gamejs/build/RPGSimple_concat.js'
+                dest: 'src/build/RPGSimple_concat.js'
             }
         },
         uglify:{
           build:{
-              src: 'Gamejs/build/RPGSimple_concat.js',
+              src: 'src/build/RPGSimple_concat.js',
               dest: 'js/RPGSimple.min.js'
           }
         }

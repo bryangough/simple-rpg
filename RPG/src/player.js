@@ -1,0 +1,193 @@
+var MovingCharacter = function (maingame, name) 
+{
+    
+    this.maingame = maingame;
+    this.name = name;
+    this.sprite = this.maingame.make.sprite(0,0, "actors","movingPerson2_idle0001.png");
+    this.sprite.anchor.x = 0.5;
+    this.sprite.anchor.y = 1.0;
+    
+    //basic animations
+    //next proper direction facing
+    this.sprite.animations.add('idle', Phaser.Animation.generateFrameNames('movingPerson2_idle', 1, 2, '.png', 4), 1, true, false);
+    this.sprite.animations.add('walk', Phaser.Animation.generateFrameNames('movingPerson2_walk', 1, 4, '.png', 4), 8, true, false);
+    
+    this.sprite.animations.play("idle");
+    
+    /*this.sprite.animations.currentAnim.onComplete.add(function () {
+       this.sprite.animations.play('idle', 30, true);
+    }, this);*/
+    
+    this.oldTile;
+    this.currentTile;
+    
+    this.path=null;
+    this.pathlocation = 0;
+    this.nextTile;
+    
+    this.dir = new Phaser.Point();
+    this.walkspeed = 0.1875;
+    
+    
+    this.inventory = [];
+    
+};
+MovingCharacter.prototype.isMoving = function() 
+{
+   if(this.dir.x == 0 && this.dir.y == 0)
+       return false;
+    return true;
+}
+MovingCharacter.prototype.setLocation = function(inx,iny) 
+{
+    this.sprite.x = inx;
+    this.sprite.y = iny;
+}
+MovingCharacter.prototype.setLocationByTile = function(tile) 
+{
+    this.sprite.x = tile.tileImage.x+this.maingame.hexHandler.halfHex;
+    this.sprite.y = tile.tileImage.y+this.maingame.hexHandler.halfHex;
+    this.oldTile = tile;
+    this.currentTile = tile;
+}
+MovingCharacter.prototype.setDirection = function() 
+{
+    this.dir.x =  this.nextTile.tileImage.x+this.maingame.hexHandler.halfHex-this.sprite.x;
+    this.dir.y =  this.nextTile.tileImage.y+this.maingame.hexHandler.halfHex-this.sprite.y;
+    this.dir.normalize();
+}
+MovingCharacter.prototype.setPath = function(path) 
+{
+    //
+    if(!path)
+        return;
+    if(path.length<=0)
+        return;
+    this.path = path;
+    this.pathlocation = 0;
+    this.nextTile = this.maingame.hexHandler.getTileByCords(path[this.pathlocation].x,path[this.pathlocation].y);
+    this.setDirection();
+    this.sprite.animations.play("walk");
+}
+MovingCharacter.prototype.step = function(elapseTime) 
+{
+    if(this.path!=null)
+    {
+        if(this.path.length>0)
+        {
+            this.currentTile = this.maingame.hexHandler.checkHex(this.sprite.x,this.sprite.y);
+            if(this.currentTile.posx==this.nextTile.posx && this.currentTile.posy==this.nextTile.posy)
+            {
+                this.pathlocation++;
+                if(this.pathlocation>=this.path.length)
+                {
+                    this.pathlocation=this.path.length;
+                    var testx = this.currentTile.tileImage.x+this.maingame.hexHandler.halfHex;
+                    var testy = this.currentTile.tileImage.y+this.maingame.hexHandler.halfHex;
+                    var range = 3;
+                    if(testx-range<this.sprite.x && testx+range>this.sprite.x && testy-range<this.sprite.y && testy+range>this.sprite.y)
+                    {
+                        this.sprite.x = testx;
+                        this.sprite.y = testy;
+                        this.path = null;//for now
+                        this.dir.x = 0;
+                        this.dir.y = 0;
+                        this.currentTile.enterTile();
+                        this.sprite.animations.play("idle");
+                    }
+                    this.setDirection();
+                }
+                else
+                {
+                    this.nextTile = this.maingame.hexHandler.getTileByCords(this.path[this.pathlocation].x,this.path[this.pathlocation].y);
+                    this.setDirection();
+                }
+            }
+        }
+    }
+    this.sprite.x += this.dir.x * this.walkspeed * elapseTime;
+    this.sprite.y += this.dir.y * this.walkspeed * elapseTime;
+    
+    if(this.dir.x<0)
+        this.sprite.scale.x = -1;
+    else if(this.dir.x>0)
+        this.sprite.scale.x = 1;
+}
+//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript
+//Student.prototype = Object.create(Person.prototype); 
+//Student.prototype.constructor = Student;
+
+var InteractiveObject = function (maingame, jsondata) 
+{
+    this.maingame = maingame;
+    this.game = maingame.game;
+    this.jsondata = jsondata;
+    this.tileobject;
+    //art for the object here
+    this.actions = [];
+    //
+    var actions = this.jsondata.actions;
+    for(var i=0;i<actions.length;i++)
+    {
+        if(actions[i].type=="actionconvtrigger")
+            this.handleActionConvTrigger(actions[i]);
+        else if(actions[i].type=="actorset")
+            this.handleActorSet(actions[i]);
+        else if(actions[i].type=="actiontext")
+            this.handleActionText(actions[i]);
+    }
+    //
+    this.setupArt(this.jsondata);
+}
+InteractiveObject.prototype.handleActorSet = function(json) 
+{
+    
+}
+InteractiveObject.prototype.handleActionConvTrigger = function(json) 
+{
+    var action = json;
+    this.actions[json.trigger] = action;
+    
+}
+InteractiveObject.prototype.handleActionText = function(json) 
+{
+    //var action = json;
+    //this.actions[json.trigger] = action;
+    //if(json.lookatactive)
+    //{
+    //}
+}
+InteractiveObject.prototype.step = function(elapseTime) 
+{
+}
+InteractiveObject.prototype.setupReactToAction = function() 
+{
+    this.tileobject.events.onInputDown.add(handleClick, this);
+    //this.tileobject.events.onInputOver.add(, this);//for rollover
+    //this.tileobject.events.onInputOut.add(, this);
+}
+InteractiveObject.prototype.handleClick = function() 
+{
+    //this.game.currentacion
+    //if(this.game.currentacion==this.game.WALK)
+    //{
+    //}
+    
+}
+InteractiveObject.prototype.setupArt = function(json) 
+{
+    var objectreference = this.maingame.getTile(this.jsondata.name,this.jsondata.tilesetid);
+    var spotx = this.jsondata.x;
+    var spoty = this.maingame.gridSizeY-this.jsondata.y-1;
+    this.tileobject = this.game.make.sprite(this.jsondata.offsetx*this.maingame.hexHandler.hexagonWidth, this.jsondata.offsety*this.maingame.hexHandler.hexagonHeight, objectreference.spritesheet, objectreference.tile+".png");
+    this.maingame.hexHandler.hexagonArray[spoty][spotx].tileImage.addChild(this.tileobject);
+    this.tileobject.anchor.x = 0.5;
+    this.tileobject.anchor.y = 1.0;
+}
+
+var InventoryEngine = function (maingame, jsondata) 
+{
+}
+InventoryEngine.prototype.enterInventory = function() 
+{
+}

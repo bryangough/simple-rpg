@@ -1,0 +1,830 @@
+{
+    "maps": {
+        "Map1": [
+            {
+                "height": 5,
+                "width": 5,
+                "tilesetid": "bottomtiles",
+                "data": [
+                    3,
+                    3,
+                    1,
+                    1,
+                    1,
+                    3,
+                    3,
+                    1,
+                    1,
+                    1,
+                    3,
+                    3,
+                    3,
+                    1,
+                    1,
+                    3,
+                    3,
+                    3,
+                    1,
+                    1,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3
+                ],
+                "walkable": [
+                    0,
+                    0,
+                    1,
+                    1,
+                    1,
+                    0,
+                    0,
+                    1,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "connected": [
+                    {
+                        "fmap": "Map1",
+                        "fx": 4,
+                        "fy": 1,
+                        "tmap": "Map2",
+                        "tx": 0,
+                        "ty": 2
+                    }
+                ],
+                "objects": [
+                    {
+                        "name": 3,
+                        "x": 2,
+                        "y": 4,
+                        "offsetx": 0.5,
+                        "offsety": 0.1378788,
+                        "tilesetid": "tileobjects"
+                    },
+                    {
+                        "name": 3,
+                        "x": 4,
+                        "y": 3,
+                        "offsetx": 0.5490304,
+                        "offsety": 0.2017402,
+                        "tilesetid": "tileobjects"
+                    }
+                ]
+            }
+        ],
+        "Map2": [
+            {
+                "height": 3,
+                "width": 10,
+                "tilesetid": "bottomtiles",
+                "data": [
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3,
+                    3
+                ],
+                "walkable": [
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "connected": [
+                    {
+                        "fmap": "Map2",
+                        "fx": 0,
+                        "fy": 2,
+                        "tmap": "Map1",
+                        "tx": 4,
+                        "ty": 1
+                    },
+                    {
+                        "fmap": "Map2",
+                        "fx": 9,
+                        "fy": 1,
+                        "tmap": "Map3",
+                        "tx": 0,
+                        "ty": 0
+                    }
+                ],
+                "objects": [
+                    {
+                        "name": 3,
+                        "x": 1,
+                        "y": 2,
+                        "offsetx": 0.7037829,
+                        "offsety": 0.2335881,
+                        "tilesetid": "tileobjects"
+                    },
+                    {
+                        "name": 3,
+                        "x": 3,
+                        "y": 1,
+                        "offsetx": 0.4174646,
+                        "offsety": 0.3328193,
+                        "tilesetid": "tileobjects"
+                    },
+                    {
+                        "name": 3,
+                        "x": 7,
+                        "y": 2,
+                        "offsetx": 0.5549418,
+                        "offsety": 0.3840504,
+                        "tilesetid": "tileobjects"
+                    }
+                ]
+            }
+        ],
+        "Map3": [
+            {
+                "height": 8,
+                "width": 8,
+                "tilesetid": "bottomtiles",
+                "data": [
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    0,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    1,
+                    0,
+                    0,
+                    2,
+                    2,
+                    2,
+                    2,
+                    1,
+                    1,
+                    1,
+                    0,
+                    2,
+                    2,
+                    2,
+                    1,
+                    2,
+                    2,
+                    2,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    2,
+                    2,
+                    2,
+                    2,
+                    1,
+                    1,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    1,
+                    1,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2
+                ],
+                "walkable": [
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0
+                ],
+                "connected": [
+                    {
+                        "fmap": "Map3",
+                        "fx": 0,
+                        "fy": 0,
+                        "tmap": "Map2",
+                        "tx": 9,
+                        "ty": 1
+                    }
+                ],
+                "objects": [
+                    {
+                        "name": 2,
+                        "x": 0,
+                        "y": 3,
+                        "offsetx": 0.7048413,
+                        "offsety": 0.2906425,
+                        "tilesetid": "tileobjects"
+                    },
+                    {
+                        "name": 2,
+                        "x": 1,
+                        "y": 5,
+                        "offsetx": 0.7305486,
+                        "offsety": 0.4751289,
+                        "tilesetid": "tileobjects"
+                    },
+                    {
+                        "name": 2,
+                        "x": 2,
+                        "y": 0,
+                        "offsetx": 0.166633,
+                        "offsety": 0.2533255,
+                        "tilesetid": "tileobjects"
+                    },
+                    {
+                        "name": 0,
+                        "x": 3,
+                        "y": 4,
+                        "offsetx": 0.4752782,
+                        "offsety": 0.2740617,
+                        "tilesetid": "tileobjects"
+                    },
+                    {
+                        "name": 6,
+                        "x": 4,
+                        "y": 7,
+                        "offsetx": 0.6248425,
+                        "offsety": 0.4177698,
+                        "tilesetid": "tileobjects"
+                    },
+                    {
+                        "name": 2,
+                        "x": 5,
+                        "y": 1,
+                        "offsetx": 0.5721895,
+                        "offsety": 0.2585095,
+                        "tilesetid": "tileobjects"
+                    },
+                    {
+                        "name": 6,
+                        "x": 6,
+                        "y": 7,
+                        "offsetx": 0.3635184,
+                        "offsety": 0.2563077,
+                        "tilesetid": "tileobjects"
+                    },
+                    {
+                        "name": 1,
+                        "x": 7,
+                        "y": 0,
+                        "offsetx": 0.4257449,
+                        "offsety": 0.4492089,
+                        "tilesetid": "tileobjects"
+                    },
+                    {
+                        "name": 1,
+                        "x": 7,
+                        "y": 0,
+                        "offsetx": 0.7304525,
+                        "offsety": 0.4927385,
+                        "tilesetid": "tileobjects"
+                    },
+                    {
+                        "name": 0,
+                        "x": 7,
+                        "y": 0,
+                        "offsetx": 0.5128067,
+                        "offsety": 0.5362682,
+                        "tilesetid": "tileobjects"
+                    },
+                    {
+                        "name": 6,
+                        "x": 7,
+                        "y": 5,
+                        "offsetx": 0.7701781,
+                        "offsety": 0.3915098,
+                        "tilesetid": "tileobjects"
+                    }
+                ]
+            }
+        ]
+    },
+    "startPos": "Map1_2_3",
+    "tileSets": {
+        "bottomtiles": {
+            "0": "tileMagic",
+            "1": "tileSand",
+            "2": "tileGrass",
+            "3": "tileWater",
+            "4": "tileEmpty",
+            "tileset": "tiles"
+        },
+        "tileobjects": {
+            "0": "treeGreen_mid",
+            "1": "treeGreen_high",
+            "2": "bushGrass",
+            "3": "bushSand",
+            "4": "hillsGrass",
+            "5": "hillsSand",
+            "6": "treeMagic_mid0001",
+            "tileset": "tiles"
+        }
+    },
+    "data": {
+        "Name": "RPGSimple",
+        "Version": "0.0.1",
+        "Author": "Bryan",
+        "Description": "",
+        "GlobalUserScript": "",
+        "Actors": [
+            {
+                "id": 1,
+                "Name": "Player",
+                "Pictures": "[]",
+                "Description": "",
+                "IsPlayer": "True"
+            },
+            {
+                "id": 2,
+                "Name": "Crab",
+                "Pictures": "[]",
+                "Description": "",
+                "IsPlayer": "False"
+            },
+            {
+                "id": 3,
+                "Name": "Fire pit",
+                "Pictures": "[]",
+                "Description": "",
+                "IsPlayer": "False"
+            }
+        ],
+        "Items": [
+            {
+                "id": 1,
+                "Name": "Light Fire",
+                "Pictures": "[]",
+                "Description": "",
+                "Success Description": "",
+                "Failure Description": "",
+                "State": "unassigned",
+                "Is Item": "False",
+                "Inventory": ""
+            },
+            {
+                "id": 2,
+                "Name": "Wood",
+                "Pictures": "[]",
+                "Description": "",
+                "Success Description": "",
+                "Failure Description": "",
+                "State": "",
+                "Is Item": "True",
+                "Inventory": "False"
+            },
+            {
+                "id": 3,
+                "Name": "Flint",
+                "Pictures": "[]",
+                "Description": "",
+                "Success Description": "",
+                "Failure Description": "",
+                "State": "",
+                "Is Item": "True",
+                "Inventory": "False"
+            }
+        ],
+        "Locations": [
+            {
+                "id": 1,
+                "Name": "Beach",
+                "Pictures": "[]",
+                "Description": ""
+            }
+        ],
+        "Variables": [
+            {
+                "id": 1,
+                "Name": "Alert",
+                "Initial Value": "",
+                "Description": ""
+            },
+            {
+                "id": 2,
+                "Name": "FireLit",
+                "Initial Value": "",
+                "Description": ""
+            }
+        ],
+        "Conversations": [
+            {
+                "id": 1,
+                "Title": "Talking Crab",
+                "Pictures": "[]",
+                "Description": "",
+                "Actor": "1",
+                "Conversant": "2",
+                "DialogueEntries": [
+                    {
+                        "entrytag": "Player_1_0",
+                        "ConvID": 1,
+                        "ID": 0,
+                        "Actor": 1,
+                        "Conversant": 2,
+                        "Title": "START",
+                        "MenuText": "",
+                        "DialogueText": "",
+                        "IsGroup": false,
+                        "FalseConditionAction": "Block",
+                        "ConditionPriority": "Normal",
+                        "Conditions": "",
+                        "Script": "",
+                        "Sequence": "None()",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "links": [
+                            {
+                                "OriginConvID": 1,
+                                "OriginID": 0,
+                                "DestConvID": 1,
+                                "DestID": 1,
+                                "ConditionPriority": "Normal"
+                            }
+                        ]
+                    },
+                    {
+                        "entrytag": "Crab_1_1",
+                        "ConvID": 1,
+                        "ID": 1,
+                        "Actor": 2,
+                        "Conversant": 1,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "Hello!",
+                        "IsGroup": false,
+                        "FalseConditionAction": "Block",
+                        "ConditionPriority": "Normal",
+                        "Conditions": "",
+                        "Script": "",
+                        "Sequence": "",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "links": [
+                            {
+                                "OriginConvID": 1,
+                                "OriginID": 1,
+                                "DestConvID": 1,
+                                "DestID": 2,
+                                "ConditionPriority": "Normal"
+                            },
+                            {
+                                "OriginConvID": 1,
+                                "OriginID": 1,
+                                "DestConvID": 1,
+                                "DestID": 3,
+                                "ConditionPriority": "Normal"
+                            }
+                        ]
+                    },
+                    {
+                        "entrytag": "Player_1_2",
+                        "ConvID": 1,
+                        "ID": 2,
+                        "Actor": 1,
+                        "Conversant": 2,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "What?",
+                        "DialogueText": "",
+                        "IsGroup": false,
+                        "FalseConditionAction": "Block",
+                        "ConditionPriority": "Normal",
+                        "Conditions": "",
+                        "Script": "",
+                        "Sequence": "",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "links": [
+                            {
+                                "OriginConvID": 1,
+                                "OriginID": 2,
+                                "DestConvID": 1,
+                                "DestID": 4,
+                                "ConditionPriority": "Normal"
+                            }
+                        ]
+                    },
+                    {
+                        "entrytag": "Player_1_3",
+                        "ConvID": 1,
+                        "ID": 3,
+                        "Actor": 1,
+                        "Conversant": 2,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "Kill it! It talks!",
+                        "DialogueText": "",
+                        "IsGroup": false,
+                        "FalseConditionAction": "Block",
+                        "ConditionPriority": "Normal",
+                        "Conditions": "",
+                        "Script": "",
+                        "Sequence": "",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "links": {}
+                    },
+                    {
+                        "entrytag": "Crab_1_4",
+                        "ConvID": 1,
+                        "ID": 4,
+                        "Actor": 2,
+                        "Conversant": 1,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "I said HELLO!",
+                        "IsGroup": false,
+                        "FalseConditionAction": "Block",
+                        "ConditionPriority": "Normal",
+                        "Conditions": "",
+                        "Script": "",
+                        "Sequence": "",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "links": [
+                            {
+                                "OriginConvID": 1,
+                                "OriginID": 4,
+                                "DestConvID": 1,
+                                "DestID": 5,
+                                "ConditionPriority": "Normal"
+                            }
+                        ]
+                    },
+                    {
+                        "entrytag": "Player_1_5",
+                        "ConvID": 1,
+                        "ID": 5,
+                        "Actor": 1,
+                        "Conversant": 2,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "A talking crab? RUN!",
+                        "DialogueText": "",
+                        "IsGroup": false,
+                        "FalseConditionAction": "Block",
+                        "ConditionPriority": "Normal",
+                        "Conditions": "",
+                        "Script": "",
+                        "Sequence": "",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "links": {}
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "Title": "Lighting Fire",
+                "Pictures": "[]",
+                "Description": "",
+                "Actor": "1",
+                "Conversant": "3",
+                "DialogueEntries": [
+                    {
+                        "entrytag": "Player_2_0",
+                        "ConvID": 2,
+                        "ID": 0,
+                        "Actor": 1,
+                        "Conversant": 3,
+                        "Title": "START",
+                        "MenuText": "",
+                        "DialogueText": "",
+                        "IsGroup": false,
+                        "FalseConditionAction": "Block",
+                        "ConditionPriority": "Normal",
+                        "Conditions": "",
+                        "Script": "",
+                        "Sequence": "None()",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "links": [
+                            {
+                                "OriginConvID": 2,
+                                "OriginID": 0,
+                                "DestConvID": 2,
+                                "DestID": 1,
+                                "ConditionPriority": "Normal"
+                            }
+                        ]
+                    },
+                    {
+                        "entrytag": "Fire_pit_2_1",
+                        "ConvID": 2,
+                        "ID": 1,
+                        "Actor": 3,
+                        "Conversant": 1,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "Actions?",
+                        "IsGroup": false,
+                        "FalseConditionAction": "Block",
+                        "ConditionPriority": "Normal",
+                        "Conditions": "",
+                        "Script": "",
+                        "Sequence": "",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "links": [
+                            {
+                                "OriginConvID": 2,
+                                "OriginID": 1,
+                                "DestConvID": 2,
+                                "DestID": 2,
+                                "ConditionPriority": "Normal"
+                            }
+                        ]
+                    },
+                    {
+                        "entrytag": "Player_2_2",
+                        "ConvID": 2,
+                        "ID": 2,
+                        "Actor": 1,
+                        "Conversant": 3,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "Light fire.",
+                        "DialogueText": "",
+                        "IsGroup": false,
+                        "FalseConditionAction": "Block",
+                        "ConditionPriority": "Normal",
+                        "Conditions": "",
+                        "Script": "",
+                        "Sequence": "",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "links": {}
+                    }
+                ]
+            }
+        ]
+    }
+}

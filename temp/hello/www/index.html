@@ -1,20 +1,14 @@
 <!DOCTYPE HTML>
 <html>
+
 <head>
 	<meta charset="UTF-8" />
-	<title>Simple RPG</title>
-    <script src="js/phaser.js"></script>
-	<script src="src/Boot.js"></script>
-	<script src="src/Preloader.js"></script>
-	<script src="src/MainMenu.js"></script>
-    <script src="src/MainGame.js"></script>
-    <script src="src/Instructions.js"></script>
+	<title>Phaser Basic Project Template</title>
+    <script src="cordova.js"></script>
+    <script src="js/phaser.min.js"></script>
     <script src="js/easystar-0.1.13-hex.js"></script>
-    <script src="src/player.js"></script>
-    <script src="src/hexmap.js"></script>
-    <script src="src/dialogui.js"></script>
-    <script src="src/eventsystem.js"></script>
-    <script src="src/tiles.js"></script>
+    <script src="js/RPGSimple.min.js"></script>
+
 </head>
 <body>
 
@@ -35,19 +29,12 @@ window.onload = function() {
         Game.scaleValue = heightScale;
     } else {
         Game.scaleValue = widthScale;
-    }
-        this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-        //have the game centered horizontally
-        this.scale.pageAlignHorizontally = true;
-        this.scale.pageAlignVertically = true;
-        //screen size will be set automatically
-        this.scale.setScreenSize(true);s
-    */
+    }*/
     
 	game.state.add('Boot', BasicGame.Boot);
 	game.state.add('Preloader', BasicGame.Preloader);
 	game.state.add('MainMenu', BasicGame.MainMenu);
-    game.state.add('Game', BasicGame.Game);
+    game.state.add('Game', BasicGame.GameWave);
     game.state.add('Instructions', BasicGame.Instructions);
     
     //game.state.add('reset', onResize); //I don't know if this will actually work
