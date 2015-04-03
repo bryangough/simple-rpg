@@ -2,34 +2,24 @@
 //WalkableTile
 //
 //
-var WalkableTile = function(game,tileImage,posx,posy)
+var WalkableTile = function(game,tileName,spritesheet, posx,posy,x,y)
 {
+    Phaser.Sprite.call(this, game, x,y, spritesheet,tileName);
     this.game = game;
     this.walkable = true;  
     this.openair = true;
-    this.tileImage = tileImage;
+
     this.posx = posx;
     this.posy = posy;
     
     this.actionEnter = null;
     this.actionEnterData = null;
 };
-Object.defineProperty(WalkableTile, "x", {
-    get: function () {
-        return tileImage.x;
-    }
-});
-Object.defineProperty(WalkableTile, "y", {
-    get: function () {
-        return tileImage.y;
-    }
-});
-WalkableTile.prototype.clicked = function() 
-{
-};
+WalkableTile.prototype = Object.create(Phaser.Sprite.prototype);
+WalkableTile.constructor = WalkableTile;
+
 WalkableTile.prototype.enterTile = function()
 {
-    //console.log("entertile");
     if(this.actionEnter)
     {
         this.actionEnter(this.actionEnterData);
@@ -40,17 +30,18 @@ WalkableTile.prototype.enterTile = function()
 //WaterTile
 //
 //
-var WaterTile = function (game, tileImage,posx,posy) 
+var WaterTile = function (game,tileName,spritesheet, posx,posy,x,y)
 {
+    Phaser.Sprite.call(this, game, x,y, spritesheet,tileName);
+    this.game = game;
+    //
     this.posx = posx;
     this.posy = posy;
     //
     this.walkable = false;  
     this.openair = true;
     //
-    this.game = game;
-    this.tileImage = tileImage;
-    this.starty = tileImage.y;
+    this.starty = y;
     this.wavemax = -40;
     this.maxoffsetmax = 12;
     this.maxoffsetmin = 0;
@@ -58,7 +49,7 @@ var WaterTile = function (game, tileImage,posx,posy)
     this.direction = 1;
     this.waveSpeed = 0;
     //random initial
-    tileImage.y += this.game.rnd.integerInRange(this.maxoffsetmin, this.maxoffsetmax);
+    this.y += this.game.rnd.integerInRange(this.maxoffsetmin, this.maxoffsetmax);
     if(this.game.rnd.frac()<0.5)
     {
         this.direction = -1;
@@ -66,9 +57,12 @@ var WaterTile = function (game, tileImage,posx,posy)
     //
     this.level();
 };
+WaterTile.prototype = Object.create(Phaser.Sprite.prototype);
+WaterTile.constructor = WaterTile;
+
 WaterTile.prototype.level = function() 
 {
-    var y = this.tileImage.y;
+    var y = this.y;
     if(y<this.starty+this.maxoffsetmin)
     {
         this.direction = 1;
@@ -81,13 +75,13 @@ WaterTile.prototype.level = function()
 };
 WaterTile.prototype.step = function(elapseTime) 
 {
-    if(this.tileImage.y<this.starty+this.wavemax)
+    if(this.y<this.starty+this.wavemax)
     {
-        this.tileImage.y += this.direction * this.speed * elapseTime;
+        this.y += this.direction * this.speed * elapseTime;
     }
     else
     {
-        this.tileImage.y += this.direction * this.speed * elapseTime;
+        this.y += this.direction * this.speed * elapseTime;
     }
     if(this.game.rnd.frac()<0.01)
     {
@@ -97,16 +91,16 @@ WaterTile.prototype.step = function(elapseTime)
 };
 WaterTile.prototype.hitByWave = function(power) 
 {
-    //this.tileImage.y += this.power;
+    //this.y += this.power;
     //this.direction = -1;
     //this.waveSpeed += power;
     //if(this.waveSpeed>0.04)
     //    this.waveSpeed = 0.04;
     
-    this.tileImage.y += power;
+    this.y += power;
     if(this.starty+this.wavemax>this.tileImage)
-        this.tileImage.y = this.starty+this.wavemax;
-    //this.tileImage.y = this.starty+this.wavemax;
+        this.y = this.starty+this.wavemax;
+    //this.y = this.starty+this.wavemax;
     this.level();
 };
  /*this.neighborLights = [];
@@ -219,8 +213,8 @@ WaterTile.prototype.hitByWave = function(power)
         var thetile = this.getTileByCords(currenttile.posx+x,currenttile.posy+y);
         if(thetile!=null)
         {
-            this.neighborLights[i].x = thetile.tileImage.x;
-            this.neighborLights[i].y = thetile.tileImage.y;
+            this.neighborLights[i].x = thetile.x;
+            this.neighborLights[i].y = thetile.y;
         }
         else
         {
@@ -234,8 +228,8 @@ WaterTile.prototype.hitByWave = function(power)
             return;
         if(currenttile!=null)
         {
-            this.neighborLights[i].x = currenttile.tileImage.x;
-            this.neighborLights[i].y = currenttile.tileImage.y;
+            this.neighborLights[i].x = currenttile.x;
+            this.neighborLights[i].y = currenttile.y;
         }
         else
         {

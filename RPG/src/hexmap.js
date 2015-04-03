@@ -92,8 +92,8 @@ HexHandler.prototype.getTileByCords = function(x,y)
 //Returns tile that hits. 
 HexHandler.prototype.lineTest = function(tilestart, tileend)
 {
-    var p0 = new Point(tilestart.tileImage.x+this.halfHex, tilestart.tileImage.y+this.halfHex);
-    var p1 = new Point(tileend.tileImage.x+this.halfHex, tileend.tileImage.y+this.halfHex);
+    var p0 = new Point(tilestart.x+this.halfHex, tilestart.y+this.halfHex);
+    var p1 = new Point(tileend.x+this.halfHex, tileend.y+this.halfHex);
     var N = this.game.math.distance(p0.x,p0.y,p1.x,p1.y);
     N = this.game.math.ceil(N/this.hexagonWidth)+1;
     var points = [];
@@ -115,17 +115,17 @@ HexHandler.prototype.lineTest = function(tilestart, tileend)
 //
 HexHandler.prototype.dolines = function(tilestart, tileend, ignoreWalkable)
 {
-    var p0 = new Point(tilestart.tileImage.x+this.halfHex,
-                       tilestart.tileImage.y+this.halfHex);
-    var p1 = new Point(tileend.tileImage.x+this.halfHex, 
-                       tileend.tileImage.y+this.halfHex);
+    var p0 = new Point(tilestart.x+this.halfHex,
+                       tilestart.y+this.halfHex);
+    var p1 = new Point(tileend.x+this.halfHex, 
+                       tileend.y+this.halfHex);
     //
     if(this.debug)
     {
         this.maingame.graphics.clear();
         this.maingame.graphics.lineStyle(10, 0xffd900, 1);
-        this.maingame.graphics.moveTo(tilestart.tileImage.x+hexagonGroup.x+this.halfHex, tilestart.tileImage.y+hexagonGroup.y+this.halfHex);
-        this.maingame.graphics.lineTo(tileend.tileImage.x+hexagonGroup.x+this.halfHex, tileend.tileImage.y+hexagonGroup.y+this.halfHex);
+        this.maingame.graphics.moveTo(tilestart.x+hexagonGroup.x+this.halfHex, tilestart.y+hexagonGroup.y+this.halfHex);
+        this.maingame.graphics.lineTo(tileend.x+hexagonGroup.x+this.halfHex, tileend.y+hexagonGroup.y+this.halfHex);
     }
     //
     var N = this.game.math.distance(p0.x,p0.y,p1.x,p1.y);
