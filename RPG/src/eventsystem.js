@@ -3,8 +3,9 @@ var GlobalHandler = function (game, maingame, actors, variables, quests, items)
 {
     this.game = game;
     this.maingame = maingame;
+    //
     this.actors = actors;
-    this.variables = variables
+    this.variables = variables;
     this.quests = quests;
     this.items = items;
 }
@@ -21,9 +22,111 @@ GlobalHandler.prototype.setActor = function(name,object)
     } 
 }
 
-//actors and items on map with actorset will register with this class
+//actors and items on map with actor set will register with this class
 //invetory? ui?
 //quests ui will pull from this
+//
+var EventDispatcher = function (game, maingame, object)
+{
+    this.game = game;
+    this.maingame = maingame;
+    this.object = object;
+}
+EventDispatcher.prototype.receiveData = function(triggers) 
+{
+
+    //onTouchAction
+    //onLookAction
+    //onTalkAction
+    
+    this.onEnterAction;
+    //onStartAction
+    //onActivateAction
+    //onMoveAction?
+    this.init(triggers);
+};
+EventDispatcher.prototype.init = function(triggers)    
+{
+    var trigger;
+    var action;
+    var activation;
+    var eventAction;
+    for(var i=0;i<triggers.length;i++)
+    {
+        trigger = triggers[i];
+        activation = trigger.trigger;
+        for(var j=0;j<trigger.actions.length;j++)
+        {
+            action = trigger.actions[j];
+            eventAction = this.getEventType(activation);
+            if(action.type=="ChangeMap")
+            {
+                eventAction.push({func:this.maingame.userExit, para:action, removeself:false, callee:this.maingame});
+            }
+        }
+    }
+};
+//
+EventDispatcher.prototype.doAction = function(activation) 
+{
+    var actionEvent = this.getEventType(activation); 
+    if(actionEvent.length>0)
+    {
+        for(var i=0;i<actionEvent.length;i++)
+        {
+            if(actionEvent[i])
+            {
+               actionEvent[i].func.apply(actionEvent[i].callee,[actionEvent[i].para]);
+                if(actionEvent[i].removeself)
+                    console.log("remove event");
+            }
+        }
+    }
+};
+//
+EventDispatcher.prototype.getEventType = function(activation) 
+{
+    if(activation=="OnEnter")
+    {
+        this.onEnterAction = this.onEnterAction || [];
+        return this.onEnterAction;
+    }
+};
+/*
+//inputEnabled 
+
+register list of active objects for each event: touch, talk, look, (invectory item?)
+
+turn on inputEnabled for current
+turn off inputEnabled for last (if not current also)
+
+- walk shuts all off
+
+
+
+
+
+*/
+/*
+
+"triggers": [
+        {
+            "trigger": "OnEnter",
+            "actions": [
+                {
+                    "type": "ChangeMap",
+                    "tmap": "Map1 - Beach",
+                    "tx": 4,
+                    "ty": 1
+                }
+            ],
+            "conditions": "[]"
+        }
+    ]
+}
+
+
+*/
 
 
 //***** EventConv ********
@@ -51,17 +154,6 @@ var EventnText = function (json)
 //items
 //variables
 /*
- {
-    "type": "actionconvtrigger",
-    "trigger": "OnTalk",
-    "convid": 1,
-    "once": false,
-    "skipIfNoValidEntries": false
-},
-{
-    "type": "actorset",
-    "ActorName": "Crab"
-},
 {
     "type": "actiontext",
     "lookatactive": true,
@@ -69,19 +161,25 @@ var EventnText = function (json)
 }
 interacttrigger
 */
-/*
+/* 
 Actors/enemies animations
 - move x6
-- attaks? x6
+- attaks? x6 (per attack type)
 - hurt x6
 - die
 - knockdown
 - use/action x6
+- idle x6
 
+
+for normal objects (called automatically)
+- idle
+- destroy
+- use
 
 
 OTHER ACTIONS
-- load special animations - (array) - animationid, animationname, #frames
+done - load special animations - (array) - animationid, animationname, #frames
 - activate other interactive object (ie go alive to dead)
 - create named object? 
 
@@ -110,6 +208,87 @@ Item[\"BabyCrab\"].pickup();
 - set walkable?
 
 
+//Variable - special case
+{
+    "Variable": {
+        "name": "FireLit",
+        "value": "true",
+    }
+}
+//
+{
+    "actionSpots": [
+        {
+            "x": 2,
+            "y": 3,
+            "triggers": [
+                {
+                    "trigger": "OnEnter",
+                    "once": false,
+                    "actions": [
+                        {
+                            "type": "ChangeMap",
+                            "tmap": "Map2",
+                            "tx": 0,
+                            "ty": 2
+                        }
+                    ],
+                    "conditions": []
+                }
+            ]
+        }
+    ]
+}
+
+//
+//Item - Action
+{
+    "trigger": "onTouch",
+    "once": false,
+    "actions": [
+        {
+            "type": "Item",
+            "name": "BabyCrab",
+            "set": "Inventory",
+            "value": "true"
+        },
+        {
+            "type": "Item",
+            "name": "BabyCrab",
+            "function": "pickup",
+            "parameters": []
+        },
+        {
+            "type": "this",
+            "name": "",
+            "function": "destroySelf",
+            "parameters": []
+        }
+    ]
+}
+
+//All - Condition
+//any vs all
+{
+    "conditions": {
+        "testrequire": "All",
+        "tests": [
+            {
+                "type": "Item",
+                "name": "BabyCrab",
+                "var": "Inventory",
+                "condition": "==",
+                "value": "true"
+            }
+        ]
+    }
+}
+
+//Quest
+
+//player, gameworld
+
+//call knows it's a function call, not just a set?
 
 
 this.interactiveobject = destroy (remove graphic), no longer interactive(graphic stays, no longer touchable)

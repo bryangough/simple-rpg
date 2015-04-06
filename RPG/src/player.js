@@ -4,7 +4,7 @@ var MovingCharacter = function (maingame, game, name)
     this.game = game;
     this.maingame = maingame;
     this.name = name;
-
+    this.IsPlayer = true;
     this.anchor.x = 0.5;
     this.anchor.y = 1.0;
     
@@ -141,7 +141,11 @@ var InteractiveObject = function (maingame, jsondata)
     }
     //
     this.setupArt(this.jsondata);
+    console.log(this);
 }
+InteractiveObject.prototype = Object.create(Phaser.Sprite.prototype);
+InteractiveObject.constructor = MovingCharacter;
+
 InteractiveObject.prototype.handleActorSet = function(json) 
 {
     
@@ -182,12 +186,13 @@ InteractiveObject.prototype.setupArt = function(json)
     var objectreference = this.maingame.getTile(this.jsondata.name,this.jsondata.tilesetid);
     var spotx = this.jsondata.x;
     var spoty = this.maingame.gridSizeY-this.jsondata.y-1;
-    this.tileobject = this.game.make.sprite(this.jsondata.offsetx*this.maingame.hexHandler.hexagonWidth, this.jsondata.offsety*this.maingame.hexHandler.hexagonHeight, objectreference.spritesheet, objectreference.tile+".png");
-    this.maingame.hexHandler.hexagonArray[spoty][spotx].addChild(this.tileobject);
-    this.tileobject.anchor.x = 0.5;
-    this.tileobject.anchor.y = 1.0;
-}
+    Phaser.Sprite.call(this, this.game, this.jsondata.offsetx*this.maingame.hexHandler.hexagonWidth, this.jsondata.offsety*this.maingame.hexHandler.hexagonHeight, objectreference.spritesheet, objectreference.tile+".png");
 
+    this.maingame.hexHandler.hexagonArray[spoty][spotx].addChild(this);
+    this.anchor.x = 0.5;
+    this.anchor.y = 1.0;
+}
+//******
 var InventoryEngine = function (maingame, jsondata) 
 {
 }

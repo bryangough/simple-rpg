@@ -26,6 +26,7 @@ BasicGame.Game = function (game) {
     this.startpos;
 
     this.mapData;
+    this.globalHandler;
 };
 
 //
@@ -45,6 +46,8 @@ BasicGame.Game.prototype = {
         this.mapData = JSON.parse(this.game.cache.getText('map'));
         //
         this.hexHandler = new HexHandler(this,this.game);
+        //actors, variables, quests, items
+        this.globalHandler = new GlobalHandler(this.game, this, this.mapData.data.Actors, this.mapData.data.Variables, null, this.mapData.data.Items);
         //
         this.startpos = this.mapData.startPos.split("_");
         var currentmap = this.mapData.maps[this.startpos[0]];
@@ -119,7 +122,7 @@ BasicGame.Game.prototype = {
                 }
                 else
                 {
-                   temptile = new WalkableTile(this, tilereference.tile+".png", tilereference.spritesheet, i, j, hexagonX, hexagonY);
+                   temptile = new WalkableTile(this, tilereference.tile+".png", tilereference.spritesheet, i, j, hexagonX, hexagonY, this);
                 }
                 hexagonArray[i][j]=temptile;
                 this.hexagonGroup.add(temptile);
@@ -164,7 +167,7 @@ BasicGame.Game.prototype = {
             }
         }
         //should be handled by action system when it works
-        var connected = layer1.connected;
+        /*var connected = layer1.connected;
         for(var i = 0; i < connected.length; i ++)
         {
             var selectedtile = hexagonArray[this.gridSizeY-connected[i].fy-1][connected[i].fx];
@@ -172,12 +175,20 @@ BasicGame.Game.prototype = {
             selectedtile.actionEnterData = connected[i];
             var doorImage = this.game.make.sprite(0,0, "tiles","mapexit.png");
             selectedtile.addChild(doorImage);
-        }
+        }*/
         //?
         var actionSpots = layer1.actionSpots;
         for(var i = 0; i < actionSpots.length; i ++)
         {
             var selectedtile = hexagonArray[this.gridSizeY-actionSpots[i].y-1][actionSpots[i].x];
+            if(selectedtile)
+            {
+                if(!selectedtile.eventDispatcher)
+                {
+                    selectedtile.eventDispatcher = new EventDispatcher(this.game,this,selectedtile);
+                }
+                selectedtile.eventDispatcher.receiveData(actionSpots[i].triggers);
+            }
         }
         //
 		this.hexagonGroup.y = (600/2-hexagonHeight*Math.ceil(this.gridSizeY/2))/2;
@@ -202,16 +213,14 @@ BasicGame.Game.prototype = {
         //this.characterGroup.sort('y', Phaser.Group.SORT_ASCENDING);
         //this.characterGroup.x = this.hexagonGroup.x;
         //this.characterGroup.y = this.hexagonGroup.y;
-        
         //
     },
-    userSteppedOnExit:function(data){
-        //console.log(this.game,this);
-        this.game.userExit(data);
+    setChangeMapTile:function(selectedtile){
+        var doorImage = this.game.make.sprite(0,0, "tiles","mapexit.png");
+        selectedtile.addChild(doorImage);
     },
     userExit:function(data) {
         //console.log("should be main game: ",this);
-        //console.log("user exit",data);
         this.startpos[0] = data.tmap;
         this.startpos[1] = data.tx;
         this.startpos[2] = data.ty;

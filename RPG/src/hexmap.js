@@ -251,7 +251,6 @@ HexHandler.prototype.areTilesNeighbors=function(starttile,testtile)
     if(starttile.posx % 2 == 1)
     {
         if(posx==0&&posy==-1)return true;
-        if(posx==0&&posy==-1)return true;
         if(posx==-1&&posy==0 )return true;
         if(posx==0&&posy==1)return true;
         if(posx==1&&posy==1)return true;

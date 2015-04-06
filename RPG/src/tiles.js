@@ -2,28 +2,26 @@
 //WalkableTile
 //
 //
-var WalkableTile = function(game,tileName,spritesheet, posx,posy,x,y)
+var WalkableTile = function(game,tileName,spritesheet, posx,posy,x,y, maingame)
 {
     Phaser.Sprite.call(this, game, x,y, spritesheet,tileName);
     this.game = game;
+    this.maingame = maingame;
     this.walkable = true;  
     this.openair = true;
 
     this.posx = posx;
     this.posy = posy;
     
-    this.actionEnter = null;
-    this.actionEnterData = null;
+    this.eventDispatcher;
 };
 WalkableTile.prototype = Object.create(Phaser.Sprite.prototype);
 WalkableTile.constructor = WalkableTile;
 
 WalkableTile.prototype.enterTile = function()
 {
-    if(this.actionEnter)
-    {
-        this.actionEnter(this.actionEnterData);
-    }
+    if(this.eventDispatcher)
+        this.eventDispatcher.doAction("OnEnter");
 };
 
 //

@@ -59,33 +59,52 @@
                     0,
                     1
                 ],
-                "connected": [
-                    {
-                        "fmap": "Map1 - Beach",
-                        "fx": 4,
-                        "fy": 1,
-                        "tmap": "Map2",
-                        "tx": 0,
-                        "ty": 2
-                    }
-                ],
                 "actionSpots": [
                     {
                         "x": 2,
                         "y": 3,
-                        "actions": [
+                        "triggers": [
                             {
-                                "type": "actionconvtrigger",
-                                "trigger": "OnEnter",
-                                "convid": "3",
-                                "conversationType": "CONVERSATION",
+                                "trigger": "OnStart",
                                 "once": true,
-                                "skipIfNoValidEntries": false
+                                "actions": [
+                                    {
+                                        "type": "CONVERSATION",
+                                        "id": "3",
+                                        "skipIfNoValidEntries": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "x": 4,
+                        "y": 1,
+                        "triggers": [
+                            {
+                                "trigger": "OnEnter",
+                                "actions": [
+                                    {
+                                        "type": "ChangeMap",
+                                        "tmap": "Map2",
+                                        "tx": 0,
+                                        "ty": 2
+                                    }
+                                ],
+                                "conditions": "[]"
                             }
                         ]
                     }
                 ],
                 "objects": [
+                    {
+                        "name": 4,
+                        "x": 4,
+                        "y": 1,
+                        "offsetx": 0.5232849,
+                        "offsety": 0.2607516,
+                        "tilesetid": "tileobjects"
+                    },
                     {
                         "name": 0,
                         "x": 4,
@@ -93,14 +112,17 @@
                         "offsetx": 0.4304381,
                         "offsety": 0.2758627,
                         "tilesetid": "interactiveactors",
-                        "actions": [
+                        "triggers": [
                             {
-                                "type": "actionconvtrigger",
                                 "trigger": "OnTalk",
-                                "convid": "1",
-                                "conversationType": "CONVERSATION",
                                 "once": false,
-                                "skipIfNoValidEntries": false
+                                "actions": [
+                                    {
+                                        "type": "CONVERSATION",
+                                        "id": "1",
+                                        "skipIfNoValidEntries": false
+                                    }
+                                ]
                             },
                             {
                                 "type": "actorset",
@@ -185,26 +207,53 @@
                     0,
                     0
                 ],
-                "connected": [
+                "actionSpots": [
                     {
-                        "fmap": "Map2",
-                        "fx": 0,
-                        "fy": 2,
-                        "tmap": "Map1 - Beach",
-                        "tx": 4,
-                        "ty": 1
+                        "x": 0,
+                        "y": 2,
+                        "triggers": [
+                            {
+                                "trigger": "OnEnter",
+                                "actions": [
+                                    {
+                                        "type": "ChangeMap",
+                                        "tmap": "Map1 - Beach",
+                                        "tx": 4,
+                                        "ty": 1
+                                    }
+                                ],
+                                "conditions": "[]"
+                            }
+                        ]
                     },
                     {
-                        "fmap": "Map2",
-                        "fx": 9,
-                        "fy": 1,
-                        "tmap": "Map3",
-                        "tx": 0,
-                        "ty": 0
+                        "x": 9,
+                        "y": 1,
+                        "triggers": [
+                            {
+                                "trigger": "OnEnter",
+                                "actions": [
+                                    {
+                                        "type": "ChangeMap",
+                                        "tmap": "Map3",
+                                        "tx": 0,
+                                        "ty": 0
+                                    }
+                                ],
+                                "conditions": "[]"
+                            }
+                        ]
                     }
                 ],
-                "actionSpots": [],
                 "objects": [
+                    {
+                        "name": 4,
+                        "x": 0,
+                        "y": 2,
+                        "offsetx": 0.4242424,
+                        "offsety": 0.6969697,
+                        "tilesetid": "tileobjects"
+                    },
                     {
                         "name": 1,
                         "x": 4,
@@ -212,14 +261,17 @@
                         "offsetx": 0.5689629,
                         "offsety": 0.3534678,
                         "tilesetid": "interactiveactors",
-                        "actions": [
+                        "triggers": [
                             {
-                                "type": "actionconvtrigger",
                                 "trigger": "OnTouch",
-                                "convid": "2",
-                                "conversationType": "CONVERSATION",
                                 "once": false,
-                                "skipIfNoValidEntries": false
+                                "actions": [
+                                    {
+                                        "type": "CONVERSATION",
+                                        "id": "2",
+                                        "skipIfNoValidEntries": false
+                                    }
+                                ]
                             },
                             {
                                 "type": "actiontext",
@@ -229,6 +281,14 @@
                                 "talkMessage": "A fire pit."
                             }
                         ]
+                    },
+                    {
+                        "name": 4,
+                        "x": 9,
+                        "y": 1,
+                        "offsetx": 0.6595995,
+                        "offsety": 0.195455,
+                        "tilesetid": "tileobjects"
                     },
                     {
                         "name": 1,
@@ -370,25 +430,26 @@
                     0,
                     0
                 ],
-                "connected": [
+                "actionSpots": [
                     {
-                        "fmap": "Map3",
-                        "fx": 6,
-                        "fy": 6,
-                        "tmap": "Cave",
-                        "tx": 2,
-                        "ty": 0
-                    },
-                    {
-                        "fmap": "Map3",
-                        "fx": 0,
-                        "fy": 0,
-                        "tmap": "Map2",
-                        "tx": 9,
-                        "ty": 1
+                        "x": 0,
+                        "y": 0,
+                        "triggers": [
+                            {
+                                "trigger": "OnEnter",
+                                "actions": [
+                                    {
+                                        "type": "ChangeMap",
+                                        "tmap": "Map2",
+                                        "tx": 9,
+                                        "ty": 1
+                                    }
+                                ],
+                                "conditions": "[]"
+                            }
+                        ]
                     }
                 ],
-                "actionSpots": [],
                 "objects": [
                     {
                         "name": 6,
@@ -405,7 +466,7 @@
                         "offsetx": 0.4262261,
                         "offsety": 0.2483232,
                         "tilesetid": "interactiveactors",
-                        "actions": [
+                        "triggers": [
                             {
                                 "type": "interacttrigger"
                             }
@@ -647,16 +708,6 @@
                     1,
                     1
                 ],
-                "connected": [
-                    {
-                        "fmap": "Cave",
-                        "fx": 2,
-                        "fy": 0,
-                        "tmap": "Map3",
-                        "tx": 6,
-                        "ty": 6
-                    }
-                ],
                 "actionSpots": [],
                 "objects": [
                     {
@@ -699,6 +750,7 @@
             "5": "treeGreen_mid",
             "6": "treeGreen_high",
             "7": "treeMagic_mid0001",
+            "8": "mapexit",
             "tileset": "tiles"
         },
         "interactiveactors": {
@@ -802,7 +854,7 @@
                 "Description": "",
                 "Success Description": "",
                 "Failure Description": "",
-                "Count": "",
+                "Count": "0",
                 "Entry Count": "",
                 "Entry 1 State": "",
                 "Entry 1": "",
