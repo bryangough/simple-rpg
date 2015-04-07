@@ -125,60 +125,50 @@ var InteractiveObject = function (maingame, jsondata)
     this.maingame = maingame;
     this.game = maingame.game;
     this.jsondata = jsondata;
-    this.tileobject;
-    //art for the object here
-    this.actions = [];
-    //
-    var actions = this.jsondata.actions;
-    for(var i=0;i<actions.length;i++)
+
+    this.eventDispatcher = new EventDispatcher(this.game,this.maingame,this);
+    this.eventDispatcher.init(this.jsondata.triggers);
+
+    this.setupArt(this.jsondata);
+    //if(this.eventDispatcher.onTalkAction)
+    //{
+    //}
+    this.events.onInputDown.add(this.handleClick, this);    
+    this.inputEnabled = true;
+    
+    //console.log(this.actions);
+    /*for(var i=0;i<actions.length;i++)
     {
-        if(actions[i].type=="actionconvtrigger")
-            this.handleActionConvTrigger(actions[i]);
-        else if(actions[i].type=="actorset")
+        if(actions[i].type=="actorset")
             this.handleActorSet(actions[i]);
         else if(actions[i].type=="actiontext")
             this.handleActionText(actions[i]);
-    }
+    }*/
     //
-    this.setupArt(this.jsondata);
-    console.log(this);
 }
 InteractiveObject.prototype = Object.create(Phaser.Sprite.prototype);
 InteractiveObject.constructor = MovingCharacter;
 
-InteractiveObject.prototype.handleActorSet = function(json) 
-{
-    
-}
-InteractiveObject.prototype.handleActionConvTrigger = function(json) 
-{
-    var action = json;
-    this.actions[json.trigger] = action;
-    
-}
-InteractiveObject.prototype.handleActionText = function(json) 
-{
-    //var action = json;
-    //this.actions[json.trigger] = action;
-    //if(json.lookatactive)
-    //{
-    //}
-}
+
 InteractiveObject.prototype.step = function(elapseTime) 
 {
 }
 InteractiveObject.prototype.setupReactToAction = function() 
 {
-    this.tileobject.events.onInputDown.add(handleClick, this);
-    //this.tileobject.events.onInputOver.add(, this);//for rollover
-    //this.tileobject.events.onInputOut.add(, this);
+    this.events.onInputDown.add(handleClick, this);
+    //this.events.onInputOver.add(, this);//for rollover
+    //this.events.onInputOut.add(, this);
 }
 InteractiveObject.prototype.handleClick = function() 
 {
-    //this.game.currentacion
-    //if(this.game.currentacion==this.game.WALK)
-    //{
-    //}
+    if(this.game.currentacion == this.game.WALK)
+        return;
+    else if(this.game.currentacion == this.game.TOUCH)
+        this.eventDispatcher.doAction("OnTouch");
+    else if(this.game.currentacion == this.game.LOOK)
+        this.eventDispatcher.doAction("OnLook");
+    else if(this.game.currentacion == this.game.TALK)
+        this.eventDispatcher.doAction("OnTalk");
     
 }
 InteractiveObject.prototype.setupArt = function(json) 

@@ -134,10 +134,10 @@ BasicGame.Game.prototype = {
                     hexagonArray[i][j].walkable = false;
                 }
                 //
-                var hexagonText = this.add.text(hexagonX+hexagonWidth/3+5,hexagonY+15,i+","+j);
-                hexagonText.font = "arial";
-                hexagonText.fontSize = 12;
-                this.hexagonGroup.add(hexagonText);
+                //var hexagonText = this.add.text(hexagonX+hexagonWidth/3+5,hexagonY+15,i+","+j);
+                //hexagonText.font = "arial";
+                //hexagonText.fontSize = 12;
+                //this.hexagonGroup.add(hexagonText);
 			}
 		}
         //console.log(walkableArray);
@@ -150,7 +150,7 @@ BasicGame.Game.prototype = {
         var spotx,spoty;
         for(var i = 0; i < objects.length; i ++)
         {
-            if(objects[i].actions)//if have actions then is an interactive object
+            if(objects[i].triggers)//if have actions then is an interactive object
             {
                 var interactiveobject = new InteractiveObject(this, objects[i],tileobject);
                 //interactiveObjects.
@@ -251,8 +251,8 @@ BasicGame.Game.prototype = {
         this.hexagonGroup.sort('y', Phaser.Group.SORT_ASCENDING);
     },
     //
-    showDialog:function(dialogIn){
-        this.diagpanel.startDialog(dialogIn);
+    showDialog:function(convid){
+        this.diagpanel.startDialog(convid);
         this.pauseGame();
     },
     showJustText:function(textDisplay)

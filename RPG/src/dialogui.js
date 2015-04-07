@@ -199,11 +199,14 @@ DialogPanel.prototype.setupDialog = function(){
             this["btnPlay"+(i+1)].visible = true;
             this["btnPlay"+(i+1)].textRef.visible = true;
             this["btnPlay"+(i+1)].textRef.text = (i+1)+". " + this.dialogData.links[i].MenuText;
+            this["btnPlay"+(i+1)].textRef.tint = 0xffffff;
         }
         else
         {
             this["btnPlay"+(i+1)].visible = false;
             this["btnPlay"+(i+1)].textRef.visible = false;
+            this["btnPlay"+(i+1)].textRef.text = "";
+            this["btnPlay"+(i+1)].textRef.tint = 0xffffff;
         }
     }
 }

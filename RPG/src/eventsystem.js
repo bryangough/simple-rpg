@@ -1,50 +1,47 @@
-//***** GlobalHandler ********
-var GlobalHandler = function (game, maingame, actors, variables, quests, items)
+var MasterEventHandler = function (game, maingame)
 {
-    this.game = game;
-    this.maingame = maingame;
-    //
-    this.actors = actors;
-    this.variables = variables;
-    this.quests = quests;
-    this.items = items;
+    this.allEventDispatchers = [];
+    //this.onTouchActions = [];
+    //this.onLookActions = [];
+    //this.onTalkActions = [];
 }
-GlobalHandler.prototype.setActor = function(name,object)
-{
-    for(var i=0;i<this.actors.length;i++)
-    {
-        if(this.actors[i].Name==name)
-        {
-            this.actors[i].bind = this.actors[i].bind || [];
-            this.actors[i].bind.push(object);//multiple binds per actor?
-            //object.bind = this.actionsp=[i];
-        }
-    } 
-}
-
-//actors and items on map with actor set will register with this class
-//invetory? ui?
-//quests ui will pull from this
+//ontype change, for all dispatchers, test if shouldbe active, tell connected
 //
 var EventDispatcher = function (game, maingame, object)
 {
     this.game = game;
     this.maingame = maingame;
     this.object = object;
+    
+    MasterEventHandler.allEventDispatchers.push(this);
 }
 EventDispatcher.prototype.receiveData = function(triggers) 
 {
-
-    //onTouchAction
-    //onLookAction
-    //onTalkAction
-    
-    this.onEnterAction;
-    //onStartAction
-    //onActivateAction
-    //onMoveAction?
+    //
+    //this.onTouchSignal = new Phaser.Signal();
+    this.onTouchAction;
+    this.onLookAction;
+    this.onTalkAction;
+    //this.onEnterSignal = new Phaser.Signal();
+    this.onEnterAction;//done
+    this.onStartAction;//not done
+    //onActivateAction//not done
+    //
     this.init(triggers);
 };
+EventDispatcher.prototype.shouldBeActive = function() 
+{
+    if(this.game.currentacion == this.game.WALK)
+        return false;
+    else if(this.game.currentacion == this.game.TOUCH && this.onTouchAction)
+        return true;
+    else if(this.game.currentacion == this.game.LOOK && this.onLookAction)
+        return true;
+    else if(this.game.currentacion == this.game.TALK && this.onTalkAction)
+        return true;
+    return false;
+}//if all action is null. clear out array?
+//this.onEnterSignal.dispatch([this])
 EventDispatcher.prototype.init = function(triggers)    
 {
     var trigger;
@@ -55,13 +52,37 @@ EventDispatcher.prototype.init = function(triggers)
     {
         trigger = triggers[i];
         activation = trigger.trigger;
-        for(var j=0;j<trigger.actions.length;j++)
+        if(trigger.actions)
         {
-            action = trigger.actions[j];
-            eventAction = this.getEventType(activation);
-            if(action.type=="ChangeMap")
+            for(var j=0;j<trigger.actions.length;j++)
             {
-                eventAction.push({func:this.maingame.userExit, para:action, removeself:false, callee:this.maingame});
+                action = trigger.actions[j];
+                eventAction = this.getEventType(activation);
+                if(action.type=="ChangeMap")
+                {
+                    eventAction.push({func:this.maingame.userExit, para:action, removeself:trigger.once, callee:this.maingame});
+                    //this.onEnterSignal.add(this.maingame.userExit, this.maingame);
+                }
+                else if(action.type=="CONVERSATION")
+                {
+                    eventAction.push({func:this.maingame.showDialog, para:action.id, removeself:trigger.once, callee:this.maingame});
+                    //onTouchSignal
+                }
+                else if(action.type=="SIMPLE")
+                {
+                    eventAction.push({func:this.maingame.showJustTextDialog, para:action.id, removeself:trigger.once, callee:this.maingame});
+                    //onTouchSignal
+                }
+                else if(action.type=="BARK")
+                {
+                }
+            }
+        }
+        else if(trigger.type=="actiontext")
+        {//need touch and talk actives
+            if(trigger.lookatactive)
+            {
+                this.getEventType("OnLook").push({func:this.maingame.showJustText, para:trigger.lookat, removeself:false, callee:this.maingame});
             }
         }
     }
@@ -76,9 +97,14 @@ EventDispatcher.prototype.doAction = function(activation)
         {
             if(actionEvent[i])
             {
-               actionEvent[i].func.apply(actionEvent[i].callee,[actionEvent[i].para]);
+                //check condition?
+                //this.onEnterSignal.dispatch([actionEvent[i].para]);
+                actionEvent[i].func.apply(actionEvent[i].callee, [actionEvent[i].para]);
                 if(actionEvent[i].removeself)
+                {
+                    actionEvent[i] = null;//splice too?
                     console.log("remove event");
+                }
             }
         }
     }
@@ -90,6 +116,26 @@ EventDispatcher.prototype.getEventType = function(activation)
     {
         this.onEnterAction = this.onEnterAction || [];
         return this.onEnterAction;
+    }
+    else if(activation=="OnStart")
+    {
+        this.onStartAction = this.onStartAction || [];
+        return this.onStartAction;
+    }
+    else if(activation=="OnTouch")
+    {
+        this.onTouchAction = this.onTouchAction || [];
+        return this.onTouchAction;
+    }
+    else if(activation=="OnTalk")
+    {
+        this.onTalkAction = this.onTalkAction || [];
+        return this.onTalkAction;
+    }
+    else if(activation=="OnLook")
+    {
+        this.onLookAction = this.onLookAction || [];
+        return this.onLookAction;
     }
 };
 /*
@@ -151,16 +197,6 @@ EventConv.prototype.activateEvent = function()
 var EventnText = function (json) 
 {
 }
-//items
-//variables
-/*
-{
-    "type": "actiontext",
-    "lookatactive": true,
-    "lookat": "A baby crab trying to get your attention."
-}
-interacttrigger
-*/
 /* 
 Actors/enemies animations
 - move x6
