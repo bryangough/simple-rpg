@@ -16,6 +16,8 @@
     <script src="src/eventsystem.js"></script>
     <script src="src/tiles.js"></script>
     <script src="src/globalhandler.js"></script>
+    <script src="src/InteractiveObject.js"></script>
+    <script src="src/GlobalsEvents.js"></script>
 </head>
 <body>
 
@@ -27,23 +29,7 @@ window.onload = function() {
 
 	var game = new Phaser.Game(900, 600, Phaser.AUTO, 'gameContainer');
 
-    //game.scale.setGameSize(window.innerWidth, window.innerHeight);
     
-   /* var widthScale = window.innerWidth / Game.width;
-    var heightScale = window.innerHeight / Game.height;
-
-    if(widthScale > heightScale) {
-        Game.scaleValue = heightScale;
-    } else {
-        Game.scaleValue = widthScale;
-    }
-        this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-        //have the game centered horizontally
-        this.scale.pageAlignHorizontally = true;
-        this.scale.pageAlignVertically = true;
-        //screen size will be set automatically
-        this.scale.setScreenSize(true);s
-    */
     
 	game.state.add('Boot', BasicGame.Boot);
 	game.state.add('Preloader', BasicGame.Preloader);
@@ -51,20 +37,11 @@ window.onload = function() {
     game.state.add('Game', BasicGame.Game);
     game.state.add('Instructions', BasicGame.Instructions);
     
-    //game.state.add('reset', onResize); //I don't know if this will actually work
-
     /*Game = {
         width = 900;
         height = 600;
         scaleValue;
     };*/
-	
-    //action enums
-    game.WALK = 0;
-    game.LOOK = 1;
-    game.TOUCH = 2;
-    game.TALK = 3;
-    game.currentacion = game.WALK;
     //
     game.global = {
         mute: false,
@@ -72,12 +49,6 @@ window.onload = function() {
     };
     
     game.state.start('Boot');
-    /*var SIZE = {
-  SMALL : {value: 0, name: "Small", code: "S"}, 
-  MEDIUM: {value: 1, name: "Medium", code: "M"}, 
-  LARGE : {value: 2, name: "Large", code: "L"}
-};*/
-    //
 };
 
 </script>

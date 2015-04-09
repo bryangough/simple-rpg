@@ -220,7 +220,7 @@ BasicGame.Game.prototype = {
         selectedtile.addChild(doorImage);
     },
     userExit:function(data) {
-        //console.log("should be main game: ",this);
+        //
         this.startpos[0] = data.tmap;
         this.startpos[1] = data.tx;
         this.startpos[2] = data.ty;
@@ -228,7 +228,8 @@ BasicGame.Game.prototype = {
         this.flushEntireMap();
         //
         var currentmap = this.mapData.maps[this.startpos[0]];
-        //console.log(this.startpos[0]);
+        //
+        GlobalEvents.flushEvents();
         this.createMapTiles(currentmap);        
     },
     flushEntireMap: function(){

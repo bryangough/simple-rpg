@@ -1,11 +1,3 @@
-var MasterEventHandler = function (game, maingame)
-{
-    this.allEventDispatchers = [];
-    //this.onTouchActions = [];
-    //this.onLookActions = [];
-    //this.onTalkActions = [];
-}
-//ontype change, for all dispatchers, test if shouldbe active, tell connected
 //
 var EventDispatcher = function (game, maingame, object)
 {
@@ -13,7 +5,7 @@ var EventDispatcher = function (game, maingame, object)
     this.maingame = maingame;
     this.object = object;
     
-    MasterEventHandler.allEventDispatchers.push(this);
+    GlobalEvents.allEventDispatchers.push(this);
 }
 EventDispatcher.prototype.receiveData = function(triggers) 
 {
@@ -29,15 +21,22 @@ EventDispatcher.prototype.receiveData = function(triggers)
     //
     this.init(triggers);
 };
+EventDispatcher.prototype.testAction = function() 
+{
+    if(this.object)
+    {
+        this.object.inputEnabled = this.shouldBeActive();
+    }
+}
 EventDispatcher.prototype.shouldBeActive = function() 
 {
-    if(this.game.currentacion == this.game.WALK)
+    if(GlobalEvents.currentacion == GlobalEvents.WALK)
         return false;
-    else if(this.game.currentacion == this.game.TOUCH && this.onTouchAction)
+    else if(GlobalEvents.currentacion == GlobalEvents.TOUCH && this.onTouchAction)
         return true;
-    else if(this.game.currentacion == this.game.LOOK && this.onLookAction)
+    else if(GlobalEvents.currentacion == GlobalEvents.LOOK && this.onLookAction)
         return true;
-    else if(this.game.currentacion == this.game.TALK && this.onTalkAction)
+    else if(GlobalEvents.currentacion == GlobalEvents.TALK && this.onTalkAction)
         return true;
     return false;
 }//if all action is null. clear out array?
@@ -138,6 +137,15 @@ EventDispatcher.prototype.getEventType = function(activation)
         return this.onLookAction;
     }
 };
+EventDispatcher.prototype.destroy = function() 
+{
+    this.onTouchAction = null;
+    this.onLookAction = null;
+    this.onTalkAction = null;
+    this.onEnterAction = null;
+    this.onStartAction = null;
+}
+
 /*
 //inputEnabled 
 

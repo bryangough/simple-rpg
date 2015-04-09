@@ -161,13 +161,14 @@ InteractiveObject.prototype.setupReactToAction = function()
 }
 InteractiveObject.prototype.handleClick = function() 
 {
-    if(this.game.currentacion == this.game.WALK)
+    console.log("object clicked",GlobalEvents.currentacion);
+    if(GlobalEvents.currentacion == GlobalEvents.WALK)
         return;
-    else if(this.game.currentacion == this.game.TOUCH)
+    else if(GlobalEvents.currentacion == GlobalEvents.TOUCH)
         this.eventDispatcher.doAction("OnTouch");
-    else if(this.game.currentacion == this.game.LOOK)
+    else if(GlobalEvents.currentacion == GlobalEvents.LOOK)
         this.eventDispatcher.doAction("OnLook");
-    else if(this.game.currentacion == this.game.TALK)
+    else if(GlobalEvents.currentacion == GlobalEvents.TALK)
         this.eventDispatcher.doAction("OnTalk");
     
 }

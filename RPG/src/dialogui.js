@@ -261,25 +261,25 @@ ActionButtons.prototype.setButton = function(x,y,imageup,imageactive,ref, clicke
 //these also should do something
 ActionButtons.prototype.dowalk = function(){
     this.disableButton(this.currentActive);
-    this.game.currentacion = this.game.WALK;
+    GlobalEvents.currentacion = GlobalEvents.WALK;
     this.currentActive = this.walk;
     this.enableButton(this.currentActive);
 }
 ActionButtons.prototype.douse = function(){
     this.disableButton(this.currentActive);
-    this.game.currentacion = this.game.USE;
+    GlobalEvents.currentacion = GlobalEvents.TOUCH;
     this.currentActive = this.use;
     this.enableButton(this.currentActive);
 }
 ActionButtons.prototype.dolook = function(){
     this.disableButton(this.currentActive);
-    this.game.currentacion = this.game.LOOK;
+    GlobalEvents.currentacion = GlobalEvents.LOOK;
     this.currentActive = this.look;
     this.enableButton(this.currentActive);
 }
 ActionButtons.prototype.dotalk = function(){
     this.disableButton(this.currentActive);
-    this.game.currentacion = this.game.TALK;
+    GlobalEvents.currentacion = GlobalEvents.TALK;
     this.currentActive = this.talk;
     this.enableButton(this.currentActive);
 }
