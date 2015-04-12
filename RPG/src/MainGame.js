@@ -77,7 +77,7 @@ BasicGame.Game.prototype = {
         this.uiGroup.add(this.graphics);
         
         
-        this.showJustTextDialog(3);
+        //this.showJustTextDialog(3);
         //this.showJustText("YEP");
         //this.showDialog(1);
     },
@@ -140,20 +140,20 @@ BasicGame.Game.prototype = {
                 //this.hexagonGroup.add(hexagonText);
 			}
 		}
-        //console.log(walkableArray);
         this.pathfinder.setGrid(walkableArray, [1]);
         this.hexHandler.hexagonArray = hexagonArray;
         this.hexHandler.waterTilesArray = waterTilesArray;
-        //return;
-        //handle objects
         var objects = layer1.objects;
         var spotx,spoty;
         for(var i = 0; i < objects.length; i ++)
         {
             if(objects[i].triggers)//if have actions then is an interactive object
             {
-                var interactiveobject = new InteractiveObject(this, objects[i],tileobject);
-                //interactiveObjects.
+                if(!objects[i].destroyed)//object has been destroyed
+                {
+                    var interactiveobject = new InteractiveObject(this, objects[i],tileobject);
+                    this.interactiveObjects.push(interactiveobject);
+                }
             }
             else
             {
@@ -166,17 +166,6 @@ BasicGame.Game.prototype = {
                 tileobject.anchor.y = 1.0;
             }
         }
-        //should be handled by action system when it works
-        /*var connected = layer1.connected;
-        for(var i = 0; i < connected.length; i ++)
-        {
-            var selectedtile = hexagonArray[this.gridSizeY-connected[i].fy-1][connected[i].fx];
-            selectedtile.actionEnter = this.userSteppedOnExit;
-            selectedtile.actionEnterData = connected[i];
-            var doorImage = this.game.make.sprite(0,0, "tiles","mapexit.png");
-            selectedtile.addChild(doorImage);
-        }*/
-        //?
         var actionSpots = layer1.actionSpots;
         for(var i = 0; i < actionSpots.length; i ++)
         {
@@ -287,6 +276,8 @@ BasicGame.Game.prototype = {
     //
     clickedHex:function()
     {
+        if(GlobalEvents.currentacion != GlobalEvents.WALK)
+            return;
         if(this.game.global.pause)
         {
             return;

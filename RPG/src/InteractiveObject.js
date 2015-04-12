@@ -1,3 +1,10 @@
+/*
+this.jsondata.destroyed - object has been destroy
+
+//move?, state?
+
+
+*/
 var InteractiveObject = function (maingame, jsondata) 
 {
     this.maingame = maingame;
@@ -28,13 +35,22 @@ InteractiveObject.prototype = Object.create(Phaser.Sprite.prototype);
 InteractiveObject.constructor = MovingCharacter;
 //
 //  
-//
+InteractiveObject.prototype.callFunction = function(fnstring,fnparams) 
+{
+    var fn = this[fnstring];
+    fnparams = fnparams.split(',');
+    if (typeof fn === "function") 
+    {
+        fn.apply(this, fnparams);
+    }
+}
 InteractiveObject.prototype.destroySelf = function(elapseTime) 
 {
+    this.jsondata.destroyed = true;
     this.eventDispatcher.destroy();
-    this.events.onInputDown.remove(this.handleClick, this);    
-    this.maingame = null;
-    this.game = null;
+    this.events.onInputDown.remove(this.handleClick, this);  
+    //this.events.onInputOver.remove(, this);//for rollover
+    //this.events.onInputOut.remove(, this);
     this.destroy();
 }
 InteractiveObject.prototype.step = function(elapseTime) 
@@ -48,7 +64,6 @@ InteractiveObject.prototype.setupReactToAction = function()
 }
 InteractiveObject.prototype.handleClick = function() 
 {
-    console.log("object clicked",GlobalEvents.currentacion);
     if(GlobalEvents.currentacion == GlobalEvents.WALK)
         return;
     else if(GlobalEvents.currentacion == GlobalEvents.TOUCH)

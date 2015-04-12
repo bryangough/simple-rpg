@@ -70,10 +70,16 @@
                                 "actions": [
                                     {
                                         "type": "CONVERSATION",
-                                        "id": "3",
+                                        "id": "2",
                                         "skipIfNoValidEntries": false
                                     }
-                                ]
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": [
+                                        
+                                    ]
+                                }
                             }
                         ]
                     },
@@ -101,8 +107,8 @@
                         "name": 4,
                         "x": 4,
                         "y": 1,
-                        "offsetx": 0.5232849,
-                        "offsety": 0.2607516,
+                        "offsetx": 0.530303,
+                        "offsety": 0.7727273,
                         "tilesetid": "tileobjects"
                     },
                     {
@@ -122,7 +128,13 @@
                                         "id": "1",
                                         "skipIfNoValidEntries": false
                                     }
-                                ]
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": [
+                                        
+                                    ]
+                                }
                             },
                             {
                                 "type": "actorset",
@@ -132,6 +144,27 @@
                                 "type": "actiontext",
                                 "lookatactive": true,
                                 "lookat": "A baby crab trying to get your attention."
+                            },
+                            {
+                                "type": "animations",
+                                "animations": [
+                                    {
+                                        "id": "idle",
+                                        "name": "test",
+                                        "start": 1,
+                                        "stop": 2
+                                    },
+                                    {
+                                        "id": "walking_1",
+                                        "name": "walk",
+                                        "start": 1,
+                                        "stop": 2
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "customObject",
+                                "name": "babycrab"
                             }
                         ]
                     }
@@ -183,7 +216,7 @@
                     1,
                     1,
                     1,
-                    1,
+                    0,
                     1,
                     1,
                     1,
@@ -250,8 +283,24 @@
                         "name": 4,
                         "x": 0,
                         "y": 2,
-                        "offsetx": 0.4242424,
+                        "offsetx": 0.469697,
                         "offsety": 0.6969697,
+                        "tilesetid": "tileobjects"
+                    },
+                    {
+                        "name": 3,
+                        "x": 2,
+                        "y": 1,
+                        "offsetx": 0.4641744,
+                        "offsety": 0.30449,
+                        "tilesetid": "tileobjects"
+                    },
+                    {
+                        "name": 3,
+                        "x": 3,
+                        "y": 2,
+                        "offsetx": 0.4321287,
+                        "offsety": 0.2622016,
                         "tilesetid": "tileobjects"
                     },
                     {
@@ -263,17 +312,6 @@
                         "tilesetid": "interactiveactors",
                         "triggers": [
                             {
-                                "trigger": "OnTouch",
-                                "once": false,
-                                "actions": [
-                                    {
-                                        "type": "CONVERSATION",
-                                        "id": "2",
-                                        "skipIfNoValidEntries": false
-                                    }
-                                ]
-                            },
-                            {
                                 "type": "actiontext",
                                 "lookatactive": true,
                                 "lookat": "A fire pit.",
@@ -283,11 +321,27 @@
                         ]
                     },
                     {
+                        "name": 5,
+                        "x": 7,
+                        "y": 2,
+                        "offsetx": 0.4938705,
+                        "offsety": 0.2834093,
+                        "tilesetid": "tileobjects"
+                    },
+                    {
+                        "name": 3,
+                        "x": 8,
+                        "y": 2,
+                        "offsetx": 0.4444976,
+                        "offsety": 0.2731356,
+                        "tilesetid": "tileobjects"
+                    },
+                    {
                         "name": 4,
                         "x": 9,
                         "y": 1,
-                        "offsetx": 0.6595995,
-                        "offsety": 0.195455,
+                        "offsetx": 0.530303,
+                        "offsety": 0.8030303,
                         "tilesetid": "tileobjects"
                     },
                     {
@@ -465,12 +519,7 @@
                         "y": 6,
                         "offsetx": 0.4262261,
                         "offsety": 0.2483232,
-                        "tilesetid": "interactiveactors",
-                        "triggers": [
-                            {
-                                "type": "interacttrigger"
-                            }
-                        ]
+                        "tilesetid": "interactiveactors"
                     },
                     {
                         "name": 6,
@@ -510,7 +559,55 @@
                         "y": 0,
                         "offsetx": 0.6060606,
                         "offsety": 0.1212121,
-                        "tilesetid": "interactiveactors"
+                        "tilesetid": "interactiveactors",
+                        "triggers": [
+                            {
+                                "type": "interacttrigger",
+                                "trigger": "OnTouch",
+                                "actionMessage": "",
+                                "actions": [
+                                    {
+                                        "type": "Item",
+                                        "name": 6,
+                                        "mode": "Add",
+                                        "variable": "Count",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "type": "THIS",
+                                        "function": "destroyself",
+                                        "parameters": ""
+                                    },
+                                    {
+                                        "type": "Item",
+                                        "name": 6,
+                                        "mode": "To",
+                                        "variable": "Inventory",
+                                        "value": "true"
+                                    },
+                                    {
+                                        "type": "Quest",
+                                        "name": 5,
+                                        "mode": "To",
+                                        "variable": "",
+                                        "value": "Active"
+                                    },
+                                    {
+                                        "type": "Actor",
+                                        "name": 1,
+                                        "mode": "FUNCTION",
+                                        "function": "move",
+                                        "parameters": ""
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": [
+                                        
+                                    ]
+                                }
+                            }
+                        ]
                     },
                     {
                         "name": 5,
@@ -708,7 +805,9 @@
                     1,
                     1
                 ],
-                "actionSpots": [],
+                "actionSpots": [
+                    
+                ],
                 "objects": [
                     {
                         "name": 0,
@@ -733,15 +832,16 @@
     "startPos": "Map1 - Beach_2_3",
     "tileSets": {
         "bottomtiles": {
+            "tileset": "tiles",
             "0": "tileMagic",
             "1": "tileGrass",
             "2": "tileEmpty",
             "3": "tileDirt",
             "4": "tileWater",
-            "5": "tileSand",
-            "tileset": "tiles"
+            "5": "tileSand"
         },
         "tileobjects": {
+            "tileset": "tiles",
             "0": "bushMagic",
             "1": "bushSand",
             "2": "hillsGrass",
@@ -750,21 +850,20 @@
             "5": "treeGreen_mid",
             "6": "treeGreen_high",
             "7": "treeMagic_mid0001",
-            "8": "mapexit",
-            "tileset": "tiles"
+            "8": "mapexit"
         },
         "interactiveactors": {
+            "tileset": "actors",
             "0": "crab",
             "1": "firepit0001",
             "2": "firepit0002",
             "3": "flintsteel",
-            "4": "log",
-            "tileset": "actors"
+            "4": "log"
         }
     },
     "data": {
         "Name": "RPGSimple",
-        "Version": "0.0.1",
+        "Version": "0.0.2",
         "Author": "Bryan",
         "Description": "",
         "GlobalUserScript": "",
@@ -773,6 +872,7 @@
                 "id": 2,
                 "Name": "Crab",
                 "Description": "",
+                "IsPlayer": false,
                 "IsPlayer": "False",
                 "Pictures": "[]"
             },
@@ -780,6 +880,7 @@
                 "id": 3,
                 "Name": "Fire pit",
                 "Description": "",
+                "IsPlayer": false,
                 "IsPlayer": "False",
                 "Pictures": "[]"
             },
@@ -787,6 +888,7 @@
                 "id": 4,
                 "Name": "Papa Crab",
                 "Description": "",
+                "IsPlayer": false,
                 "IsPlayer": "False",
                 "Pictures": "[]"
             },
@@ -794,6 +896,7 @@
                 "id": 1,
                 "Name": "Player",
                 "Description": "",
+                "IsPlayer": true,
                 "IsPlayer": "True",
                 "Pictures": "[]"
             }
@@ -803,8 +906,10 @@
                 "id": 4,
                 "Name": "BabyCrab",
                 "onLookat": "",
+                "Is Item": true,
                 "Is Item": "True",
                 "State": "",
+                "Inventory": false,
                 "Inventory": "False",
                 "afterPickupMessage": "",
                 "onTouch": "",
@@ -812,6 +917,7 @@
                 "Description": "",
                 "Success Description": "",
                 "Failure Description": "",
+                "Count": 0,
                 "Count": "0",
                 "Entry Count": "",
                 "Entry 1 State": "",
@@ -824,8 +930,10 @@
                 "id": 5,
                 "Name": "Bring baby crab to parents",
                 "onLookat": "",
+                "Is Item": false,
                 "Is Item": "False",
                 "State": "unassigned",
+                "Inventory": false,
                 "Inventory": "False",
                 "afterPickupMessage": "",
                 "onTouch": "",
@@ -833,7 +941,9 @@
                 "Description": "",
                 "Success Description": "",
                 "Failure Description": "",
+                "Count": 0,
                 "Count": "0",
+                "Entry Count": 2,
                 "Entry Count": "2",
                 "Entry 1 State": "unassigned",
                 "Entry 1": "Get to parents",
@@ -845,8 +955,10 @@
                 "id": 3,
                 "Name": "Flint",
                 "onLookat": "",
+                "Is Item": true,
                 "Is Item": "True",
                 "State": "",
+                "Inventory": false,
                 "Inventory": "False",
                 "afterPickupMessage": "",
                 "onTouch": "",
@@ -854,6 +966,7 @@
                 "Description": "",
                 "Success Description": "",
                 "Failure Description": "",
+                "Count": 0,
                 "Count": "0",
                 "Entry Count": "",
                 "Entry 1 State": "",
@@ -866,8 +979,10 @@
                 "id": 1,
                 "Name": "Light Fire",
                 "onLookat": "",
+                "Is Item": false,
                 "Is Item": "False",
                 "State": "unassigned",
+                "Inventory": false,
                 "Inventory": "False",
                 "afterPickupMessage": "",
                 "onTouch": "",
@@ -875,6 +990,7 @@
                 "Description": "",
                 "Success Description": "",
                 "Failure Description": "",
+                "Count": 0,
                 "Count": "",
                 "Entry Count": "",
                 "Entry 1 State": "",
@@ -887,8 +1003,10 @@
                 "id": 6,
                 "Name": "Wood",
                 "onLookat": "It's wood.",
+                "Is Item": true,
                 "Is Item": "True",
                 "State": "",
+                "Inventory": false,
                 "Inventory": "False",
                 "afterPickupMessage": "",
                 "onTouch": "[enterInvetory,destroySelf]",
@@ -923,113 +1041,28 @@
             {
                 "id": 2,
                 "Name": "FireLit",
-                "Initial Value": "",
+                "Initial Value": false,
+                "Initial Value": "False",
                 "Description": ""
             },
             {
                 "id": 3,
                 "Name": "Number of Logs",
-                "Initial Value": "",
+                "Initial Value": "0",
+                "Description": ""
+            },
+            {
+                "id": 4,
+                "Name": "Test Bool",
+                "Initial Value": false,
+                "Initial Value": "False",
                 "Description": ""
             }
         ],
         "Conversations": [
             {
-                "id": 2,
-                "Title": "Lighting Fire",
-                "Pictures": "[]",
-                "Description": "",
-                "Actor": "1",
-                "Conversant": "3",
-                "DialogueEntries": [
-                    {
-                        "entrytag": "Player_2_0",
-                        "ConvID": 2,
-                        "ID": 0,
-                        "Actor": 1,
-                        "Conversant": 3,
-                        "Title": "START",
-                        "MenuText": "",
-                        "DialogueText": "",
-                        "IsGroup": false,
-                        "FalseConditionAction": "Block",
-                        "ConditionPriority": "Normal",
-                        "Conditions": "",
-                        "Script": "",
-                        "Sequence": "None()",
-                        "Pictures": "[]",
-                        "Description": "",
-                        "Parenthetical": "",
-                        "Audio Files": "[]",
-                        "Video File": "",
-                        "links": [
-                            {
-                                "OriginConvID": 2,
-                                "OriginID": 0,
-                                "DestConvID": 2,
-                                "DestID": 1,
-                                "ConditionPriority": "Normal"
-                            }
-                        ]
-                    },
-                    {
-                        "entrytag": "Fire_pit_2_1",
-                        "ConvID": 2,
-                        "ID": 1,
-                        "Actor": 3,
-                        "Conversant": 1,
-                        "Title": "New Dialogue Entry",
-                        "MenuText": "",
-                        "DialogueText": "Actions?",
-                        "IsGroup": false,
-                        "FalseConditionAction": "Block",
-                        "ConditionPriority": "Normal",
-                        "Conditions": "",
-                        "Script": "",
-                        "Sequence": "",
-                        "Pictures": "[]",
-                        "Description": "",
-                        "Parenthetical": "",
-                        "Audio Files": "[]",
-                        "Video File": "",
-                        "links": [
-                            {
-                                "OriginConvID": 2,
-                                "OriginID": 1,
-                                "DestConvID": 2,
-                                "DestID": 2,
-                                "ConditionPriority": "Normal"
-                            }
-                        ]
-                    },
-                    {
-                        "entrytag": "Player_2_2",
-                        "ConvID": 2,
-                        "ID": 2,
-                        "Actor": 1,
-                        "Conversant": 3,
-                        "Title": "New Dialogue Entry",
-                        "MenuText": "Light fire.",
-                        "DialogueText": "",
-                        "IsGroup": false,
-                        "FalseConditionAction": "Block",
-                        "ConditionPriority": "Normal",
-                        "Conditions": "",
-                        "Script": "",
-                        "Sequence": "",
-                        "Pictures": "[]",
-                        "Description": "",
-                        "Parenthetical": "",
-                        "Audio Files": "[]",
-                        "Video File": "",
-                        "links": {}
-                    }
-                ]
-            },
-            {
                 "id": 1,
-                "Title": "Talking Crab",
-                "Pictures": "[]",
+                "Title": "Crab",
                 "Description": "",
                 "Actor": "1",
                 "Conversant": "2",
@@ -1049,11 +1082,7 @@
                         "Conditions": "",
                         "Script": "",
                         "Sequence": "None()",
-                        "Pictures": "[]",
-                        "Description": "",
                         "Parenthetical": "",
-                        "Audio Files": "[]",
-                        "Video File": "",
                         "links": [
                             {
                                 "OriginConvID": 1,
@@ -1062,6 +1091,15 @@
                                 "DestID": 1,
                                 "ConditionPriority": "Normal"
                             }
+                        ],
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": [
+                                
+                            ]
+                        },
+                        "actions": [
+                            
                         ]
                     },
                     {
@@ -1072,18 +1110,14 @@
                         "Conversant": 1,
                         "Title": "New Dialogue Entry",
                         "MenuText": "",
-                        "DialogueText": "Hello!",
+                        "DialogueText": "dialogue text 2",
                         "IsGroup": false,
                         "FalseConditionAction": "Block",
                         "ConditionPriority": "Normal",
                         "Conditions": "",
                         "Script": "",
                         "Sequence": "",
-                        "Pictures": "[]",
-                        "Description": "",
                         "Parenthetical": "",
-                        "Audio Files": "[]",
-                        "Video File": "",
                         "links": [
                             {
                                 "OriginConvID": 1,
@@ -1091,14 +1125,16 @@
                                 "DestConvID": 1,
                                 "DestID": 2,
                                 "ConditionPriority": "Normal"
-                            },
-                            {
-                                "OriginConvID": 1,
-                                "OriginID": 1,
-                                "DestConvID": 1,
-                                "DestID": 3,
-                                "ConditionPriority": "Normal"
                             }
+                        ],
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": [
+                                
+                            ]
+                        },
+                        "actions": [
+                            
                         ]
                     },
                     {
@@ -1108,7 +1144,7 @@
                         "Actor": 1,
                         "Conversant": 2,
                         "Title": "New Dialogue Entry",
-                        "MenuText": "What?",
+                        "MenuText": " text 3",
                         "DialogueText": "",
                         "IsGroup": false,
                         "FalseConditionAction": "Block",
@@ -1116,201 +1152,118 @@
                         "Conditions": "",
                         "Script": "",
                         "Sequence": "",
-                        "Pictures": "[]",
-                        "Description": "",
                         "Parenthetical": "",
-                        "Audio Files": "[]",
-                        "Video File": "",
-                        "links": [
+                        "links": {
+                            
+                        },
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": [
+                                {
+                                    "type": "Quest",
+                                    "name": -1,
+                                    "variable": "",
+                                    "compare": "Is",
+                                    "value": "Unassigned"
+                                },
+                                {
+                                    "type": "Quest",
+                                    "name": -1,
+                                    "variable": "",
+                                    "compare": "Is",
+                                    "value": "Unassigned"
+                                }
+                            ]
+                        },
+                        "actions": [
                             {
-                                "OriginConvID": 1,
-                                "OriginID": 2,
-                                "DestConvID": 1,
-                                "DestID": 4,
-                                "ConditionPriority": "Normal"
-                            }
-                        ]
-                    },
-                    {
-                        "entrytag": "Player_1_3",
-                        "ConvID": 1,
-                        "ID": 3,
-                        "Actor": 1,
-                        "Conversant": 2,
-                        "Title": "New Dialogue Entry",
-                        "MenuText": "Kill it! It talks!",
-                        "DialogueText": "",
-                        "IsGroup": false,
-                        "FalseConditionAction": "Block",
-                        "ConditionPriority": "Normal",
-                        "Conditions": "",
-                        "Script": "",
-                        "Sequence": "",
-                        "Pictures": "[]",
-                        "Description": "",
-                        "Parenthetical": "",
-                        "Audio Files": "[]",
-                        "Video File": "",
-                        "links": [
-                            {
-                                "OriginConvID": 1,
-                                "OriginID": 3,
-                                "DestConvID": -1,
-                                "DestID": -1,
-                                "ConditionPriority": "Normal"
-                            }
-                        ]
-                    },
-                    {
-                        "entrytag": "Crab_1_4",
-                        "ConvID": 1,
-                        "ID": 4,
-                        "Actor": 2,
-                        "Conversant": 1,
-                        "Title": "New Dialogue Entry",
-                        "MenuText": "",
-                        "DialogueText": "I said HELLO!",
-                        "IsGroup": false,
-                        "FalseConditionAction": "Block",
-                        "ConditionPriority": "Normal",
-                        "Conditions": "",
-                        "Script": "",
-                        "Sequence": "",
-                        "Pictures": "[]",
-                        "Description": "",
-                        "Parenthetical": "",
-                        "Audio Files": "[]",
-                        "Video File": "",
-                        "links": [
-                            {
-                                "OriginConvID": 1,
-                                "OriginID": 4,
-                                "DestConvID": 1,
-                                "DestID": 5,
-                                "ConditionPriority": "Normal"
+                                "type": "Quest",
+                                "name": 5,
+                                "mode": "To",
+                                "variable": "",
+                                "value": "Unassigned"
                             },
                             {
-                                "OriginConvID": 1,
-                                "OriginID": 4,
-                                "DestConvID": 1,
-                                "DestID": 6,
-                                "ConditionPriority": "Normal"
-                            }
-                        ]
-                    },
-                    {
-                        "entrytag": "Player_1_5",
-                        "ConvID": 1,
-                        "ID": 5,
-                        "Actor": 1,
-                        "Conversant": 2,
-                        "Title": "New Dialogue Entry",
-                        "MenuText": "A talking crab? RUN!",
-                        "DialogueText": "",
-                        "IsGroup": false,
-                        "FalseConditionAction": "Block",
-                        "ConditionPriority": "Normal",
-                        "Conditions": "",
-                        "Script": "",
-                        "Sequence": "",
-                        "Pictures": "[]",
-                        "Description": "",
-                        "Parenthetical": "",
-                        "Audio Files": "[]",
-                        "Video File": "",
-                        "links": {}
-                    },
-                    {
-                        "entrytag": "Player_1_6",
-                        "ConvID": 1,
-                        "ID": 6,
-                        "Actor": 1,
-                        "Conversant": 2,
-                        "Title": "New Dialogue Entry",
-                        "MenuText": "Hello?",
-                        "DialogueText": "",
-                        "IsGroup": false,
-                        "FalseConditionAction": "Block",
-                        "ConditionPriority": "Normal",
-                        "Conditions": "",
-                        "Script": "",
-                        "Sequence": "",
-                        "Pictures": "[]",
-                        "Description": "",
-                        "Parenthetical": "",
-                        "Audio Files": "[]",
-                        "Video File": "",
-                        "links": [
-                            {
-                                "OriginConvID": 1,
-                                "OriginID": 6,
-                                "DestConvID": 1,
-                                "DestID": 1,
-                                "ConditionPriority": "Normal"
+                                "type": "Quest",
+                                "name": 5,
+                                "mode": "To",
+                                "variable": "",
+                                "value": "Unassigned"
                             }
                         ]
                     }
                 ]
             },
             {
-                "id": 3,
-                "Title": "Wake Up",
-                "Pictures": "",
+                "id": 2,
+                "Title": "Start Convo",
                 "Description": "",
                 "Actor": "1",
-                "Conversant": "-1",
+                "Conversant": "2",
                 "DialogueEntries": [
                     {
-                        "entrytag": "invalid_entrytag",
-                        "ConvID": 3,
+                        "entrytag": "Player_2_0",
+                        "ConvID": 2,
                         "ID": 0,
-                        "Actor": -1,
-                        "Conversant": -1,
+                        "Actor": 1,
+                        "Conversant": 2,
                         "Title": "START",
                         "MenuText": "",
-                        "DialogueText": "You awake lying on a strange beach.",
+                        "DialogueText": "Start Text",
                         "IsGroup": false,
                         "FalseConditionAction": "Block",
                         "ConditionPriority": "Normal",
                         "Conditions": "",
                         "Script": "",
                         "Sequence": "None()",
-                        "Pictures": "",
-                        "Description": "",
                         "Parenthetical": "",
-                        "Audio Files": "",
-                        "Video File": "",
                         "links": [
                             {
-                                "OriginConvID": 3,
+                                "OriginConvID": 2,
                                 "OriginID": 0,
-                                "DestConvID": 3,
+                                "DestConvID": 2,
                                 "DestID": 1,
                                 "ConditionPriority": "Normal"
                             }
+                        ],
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": [
+                                
+                            ]
+                        },
+                        "actions": [
+                            
                         ]
                     },
                     {
-                        "entrytag": "invalid_entrytag",
-                        "ConvID": 3,
+                        "entrytag": "Crab_2_1",
+                        "ConvID": 2,
                         "ID": 1,
-                        "Actor": -1,
-                        "Conversant": -1,
+                        "Actor": 2,
+                        "Conversant": 1,
                         "Title": "New Dialogue Entry",
                         "MenuText": "",
-                        "DialogueText": "That crab looks like it has something to say. How odd.",
+                        "DialogueText": "More Start Text",
                         "IsGroup": false,
                         "FalseConditionAction": "Block",
                         "ConditionPriority": "Normal",
                         "Conditions": "",
                         "Script": "",
                         "Sequence": "",
-                        "Pictures": "",
-                        "Description": "",
                         "Parenthetical": "",
-                        "Audio Files": "",
-                        "Video File": "",
-                        "links": {}
+                        "links": {
+                            
+                        },
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": [
+                                
+                            ]
+                        },
+                        "actions": [
+                            
+                        ]
                     }
                 ]
             }

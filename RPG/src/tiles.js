@@ -1,12 +1,27 @@
+var BaseTile = function(game, tileName, spritesheet, posx, posy, x, y, maingame)
+{
+   // console.log(spritesheet,tileName);
+    Phaser.Sprite.call(this, game, x,y, spritesheet,tileName);
+    this.game = game;
+    this.maingame = maingame;
+}
+BaseTile.prototype = Object.create(Phaser.Sprite.prototype);
+BaseTile.constructor = WalkableTile;
+
+BaseTile.prototype.callFunction = function(fnstring,fnparams) 
+{
+    var fn = window[fnstring];
+    if (typeof fn === "function") fn.apply(null, fnparams);
+}
+
 //
 //WalkableTile
 //
 //
 var WalkableTile = function(game,tileName,spritesheet, posx,posy,x,y, maingame)
 {
-    Phaser.Sprite.call(this, game, x,y, spritesheet,tileName);
-    this.game = game;
-    this.maingame = maingame;
+    //Phaser.Sprite.call(this, game, x,y, spritesheet,tileName);
+    BaseTile.call(this, game,tileName,spritesheet, posx,posy,x,y, maingame)
     this.walkable = true;  
     this.openair = true;
 
@@ -15,7 +30,7 @@ var WalkableTile = function(game,tileName,spritesheet, posx,posy,x,y, maingame)
     
     this.eventDispatcher;
 };
-WalkableTile.prototype = Object.create(Phaser.Sprite.prototype);
+WalkableTile.prototype = Object.create(BaseTile.prototype);
 WalkableTile.constructor = WalkableTile;
 
 WalkableTile.prototype.enterTile = function()

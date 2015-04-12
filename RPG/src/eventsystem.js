@@ -59,20 +59,40 @@ EventDispatcher.prototype.init = function(triggers)
                 eventAction = this.getEventType(activation);
                 if(action.type=="ChangeMap")
                 {
-                    eventAction.push({func:this.maingame.userExit, para:action, removeself:trigger.once, callee:this.maingame});
-                    //this.onEnterSignal.add(this.maingame.userExit, this.maingame);
+                    //console.log(action);
+                    eventAction.push({func:this.maingame.userExit, para:[action], removeself:trigger.once, callee:this.maingame});
                 }
+                //
                 else if(action.type=="CONVERSATION")
                 {
-                    eventAction.push({func:this.maingame.showDialog, para:action.id, removeself:trigger.once, callee:this.maingame});
-                    //onTouchSignal
+                    eventAction.push({func:this.maingame.showDialog, para:[action.id], removeself:trigger.once, callee:this.maingame});
                 }
                 else if(action.type=="SIMPLE")
                 {
-                    eventAction.push({func:this.maingame.showJustTextDialog, para:action.id, removeself:trigger.once, callee:this.maingame});
-                    //onTouchSignal
+                    eventAction.push({func:this.maingame.showJustTextDialog, para:[action.id], removeself:trigger.once, callee:this.maingame});
                 }
                 else if(action.type=="BARK")
+                {
+                }
+                //
+                else if(action.type=="THIS")//call function on this
+                {
+                    eventAction.push({func:this.object.callFunction, para:[action.function,action.parameters], removeself:false, callee:this.object});
+                }
+                else if(action.type=="Item")
+                {
+                    eventAction.push({func:this.maingame.globalHandler.updateItem, para:[action.name,action.mode,action.variable,action.value],  removeself:false, callee:this.maingame.globalHandler});
+
+                }
+                else if(action.type=="Actor")
+                {
+                    eventAction.push({func:this.maingame.globalHandler.updateVariableByID, para:[action.name,action.mode,action.value],  removeself:false, callee:this.maingame.globalHandler});
+                }
+                else if(action.type=="Variable")
+                {
+                    eventAction.push({func:this.maingame.globalHandler.updateVariableByID, para:[action.name,action.mode,action.value],  removeself:false, callee:this.maingame.globalHandler});
+                }
+                else if(action.type=="Quest")
                 {
                 }
             }
@@ -98,7 +118,7 @@ EventDispatcher.prototype.doAction = function(activation)
             {
                 //check condition?
                 //this.onEnterSignal.dispatch([actionEvent[i].para]);
-                actionEvent[i].func.apply(actionEvent[i].callee, [actionEvent[i].para]);
+                actionEvent[i].func.apply(actionEvent[i].callee, actionEvent[i].para);
                 if(actionEvent[i].removeself)
                 {
                     actionEvent[i] = null;//splice too?
