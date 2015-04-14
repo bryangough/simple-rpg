@@ -1,4 +1,8 @@
 {
+    "mapData": {
+        "hexWidth": 63,
+        "hexHeight": 65
+    },
     "maps": {
         "Map1 - Beach": [
             {
@@ -76,9 +80,7 @@
                                 ],
                                 "conditions": {
                                     "logic": "All",
-                                    "conditions": [
-                                        
-                                    ]
+                                    "conditions": []
                                 }
                             }
                         ]
@@ -131,9 +133,7 @@
                                 ],
                                 "conditions": {
                                     "logic": "All",
-                                    "conditions": [
-                                        
-                                    ]
+                                    "conditions": []
                                 }
                             },
                             {
@@ -317,6 +317,29 @@
                                 "lookat": "A fire pit.",
                                 "talkactive": true,
                                 "talkMessage": "A fire pit."
+                            },
+                            {
+                                "trigger": "OnTouch",
+                                "once": false,
+                                "actions": [
+                                    {
+                                        "type": "CONVERSATION",
+                                        "id": "2",
+                                        "skipIfNoValidEntries": false
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": [
+                                        {
+                                            "type": "Item",
+                                            "name": 6,
+                                            "variable": "Count",
+                                            "compare": "GreaterEqual",
+                                            "value": 1
+                                        }
+                                    ]
+                                }
                             }
                         ]
                     },
@@ -571,11 +594,11 @@
                                         "name": 6,
                                         "mode": "Add",
                                         "variable": "Count",
-                                        "value": "1"
+                                        "value": 1
                                     },
                                     {
                                         "type": "THIS",
-                                        "function": "destroyself",
+                                        "function": "destroySelf",
                                         "parameters": ""
                                     },
                                     {
@@ -583,28 +606,12 @@
                                         "name": 6,
                                         "mode": "To",
                                         "variable": "Inventory",
-                                        "value": "true"
-                                    },
-                                    {
-                                        "type": "Quest",
-                                        "name": 5,
-                                        "mode": "To",
-                                        "variable": "",
-                                        "value": "Active"
-                                    },
-                                    {
-                                        "type": "Actor",
-                                        "name": 1,
-                                        "mode": "FUNCTION",
-                                        "function": "move",
-                                        "parameters": ""
+                                        "value": true
                                     }
                                 ],
                                 "conditions": {
                                     "logic": "All",
-                                    "conditions": [
-                                        
-                                    ]
+                                    "conditions": []
                                 }
                             }
                         ]
@@ -805,9 +812,7 @@
                     1,
                     1
                 ],
-                "actionSpots": [
-                    
-                ],
+                "actionSpots": [],
                 "objects": [
                     {
                         "name": 0,
@@ -832,16 +837,15 @@
     "startPos": "Map1 - Beach_2_3",
     "tileSets": {
         "bottomtiles": {
-            "tileset": "tiles",
             "0": "tileMagic",
             "1": "tileGrass",
             "2": "tileEmpty",
             "3": "tileDirt",
             "4": "tileWater",
-            "5": "tileSand"
+            "5": "tileSand",
+            "tileset": "tiles"
         },
         "tileobjects": {
-            "tileset": "tiles",
             "0": "bushMagic",
             "1": "bushSand",
             "2": "hillsGrass",
@@ -850,15 +854,16 @@
             "5": "treeGreen_mid",
             "6": "treeGreen_high",
             "7": "treeMagic_mid0001",
-            "8": "mapexit"
+            "8": "mapexit",
+            "tileset": "tiles"
         },
         "interactiveactors": {
-            "tileset": "actors",
             "0": "crab",
             "1": "firepit0001",
             "2": "firepit0002",
             "3": "flintsteel",
-            "4": "log"
+            "4": "log",
+            "tileset": "actors"
         }
     },
     "data": {
@@ -873,7 +878,6 @@
                 "Name": "Crab",
                 "Description": "",
                 "IsPlayer": false,
-                "IsPlayer": "False",
                 "Pictures": "[]"
             },
             {
@@ -881,7 +885,6 @@
                 "Name": "Fire pit",
                 "Description": "",
                 "IsPlayer": false,
-                "IsPlayer": "False",
                 "Pictures": "[]"
             },
             {
@@ -889,7 +892,6 @@
                 "Name": "Papa Crab",
                 "Description": "",
                 "IsPlayer": false,
-                "IsPlayer": "False",
                 "Pictures": "[]"
             },
             {
@@ -897,7 +899,6 @@
                 "Name": "Player",
                 "Description": "",
                 "IsPlayer": true,
-                "IsPlayer": "True",
                 "Pictures": "[]"
             }
         ],
@@ -907,10 +908,8 @@
                 "Name": "BabyCrab",
                 "onLookat": "",
                 "Is Item": true,
-                "Is Item": "True",
                 "State": "",
                 "Inventory": false,
-                "Inventory": "False",
                 "afterPickupMessage": "",
                 "onTouch": "",
                 "Pictures": "[]",
@@ -918,23 +917,22 @@
                 "Success Description": "",
                 "Failure Description": "",
                 "Count": 0,
-                "Count": "0",
                 "Entry Count": "",
                 "Entry 1 State": "",
                 "Entry 1": "",
                 "Entry 2 State": "",
                 "Entry 2": "",
-                "onTalk": ""
+                "onTalk": "",
+                "onEnterInventory": "",
+                "VisibleInInentory": ""
             },
             {
                 "id": 5,
                 "Name": "Bring baby crab to parents",
                 "onLookat": "",
                 "Is Item": false,
-                "Is Item": "False",
                 "State": "unassigned",
                 "Inventory": false,
-                "Inventory": "False",
                 "afterPickupMessage": "",
                 "onTouch": "",
                 "Pictures": "[]",
@@ -942,24 +940,22 @@
                 "Success Description": "",
                 "Failure Description": "",
                 "Count": 0,
-                "Count": "0",
                 "Entry Count": 2,
-                "Entry Count": "2",
                 "Entry 1 State": "unassigned",
                 "Entry 1": "Get to parents",
                 "Entry 2 State": "unassigned",
                 "Entry 2": "Return crab home",
-                "onTalk": ""
+                "onTalk": "",
+                "onEnterInventory": "",
+                "VisibleInInentory": ""
             },
             {
                 "id": 3,
                 "Name": "Flint",
                 "onLookat": "",
                 "Is Item": true,
-                "Is Item": "True",
                 "State": "",
                 "Inventory": false,
-                "Inventory": "False",
                 "afterPickupMessage": "",
                 "onTouch": "",
                 "Pictures": "[]",
@@ -967,23 +963,22 @@
                 "Success Description": "",
                 "Failure Description": "",
                 "Count": 0,
-                "Count": "0",
                 "Entry Count": "",
                 "Entry 1 State": "",
                 "Entry 1": "",
                 "Entry 2 State": "",
                 "Entry 2": "",
-                "onTalk": ""
+                "onTalk": "",
+                "onEnterInventory": "",
+                "VisibleInInentory": ""
             },
             {
                 "id": 1,
                 "Name": "Light Fire",
                 "onLookat": "",
                 "Is Item": false,
-                "Is Item": "False",
                 "State": "unassigned",
                 "Inventory": false,
-                "Inventory": "False",
                 "afterPickupMessage": "",
                 "onTouch": "",
                 "Pictures": "[]",
@@ -991,36 +986,37 @@
                 "Success Description": "",
                 "Failure Description": "",
                 "Count": 0,
-                "Count": "",
                 "Entry Count": "",
                 "Entry 1 State": "",
                 "Entry 1": "",
                 "Entry 2 State": "",
                 "Entry 2": "",
-                "onTalk": ""
+                "onTalk": "",
+                "onEnterInventory": "",
+                "VisibleInInentory": ""
             },
             {
                 "id": 6,
                 "Name": "Wood",
                 "onLookat": "It's wood.",
                 "Is Item": true,
-                "Is Item": "True",
                 "State": "",
                 "Inventory": false,
-                "Inventory": "False",
                 "afterPickupMessage": "",
-                "onTouch": "[enterInvetory,destroySelf]",
+                "onTouch": "",
                 "Pictures": "",
                 "Description": "",
                 "Success Description": "",
                 "Failure Description": "",
-                "Count": "",
+                "Count": 0,
                 "Entry Count": "",
                 "Entry 1 State": "",
                 "Entry 1": "",
                 "Entry 2 State": "",
                 "Entry 2": "",
-                "onTalk": ""
+                "onTalk": "",
+                "onEnterInventory": "",
+                "VisibleInInentory": true
             }
         ],
         "Locations": [
@@ -1042,7 +1038,6 @@
                 "id": 2,
                 "Name": "FireLit",
                 "Initial Value": false,
-                "Initial Value": "False",
                 "Description": ""
             },
             {
@@ -1055,7 +1050,6 @@
                 "id": 4,
                 "Name": "Test Bool",
                 "Initial Value": false,
-                "Initial Value": "False",
                 "Description": ""
             }
         ],
@@ -1094,13 +1088,9 @@
                         ],
                         "conditions": {
                             "logic": "All",
-                            "conditions": [
-                                
-                            ]
+                            "conditions": []
                         },
-                        "actions": [
-                            
-                        ]
+                        "actions": []
                     },
                     {
                         "entrytag": "Crab_1_1",
@@ -1129,13 +1119,9 @@
                         ],
                         "conditions": {
                             "logic": "All",
-                            "conditions": [
-                                
-                            ]
+                            "conditions": []
                         },
-                        "actions": [
-                            
-                        ]
+                        "actions": []
                     },
                     {
                         "entrytag": "Player_1_2",
@@ -1153,9 +1139,7 @@
                         "Script": "",
                         "Sequence": "",
                         "Parenthetical": "",
-                        "links": {
-                            
-                        },
+                        "links": {},
                         "conditions": {
                             "logic": "All",
                             "conditions": [
@@ -1228,13 +1212,9 @@
                         ],
                         "conditions": {
                             "logic": "All",
-                            "conditions": [
-                                
-                            ]
+                            "conditions": []
                         },
-                        "actions": [
-                            
-                        ]
+                        "actions": []
                     },
                     {
                         "entrytag": "Crab_2_1",
@@ -1252,18 +1232,12 @@
                         "Script": "",
                         "Sequence": "",
                         "Parenthetical": "",
-                        "links": {
-                            
-                        },
+                        "links": {},
                         "conditions": {
                             "logic": "All",
-                            "conditions": [
-                                
-                            ]
+                            "conditions": []
                         },
-                        "actions": [
-                            
-                        ]
+                        "actions": []
                     }
                 ]
             }

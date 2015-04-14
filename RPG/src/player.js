@@ -126,10 +126,3 @@ MovingCharacter.prototype.step = function(elapseTime)
 //Student.prototype.constructor = Student;
 
 
-//******
-var InventoryEngine = function (maingame, jsondata) 
-{
-}
-InventoryEngine.prototype.enterInventory = function() 
-{
-}

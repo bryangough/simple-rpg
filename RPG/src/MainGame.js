@@ -45,7 +45,7 @@ BasicGame.Game.prototype = {
         //
         this.mapData = JSON.parse(this.game.cache.getText('map'));
         //
-        this.hexHandler = new HexHandler(this,this.game);
+        this.hexHandler = new HexHandler(this,this.game, this.mapData.mapData.hexWidth,this.mapData.mapData.hexHeight);
         //actors, variables, quests, items
         this.globalHandler = new GlobalHandler(this.game, this, this.mapData.data.Actors, this.mapData.data.Variables, null, this.mapData.data.Items);
         //

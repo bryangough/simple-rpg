@@ -1,5 +1,5 @@
 //
-var HexHandler = function (maingame, game) 
+var HexHandler = function (maingame, game, hexagonWidth, hexagonHeight) 
 {
     this.maingame = maingame;
     this.game = game;
@@ -14,8 +14,8 @@ var HexHandler = function (maingame, game)
     
     this.waterTilesArray = [];//should be moved out into tile graphics handler
     
-    this.hexagonWidth = 63;
-    this.hexagonHeight = 65;
+    this.hexagonWidth = hexagonWidth || 63;
+    this.hexagonHeight = hexagonHeight || 65;
 
     this.sectorWidth = this.hexagonWidth;
     this.sectorHeight = this.hexagonHeight/4*3;

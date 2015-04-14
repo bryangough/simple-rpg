@@ -17,18 +17,26 @@ var GlobalHandler = function (game, maingame, actors, variables, quests, items)
     }
     //
     this.items = [];
+    this.quests = [];
     for(var i=0;i<items.length;i++)
     {
-        this.items[items[i].id.toString()] = new ItemObject(items[i]);
+        if(items[i]["Is Item"])
+        {
+            this.items[items[i].id.toString()] = new ItemObject(items[i]);
+        }
+        else
+        {
+            this.quests[items[i].id.toString()] = new QuestObject(items[i]);
+        }
     }
-    //
-   /* this.quests = [];
-    for(var i=0;i<quests.length;i++)
-    {
-        this.quests[quests[i].id.toString()] = new QuestObject(quests[i]);
-    }*/
 }
-//
+//Quest
+GlobalHandler.prototype.compareQuestValue = function(id,compare,value)
+{
+    if(!this.quests[id])
+        return false;
+    return this.doCompare(compare,this.quests[id].State, value);
+}
 GlobalHandler.prototype.updateQuestByID = function(id,mode,value)
 {
     if(!this.quests[id])
@@ -39,7 +47,19 @@ GlobalHandler.prototype.updateQuestByID = function(id,mode,value)
         this.quests[id].value = value;
     return true;
 }
-//
+//Variable
+GlobalHandler.prototype.compareVariableValue = function(id,compare,value)
+{
+    if(!this.variables[id])
+        return false;
+    return this.doCompare(compare,this.variables[id].value, value);
+}
+GlobalHandler.prototype.getVariableValue = function(id)
+{
+    if(!this.variables[id])
+        return null;
+    return this.variables[id].value;
+}
 GlobalHandler.prototype.updateVariableByID = function(id,mode,value)
 {
     if(!this.variables[id])
@@ -52,6 +72,37 @@ GlobalHandler.prototype.updateVariableByID = function(id,mode,value)
     return true;
 }
 //
+GlobalHandler.prototype.doCompare = function(compare,variable, value)
+{
+    if(compare=="Is")
+        return (variable == value);
+    if(compare=="IsNot")
+        return (variable != value);
+    if(compare=="Less")
+        return (variable < value);
+    if(compare=="Greater")
+        return (variable > value);
+    if(compare=="LessEqual")
+        return (variable <= value);
+    if(compare=="GreaterEqual")
+        return (variable >= value);
+}
+//Item
+GlobalHandler.prototype.compareItemValue = function(id,variable,compare,value)
+{
+    if(!this.items[id])
+        return false;
+    if(this.items[id].json[variable]==null)
+        return false;
+    return this.doCompare(compare,this.items[id].json[variable], value);
+}
+//
+GlobalHandler.prototype.getItemValue = function(id,variable)
+{
+    if(!this.items[id])
+        return null;
+    return this.items[id][variable];
+}
 GlobalHandler.prototype.getItemByID = function(id)
 {
     if(!this.items[id])
@@ -60,11 +111,14 @@ GlobalHandler.prototype.getItemByID = function(id)
 }
 GlobalHandler.prototype.updateItem = function(id,mode,variable,value)
 {
+    
     var item = this.getItemByID(id);
     if(item)
     {
         if(mode=="Add")
+        {
             item.addValue(variable,value);
+        }
         else 
             item.updateValue(variable,value);
     }
@@ -72,13 +126,27 @@ GlobalHandler.prototype.updateItem = function(id,mode,variable,value)
         console.log(id,"not found");
 }
 //
+GlobalHandler.prototype.compareActorValue = function(id,variable,compare,value)
+{
+    if(!this.actors[id])
+        return false;
+    if(!this.actors[id][variable])
+        return false;
+    return this.doCompare(compare,this.actors[id][variable], value);
+}
+GlobalHandler.prototype.getActorValue = function(id,variable)
+{
+    if(!this.actors[id])
+        return null;
+    return this.actors[id][variable];
+}
 GlobalHandler.prototype.getActorByID = function(id)
 {
     if(!this.actors[id])
         return null;
     return this.actors[id];
 }
-GlobalHandler.prototype.updateItem = function(id,mode,variable,value)
+GlobalHandler.prototype.updateActor = function(id,mode,variable,value)
 {
     var actor = this.getActorByID(id);
     if(actor)
@@ -101,45 +169,43 @@ GlobalHandler.prototype.setActor = function(id,object)
 }
 //
 //this.OnChangeSignal.dispatch([this])
-//
-var BaseObject = function (){
+//**
+var BaseObject = function (json){
     this.OnChangeSignal = new Phaser.Signal();
+    this.json = json;
 };
 //should do value type
 BaseObject.prototype.updateValue = function(variable,value){
-    if(this.json[variable]){
+    //if(this.json[variable]!=null){
         this.json[variable] = value;
-    }
+    //}
     this.OnChangeSignal.dispatch([this]); 
 }
 BaseObject.prototype.addValue = function(variable,value){
-    if(this.json[variable]){
-        this.json[variable] += parseFloat(value);
+    if(this.json[variable]!=null){
+        this.json[variable] += value;
     }
     this.OnChangeSignal.dispatch([this]); 
 }
-//
+//**
 var ItemObject = function (json)
 {
-    BaseObject.call(this);
-    this.json = json;
+    BaseObject.call(this,json);
 }
 ItemObject.prototype = Object.create(BaseObject.prototype);
 ItemObject.constructor = ItemObject;
-//
+//**
 var ActorObject = function (json)
 {
-    BaseObject.call(this);
+    BaseObject.call(this,json);
     this.bind = [];
-    this.json = json;
 }
 ActorObject.prototype = Object.create(BaseObject.prototype);
 ActorObject.constructor = ActorObject;
-//
+//**
 var QuestObject = function (json)
 {
-    BaseObject.call(this);
-    this.json = json;
+    BaseObject.call(this,json);
 }
 QuestObject.prototype = Object.create(BaseObject.prototype);
 QuestObject.constructor = QuestObject;
@@ -149,11 +215,10 @@ Object.defineProperty(QuestObject, "value", {
     set: function(v) { this._value = v; this.OnChangeSignal.dispatch([this]); }//throw on change
 });
 
-//
+//**
 var VariableObject = function (json)
 {
-    BaseObject.call(this);
-    this.json = json;
+    BaseObject.call(this,json);    
     this.id = json.id;
     this.name = json.Name;
     this._value = json["Initial Value"];
