@@ -319,33 +319,10 @@
                                 "talkMessage": "A fire pit."
                             },
                             {
-                                "trigger": "OnTouch",
-                                "once": false,
-                                "actions": [
-                                    {
-                                        "type": "CONVERSATION",
-                                        "id": "2",
-                                        "skipIfNoValidEntries": false
-                                    }
-                                ],
-                                "conditions": {
-                                    "logic": "All",
-                                    "conditions": [
-                                        {
-                                            "type": "Item",
-                                            "name": 6,
-                                            "variable": "Count",
-                                            "compare": "GreaterEqual",
-                                            "value": 1
-                                        }
-                                    ]
-                                }
-                            },
-                            {
                                 "type": "animations",
                                 "animations": [
                                     {
-                                        "id": "start",
+                                        "id": "idle",
                                         "name": "fire_pit_",
                                         "start": 0,
                                         "stop": 0
@@ -370,18 +347,66 @@
                             },
                             {
                                 "type": "interacttrigger",
-                                "trigger": "OnActivate",
+                                "itemid": "4",
+                                "trigger": "OnUseItem",
+                                "actionMessage": "",
+                                "actions": [
+                                    {
+                                        "type": "THIS",
+                                        "function": "changeState",
+                                        "parameters": "withwood"
+                                    },
+                                    {
+                                        "type": "Item",
+                                        "name": 6,
+                                        "mode": "To",
+                                        "variable": "Inventory",
+                                        "value": false
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": [
+                                        {
+                                            "type": "Actor",
+                                            "name": 3,
+                                            "variable": "state",
+                                            "compare": "Is",
+                                            "value": "idle"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "type": "interacttrigger",
+                                "itemid": "3",
+                                "trigger": "OnUseItem",
                                 "actionMessage": "",
                                 "actions": [
                                     {
                                         "type": "THIS",
                                         "function": "changeState",
                                         "parameters": "fire"
+                                    },
+                                    {
+                                        "type": "Item",
+                                        "name": 3,
+                                        "mode": "To",
+                                        "variable": "Inventory",
+                                        "value": false
                                     }
                                 ],
                                 "conditions": {
                                     "logic": "All",
-                                    "conditions": []
+                                    "conditions": [
+                                        {
+                                            "type": "Actor",
+                                            "name": 3,
+                                            "variable": "state",
+                                            "compare": "Is",
+                                            "value": "withwood"
+                                        }
+                                    ]
                                 }
                             }
                         ]
@@ -580,14 +605,6 @@
                         "tilesetid": "tileobjects"
                     },
                     {
-                        "name": 4,
-                        "x": 0,
-                        "y": 6,
-                        "offsetx": 0.4262261,
-                        "offsety": 0.2483232,
-                        "tilesetid": "interactiveactors"
-                    },
-                    {
                         "name": 6,
                         "x": 1,
                         "y": 4,
@@ -778,14 +795,6 @@
                         "offsetx": 0.06852236,
                         "offsety": 0.2006272,
                         "tilesetid": "tileobjects"
-                    },
-                    {
-                        "name": 4,
-                        "x": 7,
-                        "y": 6,
-                        "offsetx": 0.5611262,
-                        "offsety": 0.4059674,
-                        "tilesetid": "interactiveactors"
                     }
                 ]
             }
@@ -921,28 +930,32 @@
                 "Name": "Crab",
                 "Description": "",
                 "IsPlayer": false,
-                "Pictures": "[]"
+                "Pictures": "[]",
+                "state": ""
             },
             {
                 "id": 3,
                 "Name": "Fire pit",
                 "Description": "",
                 "IsPlayer": false,
-                "Pictures": "[]"
+                "Pictures": "[]",
+                "state": "idle"
             },
             {
                 "id": 4,
                 "Name": "Papa Crab",
                 "Description": "",
                 "IsPlayer": false,
-                "Pictures": "[]"
+                "Pictures": "[]",
+                "state": ""
             },
             {
                 "id": 1,
                 "Name": "Player",
                 "Description": "",
                 "IsPlayer": true,
-                "Pictures": "[]"
+                "Pictures": "[]",
+                "state": ""
             }
         ],
         "Items": [
@@ -952,7 +965,7 @@
                 "onLookat": "",
                 "Is Item": true,
                 "State": "",
-                "Inventory": false,
+                "Inventory": true,
                 "afterPickupMessage": "",
                 "onTouch": "",
                 "Pictures": "[]",
@@ -963,7 +976,7 @@
                 "onEnterInventoryText": "",
                 "onTalk": "",
                 "VisibleInventory": true,
-                "InventoryGraphicName": "",
+                "InventoryGraphicName": "inv_crab",
                 "Entry Count": "",
                 "Entry 1 State": "",
                 "Entry 1": "",

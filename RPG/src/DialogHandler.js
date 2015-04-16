@@ -64,7 +64,8 @@ DialogHandler.prototype.buildDialogWithDiag = function(currentDiag){
         var tempLink = this.getDialogByID(currentDiag.links[i].DestID); 
         if(tempLink!=null)
         {
-            var con = this.eventDispatcher.applyConditions(tempLink.conditions);
+            var con = {logic:"Any",list:[]};
+            this.eventDispatcher.applyConditions(con, tempLink.conditions);
             if(this.eventDispatcher.testConditions(con))
                 links.push(tempLink);
         }

@@ -32,7 +32,7 @@ var InventoryGraphics = function(game,maingame,globalhandler)
                 val.OnChangeSignal.add(this.makeReturn(val), this);
                 if(val.getValue("Inventory"))
                 {
-                    this.addItem(val);
+                    this.addInventoryGraphic(val);
                 }
             }
         }
@@ -49,12 +49,12 @@ InventoryGraphics.prototype.makeReturn = function(value) {
 
 InventoryGraphics.prototype.itemChanged = function(changeditem) 
 {
-    //console.log("----",changeditem);
+    console.log("----",changeditem);
     if(changeditem==null)
         return;
     var ininventory = changeditem.getValue("Inventory")
     var indexof = this.findItem(changeditem);
-    console.log("itemChanged",changeditem,ininventory,indexof);
+    //console.log("itemChanged",changeditem,ininventory,indexof);
     if(ininventory && indexof==-1)
     {
         this.addInventoryGraphic(changeditem);
@@ -114,6 +114,15 @@ var InventoryObject = function(game, spritesheet, sprite, item)
 {
     Phaser.Image.call(this, game, 0,0, spritesheet,sprite);   
     this.item = item;
+    this.events.onInputDown.add(this.handleClick, this);
+    this.inputEnabled = true;
 }
 InventoryObject.prototype = Object.create(Phaser.Image.prototype);
 InventoryObject.constructor = InventoryObject;
+
+InventoryObject.prototype.handleClick = function(){
+    GlobalEvents.currentacion = GlobalEvents.ITEM;
+    GlobalEvents.selectedItem = this.item;
+    console.log("select",this.item.id);
+}
+

@@ -16,7 +16,7 @@ ActionButtons = function(game, maingame, parent){
     
     this.talk = {up:null,active:null};
     this.setButton(212,0,"talkBtn0001.png","talkBtn0002.png",this.talk,this.dotalk);
-    
+    GlobalEvents.SendRefresh.add(this.checkRefresh,this);
     this.dowalk();
 }
 ActionButtons.prototype = Object.create(Phaser.Group.prototype);
@@ -55,6 +55,15 @@ ActionButtons.prototype.dotalk = function(){
     this.currentActive = this.talk;
     this.enableButton(this.currentActive);
 }
+ActionButtons.prototype.disableAll = function(){
+    this.disableButton(this.currentActive);
+    this.currentActive = null;
+}
+ActionButtons.prototype.checkRefresh = function(){
+    if(GlobalEvents.currentacion == GlobalEvents.ITEM)
+        this.disableAll();
+}
+//
 ActionButtons.prototype.enableButton = function(ref){
     if(ref==null)
         return;

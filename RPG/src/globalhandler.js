@@ -115,7 +115,7 @@ GlobalHandler.prototype.getItemValue = function(id,variable)
 {
     if(!this.items[id])
         return null;
-    return this.items[id][variable];
+    return this.items[id].json[variable];
 }
 GlobalHandler.prototype.getItemByID = function(id)
 {
@@ -144,15 +144,15 @@ GlobalHandler.prototype.compareActorValue = function(id,variable,compare,value)
 {
     if(!this.actors[id])
         return false;
-    if(!this.actors[id][variable])
+    if(!this.actors[id].json[variable])
         return false;
-    return this.doCompare(compare,this.actors[id][variable], value);
+    return this.doCompare(compare,this.actors[id].json[variable], value);
 }
 GlobalHandler.prototype.getActorValue = function(id,variable)
 {
     if(!this.actors[id])
         return null;
-    return this.actors[id][variable];
+    return this.actors[id].json[variable];
 }
 GlobalHandler.prototype.getActorByID = function(id)
 {

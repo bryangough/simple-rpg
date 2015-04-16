@@ -15,6 +15,7 @@ EventDispatcher.prototype.receiveData = function(triggers)
     this.onTouchAction;
     this.onLookAction;
     this.onTalkAction;
+    this.onItemAction;
     //this.onEnterSignal = new Phaser.Signal();
     this.onEnterAction;//done
     this.onStartAction;//not done
@@ -39,6 +40,11 @@ EventDispatcher.prototype.shouldBeActive = function()
         return true;
     else if(GlobalEvents.currentacion == GlobalEvents.TALK && this.onTalkAction)
         return true;
+    else if(GlobalEvents.currentacion == GlobalEvents.ITEM && this.onItemAction)
+    {
+        //console.log("Use item",this.onItemAction);
+        return true;
+    }
     return false;
 }//if all action is null. clear out array?
 //this.onEnterSignal.dispatch([this])
@@ -58,8 +64,13 @@ EventDispatcher.prototype.init = function(triggers)
         con = null;
         if(trigger.conditions)
         {
+            con = {logic:"Any",list:[]};
+            if(activation=="OnUseItem")
+            {
+                con.list.push({special:true, func:GlobalEvents.checkSelectItem, para:[trigger.itemid], callee:this});
+            }
             if(trigger.conditions.conditions)
-                con = this.applyConditions(trigger.conditions);
+                this.applyConditions(con, trigger.conditions);
         }            
         if(trigger.actions)
         {            
@@ -75,11 +86,11 @@ EventDispatcher.prototype.init = function(triggers)
             var con = null;
             if(trigger.conditions)
             {
-                var con = this.applyConditions(trigger.conditions);
+                //var con = this.applyConditions(trigger.conditions);
             } 
             if(trigger.lookatactive)
             {
-                this.getEventType("OnLook").push({func:this.maingame.showJustText, para:trigger.lookat, removeself:false, callee:this.maingame, con:con});
+                this.getEventType("OnLook").push({func:this.maingame.showJustText, para:[trigger.lookat], removeself:false, callee:this.maingame, con:con});
             }
         }
     }
@@ -139,11 +150,15 @@ EventDispatcher.prototype.setActions = function(eventAction,action, once, con)
         }
 }
 //
-EventDispatcher.prototype.applyConditions = function(conditions) 
+
+con = {logic:"Any",list:[]};
+
+
+EventDispatcher.prototype.applyConditions = function(con, conditions) 
 {
     var conditionlist = conditions.conditions;
     var logic = conditions.logic;//All - &&  Any - ||
-    var savedConditions = [];
+    var savedConditions = con.list;
     
     for(var j=0;j<conditionlist.length;j++)
     {
@@ -170,7 +185,8 @@ EventDispatcher.prototype.applyConditions = function(conditions)
             console("Apply conditions unknown",action.type,action);
         }
     }
-    var con = {logic:logic,list:savedConditions};
+    con.logic = logic;
+    con.list = savedConditions;
     return con;
 }
 //
@@ -187,6 +203,9 @@ EventDispatcher.prototype.testConditions = function(conditions)
     for(var j=0;j<conditionlist.length;j++){
         eachreturn = conditionlist[j].func.apply(conditionlist[j].callee, conditionlist[j].para);
         //console.log(eachreturn,logic, conditionlist[j]);
+        
+        if(conditionlist[j].special && eachreturn==false)
+            return false;
         if(logic=="All"){
             if(eachreturn==false)
                 return false;
@@ -203,10 +222,13 @@ EventDispatcher.prototype.testConditions = function(conditions)
 EventDispatcher.prototype.doAction = function(activation) 
 {
     var actionEvent = this.getEventType(activation); 
+    //console.log(activation,actionEvent);
     this.completeAction(actionEvent);
 }
 EventDispatcher.prototype.completeAction = function(actionEvent)
 {
+    var lastcon;
+    var lastconreturn = false;
     if(actionEvent.length>0)
     {
         for(var i=0;i<actionEvent.length;i++)
@@ -215,10 +237,22 @@ EventDispatcher.prototype.completeAction = function(actionEvent)
             {
                 if(actionEvent[i].con)//check condition. If false skip. If con is null then just go.
                 {
-                    if(!this.testConditions(actionEvent[i].con))
+                    //if similar cons just use same value
+                   // console.log("completeAction ",actionEvent[i].con,lastcon);
+                    if(actionEvent[i].con!=lastcon)
+                    {
+                        lastconreturn = this.testConditions(actionEvent[i].con);
+                        lastcon = actionEvent[i].con;
+                    }
+                    else
+                    {
+                       // console.log("repeat");
+                    }
+                    if(!lastconreturn)
                         continue;
                 }
                 actionEvent[i].func.apply(actionEvent[i].callee, actionEvent[i].para);
+                console.log(actionEvent[i], actionEvent[i].para);
                 if(actionEvent[i].removeself)
                 {
                     actionEvent[i] = null;//splice too?
@@ -261,13 +295,18 @@ EventDispatcher.prototype.getEventType = function(activation)
         this.onActivateAction = this.onActivateAction || [];
         return this.onActivateAction;
     }
-    
+    else if(activation=="OnUseItem")
+    {
+        this.onItemAction = this.onItemAction || [];
+        return this.onItemAction;
+    }
 };
 EventDispatcher.prototype.destroy = function() 
 {
     this.onTouchAction = null;
     this.onLookAction = null;
     this.onTalkAction = null;
+    this.onItemAction = null;
     this.onEnterAction = null;
     this.onStartAction = null;
     this.onActivateAction = null;

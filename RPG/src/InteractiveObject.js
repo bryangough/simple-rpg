@@ -22,21 +22,27 @@ var InteractiveObject = function (maingame, jsondata)
 
     this.events.onInputDown.add(this.handleClick, this);    
     this.inputEnabled = true;
-    
+    //
     var actions = this.jsondata.triggers;
     for(var i=0;i<actions.length;i++)
     {
-        //if(actions[i].type=="actorset")
-        //    this.handleActorSet(actions[i]);
+        if(actions[i].type=="actorset")
+        {
+            this.actor = maingame.globalHandler.getActorByID(actions[i].id);
+            //maingame.globalHandler.getActorByID
+        }
         if(actions[i].type=="animations")
         {
             var animations = actions[i].animations;
             for(var j=0;j<animations.length;j++)
             {
+                //console.log(animations[j].id,animations[j].name);
                 if(animations[j].start==0&&animations[j].stop==0)
                     this.animations.add(animations[j].id,[animations[j].name], 1, true, false);
                 else
-                    this.animations.add(animations[j].id, Phaser.Animation.generateFrameNames(animations[j].name, animations[j].start, animations[j].stop, '.png', 4), 1, true, false);
+                    this.animations.add(animations[j].id, Phaser.Animation.generateFrameNames(animations[j].name, animations[j].start, animations[j].stop, '.png', 4), 24, true, false);
+                
+                this.changeState("withwood");
             }
         }
     }
@@ -52,7 +58,10 @@ InteractiveObject.constructor = MovingCharacter;
 //  
 InteractiveObject.prototype.changeState = function(newstate) 
 {
+    console.log(newstate);
     this.animations.play(newstate);
+    if(this.actor)
+        this.actor.updateValue("state",newstate);
 }
 InteractiveObject.prototype.callFunction = function(fnstring,fnparams) 
 {
@@ -77,12 +86,13 @@ InteractiveObject.prototype.step = function(elapseTime)
 }
 InteractiveObject.prototype.setupReactToAction = function() 
 {
-    this.events.onInputDown.add(handleClick, this);
+    this.events.onInputDown.add(this.handleClick, this);
     //this.events.onInputOver.add(, this);//for rollover
     //this.events.onInputOut.add(, this);
 }
 InteractiveObject.prototype.handleClick = function() 
 {
+    console.log("handler click");
     if(GlobalEvents.currentacion == GlobalEvents.WALK)
         return;
     else if(GlobalEvents.currentacion == GlobalEvents.TOUCH)
@@ -91,7 +101,8 @@ InteractiveObject.prototype.handleClick = function()
         this.eventDispatcher.doAction("OnLook");
     else if(GlobalEvents.currentacion == GlobalEvents.TALK)
         this.eventDispatcher.doAction("OnTalk");
-    
+    else if(GlobalEvents.currentacion == GlobalEvents.ITEM)
+        this.eventDispatcher.doAction("OnUseItem");
 }
 InteractiveObject.prototype.setupArt = function(json) 
 {

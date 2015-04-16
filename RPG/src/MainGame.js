@@ -69,7 +69,8 @@ BasicGame.Game.prototype = {
         this.inventory = new InventoryGraphics(this.game,this,this.globalHandler);
 	    this.game.add.existing(this.inventory);
         this.uiGroup.add(this.inventory);
-        //this.inventory.y = 450;
+        this.inventory.x = 350;
+        this.inventory.y = 350;
         //this.input.addMoveCallback(this.drawLine, this); 
         //this.input.onDown.add(this.drawLine, this); 
         //MOVE
@@ -82,6 +83,7 @@ BasicGame.Game.prototype = {
         
         this.graphics = this.game.add.graphics(0, 0);
         this.uiGroup.add(this.graphics);
+        
         //this.showJustTextDialog(3);
         //this.showJustText("YEP");
         //this.showDialog(1);
