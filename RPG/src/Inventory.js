@@ -49,7 +49,6 @@ InventoryGraphics.prototype.makeReturn = function(value) {
 
 InventoryGraphics.prototype.itemChanged = function(changeditem) 
 {
-    console.log("----",changeditem);
     if(changeditem==null)
         return;
     var ininventory = changeditem.getValue("Inventory")
@@ -61,10 +60,9 @@ InventoryGraphics.prototype.itemChanged = function(changeditem)
     }
     else if(!ininventory && indexof>-1)
     {
-        console.log("remove item");
-        //this.currentitems.splice(indexof,1);//remove
-        //remove item
-        //reorder old
+        this.destroyGraphicItem(this.currentitems[indexof]);
+        this.currentitems.splice(indexof,1);
+        this.resuffle();
     }
 }
 InventoryGraphics.prototype.findItem = function(item)
@@ -82,6 +80,11 @@ InventoryGraphics.prototype.updateSelf = function()
 {
     console.log("do graphics");
     //InventoryGraphicName
+}
+InventoryGraphics.prototype.destroyGraphicItem = function(item)
+{
+    if(item!=null)
+        item.destroy();
 }
 InventoryGraphics.prototype.addInventoryGraphic = function(item)
 {
@@ -123,6 +126,5 @@ InventoryObject.constructor = InventoryObject;
 InventoryObject.prototype.handleClick = function(){
     GlobalEvents.currentacion = GlobalEvents.ITEM;
     GlobalEvents.selectedItem = this.item;
-    console.log("select",this.item.id);
 }
 

@@ -35,7 +35,8 @@ BasicGame.Game = function (game) {
 
 BasicGame.Game.prototype = {
     preload: function(){
-        this.load.json('map', 'assets/desertIsland.json');//mission file - can I show a preloader? should I?        
+        //this.load.json('map', 'assets/desertIsland.json');//mission file - can I show a preloader? should I?        
+        this.load.json('map', 'assets/forestmap.json');
     },
     create: function () {
         this.stage.backgroundColor = "#666666"
@@ -50,10 +51,8 @@ BasicGame.Game.prototype = {
         //actors, variables, quests, items
         this.globalHandler = new GlobalHandler(this.game, this, this.mapData.data.Actors, this.mapData.data.Variables, null, this.mapData.data.Items);
         
-        
-        //
-        this.startpos = this.mapData.startPos.split("_");
-        var currentmap = this.mapData.maps[this.startpos[0]];
+        this.startpos = this.mapData.startPos;//.split("_");
+        var currentmap = this.mapData.maps[this.startpos.map];
         this.createMapTiles(currentmap);
         //
         this.dialoghandler = new DialogHandler(this.game, this, this.mapData.data.Conversations, this.mapData.data.Actors);
@@ -70,14 +69,14 @@ BasicGame.Game.prototype = {
 	    this.game.add.existing(this.inventory);
         this.uiGroup.add(this.inventory);
         this.inventory.x = 350;
-        this.inventory.y = 350;
+        this.inventory.y = 400;
         //this.input.addMoveCallback(this.drawLine, this); 
         //this.input.onDown.add(this.drawLine, this); 
         //MOVE
         this.input.onDown.add(this.clickedHex, this);
         
         this.activeButtons = new ActionButtons(this.game, this);
-        this.activeButtons.y = 350;
+        this.activeButtons.y = 400;
         this.game.add.existing(this.activeButtons);
         this.uiGroup.add(this.activeButtons);
         
@@ -113,10 +112,11 @@ BasicGame.Game.prototype = {
             walkableArray[i] = [];
 			for(var j = 0; j < this.gridSizeX; j ++)
             {
-                objectName = tiles[i*this.gridSizeX+j];
+                //objectName = tiles[i*this.gridSizeX+j];
+                objectName = tiles[j*this.gridSizeX+i];
                 tilereference = this.getTile(objectName,tilesetid);
                 var hexagonX = hexagonWidth*j;
-                if(this.gridSizeY%2)
+                if(this.gridSizeY%2==1)
                     hexagonX += hexagonWidth/2*(i%2);
                 else
                     hexagonX -= hexagonWidth/2*(i%2);
@@ -135,16 +135,18 @@ BasicGame.Game.prototype = {
                 this.hexagonGroup.add(temptile);
 
                 //
-                walkableArray[i][j] = layer1.walkable[i*this.gridSizeX+j];
+                walkableArray[i][j] = layer1.walkable[j*this.gridSizeX+i];
                 if(walkableArray[i][j] == 0)
                 {
                     hexagonArray[i][j].walkable = false;
                 }
                 //
-                //var hexagonText = this.add.text(hexagonX+hexagonWidth/3+5,hexagonY+15,i+","+j);
-                //hexagonText.font = "arial";
-                //hexagonText.fontSize = 12;
-                //this.hexagonGroup.add(hexagonText);
+                /*
+                var hexagonText = this.add.text(hexagonX+hexagonWidth/3+5,hexagonY+15,i+","+j);
+                hexagonText.font = "arial";
+                hexagonText.fontSize = 8;
+                this.hexagonGroup.add(hexagonText);
+                */
 			}
 		}
         this.pathfinder.setGrid(walkableArray, [1]);
@@ -166,9 +168,9 @@ BasicGame.Game.prototype = {
             {
                 var objectreference = this.getTile(objects[i].name,objects[i].tilesetid);
                 spotx = objects[i].x;
-                spoty = this.gridSizeY-objects[i].y-1;//this.gridSizeY-objects[i].y-1;
-                var tileobject = this.game.make.sprite(objects[i].offsetx*hexagonWidth,objects[i].offsety*hexagonHeight, objectreference.spritesheet, objectreference.tile+".png");
-                hexagonArray[spoty][spotx].addChild(tileobject);
+                spoty = objects[i].y;
+                var tileobject = this.game.make.sprite(objects[i].offsetx*hexagonWidth, objects[i].offsety*hexagonHeight, objectreference.spritesheet, objectreference.tile+".png");
+                hexagonArray[spotx][spoty].addChild(tileobject);
                 tileobject.anchor.x = 0.5;
                 tileobject.anchor.y = 1.0;
             }
@@ -176,7 +178,8 @@ BasicGame.Game.prototype = {
         var actionSpots = layer1.actionSpots;
         for(var i = 0; i < actionSpots.length; i ++)
         {
-            var selectedtile = hexagonArray[this.gridSizeY-actionSpots[i].y-1][actionSpots[i].x];
+            //var selectedtile = hexagonArray[this.gridSizeY-actionSpots[i].y-1][actionSpots[i].x];
+            var selectedtile = hexagonArray[actionSpots[i].x][actionSpots[i].y];
             if(selectedtile)
             {
                 if(!selectedtile.eventDispatcher)
@@ -203,7 +206,7 @@ BasicGame.Game.prototype = {
         {
             this.playerCharacter = new MovingCharacter(this,this.game, "player");
             this.game.add.existing(this.playerCharacter);
-            this.playerCharacter.setLocationByTile(hexagonArray[this.gridSizeY-this.startpos[2]-1][this.startpos[1]]);
+            this.playerCharacter.setLocationByTile(hexagonArray[this.startpos.x][this.startpos.y]);
         }
         this.hexagonGroup.add(this.playerCharacter);
         //this.characterGroup.sort('y', Phaser.Group.SORT_ASCENDING);
@@ -217,13 +220,13 @@ BasicGame.Game.prototype = {
     },
     userExit:function(data) {
         //
-        this.startpos[0] = data.tmap;
-        this.startpos[1] = data.tx;
-        this.startpos[2] = data.ty;
+        this.startpos.map = data.tmap;
+        this.startpos.x = data.tx;
+        this.startpos.y = data.ty;
         //
         this.flushEntireMap();
         //
-        var currentmap = this.mapData.maps[this.startpos[0]];
+        var currentmap = this.mapData.maps[this.startpos.map];
         //
         GlobalEvents.flushEvents();
         this.createMapTiles(currentmap);        

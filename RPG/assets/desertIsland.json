@@ -350,6 +350,7 @@
                                 "itemid": "4",
                                 "trigger": "OnUseItem",
                                 "actionMessage": "",
+                                "once": false,
                                 "actions": [
                                     {
                                         "type": "THIS",
@@ -358,7 +359,7 @@
                                     },
                                     {
                                         "type": "Item",
-                                        "name": 6,
+                                        "name": 4,
                                         "mode": "To",
                                         "variable": "Inventory",
                                         "value": false
@@ -382,6 +383,7 @@
                                 "itemid": "3",
                                 "trigger": "OnUseItem",
                                 "actionMessage": "",
+                                "once": false,
                                 "actions": [
                                     {
                                         "type": "THIS",
@@ -648,6 +650,7 @@
                                 "type": "interacttrigger",
                                 "trigger": "OnTouch",
                                 "actionMessage": "",
+                                "once": false,
                                 "actions": [
                                     {
                                         "type": "Item",

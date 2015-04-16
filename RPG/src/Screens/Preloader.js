@@ -26,7 +26,7 @@ BasicGame.Preloader.prototype = {
 		//	As this is just a Project Template I've not provided these assets, swap them for your own.
         
         this.load.atlasJSONHash('ui', 'assets/simpleui.png', 'assets/simpleui.json');
-        this.load.atlasJSONHash('tiles', 'assets/tiles.png', 'assets/tiles.json');
+        this.load.atlasJSONHash('tiles2', 'assets/tiles2.png', 'assets/tiles2.json');
         this.load.atlasJSONHash('actors', 'assets/actors.png', 'assets/actors.json');
         this.load.atlasJSONHash('dialogui', 'assets/dialogui.png', 'assets/dialogui.json');
 		this.load.image('loading', 'assets/loading.png');

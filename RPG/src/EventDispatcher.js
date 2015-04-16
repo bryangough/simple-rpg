@@ -252,7 +252,6 @@ EventDispatcher.prototype.completeAction = function(actionEvent)
                         continue;
                 }
                 actionEvent[i].func.apply(actionEvent[i].callee, actionEvent[i].para);
-                console.log(actionEvent[i], actionEvent[i].para);
                 if(actionEvent[i].removeself)
                 {
                     actionEvent[i] = null;//splice too?

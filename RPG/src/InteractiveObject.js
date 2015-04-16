@@ -37,14 +37,22 @@ var InteractiveObject = function (maingame, jsondata)
             for(var j=0;j<animations.length;j++)
             {
                 //console.log(animations[j].id,animations[j].name);
-                if(animations[j].start==0&&animations[j].stop==0)
-                    this.animations.add(animations[j].id,[animations[j].name], 1, true, false);
-                else
-                    this.animations.add(animations[j].id, Phaser.Animation.generateFrameNames(animations[j].name, animations[j].start, animations[j].stop, '.png', 4), 24, true, false);
+                if(animations[j].start==0&&animations[j].stop==0){
+                    this.animations.add(animations[j].id,[animations[j].name+".png"], 1, true, false);
+                }
+                else{
+                    this.animations.add(animations[j].id, Phaser.Animation.generateFrameNames(animations[j].name, animations[j].start, animations[j].stop, '.png', 4), 12, true, false);
+                }
                 
-                this.changeState("withwood");
+                
             }
         }
+    }
+    if(this.actor){
+        this.changeState(this.actor.getValue("state"));
+    }
+    else{
+        this.changeState("idle");
     }
     //
     //
@@ -58,7 +66,6 @@ InteractiveObject.constructor = MovingCharacter;
 //  
 InteractiveObject.prototype.changeState = function(newstate) 
 {
-    console.log(newstate);
     this.animations.play(newstate);
     if(this.actor)
         this.actor.updateValue("state",newstate);
@@ -92,7 +99,6 @@ InteractiveObject.prototype.setupReactToAction = function()
 }
 InteractiveObject.prototype.handleClick = function() 
 {
-    console.log("handler click");
     if(GlobalEvents.currentacion == GlobalEvents.WALK)
         return;
     else if(GlobalEvents.currentacion == GlobalEvents.TOUCH)
