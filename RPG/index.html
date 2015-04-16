@@ -4,23 +4,34 @@
 	<meta charset="UTF-8" />
 	<title>Simple RPG</title>
     <script src="js/phaser.js"></script>
-    <script src="js/easystar-0.1.13-hex.js"></script>
-	<script src="src/Boot.js"></script>
-	<script src="src/Preloader.js"></script>
-	<script src="src/MainMenu.js"></script>
+    <script src="src/easystar-0.1.13-hex.js"></script>
+    <script src="src/Screens/Boot.js"></script>
+	<script src="src/Screens/Preloader.js"></script>
+	<script src="src/Screens/MainMenu.js"></script>
+    <script src="src/Screens/Instructions.js"></script>
     <script src="src/MainGame.js"></script>
-    <script src="src/Instructions.js"></script>
-    <script src="src/player.js"></script>
-    <script src="src/hexmap.js"></script>
-    <script src="src/dialogui.js"></script>
-    <script src="src/eventsystem.js"></script>
+
+    <script src="src/BasicObjectPool.js"></script>
+    
+    <script src="src/dialogui/BarkText.js"></script>
+    <script src="src/dialogui/DialogPanel.js"></script>
+    <script src="src/dialogui/JustTextPopup.js"></script>
+    
+    <script src="src/ActionButtons.js"></script>
+    
     <script src="src/tiles.js"></script>
-    <script src="src/globalhandler.js"></script>
+    <script src="src/HexHandler.js"></script>
+    
+    <script src="src/MovingCharacter.js"></script>
+    <script src="src/EventDispatcher.js"></script>
+    
+    <script src="src/Globalhandler.js"></script>
     <script src="src/InteractiveObject.js"></script>
     <script src="src/GlobalsEvents.js"></script>
     <script src="src/DialogHandler.js"></script>
-    <script src="src/BasicObjectPool.js"></script>
-    <script src="src/InventoryUI.js"></script>
+    
+    <script src="src/Inventory.js"></script>
+    
 </head>
 <body>
 
@@ -32,8 +43,6 @@ window.onload = function() {
 
 	var game = new Phaser.Game(900, 600, Phaser.AUTO, 'gameContainer');
 
-    
-    
 	game.state.add('Boot', BasicGame.Boot);
 	game.state.add('Preloader', BasicGame.Preloader);
 	game.state.add('MainMenu', BasicGame.MainMenu);

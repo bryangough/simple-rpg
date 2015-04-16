@@ -2,7 +2,9 @@
 this.jsondata.destroyed - object has been destroy
 
 //move?, state?
+//seperate the graphics from the data
 
+//need to remember where they are and what state they are in for scene changes
 
 */
 var InteractiveObject = function (maingame, jsondata) 
@@ -11,30 +13,47 @@ var InteractiveObject = function (maingame, jsondata)
     this.game = maingame.game;
     this.jsondata = jsondata;
 
+    this.jsondata.state = "idle";
+    
     this.eventDispatcher = new EventDispatcher(this.game,this.maingame,this);
     this.eventDispatcher.init(this.jsondata.triggers);
 
     this.setupArt(this.jsondata);
-    //if(this.eventDispatcher.onTalkAction)
-    //{
-    //}
+
     this.events.onInputDown.add(this.handleClick, this);    
     this.inputEnabled = true;
     
-    //console.log(this.actions);
-    /*for(var i=0;i<actions.length;i++)
+    var actions = this.jsondata.triggers;
+    for(var i=0;i<actions.length;i++)
     {
-        if(actions[i].type=="actorset")
-            this.handleActorSet(actions[i]);
-        else if(actions[i].type=="actiontext")
-            this.handleActionText(actions[i]);
-    }*/
+        //if(actions[i].type=="actorset")
+        //    this.handleActorSet(actions[i]);
+        if(actions[i].type=="animations")
+        {
+            var animations = actions[i].animations;
+            for(var j=0;j<animations.length;j++)
+            {
+                if(animations[j].start==0&&animations[j].stop==0)
+                    this.animations.add(animations[j].id,[animations[j].name], 1, true, false);
+                else
+                    this.animations.add(animations[j].id, Phaser.Animation.generateFrameNames(animations[j].name, animations[j].start, animations[j].stop, '.png', 4), 1, true, false);
+            }
+        }
+    }
     //
+    //
+    //this will move
+    if(this.eventDispatcher)
+        this.eventDispatcher.doAction("OnActivate");
 }
 InteractiveObject.prototype = Object.create(Phaser.Sprite.prototype);
 InteractiveObject.constructor = MovingCharacter;
 //
 //  
+InteractiveObject.prototype.changeState = function(newstate) 
+{
+    this.animations.play(newstate);
+}
 InteractiveObject.prototype.callFunction = function(fnstring,fnparams) 
 {
     var fn = this[fnstring];

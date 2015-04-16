@@ -2,7 +2,7 @@
 
 "dialog_10001.png":
 {
-	"frame": {"x":2,"y":168,"w":415,"h":68},
+	"frame": {"x":2,"y":293,"w":415,"h":68},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":415,"h":68},
@@ -10,7 +10,7 @@
 },
 "dialog_10002.png":
 {
-	"frame": {"x":2,"y":238,"w":415,"h":68},
+	"frame": {"x":2,"y":363,"w":415,"h":68},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":415,"h":68},
@@ -18,7 +18,7 @@
 },
 "dialog_20001.png":
 {
-	"frame": {"x":2,"y":308,"w":415,"h":52},
+	"frame": {"x":2,"y":433,"w":415,"h":52},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":415,"h":52},
@@ -26,7 +26,7 @@
 },
 "dialog_20002.png":
 {
-	"frame": {"x":2,"y":362,"w":415,"h":52},
+	"frame": {"x":2,"y":487,"w":415,"h":52},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":415,"h":52},
@@ -34,7 +34,7 @@
 },
 "dialog_30001.png":
 {
-	"frame": {"x":2,"y":2,"w":416,"h":81},
+	"frame": {"x":112,"y":2,"w":416,"h":81},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":416,"h":81},
@@ -42,7 +42,7 @@
 },
 "dialog_30002.png":
 {
-	"frame": {"x":2,"y":85,"w":416,"h":81},
+	"frame": {"x":2,"y":210,"w":416,"h":81},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":416,"h":81},
@@ -50,15 +50,47 @@
 },
 "dialog_main.png":
 {
-	"frame": {"x":2,"y":416,"w":108,"h":103},
+	"frame": {"x":2,"y":2,"w":108,"h":103},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":103},
 	"sourceSize": {"w":108,"h":103}
 },
+"inv_crab.png":
+{
+	"frame": {"x":286,"y":85,"w":91,"h":100},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":91,"h":100},
+	"sourceSize": {"w":91,"h":100}
+},
+"inv_log.png":
+{
+	"frame": {"x":379,"y":85,"w":91,"h":100},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":91,"h":100},
+	"sourceSize": {"w":91,"h":100}
+},
+"inv_tinder.png":
+{
+	"frame": {"x":419,"y":293,"w":91,"h":100},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":91,"h":100},
+	"sourceSize": {"w":91,"h":100}
+},
+"inventory_bg.png":
+{
+	"frame": {"x":2,"y":107,"w":282,"h":101},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":282,"h":101},
+	"sourceSize": {"w":282,"h":101}
+},
 "lookBtn0001.png":
 {
-	"frame": {"x":420,"y":2,"w":76,"h":94},
+	"frame": {"x":420,"y":187,"w":76,"h":94},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":76,"h":94},
@@ -66,7 +98,7 @@
 },
 "lookBtn0002.png":
 {
-	"frame": {"x":420,"y":98,"w":76,"h":94},
+	"frame": {"x":472,"y":85,"w":76,"h":94},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":76,"h":94},
@@ -74,7 +106,7 @@
 },
 "talkBtn0001.png":
 {
-	"frame": {"x":419,"y":194,"w":76,"h":94},
+	"frame": {"x":498,"y":181,"w":76,"h":94},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":76,"h":94},
@@ -82,7 +114,7 @@
 },
 "talkBtn0002.png":
 {
-	"frame": {"x":419,"y":290,"w":76,"h":94},
+	"frame": {"x":419,"y":395,"w":76,"h":94},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":76,"h":94},
@@ -90,7 +122,7 @@
 },
 "useBtn0001.png":
 {
-	"frame": {"x":112,"y":416,"w":76,"h":94},
+	"frame": {"x":419,"y":491,"w":76,"h":94},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":76,"h":94},
@@ -98,7 +130,7 @@
 },
 "useBtn0002.png":
 {
-	"frame": {"x":190,"y":416,"w":76,"h":94},
+	"frame": {"x":497,"y":395,"w":76,"h":94},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":76,"h":94},
@@ -106,7 +138,7 @@
 },
 "walkBtn0001.png":
 {
-	"frame": {"x":268,"y":416,"w":76,"h":94},
+	"frame": {"x":497,"y":491,"w":76,"h":94},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":76,"h":94},
@@ -114,7 +146,7 @@
 },
 "walkBtn0002.png":
 {
-	"frame": {"x":346,"y":416,"w":76,"h":94},
+	"frame": {"x":512,"y":277,"w":76,"h":94},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":76,"h":94},
@@ -125,8 +157,8 @@
 	"version": "1.0",
 	"image": "dialogui.png",
 	"format": "RGBA8888",
-	"size": {"w":521,"h":521},
+	"size": {"w":590,"h":590},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:7c9d307878da08c38dbdc517f9201fe2:12f5df41342fe47d5b194e938b1e3ac7:04ddb4c920c402d71df97ca4243b87a6$"
+	"smartupdate": "$TexturePacker:SmartUpdate:613e82a9e7d7c07b4ce2dffa36882963:10cad732c71d8c00ec6b1efa8f3203d2:04ddb4c920c402d71df97ca4243b87a6$"
 }
 }

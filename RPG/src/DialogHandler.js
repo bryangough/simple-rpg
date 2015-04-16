@@ -1,12 +1,14 @@
 //***** DialogHandler ********
 //handle conditions?
-var DialogHandler = function(game, conversations, actors){
+var DialogHandler = function(game, maingame, conversations, actors){
     this.game = game;
+    this.maingame = maingame;
     this.conversations = conversations;
     this.actors = actors;
     
     this.currentConvo;
     this.playerActor = this.getPlayerActor();
+    this.eventDispatcher = new EventDispatcher(game,maingame,null);
 }
 DialogHandler.prototype.startConvo = function(id){
     this.currentConvo = this.getConversationsByID(id);
@@ -28,8 +30,17 @@ DialogHandler.prototype.startConvo = function(id){
 //passing in selected link returns next npc
 //passing in current displayed return next npc or pc
 DialogHandler.prototype.getNextDialog = function(currentDialog){
+    //do actions for this diaglog
+    if(currentDialog.actions && currentDialog.actions.length>0)
+    {
+        var eventActions = [];
+        this.eventDispatcher.helpSetActions(eventActions, currentDialog.actions, false, null);
+        if(eventActions.length>0)
+            this.eventDispatcher.completeAction(eventActions);
+    }
     if(currentDialog.links.length<=0||currentDialog.links[0]==null)
         return null;
+    //activate actions? //global dialog queue?
     return this.buildDialogByID(currentDialog.links[0].DestID);
 }
 //
@@ -50,12 +61,12 @@ DialogHandler.prototype.buildDialogWithDiag = function(currentDiag){
     for(var i=0;i<l;i++)
     {
         //only handle single conversations for now
-
         var tempLink = this.getDialogByID(currentDiag.links[i].DestID); 
-        
         if(tempLink!=null)
         {
-            links.push(tempLink);
+            var con = this.eventDispatcher.applyConditions(tempLink.conditions);
+            if(this.eventDispatcher.testConditions(con))
+                links.push(tempLink);
         }
     }
     var thisactor = this.getActorByID(currentDiag.Actor);//optimize this, save it somewhere

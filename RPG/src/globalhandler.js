@@ -1,6 +1,8 @@
 //***** GlobalHandler ********
 var GlobalHandler = function (game, maingame, actors, variables, quests, items)
 {
+    //only create objects when they are needed?
+    //how do I do much larger games?
     this.game = game;
     this.maingame = maingame;
     //
@@ -29,6 +31,18 @@ var GlobalHandler = function (game, maingame, actors, variables, quests, items)
             this.quests[items[i].id.toString()] = new QuestObject(items[i]);
         }
     }
+}
+function saveState(state) { 
+    window.localStorage.setItem("gameState", JSON.stringify(state)); 
+} 
+ 
+function restoreState() { 
+    var state = window.localStorage.getItem("gameState"); 
+    if (state) { 
+        return JSON.parse(state); 
+    } else { 
+        return null; 
+    } 
 }
 //Quest
 GlobalHandler.prototype.compareQuestValue = function(id,compare,value)
@@ -173,11 +187,14 @@ GlobalHandler.prototype.setActor = function(id,object)
 var BaseObject = function (json){
     this.OnChangeSignal = new Phaser.Signal();
     this.json = json;
+    this.id = -1;
 };
 //should do value type
 BaseObject.prototype.updateValue = function(variable,value){
+    //console.log("updateValue",variable,value,this);
     //if(this.json[variable]!=null){
-        this.json[variable] = value;
+    this.json[variable] = value;
+    //console.log(this,this.json[variable],value);
     //}
     this.OnChangeSignal.dispatch([this]); 
 }
@@ -187,13 +204,21 @@ BaseObject.prototype.addValue = function(variable,value){
     }
     this.OnChangeSignal.dispatch([this]); 
 }
+BaseObject.prototype.getValue = function(variable)
+{
+    if(this.json!=null && this.json[variable]!=null)
+        return this.json[variable];
+    return null;
+}
 //**
 var ItemObject = function (json)
 {
     BaseObject.call(this,json);
+    this.id = json.id;
 }
 ItemObject.prototype = Object.create(BaseObject.prototype);
 ItemObject.constructor = ItemObject;
+
 //**
 var ActorObject = function (json)
 {

@@ -307,8 +307,8 @@
                         "name": 1,
                         "x": 4,
                         "y": 1,
-                        "offsetx": 0.5689629,
-                        "offsety": 0.3534678,
+                        "offsetx": 0.5757576,
+                        "offsety": 0.1212121,
                         "tilesetid": "interactiveactors",
                         "triggers": [
                             {
@@ -339,6 +339,49 @@
                                             "value": 1
                                         }
                                     ]
+                                }
+                            },
+                            {
+                                "type": "animations",
+                                "animations": [
+                                    {
+                                        "id": "start",
+                                        "name": "fire_pit_",
+                                        "start": 0,
+                                        "stop": 0
+                                    },
+                                    {
+                                        "id": "withwood",
+                                        "name": "fire_wood_",
+                                        "start": 0,
+                                        "stop": 0
+                                    },
+                                    {
+                                        "id": "fire",
+                                        "name": "fire_burning_",
+                                        "start": 1,
+                                        "stop": 3
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "actorset",
+                                "id": 3
+                            },
+                            {
+                                "type": "interacttrigger",
+                                "trigger": "OnActivate",
+                                "actionMessage": "",
+                                "actions": [
+                                    {
+                                        "type": "THIS",
+                                        "function": "changeState",
+                                        "parameters": "fire"
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": []
                                 }
                             }
                         ]
@@ -859,8 +902,8 @@
         },
         "interactiveactors": {
             "0": "crab",
-            "1": "firepit0001",
-            "2": "firepit0002",
+            "1": "fire_pit_",
+            "2": "fire_wood_",
             "3": "flintsteel",
             "4": "log",
             "tileset": "actors"
@@ -917,14 +960,15 @@
                 "Success Description": "",
                 "Failure Description": "",
                 "Count": 0,
+                "onEnterInventoryText": "",
+                "onTalk": "",
+                "VisibleInventory": true,
+                "InventoryGraphicName": "",
                 "Entry Count": "",
                 "Entry 1 State": "",
                 "Entry 1": "",
                 "Entry 2 State": "",
-                "Entry 2": "",
-                "onTalk": "",
-                "onEnterInventory": "",
-                "VisibleInInentory": ""
+                "Entry 2": ""
             },
             {
                 "id": 5,
@@ -940,14 +984,15 @@
                 "Success Description": "",
                 "Failure Description": "",
                 "Count": 0,
+                "onEnterInventoryText": "",
+                "onTalk": "",
+                "VisibleInventory": "",
+                "InventoryGraphicName": "",
                 "Entry Count": 2,
                 "Entry 1 State": "unassigned",
                 "Entry 1": "Get to parents",
                 "Entry 2 State": "unassigned",
-                "Entry 2": "Return crab home",
-                "onTalk": "",
-                "onEnterInventory": "",
-                "VisibleInInentory": ""
+                "Entry 2": "Return crab home"
             },
             {
                 "id": 3,
@@ -963,14 +1008,15 @@
                 "Success Description": "",
                 "Failure Description": "",
                 "Count": 0,
+                "onEnterInventoryText": "",
+                "onTalk": "",
+                "VisibleInventory": true,
+                "InventoryGraphicName": "inv_tinder",
                 "Entry Count": "",
                 "Entry 1 State": "",
                 "Entry 1": "",
                 "Entry 2 State": "",
-                "Entry 2": "",
-                "onTalk": "",
-                "onEnterInventory": "",
-                "VisibleInInentory": ""
+                "Entry 2": ""
             },
             {
                 "id": 1,
@@ -986,19 +1032,20 @@
                 "Success Description": "",
                 "Failure Description": "",
                 "Count": 0,
+                "onEnterInventoryText": "",
+                "onTalk": "",
+                "VisibleInventory": "",
+                "InventoryGraphicName": "",
                 "Entry Count": "",
                 "Entry 1 State": "",
                 "Entry 1": "",
                 "Entry 2 State": "",
-                "Entry 2": "",
-                "onTalk": "",
-                "onEnterInventory": "",
-                "VisibleInInentory": ""
+                "Entry 2": ""
             },
             {
                 "id": 6,
                 "Name": "Wood",
-                "onLookat": "It's wood.",
+                "onLookat": "It's wood. Firewood.",
                 "Is Item": true,
                 "State": "",
                 "Inventory": false,
@@ -1009,14 +1056,15 @@
                 "Success Description": "",
                 "Failure Description": "",
                 "Count": 0,
+                "onEnterInventoryText": "",
+                "onTalk": "The wood doesn't answer.",
+                "VisibleInventory": true,
+                "InventoryGraphicName": "inv_log",
                 "Entry Count": "",
                 "Entry 1 State": "",
                 "Entry 1": "",
                 "Entry 2 State": "",
-                "Entry 2": "",
-                "onTalk": "",
-                "onEnterInventory": "",
-                "VisibleInInentory": true
+                "Entry 2": ""
             }
         ],
         "Locations": [
@@ -1100,7 +1148,7 @@
                         "Conversant": 1,
                         "Title": "New Dialogue Entry",
                         "MenuText": "",
-                        "DialogueText": "dialogue text 2",
+                        "DialogueText": "Hello",
                         "IsGroup": false,
                         "FalseConditionAction": "Block",
                         "ConditionPriority": "Normal",
@@ -1114,6 +1162,13 @@
                                 "OriginID": 1,
                                 "DestConvID": 1,
                                 "DestID": 2,
+                                "ConditionPriority": "Normal"
+                            },
+                            {
+                                "OriginConvID": 1,
+                                "OriginID": 1,
+                                "DestConvID": 1,
+                                "DestID": 3,
                                 "ConditionPriority": "Normal"
                             }
                         ],
@@ -1130,7 +1185,7 @@
                         "Actor": 1,
                         "Conversant": 2,
                         "Title": "New Dialogue Entry",
-                        "MenuText": " text 3",
+                        "MenuText": "A crab?",
                         "DialogueText": "",
                         "IsGroup": false,
                         "FalseConditionAction": "Block",
@@ -1144,35 +1199,136 @@
                             "logic": "All",
                             "conditions": [
                                 {
-                                    "type": "Quest",
-                                    "name": -1,
-                                    "variable": "",
-                                    "compare": "Is",
-                                    "value": "Unassigned"
-                                },
-                                {
-                                    "type": "Quest",
-                                    "name": -1,
-                                    "variable": "",
-                                    "compare": "Is",
-                                    "value": "Unassigned"
+                                    "type": "Item",
+                                    "name": 6,
+                                    "variable": "Count",
+                                    "compare": "GreaterEqual",
+                                    "value": 1
                                 }
                             ]
                         },
-                        "actions": [
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Player_1_3",
+                        "ConvID": 1,
+                        "ID": 3,
+                        "Actor": 1,
+                        "Conversant": 2,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "I need flint.",
+                        "DialogueText": "",
+                        "IsGroup": false,
+                        "FalseConditionAction": "Block",
+                        "ConditionPriority": "Normal",
+                        "Conditions": "",
+                        "Script": "",
+                        "Sequence": "",
+                        "Parenthetical": "",
+                        "links": [
                             {
-                                "type": "Quest",
-                                "name": 5,
-                                "mode": "To",
-                                "variable": "",
-                                "value": "Unassigned"
+                                "OriginConvID": 1,
+                                "OriginID": 3,
+                                "DestConvID": 1,
+                                "DestID": 4,
+                                "ConditionPriority": "Normal"
+                            }
+                        ],
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Crab_1_4",
+                        "ConvID": 1,
+                        "ID": 4,
+                        "Actor": 2,
+                        "Conversant": 1,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "I can give you some.",
+                        "IsGroup": false,
+                        "FalseConditionAction": "Block",
+                        "ConditionPriority": "Normal",
+                        "Conditions": "",
+                        "Script": "",
+                        "Sequence": "",
+                        "Parenthetical": "",
+                        "links": [
+                            {
+                                "OriginConvID": 1,
+                                "OriginID": 4,
+                                "DestConvID": 1,
+                                "DestID": 5,
+                                "ConditionPriority": "Normal"
                             },
                             {
-                                "type": "Quest",
-                                "name": 5,
+                                "OriginConvID": 1,
+                                "OriginID": 4,
+                                "DestConvID": 1,
+                                "DestID": 6,
+                                "ConditionPriority": "Normal"
+                            }
+                        ],
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Player_1_5",
+                        "ConvID": 1,
+                        "ID": 5,
+                        "Actor": 1,
+                        "Conversant": 2,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "Maybe later.",
+                        "DialogueText": "",
+                        "IsGroup": false,
+                        "FalseConditionAction": "Block",
+                        "ConditionPriority": "Normal",
+                        "Conditions": "",
+                        "Script": "",
+                        "Sequence": "",
+                        "Parenthetical": "",
+                        "links": {},
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Player_1_6",
+                        "ConvID": 1,
+                        "ID": 6,
+                        "Actor": 1,
+                        "Conversant": 2,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "I'll take it.",
+                        "DialogueText": "",
+                        "IsGroup": false,
+                        "FalseConditionAction": "Block",
+                        "ConditionPriority": "Normal",
+                        "Conditions": "",
+                        "Script": "",
+                        "Sequence": "",
+                        "Parenthetical": "",
+                        "links": {},
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": [
+                            {
+                                "type": "Item",
+                                "name": 3,
                                 "mode": "To",
-                                "variable": "",
-                                "value": "Unassigned"
+                                "variable": "Inventory",
+                                "value": true
                             }
                         ]
                     }

@@ -27,6 +27,7 @@ BasicGame.Game = function (game) {
 
     this.mapData;
     this.globalHandler;
+    this.inventory;
 };
 
 //
@@ -34,26 +35,28 @@ BasicGame.Game = function (game) {
 
 BasicGame.Game.prototype = {
     preload: function(){
-        this.load.text('map', 'assets/desertIsland.json');//mission file - can I show a preloader? should I?
+        this.load.json('map', 'assets/desertIsland.json');//mission file - can I show a preloader? should I?        
     },
     create: function () {
         this.stage.backgroundColor = "#666666"
         this.pathfinder = this.game.plugins.add(Phaser.Plugin.PathFinderPlugin);
-        
+       
         this.interactiveObjects = [];
         this.uiGroup = this.add.group();
         //
-        this.mapData = JSON.parse(this.game.cache.getText('map'));
+        this.mapData = this.game.cache.getJSON('map');
         //
         this.hexHandler = new HexHandler(this,this.game, this.mapData.mapData.hexWidth,this.mapData.mapData.hexHeight);
         //actors, variables, quests, items
         this.globalHandler = new GlobalHandler(this.game, this, this.mapData.data.Actors, this.mapData.data.Variables, null, this.mapData.data.Items);
+        
+        
         //
         this.startpos = this.mapData.startPos.split("_");
         var currentmap = this.mapData.maps[this.startpos[0]];
         this.createMapTiles(currentmap);
         //
-        this.dialoghandler = new DialogHandler(this,this.mapData.data.Conversations, this.mapData.data.Actors);
+        this.dialoghandler = new DialogHandler(this.game, this, this.mapData.data.Conversations, this.mapData.data.Actors);
         //
         this.diagpanel = new DialogPanel(this.game,this,this.dialoghandler);
 	    this.game.add.existing(this.diagpanel);
@@ -62,7 +65,11 @@ BasicGame.Game.prototype = {
         this.justTextPopup = new JustTextPopup(this.game,this,this.dialoghandler);
         this.game.add.existing(this.justTextPopup);
         this.uiGroup.add(this.justTextPopup);
-
+        
+        this.inventory = new InventoryGraphics(this.game,this,this.globalHandler);
+	    this.game.add.existing(this.inventory);
+        this.uiGroup.add(this.inventory);
+        //this.inventory.y = 450;
         //this.input.addMoveCallback(this.drawLine, this); 
         //this.input.onDown.add(this.drawLine, this); 
         //MOVE
@@ -75,8 +82,6 @@ BasicGame.Game.prototype = {
         
         this.graphics = this.game.add.graphics(0, 0);
         this.uiGroup.add(this.graphics);
-        
-        
         //this.showJustTextDialog(3);
         //this.showJustText("YEP");
         //this.showDialog(1);

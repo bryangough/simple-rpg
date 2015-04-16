@@ -4,7 +4,7 @@ module.exports = function(grunt){
         concat:{
             dist:{
                 src:[
-                    'src/*.js'
+                    'src/**/*.js'
                 ],
                 dest: 'src/build/RPGSimple_concat.js'
             }

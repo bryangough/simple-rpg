@@ -5,7 +5,8 @@ var EventDispatcher = function (game, maingame, object)
     this.maingame = maingame;
     this.object = object;
     
-    GlobalEvents.allEventDispatchers.push(this);
+    if(object!=null)
+        GlobalEvents.allEventDispatchers.push(this);
 }
 EventDispatcher.prototype.receiveData = function(triggers) 
 {
@@ -17,7 +18,7 @@ EventDispatcher.prototype.receiveData = function(triggers)
     //this.onEnterSignal = new Phaser.Signal();
     this.onEnterAction;//done
     this.onStartAction;//not done
-    //onActivateAction//not done
+    this.onActivateAction//not done
     //
     this.init(triggers);
 };
@@ -66,44 +67,7 @@ EventDispatcher.prototype.init = function(triggers)
             {
                 action = trigger.actions[j];
                 eventAction = this.getEventType(activation);
-                if(action.type=="ChangeMap")
-                {
-                    //console.log(action);
-                    eventAction.push({func:this.maingame.userExit, para:[action], removeself:trigger.once, callee:this.maingame, con:con});
-                }
-                //
-                else if(action.type=="CONVERSATION")
-                {
-                    eventAction.push({func:this.maingame.showDialog, para:[action.id], removeself:trigger.once, callee:this.maingame, con:con});
-                }
-                else if(action.type=="SIMPLE")
-                {
-                    eventAction.push({func:this.maingame.showJustTextDialog, para:[action.id], removeself:trigger.once, callee:this.maingame, con:con});
-                }
-                else if(action.type=="BARK")
-                {
-                }
-                //
-                else if(action.type=="THIS")//call function on this
-                {
-                    eventAction.push({func:this.object.callFunction, para:[action.function,action.parameters], removeself:false, callee:this.object, con:con});
-                }
-                else if(action.type=="Item")
-                {
-                    eventAction.push({func:this.maingame.globalHandler.updateItem, para:[action.name,action.mode,action.variable,action.value],  removeself:false, callee:this.maingame.globalHandler, con:con});
-
-                }
-                else if(action.type=="Actor")
-                {
-                    eventAction.push({func:this.maingame.globalHandler.updateActor, para:[action.name,action.mode,action.variable,action.value],  removeself:false, callee:this.maingame.globalHandler, con:con});
-                }
-                else if(action.type=="Variable")
-                {
-                    eventAction.push({func:this.maingame.globalHandler.updateVariableByID, para:[action.name,action.mode,action.value],  removeself:false, callee:this.maingame.globalHandler, con:con});
-                }
-                else if(action.type=="Quest")
-                {
-                }
+                this.setActions(eventAction, action, trigger.once, con);
             }
         }
         else if(trigger.type=="actiontext")
@@ -120,6 +84,60 @@ EventDispatcher.prototype.init = function(triggers)
         }
     }
 };
+
+//eventAction - array to contain them
+//action - 
+//
+EventDispatcher.prototype.helpSetActions = function(eventAction, actions, once, con)
+{
+    if(actions!=null){            
+        for(var j=0;j<actions.length;j++){
+            if(actions[j]!=null)
+                this.setActions(eventAction, actions[j], once, con);
+        }
+    }
+}
+EventDispatcher.prototype.setActions = function(eventAction,action, once, con)
+{
+    if(action.type=="ChangeMap")
+        {
+            //console.log(action);
+            eventAction.push({func:this.maingame.userExit, para:[action], removeself:once, callee:this.maingame, con:con});
+        }
+        //
+        else if(action.type=="CONVERSATION")
+        {
+            eventAction.push({func:this.maingame.showDialog, para:[action.id], removeself:once, callee:this.maingame, con:con});
+        }
+        else if(action.type=="SIMPLE")
+        {
+            eventAction.push({func:this.maingame.showJustTextDialog, para:[action.id], removeself:once, callee:this.maingame, con:con});
+        }
+        else if(action.type=="BARK")
+        {
+        }
+        //
+        else if(action.type=="THIS")//call function on this
+        {
+            eventAction.push({func:this.object.callFunction, para:[action.function, action.parameters], removeself:false, callee:this.object, con:con});
+        }
+        else if(action.type=="Item")
+        {
+            eventAction.push({func:this.maingame.globalHandler.updateItem, para:[action.name,action.mode, action.variable,action.value],  removeself:false, callee:this.maingame.globalHandler, con:con});
+
+        }
+        else if(action.type=="Actor")
+        {
+            eventAction.push({func:this.maingame.globalHandler.updateActor, para:[action.name,action.mode, action.variable,action.value],  removeself:false, callee:this.maingame.globalHandler, con:con});
+        }
+        else if(action.type=="Variable")
+        {
+            eventAction.push({func:this.maingame.globalHandler.updateVariableByID, para:[action.name,action.mode, action.value],  removeself:false, callee:this.maingame.globalHandler, con:con});
+        }
+        else if(action.type=="Quest")
+        {
+        }
+}
 //
 EventDispatcher.prototype.applyConditions = function(conditions) 
 {
@@ -168,7 +186,7 @@ EventDispatcher.prototype.testConditions = function(conditions)
     var eachreturn;
     for(var j=0;j<conditionlist.length;j++){
         eachreturn = conditionlist[j].func.apply(conditionlist[j].callee, conditionlist[j].para);
-        console.log(eachreturn,logic, conditionlist[j]);
+        //console.log(eachreturn,logic, conditionlist[j]);
         if(logic=="All"){
             if(eachreturn==false)
                 return false;
@@ -185,18 +203,21 @@ EventDispatcher.prototype.testConditions = function(conditions)
 EventDispatcher.prototype.doAction = function(activation) 
 {
     var actionEvent = this.getEventType(activation); 
+    this.completeAction(actionEvent);
+}
+EventDispatcher.prototype.completeAction = function(actionEvent)
+{
     if(actionEvent.length>0)
     {
         for(var i=0;i<actionEvent.length;i++)
         {
-            if(actionEvent[i])
+            if(actionEvent[i]!=null)
             {
                 if(actionEvent[i].con)//check condition. If false skip. If con is null then just go.
                 {
                     if(!this.testConditions(actionEvent[i].con))
                         continue;
                 }
-                //this.onEnterSignal.dispatch([actionEvent[i].para]);
                 actionEvent[i].func.apply(actionEvent[i].callee, actionEvent[i].para);
                 if(actionEvent[i].removeself)
                 {
@@ -235,6 +256,12 @@ EventDispatcher.prototype.getEventType = function(activation)
         this.onLookAction = this.onLookAction || [];
         return this.onLookAction;
     }
+    else if(activation=="OnActivate")
+    {
+        this.onActivateAction = this.onActivateAction || [];
+        return this.onActivateAction;
+    }
+    
 };
 EventDispatcher.prototype.destroy = function() 
 {
@@ -243,6 +270,7 @@ EventDispatcher.prototype.destroy = function()
     this.onTalkAction = null;
     this.onEnterAction = null;
     this.onStartAction = null;
+    this.onActivateAction = null;
 }
 
 /*
