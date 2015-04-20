@@ -81,7 +81,7 @@ EventDispatcher.prototype.init = function(triggers)
                 this.setActions(eventAction, action, trigger.once, con);
             }
         }
-        else if(trigger.type=="actiontext")
+       /* else if(trigger.type=="actiontext")
         {//need touch and talk actives
             var con = null;
             if(trigger.conditions)
@@ -92,7 +92,7 @@ EventDispatcher.prototype.init = function(triggers)
             {
                 this.getEventType("OnLook").push({func:this.maingame.showJustText, para:[trigger.lookat], removeself:false, callee:this.maingame, con:con});
             }
-        }
+        }*/
     }
 };
 
@@ -122,7 +122,7 @@ EventDispatcher.prototype.setActions = function(eventAction,action, once, con)
         }
         else if(action.type=="SIMPLE")
         {
-            eventAction.push({func:this.maingame.showJustTextDialog, para:[action.id], removeself:once, callee:this.maingame, con:con});
+            eventAction.push({func:this.maingame.showJustText, para:[action.text], removeself:once, callee:this.maingame, con:con});
         }
         else if(action.type=="BARK")
         {
@@ -229,8 +229,10 @@ EventDispatcher.prototype.completeAction = function(actionEvent)
 {
     var lastcon;
     var lastconreturn = false;
+    var actionstoactivate = []
     if(actionEvent.length>0)
     {
+        //test all conditions
         for(var i=0;i<actionEvent.length;i++)
         {
             if(actionEvent[i]!=null)
@@ -238,26 +240,27 @@ EventDispatcher.prototype.completeAction = function(actionEvent)
                 if(actionEvent[i].con)//check condition. If false skip. If con is null then just go.
                 {
                     //if similar cons just use same value
-                   // console.log("completeAction ",actionEvent[i].con,lastcon);
                     if(actionEvent[i].con!=lastcon)
                     {
                         lastconreturn = this.testConditions(actionEvent[i].con);
                         lastcon = actionEvent[i].con;
                     }
-                    else
-                    {
-                       // console.log("repeat");
-                    }
                     if(!lastconreturn)
                         continue;
                 }
-                actionEvent[i].func.apply(actionEvent[i].callee, actionEvent[i].para);
-                if(actionEvent[i].removeself)
-                {
-                    actionEvent[i] = null;//splice too?
-                    console.log("remove event");
-                }
+                //push activated events into array and fire them later
+                actionstoactivate.push(actionEvent[i]);
             }
+        }
+        //all actions now happens after all conditions are tested
+        for(var i=0;i<actionstoactivate.length;i++)
+        {
+            actionstoactivate[i].func.apply(actionstoactivate[i].callee, actionstoactivate[i].para);
+            if(actionstoactivate[i].removeself)
+            {
+                actionstoactivate[i] = null;//splice too? yes?
+                console.log("remove event");
+            }       
         }
     }
 };

@@ -54,14 +54,14 @@ MovingCharacter.prototype.setLocation = function(inx,iny)
 MovingCharacter.prototype.setLocationByTile = function(tile) 
 {
     this.x = tile.x+this.maingame.hexHandler.halfHex;
-    this.y = tile.y+this.maingame.hexHandler.halfHex;
+    this.y = tile.y+this.maingame.hexHandler.halfHexHeight;
     this.oldTile = tile;
     this.currentTile = tile;
 }
 MovingCharacter.prototype.setDirection = function() 
 {
     this.dir.x =  this.nextTile.x+this.maingame.hexHandler.halfHex-this.x;
-    this.dir.y =  this.nextTile.y+this.maingame.hexHandler.halfHex-this.y;
+    this.dir.y =  this.nextTile.y+this.maingame.hexHandler.halfHexHeight-this.y;
     this.dir.normalize();
 }
 MovingCharacter.prototype.setPath = function(path) 
@@ -73,7 +73,7 @@ MovingCharacter.prototype.setPath = function(path)
         return;
     this.path = path;
     this.pathlocation = 0;
-    this.nextTile = this.maingame.hexHandler.getTileByCords(path[this.pathlocation].x,path[this.pathlocation].y);
+    this.nextTile = path[this.pathlocation];//this.maingame.hexHandler.getTileByCords( path[this.pathlocation].x, path[this.pathlocation].y);
     this.setDirection();
     this.animations.play("walk");
 }
@@ -83,6 +83,7 @@ MovingCharacter.prototype.step = function(elapseTime)
     {
         if(this.path.length>0)
         {
+            //need to test if next spot is now not walkable
             this.currentTile = this.maingame.hexHandler.checkHex(this.x,this.y);
             if(this.currentTile.posx==this.nextTile.posx && this.currentTile.posy==this.nextTile.posy)
             {
@@ -91,7 +92,7 @@ MovingCharacter.prototype.step = function(elapseTime)
                 {
                     this.pathlocation=this.path.length;
                     var testx = this.currentTile.x+this.maingame.hexHandler.halfHex;
-                    var testy = this.currentTile.y+this.maingame.hexHandler.halfHex;
+                    var testy = this.currentTile.y+this.maingame.hexHandler.halfHexHeight;
                     var range = 3;
                     if(testx-range<this.x && testx+range>this.x && testy-range<this.y && testy+range>this.y)
                     {
@@ -107,7 +108,7 @@ MovingCharacter.prototype.step = function(elapseTime)
                 }
                 else
                 {
-                    this.nextTile = this.maingame.hexHandler.getTileByCords(this.path[this.pathlocation].x,this.path[this.pathlocation].y);
+                    this.nextTile = this.path[this.pathlocation]; //this.maingame.hexHandler.getTileByCords(this.path[this.pathlocation].x,this.path[this.pathlocation].y);
                     this.setDirection();
                 }
             }

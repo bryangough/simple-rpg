@@ -209,6 +209,7 @@ EasyStar.instance = function() {
 	this.endY;
 	this.nodeHash = {};
 	this.openList;
+    this.endwalkable;
 };
 /**
 *	EasyStar.js
@@ -347,8 +348,8 @@ EasyStar.js = function() {
 		}
 
 		//End point is not an acceptable tile.
+        //- this needs to change - if this is true, end 1 before
 		var endTile = collisionGrid[endX][endY];
-        //console.log(endTile,collisionGrid[endX][endY],endY,endX);
 		var isAcceptable = false;
 		for (var i = 0; i < acceptableTiles.length; i++) {
 			if (endTile === acceptableTiles[i]) {
@@ -356,12 +357,10 @@ EasyStar.js = function() {
 				break;
 			}
 		}
-       // console.log("isAcceptable",isAcceptable);
-		if (isAcceptable === false) {
-			callback.apply(callbackObj,[null]);
-			return;
-		}
-        //console.log("isAcceptable",isAcceptable);
+		//if (isAcceptable === false) {
+			//callback.apply(callbackObj,[null]);
+			//return;
+		//}
 		//Create the instance
 		var instance = new EasyStar.instance();
 		instance.openList = new EasyStar.PriorityQueue("bestGuessDistance",EasyStar.PriorityQueue.MIN_HEAP);
@@ -373,7 +372,7 @@ EasyStar.js = function() {
 		instance.endY = endY;
 		instance.callback = callback;
         instance.callbackObj = callbackObj;
-		
+		instance.endwalkable = isAcceptable;
 		instance.openList.insert(coordinateToNode(instance, instance.startX, 
 			instance.startY, null, STRAIGHT_COST));
 		
@@ -395,11 +394,10 @@ EasyStar.js = function() {
 			if (instances.length === 0) {
 				return;
 			}
-
 			//Couldn't find a path.
 			if (instances[0].openList.length===0) {
-                console.log("can't find path");
-			    instances[0].callback.apply(instances[0].callbackObj,[path]);//try passing back the path so far
+                //console.log("can't find path");                
+			    instances[0].callback.apply(instances[0].callbackObj,[[]]);
 				instances.shift();
 				continue;
 			}
@@ -407,7 +405,7 @@ EasyStar.js = function() {
 			var searchNode = instances[0].openList.shiftHighestPriorityElement();
 			searchNode.list = EasyStar.Node.CLOSED_LIST;
             //
-            if(searchNode.y % 2 == 1)
+            if(searchNode.x % 2 == 1)
 			{
 				if(testNode(searchNode, 0,    -1))continue;
 				if(testNode(searchNode, -1,   0))continue;
@@ -427,7 +425,7 @@ EasyStar.js = function() {
 			}
 		}
 	};
-    //didn't switch collisonGrid x/y, switched the rest!
+    //
     var testNode = function(searchNode,valx,valy){
         if(searchNode.x+valx > -1 && searchNode.x+valx < collisionGrid.length &&
            searchNode.y+valy > -1 && searchNode.y+valy < collisionGrid[0].length)
@@ -441,7 +439,6 @@ EasyStar.js = function() {
         return false
     }
 	//Private methods follow
-
 	var checkAdjacentNode = function(instance, searchNode, x, y, cost) {
 		var adjacentCoordinateX = searchNode.x+x;
 		var adjacentCoordinateY = searchNode.y+y;
@@ -451,9 +448,12 @@ EasyStar.js = function() {
 				instance.isDoneCalculating = true;
 				var path = [];
 				var pathLen = 0;
-				path[pathLen] = {x: adjacentCoordinateX, y: adjacentCoordinateY};
-				pathLen++;
-				path[pathLen] = {x: searchNode.x, y:searchNode.y};
+                if(instance.endwalkable)
+                {
+				    path[pathLen] = {x: adjacentCoordinateX, y: adjacentCoordinateY};
+				    pathLen++;    
+                }
+                path[pathLen] = {x: searchNode.x, y:searchNode.y};
 				pathLen++;
 				var parent = searchNode.parent;
 				while (parent!=null) {
@@ -467,7 +467,6 @@ EasyStar.js = function() {
 
 			for (var i = 0; i < acceptableTiles.length; i++) {
 				if (collisionGrid[adjacentCoordinateX][adjacentCoordinateY] === acceptableTiles[i]) {
-					
 					var node = coordinateToNode(instance, adjacentCoordinateX, 
 						adjacentCoordinateY, searchNode, cost);
 					

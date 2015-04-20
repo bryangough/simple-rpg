@@ -21,6 +21,7 @@ var HexHandler = function (maingame, game, hexagonWidth, hexagonHeight)
     this.sectorHeight = this.hexagonHeight/4*3;
     
     this.halfHex = this.hexagonWidth/2;
+    this.halfHexHeight = this.hexagonHeight/2;
     this.gradient = (this.hexagonHeight/4)/(this.hexagonWidth/2);
 
 };
@@ -92,10 +93,13 @@ HexHandler.prototype.getTileByCords = function(x,y)
 //Returns tile that hits. 
 HexHandler.prototype.lineTest = function(tilestart, tileend)
 {
-    var p0 = new Point(tilestart.x+this.halfHex, tilestart.y+this.halfHex);
-    var p1 = new Point(tileend.x+this.halfHex, tileend.y+this.halfHex);
+    var p0 = new Point(tilestart.x+this.halfHex, tilestart.y+this.halfHexHeight);
+    var p1 = new Point(tileend.x+this.halfHex, tileend.y+this.halfHexHeight);
     var N = this.game.math.distance(p0.x,p0.y,p1.x,p1.y);
-    N = this.game.math.ceil(N/this.hexagonWidth)+1;
+    var cut = this.hexagonWidth;
+    if(this.hexagonWidth>this.hexagonHeight)
+        cut = this.hexagonHeight;
+    N = this.game.math.ceil(N/this.cut)+1;
     var points = [];
     for (var step = 0; step <= N; step++) {
             var t = N == 0? 0.0 : step / N;
@@ -113,23 +117,28 @@ HexHandler.prototype.lineTest = function(tilestart, tileend)
     return tileend;
 };
 //
-HexHandler.prototype.dolines = function(tilestart, tileend, ignoreWalkable)
+HexHandler.prototype.dolines = function(tilestart, tileend, ignoreWalkable, highlight)
 {
+    if(tilestart==null||tileend==null)
+        return;
     var p0 = new Point(tilestart.x+this.halfHex,
-                       tilestart.y+this.halfHex);
+                       tilestart.y+this.halfHexHeight);
     var p1 = new Point(tileend.x+this.halfHex, 
-                       tileend.y+this.halfHex);
+                       tileend.y+this.halfHexHeight);
     //
     if(this.debug)
     {
         this.maingame.graphics.clear();
         this.maingame.graphics.lineStyle(10, 0xffd900, 1);
-        this.maingame.graphics.moveTo(tilestart.x+hexagonGroup.x+this.halfHex, tilestart.y+hexagonGroup.y+this.halfHex);
-        this.maingame.graphics.lineTo(tileend.x+hexagonGroup.x+this.halfHex, tileend.y+hexagonGroup.y+this.halfHex);
+        this.maingame.graphics.moveTo(tilestart.x+ tilestart.parent.x+ this.halfHex, tilestart.y+ tilestart.parent.y+ this.halfHexHeight);
+        this.maingame.graphics.lineTo(tileend.x+ tileend.parent.x+ this.halfHex, tileend.y+ tileend.parent.y+ this.halfHexHeight);
     }
     //
     var N = this.game.math.distance(p0.x,p0.y,p1.x,p1.y);
-    N = this.game.math.ceil(N/this.hexagonWidth)+1;
+    var cut = this.hexagonWidth;
+    if(this.hexagonWidth>this.hexagonHeight)
+        cut = this.hexagonHeight;
+    N = this.game.math.ceil(N/cut)+1;
     var points = [];
     for (var step = 0; step <= N; step++) {
             var t = N == 0? 0.0 : step / N;
@@ -138,35 +147,69 @@ HexHandler.prototype.dolines = function(tilestart, tileend, ignoreWalkable)
     var tiles = [];
     if(this.debug)
     {
-    this.maingame.graphics.lineStyle(0);
-    this.maingame.graphics.beginFill(0x00FF0B, 0.5);
+        this.maingame.graphics.lineStyle(0);
+        this.maingame.graphics.beginFill(0x00FF0B, 0.5);
     }
+    var pasttile = null
+    if(highlight)
+        highlight.cleanuptiles();
+    //points.reverse();
     for(var i=0;i<points.length;i++)
     {
-        var overtile = this.maingame.checkHex(points[i].x,points[i].y);
+        var overtile = this.checkHex(points[i].x,points[i].y);
         if(this.debug)
-            this.maingame.graphics.drawCircle(points[i].x+hexagonGroup.x,points[i].y+hexagonGroup.y, 10);
+        {
+            this.maingame.graphics.drawCircle(points[i].x+tilestart.parent.x,points[i].y+tilestart.parent.y, 10);
+        }
         if(overtile!=null)
         {
             if(!overtile.walkable&&!ignoreWalkable)
+            {
                 break;
+            }
             tiles.push(overtile);
-            if(this.debug)
-                this.maingame.highlightpath(i,overtile);//debug
+            if(highlight)
+                highlight.highlighttilebytile(i,overtile);//debug
         }
     }
     if(this.debug)
         this.maingame.graphics.endFill();
-    
-    //more debug
-    if(this.debug)
+    //  
+    return tiles;
+};
+HexHandler.prototype.getlinepath = function(tilestart, tileend, ignoreWalkable)
+{
+    if(tilestart==null||tileend==null)
+        return;
+    var p0 = new Point(tilestart.x+this.halfHex,
+                       tilestart.y+this.halfHexHeight);
+    var p1 = new Point(tileend.x+this.halfHex, 
+                       tileend.y+this.halfHexHeight);
+    var N = this.game.math.distance(p0.x,p0.y,p1.x,p1.y);
+    var cut = this.hexagonWidth;
+    if(this.hexagonWidth>this.hexagonHeight)
+        cut = this.hexagonHeight;
+    N = this.game.math.ceil(N/cut)+1;
+    var points = [];
+    for (var step = 0; step <= N; step++) {
+            var t = N == 0? 0.0 : step / N;
+            points.push(this.lerp_point(p0, p1, t));
+    }
+    var tiles = [];
+    var pasttile = null
+    for(var i=0;i<points.length;i++)
     {
-        for(i = tiles.length;i<this.maingame.neighborLights.length;i++)
+        var overtile = this.checkHex(points[i].x,points[i].y);
+        if(overtile!=null)
         {
-            this.maingame.highlightpath(i,null);
+            if(!overtile.walkable&&!ignoreWalkable)
+            {
+                break;
+            }
+            tiles.push(overtile);
         }
     }
-    //    
+    //  
     return tiles;
 };
 HexHandler.prototype.round_point = function(p) {
@@ -182,11 +225,12 @@ HexHandler.prototype.lerp_point = function(p0, p1, t) {
 //
 HexHandler.prototype.doFloodFill = function(tile,range)
 {
+    if(tile==null)
+        return;
     this.visited = [];
     this.visited.push(tile);
     this.fringes = [];
     this.fringes.push([tile]);
-
     for(var k=1;k<=range;k++)
     {
         this.fringes.push([]);
@@ -219,7 +263,7 @@ HexHandler.prototype.addNeighbor=function(fromtile,x,y,k)
 {
     x = fromtile.posx+x;
     y = fromtile.posy+y;
-    var tile = this.maingame.getTileByCords(x,y);
+    var tile = this.getTileByCords(x,y);
     if(tile!=null)
     {
         //console.log(tile,tile.walkable);
@@ -245,10 +289,10 @@ HexHandler.prototype.getFrigesAsArray=function()
 //
 HexHandler.prototype.areTilesNeighbors=function(starttile,testtile)
 {
-    var posx = starttile.posx-testtile.posx;
-    var posy = starttile.posy-testtile.posy;
+    var posx = starttile.x-testtile.x;
+    var posy = starttile.y-testtile.y;
     //
-    if(starttile.posx % 2 == 1)
+    if(starttile.x % 2 == 1)
     {
         if(posx==0&&posy==-1)return true;
         if(posx==-1&&posy==0 )return true;
@@ -267,6 +311,20 @@ HexHandler.prototype.areTilesNeighbors=function(starttile,testtile)
         if(posx==1&&posy==-1)return true;
     }
     return false;
+}
+
+HexHandler.prototype.pathCoordsToTiles = function(path)
+{
+    newpath = [];
+    for(var i=0;i<path.length;i++)
+    {
+        var overtile = this.getTileByCords(path[i].x,path[i].y);
+        if(overtile!=null)
+        {
+            newpath.push(overtile);
+        }
+    }
+    return newpath;
 }
 HexHandler.prototype.flush=function()
 {
