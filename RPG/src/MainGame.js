@@ -19,9 +19,13 @@ BasicGame.Game = function (game) {
     this.graphics;//drawable
     
     //groups
+    this.mapGroup;
+    
     this.uiGroup;
+    this.objectGroup;
+    this.highlightGroup;
     this.hexagonGroup;
-    this.characterGroup;
+    
 
     this.interactiveObjects = [];
     this.startpos;
@@ -29,6 +33,11 @@ BasicGame.Game = function (game) {
     this.mapData;
     this.globalHandler;
     this.inventory;
+    
+    this.walkableArray;
+    this.updatewalkable = false;
+    
+    this.fps;
 };
 
 //
@@ -40,6 +49,9 @@ BasicGame.Game.prototype = {
         this.load.json('map', 'assets/forestmap.json');
     },
     create: function () {
+        
+        
+        
         this.stage.backgroundColor = "#666666"
         this.pathfinder = this.game.plugins.add(Phaser.Plugin.PathFinderPlugin);
        
@@ -86,17 +98,26 @@ BasicGame.Game.prototype = {
         this.graphics = this.game.add.graphics(0, 0);
         this.uiGroup.add(this.graphics);
         
-        //this.showJustTextDialog(3);
-        //this.showJustText("YEP");
-        //this.showDialog(1);
+        
+        //this.game.time.advancedTiming = true;
+        //fps = this.game.make.bitmapText(20, 0, "badabb", "---", 25);
+        //this.uiGroup.add(fps);        
     },
     createMapTiles: function(passedMap){
         var hexagonArray = [];
         var waterTilesArray = [];
         var hexagonWidth = this.hexHandler.hexagonWidth;
         var hexagonHeight = this.hexHandler.hexagonHeight;
+        //
+        this.objectGroup = this.add.group();
+        this.highlightGroup = this.add.group();
         this.hexagonGroup = this.add.group();
-        this.characterGroup = this.add.group();
+        //
+        this.mapGroup = this.add.group();
+        this.mapGroup.add(this.hexagonGroup);
+        this.mapGroup.add(this.highlightGroup);
+        this.mapGroup.add(this.objectGroup);
+        //
         this.uiGroup.parent.bringToTop(this.uiGroup);//keeps ui group on top layer
         //
         var layer1 = passedMap[0];
@@ -107,23 +128,27 @@ BasicGame.Game.prototype = {
         var tilesetid = layer1.tilesetid;
         var objectName;
         var tilereference;
-        var walkableArray = [];
         var temptile;
         //
-        for(var i = 0; i < this.gridSizeY; i ++){
+        this.walkableArray = [];
+        //
+        
+        for(var i = 0; i < this.gridSizeX; i ++)
+        {
 	     	hexagonArray[i] = [];
-            walkableArray[i] = [];
-			for(var j = 0; j < this.gridSizeX; j ++)
+            this.walkableArray[i] = [];
+            for(var j = 0; j < this.gridSizeY; j ++)
             {
                 //objectName = tiles[i*this.gridSizeX+j];
                 objectName = tiles[j*this.gridSizeX+i];
+                //console.log(i,j,objectName);
                 tilereference = this.getTile(objectName,tilesetid);
-                var hexagonX = hexagonWidth*j;
-                if(this.gridSizeY%2==1)
-                    hexagonX += hexagonWidth/2*(i%2);
-                else
-                    hexagonX -= hexagonWidth/2*(i%2);
-                var hexagonY = (hexagonHeight/4*3)*i;
+                var hexagonX = hexagonWidth*i;
+                //if(this.gridSizeY%2==1)
+                    hexagonX += hexagonWidth/2*(j%2);
+                //else
+                //    hexagonX -= hexagonWidth/2*(i%2);
+                var hexagonY = (hexagonHeight/4*3)*j;
                 
                 if(false)//tilereference.tile=="tileWater")
                 {
@@ -132,27 +157,28 @@ BasicGame.Game.prototype = {
                 }
                 else
                 {
+                   
                    temptile = new WalkableTile(this, tilereference.tile+".png", tilereference.spritesheet, i, j, hexagonX, hexagonY, this);
                 }
                 hexagonArray[i][j]=temptile;
                 this.hexagonGroup.add(temptile);
 
                 //
-                walkableArray[i][j] = layer1.walkable[j*this.gridSizeX+i];
-                if(walkableArray[i][j] == 0)
+                this.walkableArray[i][j] = layer1.walkable[j*this.gridSizeX+i];
+                if(this.walkableArray[i][j] == 0)
                 {
                     hexagonArray[i][j].walkable = false;
                 }
                 //
                 /*
-                var hexagonText = this.add.text(hexagonX+hexagonWidth/3+5,hexagonY+15,i+","+j);
+                var hexagonText = this.add.text(hexagonX+hexagonWidth/3,hexagonY+5,i+","+j);
                 hexagonText.font = "arial";
                 hexagonText.fontSize = 8;
                 this.hexagonGroup.add(hexagonText);
                 */
 			}
 		}
-        this.pathfinder.setGrid(walkableArray, [1]);
+        this.pathfinder.setGrid(this.walkableArray, [1]);
         this.hexHandler.hexagonArray = hexagonArray;
         this.hexHandler.waterTilesArray = waterTilesArray;
         var objects = layer1.objects;
@@ -172,8 +198,11 @@ BasicGame.Game.prototype = {
                 var objectreference = this.getTile(objects[i].name,objects[i].tilesetid);
                 spotx = objects[i].x;
                 spoty = objects[i].y;
-                var tileobject = this.game.make.sprite(objects[i].offsetx*hexagonWidth, objects[i].offsety*hexagonHeight, objectreference.spritesheet, objectreference.tile+".png");
-                hexagonArray[spotx][spoty].addChild(tileobject);
+                var tileobject = this.game.make.sprite(objects[i].offsetx * hexagonWidth + this.mapGroup.x + hexagonArray[spotx][spoty].x, 
+                                                       objects[i].offsety * hexagonHeight + this.mapGroup.y + hexagonArray[spotx][spoty].y, 
+                                                       objectreference.spritesheet, objectreference.tile+".png");
+                //hexagonArray[spotx][spoty].addChild(tileobject);
+                this.objectGroup.add(tileobject);
                 tileobject.anchor.x = 0.5;
                 tileobject.anchor.y = 1.0;
             }
@@ -181,7 +210,6 @@ BasicGame.Game.prototype = {
         var actionSpots = layer1.actionSpots;
         for(var i = 0; i < actionSpots.length; i ++)
         {
-            //var selectedtile = hexagonArray[this.gridSizeY-actionSpots[i].y-1][actionSpots[i].x];
             var selectedtile = hexagonArray[actionSpots[i].x][actionSpots[i].y];
             if(selectedtile)
             {
@@ -192,36 +220,31 @@ BasicGame.Game.prototype = {
                 selectedtile.eventDispatcher.receiveData(actionSpots[i].triggers);
             }
         }
+        //these should be screen width and height
+		this.mapGroup.y = (600/2-hexagonHeight*Math.ceil(this.gridSizeY/2))/2;
+        if(this.gridSizeY%2==0){
+            this.mapGroup.y-=hexagonHeight/4;
+        }
+        this.mapGroup.x = (900-Math.ceil(this.gridSizeX)*hexagonWidth)/2;
+        if(this.gridSizeX%2==0){
+            this.mapGroup.x-=hexagonWidth/8;
+        }
         //
-		this.hexagonGroup.y = (600/2-hexagonHeight*Math.ceil(this.gridSizeY/2))/2;
-          if(this.gridSizeY%2==0){
-               this.hexagonGroup.y-=hexagonHeight/4;
-          }
-        this.hexagonGroup.x = (900-Math.ceil(this.gridSizeX)*hexagonWidth)/2;
-          if(this.gridSizeX%2==0){
-               this.hexagonGroup.x-=hexagonWidth/8;
-          }
-        
         this.highlightHex = new HighlightHex(this.game, this, this.hexHandler);
         this.game.add.existing(this.highlightHex);
         this.highlightHex.setup();
-        this.characterGroup.add(this.highlightHex);
-        //this.hexagonGroup.add(this.highlightHex);
-       // this.hexagonGroup.sort('y', Phaser.Group.SORT_ASCENDING);
-        
-        
+        this.highlightGroup.add(this.highlightHex);
+                
         //create player
         if(!this.playerCharacter)
         {
-            this.playerCharacter = new MovingCharacter(this,this.game, "player");
+            this.playerCharacter = new PlayerCharacter(this, this.mapData.Player);
             this.game.add.existing(this.playerCharacter);
             this.playerCharacter.setLocationByTile(hexagonArray[this.startpos.x][this.startpos.y]);
         }
-        this.hexagonGroup.add(this.playerCharacter);
-        //this.characterGroup.sort('y', Phaser.Group.SORT_ASCENDING);
-        this.characterGroup.x = this.hexagonGroup.x;
-        this.characterGroup.y = this.hexagonGroup.y;
+        this.objectGroup.add(this.playerCharacter);
         //
+        this.hexagonGroup.sort('y', Phaser.Group.SORT_ASCENDING);
     },
     setChangeMapTile:function(selectedtile){
         var doorImage = this.game.make.sprite(0,0, "tiles","mapexit.png");
@@ -241,8 +264,10 @@ BasicGame.Game.prototype = {
         this.createMapTiles(currentmap);        
     },
     flushEntireMap: function(){
-        this.hexagonGroup.destroy();
-        this.characterGroup.destroy();
+        this.hexagonGroup.removeAll(true);
+        this.highlightGroup.removeAll(true);
+        this.objectGroup.removeAll(true);
+        //
         this.playerCharacter = null;
         this.hexHandler.flush();
     },
@@ -254,10 +279,17 @@ BasicGame.Game.prototype = {
         if(!this.game.global.pause)
         {
             this.playerCharacter.step(elapsedTime);
-            this.playerHex = this.hexHandler.checkHex(this.playerCharacter.x,this.playerCharacter.y);
+            //this.playerHex = this.hexHandler.checkHex(this.playerCharacter.x,this.playerCharacter.y);
             //var this.hexHandler.doFloodFill(this.playerHex,3);
         }
-        this.hexagonGroup.sort('y', Phaser.Group.SORT_ASCENDING);
+        //this.hexagonGroup.sort('y', Phaser.Group.SORT_ASCENDING);
+        this.objectGroup.sort('y', Phaser.Group.SORT_ASCENDING);
+        if(this.updatewalkable)
+        {
+           this.pathfinder.setGrid(this.walkableArray, [1]);
+            this.updatewalkable = false;
+        }
+        //fps.text = this.game.time.fps;
     },
     //
     showDialog:function(convid){
@@ -303,14 +335,19 @@ BasicGame.Game.prototype = {
         {
             return;
         }
-        var moveIndex =  this.hexHandler.checkHex(this.input.worldX-this.hexagonGroup.x,this.input.worldY-this.hexagonGroup.y);
+        var moveIndex =  this.hexHandler.checkHex(this.input.worldX-this.mapGroup.x,this.input.worldY-this.mapGroup.y);
         var playertile = this.hexHandler.checkHex(this.playerCharacter.x,this.playerCharacter.y);
         
+       // if(moveIndex)
+        //    console.log(moveIndex.posx,moveIndex.posy);
+        
+        //console.log(this.input.worldX,this.mapGroup.x,this.input.worldX-this.mapGroup.x);
         
         //this.highlightHex.doShowPath(this.pathfinder,playertile,moveIndex);
         //this.hexHandler.dolines(playertile,moveIndex,false,this.highlightHex);
         //var fridges = this.hexHandler.doFloodFill(moveIndex,4);
         //this.highlightHex.drawFringes(fridges);
+        
         this.highlightHex.highlighttilebytile(0,moveIndex);
         //this.highlightHex.highilightneighbors(moveIndex);
     },
@@ -322,12 +359,9 @@ BasicGame.Game.prototype = {
         {
             return;
         }
-        var moveIndex =  this.hexHandler.checkHex(this.input.worldX-this.hexagonGroup.x, this.input.worldY-this.hexagonGroup.y);
+        var moveIndex =  this.hexHandler.checkHex(this.input.worldX-this.mapGroup.x, this.input.worldY-this.mapGroup.y);
         if(moveIndex!=null)
         {
-            //var fridges = this.hexHandler.doFloodFill(moveIndex,3);
-            //this.drawFridges(fridges);
-            //
             if(this.game.currentacion==this.game.WALK)
             {
                 //activate this to make it not able to walk to spot

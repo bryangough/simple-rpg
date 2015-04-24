@@ -31,7 +31,10 @@ var GlobalHandler = function (game, maingame, actors, variables, quests, items)
             this.quests[items[i].id.toString()] = new QuestObject(items[i]);
         }
     }
+    //
+    this.maps = [];
 }
+//
 function saveState(state) { 
     window.localStorage.setItem("gameState", JSON.stringify(state)); 
 } 
@@ -43,6 +46,10 @@ function restoreState() {
     } else { 
         return null; 
     } 
+}
+//
+GlobalHandler.prototype.SaveGame = function()
+{
 }
 //Quest
 GlobalHandler.prototype.compareQuestValue = function(id,compare,value)

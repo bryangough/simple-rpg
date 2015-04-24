@@ -6,6 +6,11 @@ this.jsondata.destroyed - object has been destroy
 
 //need to remember where they are and what state they are in for scene changes
 
+extra states
+state
+destroyed - if destroyed don't recreate on enter
+
+
 */
 var InteractiveObject = function (maingame, jsondata) 
 {
@@ -38,12 +43,11 @@ var InteractiveObject = function (maingame, jsondata)
             var tempanimation;
             for(var j=0;j<animations.length;j++)
             {
-                //console.log(animations[j].id,animations[j].name);
                 if(animations[j].start==0&&animations[j].stop==0){
                     tempanimation = this.animations.add(animations[j].id,[animations[j].name+".png"], 1, animations[j].loop, false);
                 }
                 else{
-                    tempanimation =  this.animations.add(animations[j].id, Phaser.Animation.generateFrameNames(animations[j].name, animations[j].start, animations[j].stop, '.png', 4), 12, animations[j].loop, false);
+                    tempanimation =  this.animations.add(animations[j].id, Phaser.Animation.generateFrameNames(animations[j].name, animations[j].start, animations[j].stop, ".png", 4), 12, animations[j].loop, false);
                 }
             }
             /*if(tempanimation!=null)
@@ -59,7 +63,7 @@ var InteractiveObject = function (maingame, jsondata)
             //}, this);
         }
     }
-    if(this.actor){
+    if(this.actor&&this.actor.getValue("state")!=""){
         this.changeState(this.actor.getValue("state"));
     }
     else{
@@ -72,14 +76,24 @@ var InteractiveObject = function (maingame, jsondata)
         this.eventDispatcher.doAction("OnActivate");
 }
 InteractiveObject.prototype = Object.create(Phaser.Sprite.prototype);
-InteractiveObject.constructor = MovingCharacter;
+InteractiveObject.constructor = InteractiveObject;
 //
 //  
 InteractiveObject.prototype.changeState = function(newstate) 
 {
-    this.animations.play(newstate);
-    if(this.actor)
-        this.actor.updateValue("state",newstate);
+    //need to test if state exists
+    var nextAnimation = this.animations.getAnimation(newstate);
+    if(nextAnimation)
+    {
+        this.animations.play(newstate);
+        if(this.actor)
+            this.actor.updateValue("state",newstate);
+        this.jsondata.state = newstate;
+    }
+    else
+    {
+        console.log(this,newstate,"state doesn't exist.");
+    }
 }
 InteractiveObject.prototype.callFunction = function(fnstring,fnparams) 
 {
@@ -92,15 +106,32 @@ InteractiveObject.prototype.callFunction = function(fnstring,fnparams)
 }
 InteractiveObject.prototype.moveto = function(tox,toy) 
 {
-    console.log("moveto",tox,toy);
+    //console.log("moveto",tox,toy);
     if(tox!=null)
         var tile = this.maingame.hexHandler.getTileByCords(tox,toy);
-    console.log(tile);
     if(tile)
     {
-        tile.addChild(this);
+        var currenttile = this.maingame.hexHandler.checkHex(this.x,this.y);
+        currenttile.changeWalkable(true);
+        //
+        this.x = tile.x;
+        this.y = tile.y;
+        tile.changeWalkable(false);
+        this.updateLocation(tile);
     }
+    //
+    this.handleOut();
 }
+InteractiveObject.prototype.updateLocation = function(tile)
+{
+    this.jsondata.x = tile.posx;
+    this.jsondata.y = tile.posy;
+    
+    //moving characters should always be in middle
+    //this.jsondata.posx = tile.x;
+    //this.jsondata.posy = tile.y;
+}
+ 
 InteractiveObject.prototype.destroySelf = function(elapseTime) 
 {
     this.jsondata.destroyed = true;
@@ -144,11 +175,16 @@ InteractiveObject.prototype.handleClick = function()
 InteractiveObject.prototype.setupArt = function(json) 
 {
     var objectreference = this.maingame.getTile(this.jsondata.name,this.jsondata.tilesetid);
-    var spotx = this.jsondata.x;
-    var spoty = this.jsondata.y;//this.maingame.gridSizeY-this.jsondata.y-1;
-    Phaser.Sprite.call(this, this.game, this.jsondata.offsetx*this.maingame.hexHandler.hexagonWidth, this.jsondata.offsety*this.maingame.hexHandler.hexagonHeight, objectreference.spritesheet, objectreference.tile+".png");
-
-    this.maingame.hexHandler.hexagonArray[spoty][spotx].addChild(this);
+    var spotx = this.jsondata.x || 0;
+    var spoty = this.jsondata.y || 0;
+    var offsetx = this.jsondata.offsetx || 0.5;
+    var offsety = this.jsondata.offsetx || 0.5;
+    var tile = this.maingame.hexHandler.getTileByCords(spotx,spoty);
+    Phaser.Sprite.call(this, this.game, 
+                       offsetx*this.maingame.hexHandler.hexagonWidth + this.maingame.mapGroup.x + tile.x,
+                       offsety*this.maingame.hexHandler.hexagonHeight + this.maingame.mapGroup.y + tile.y, 
+                       objectreference.spritesheet, objectreference.tile+".png");
+    this.maingame.objectGroup.add(this);
     this.anchor.x = 0.5;
     this.anchor.y = 1.0;
 }

@@ -252,7 +252,6 @@ EasyStar.js = function() {
 	**/
 	this.setGrid = function(grid) {
 		collisionGrid = grid;
-
 		//Setup cost map
 		for (var y = 0; y < collisionGrid[0].length; y++) {
 			for (var x = 0; x < collisionGrid.length; x++) {
@@ -405,14 +404,14 @@ EasyStar.js = function() {
 			var searchNode = instances[0].openList.shiftHighestPriorityElement();
 			searchNode.list = EasyStar.Node.CLOSED_LIST;
             //
-            if(searchNode.x % 2 == 1)
+            if(searchNode.y % 2 == 1)
 			{
 				if(testNode(searchNode, 0,    -1))continue;
 				if(testNode(searchNode, -1,   0))continue;
 				if(testNode(searchNode, 0,    +1))continue;
 				if(testNode(searchNode, +1,   +1))continue;
 				if(testNode(searchNode, +1,   0))continue;
-				if(testNode(searchNode, -1,   1))continue;
+				if(testNode(searchNode, 1,   -1))continue;
 			}
 			else
 			{
@@ -421,7 +420,7 @@ EasyStar.js = function() {
 				if(testNode(searchNode, 0,    +1))continue;
 				if(testNode(searchNode, +1,   0))continue
 				if(testNode(searchNode, 0,    -1))continue;
-                if(testNode(searchNode, 1,   -1))continue;
+                if(testNode(searchNode, -1,   1))continue;
 			}
 		}
 	};

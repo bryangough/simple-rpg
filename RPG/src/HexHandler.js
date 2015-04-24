@@ -14,8 +14,8 @@ var HexHandler = function (maingame, game, hexagonWidth, hexagonHeight)
     
     this.waterTilesArray = [];//should be moved out into tile graphics handler
     
-    this.hexagonWidth = hexagonWidth || 63;
-    this.hexagonHeight = hexagonHeight || 65;
+    this.hexagonWidth = hexagonWidth || 32;
+    this.hexagonHeight = hexagonHeight || 16;
 
     this.sectorWidth = this.hexagonWidth;
     this.sectorHeight = this.hexagonHeight/4*3;
@@ -46,41 +46,42 @@ HexHandler.prototype.checkHex=function(checkx, checky){
 
     var candidateX = Math.floor((checkx)/this.sectorWidth);
     var candidateY = Math.floor((checky)/this.sectorHeight);
-      if(candidateY%2==0){
-           if(deltaY<((this.hexagonHeight/4)-deltaX*this.gradient)){
+    
+    if(candidateY%2==0){
+        if(deltaY<((this.hexagonHeight/4)-deltaX*this.gradient)){
+            candidateX--;
+            candidateY--;
+        }
+        if(deltaY<((-this.hexagonHeight/4)+deltaX*this.gradient)){
+            candidateY--;
+        }
+    }    
+    else{
+        if(deltaX>=this.hexagonWidth/2){
+            if(deltaY<(this.hexagonHeight/2-deltaX*this.gradient)){
+                candidateY--;
+            }
+        }
+        else{
+            if(deltaY<deltaX*this.gradient){
+                candidateY--;
+            }
+            else{
                 candidateX--;
-                candidateY--;
-           }
-           if(deltaY<((-this.hexagonHeight/4)+deltaX*this.gradient)){
-                candidateY--;
-           }
-      }    
-      else{
-           if(deltaX>=this.hexagonWidth/2){
-                if(deltaY<(this.hexagonHeight/2-deltaX*this.gradient)){
-                     candidateY--;
-                }
-           }
-           else{
-                if(deltaY<deltaX*this.gradient){
-                     candidateY--;
-                }
-                else{
-                     candidateX--;
-                }
-           }
-      }
+            }
+        }
+    }
     if(this.maingame.gridSizeY%2==0 && candidateY%2==1)
     {
-       candidateX++;
+       //candidateX++;
         if(candidateX<0)
             candidateX = 0;
     }
-    if(candidateX<0 || candidateY<0 || candidateY>=this.maingame.gridSizeY)// || candidateX>columns[candidateY%2]-1)
+    if(candidateX<0 || candidateY<0 || candidateY>=this.maingame.gridSizeY || candidateX>=this.maingame.gridSizeX)
     {
         return;
     }
-    return this.hexagonArray[candidateY][candidateX]
+    return this.hexagonArray[candidateX][candidateY]
  }
 HexHandler.prototype.getTileByCords = function(x,y)
 {
@@ -130,8 +131,8 @@ HexHandler.prototype.dolines = function(tilestart, tileend, ignoreWalkable, high
     {
         this.maingame.graphics.clear();
         this.maingame.graphics.lineStyle(10, 0xffd900, 1);
-        this.maingame.graphics.moveTo(tilestart.x+ tilestart.parent.x+ this.halfHex, tilestart.y+ tilestart.parent.y+ this.halfHexHeight);
-        this.maingame.graphics.lineTo(tileend.x+ tileend.parent.x+ this.halfHex, tileend.y+ tileend.parent.y+ this.halfHexHeight);
+        this.maingame.graphics.moveTo(tilestart.x+ this.maingame.mapGroup.x+ this.halfHex, tilestart.y+ this.maingame.mapGroup.y+ this.halfHexHeight);
+        this.maingame.graphics.lineTo(tileend.x+ this.maingame.mapGroup.x+ this.halfHex, tileend.y+ this.maingame.mapGroup.y+ this.halfHexHeight);
     }
     //
     var N = this.game.math.distance(p0.x,p0.y,p1.x,p1.y);
@@ -159,7 +160,7 @@ HexHandler.prototype.dolines = function(tilestart, tileend, ignoreWalkable, high
         var overtile = this.checkHex(points[i].x,points[i].y);
         if(this.debug)
         {
-            this.maingame.graphics.drawCircle(points[i].x+tilestart.parent.x,points[i].y+tilestart.parent.y, 10);
+            this.maingame.graphics.drawCircle(points[i].x+this.maingame.mapGroup.x,points[i].y+this.maingame.mapGroup.y, 10);
         }
         if(overtile!=null)
         {
@@ -330,5 +331,5 @@ HexHandler.prototype.flush=function()
 {
     this.hexagonArray = [];
     this.waterTilesArray = [];
-    this.walkableArray = [];
+    //this.walkableArray = [];
 }

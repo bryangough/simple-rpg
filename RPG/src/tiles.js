@@ -4,6 +4,8 @@ var BaseTile = function(game, tileName, spritesheet, posx, posy, x, y, maingame)
     Phaser.Sprite.call(this, game, x,y, spritesheet, tileName);
     this.game = game;
     this.maingame = maingame;
+    //this.posx = posx;
+    //this.posy = posy;
 }
 BaseTile.prototype = Object.create(Phaser.Sprite.prototype);
 BaseTile.constructor = WalkableTile;
@@ -13,7 +15,16 @@ BaseTile.prototype.callFunction = function(fnstring,fnparams)
     var fn = window[fnstring];
     if (typeof fn === "function") fn.apply(null, fnparams);
 }
-
+BaseTile.prototype.changeWalkable = function(walkableto) 
+{
+    if(walkableto)
+        this.maingame.walkableArray[this.posx][this.posy] = 1;
+    else
+        this.maingame.walkableArray[this.posx][this.posy] = 0;
+    //
+    this.walkable = walkableto;
+    this.maingame.updatewalkable = true;
+}
 //
 //WalkableTile
 //
@@ -32,7 +43,7 @@ var WalkableTile = function(game,tileName,spritesheet, posx,posy,x,y, maingame)
 };
 WalkableTile.prototype = Object.create(BaseTile.prototype);
 WalkableTile.constructor = WalkableTile;
-
+//move this test to moving character
 WalkableTile.prototype.enterTile = function()
 {
     if(this.eventDispatcher)

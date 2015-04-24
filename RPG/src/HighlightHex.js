@@ -17,7 +17,7 @@ HighlightHex.constructor = HighlightHex;
 HighlightHex.prototype.setup = function() 
 {
     this.neighborLights = [];
-    for(var i=0;i<20;i++)
+    for(var i=0;i<40;i++)
     {
         var light = this.add(new Phaser.Group(this.game,null));
         var high = this.add(new Phaser.Sprite(this.game, 0,0, "tiles2", "tile_highlight0002.png"));
@@ -110,14 +110,15 @@ HighlightHex.prototype.highilightneighbors = function(thistile)
     var moveIndex =  this.hexHandler.checkHex(this.input.worldX-this.hexagonGroup.x,this.input.worldY-this.hexagonGroup.y);*/
     if(thistile==null)
         return;
-    if(thistile.posx % 2 == 1)
+    if(thistile.posy % 2 == 1)
     {
         this.highlighttileoffset(0, 0,    -1, thistile);
         this.highlighttileoffset(1, -1,   0, thistile);
         this.highlighttileoffset(2, 0,    +1, thistile);
         this.highlighttileoffset(3, +1,   +1, thistile);
         this.highlighttileoffset(4, +1,   0, thistile);
-        this.highlighttileoffset(5, -1,   1, thistile);
+        //this.highlighttileoffset(5, -1,   1, thistile);
+        this.highlighttileoffset(5, 1,   -1, thistile);
     }
     else
     {
@@ -126,7 +127,8 @@ HighlightHex.prototype.highilightneighbors = function(thistile)
         this.highlighttileoffset(2, 0,    +1, thistile);
         this.highlighttileoffset(3, +1,   0, thistile);
         this.highlighttileoffset(4, 0,    -1, thistile);
-        this.highlighttileoffset(5, 1,   -1, thistile);
+        //this.highlighttileoffset(5, 1,   -1, thistile);
+        this.highlighttileoffset(5, -1,   1, thistile);
     }
 }
 //
@@ -136,13 +138,9 @@ HighlightHex.prototype.highlighttileoffset = function(i,x,y,currenttile)
     var thetile = this.hexhandler.getTileByCords(currenttile.posx+x,currenttile.posy+y);
     if(thetile!=null)
     {
+        this.neighborLights[i].visible = true;
         this.neighborLights[i].x = thetile.x;
         this.neighborLights[i].y = thetile.y;
-    }
-    else
-    {
-        this.neighborLights[i].x = -1000;
-        this.neighborLights[i].y = 0;
     }
 }
 HighlightHex.prototype.cleanuptiles = function()
