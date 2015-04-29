@@ -35,6 +35,7 @@ BasicGame.Game = function (game) {
     this.inventory;
     
     this.walkableArray;
+    this.maskableobjects;
     this.updatewalkable = false;
     
     this.fps;
@@ -44,7 +45,7 @@ BasicGame.Game = function (game) {
 // ----
 
 BasicGame.Game.prototype = {
-    preload: function(){
+    preload: function () {
         //this.load.json('map', 'assets/desertIsland.json');//mission file - can I show a preloader? should I?        
         this.load.json('map', 'assets/forestmap.json');
     },
@@ -120,106 +121,144 @@ BasicGame.Game.prototype = {
         //
         this.uiGroup.parent.bringToTop(this.uiGroup);//keeps ui group on top layer
         //
-        var layer1 = passedMap[0];
-        //
-        this.gridSizeY = layer1.height;
-        this.gridSizeX = layer1.width;
-        var tiles = layer1.data;
-        var tilesetid = layer1.tilesetid;
-        var objectName;
-        var tilereference;
-        var temptile;
-        //
-        this.walkableArray = [];
-        //
-        
-        for(var i = 0; i < this.gridSizeX; i ++)
+        for(var mapscounter=0;mapscounter<passedMap.length;mapscounter++)
         {
-	     	hexagonArray[i] = [];
-            this.walkableArray[i] = [];
-            for(var j = 0; j < this.gridSizeY; j ++)
+            var layer1 = passedMap[mapscounter];
+            //console.log(layer1);
+            console.log("layer ",mapscounter,layer1.handleMovement,layer1.handleSprite);
+            //
+            this.gridSizeY = layer1.height;
+            this.gridSizeX = layer1.width;
+            var tiles = layer1.data;
+            var tilesetid = layer1.tilesetid;
+            var objectName;
+            var tilereference;
+            var temptile;
+            //
+            this.walkableArray = [];
+           
+            //
+            if(layer1.handleSprite)
             {
-                //objectName = tiles[i*this.gridSizeX+j];
-                objectName = tiles[j*this.gridSizeX+i];
-                //console.log(i,j,objectName);
-                tilereference = this.getTile(objectName,tilesetid);
-                var hexagonX = hexagonWidth*i;
-                //if(this.gridSizeY%2==1)
-                    hexagonX += hexagonWidth/2*(j%2);
-                //else
-                //    hexagonX -= hexagonWidth/2*(i%2);
-                var hexagonY = (hexagonHeight/4*3)*j;
-                
-                if(false)//tilereference.tile=="tileWater")
+                for(var i = 0; i < this.gridSizeX; i ++)
                 {
-                    temptile = new WaterTile(this, tilereference.tile+".png", tilereference.spritesheet, i, j, hexagonX, hexagonY);
-                    waterTilesArray.push(temptile);
-                }
-                else
-                {
-                   
-                   temptile = new WalkableTile(this, tilereference.tile+".png", tilereference.spritesheet, i, j, hexagonX, hexagonY, this);
-                }
-                hexagonArray[i][j]=temptile;
-                this.hexagonGroup.add(temptile);
+                    if(layer1.handleMovement)
+                        hexagonArray[i] = [];
+                    for(var j = 0; j < this.gridSizeY; j ++)
+                    {
+                        objectName = tiles[j*this.gridSizeX+i];
+                        tilereference = this.getTile(objectName,tilesetid);
+                        var hexagonX = hexagonWidth*i;
+                        hexagonX += hexagonWidth/2*(j%2);
+                        var hexagonY = (hexagonHeight/4*3)*j;
 
-                //
-                this.walkableArray[i][j] = layer1.walkable[j*this.gridSizeX+i];
-                if(this.walkableArray[i][j] == 0)
-                {
-                    hexagonArray[i][j].walkable = false;
+                        //make tile
+                        temptile = new WalkableTile(this, tilereference.tile+".png", tilereference.spritesheet, i, j, hexagonX, hexagonY, this);
+                        //hexagonArray[i][j]=temptile;//only if same
+                        if(layer1.handleMovement)
+                            this.hexagonGroup.add(temptile);
+                        //
+
+                        //hex text
+                        /*
+                        var hexagonText = this.add.text(hexagonX+hexagonWidth/3,hexagonY+5,i+","+j);
+                        hexagonText.font = "arial";
+                        hexagonText.fontSize = 8;
+                        this.hexagonGroup.add(hexagonText);
+                        */
+                    }
                 }
-                //
-                /*
-                var hexagonText = this.add.text(hexagonX+hexagonWidth/3,hexagonY+5,i+","+j);
-                hexagonText.font = "arial";
-                hexagonText.fontSize = 8;
-                this.hexagonGroup.add(hexagonText);
-                */
-			}
-		}
-        this.pathfinder.setGrid(this.walkableArray, [1]);
+            }
+            //
+            if(layer1.handleMovement)
+            {
+                for(var i = 0; i < this.gridSizeX; i ++)
+                {
+                    if(!layer1.handleSprite)
+                        hexagonArray[i] = [];
+                    this.walkableArray[i] = [];
+                    for(var j = 0; j < this.gridSizeY; j ++)
+                    {
+                        this.walkableArray[i][j] = layer1.walkable[j*this.gridSizeX+i];
+                        if(!layer1.handleSprite)//no sprite - need to something to select (this might not need to be destroyed)
+                        {
+                            //this needs to be switched out
+                            var hexagonX = hexagonWidth*i;
+                            hexagonX += hexagonWidth/2*(j%2);
+                            var hexagonY = (hexagonHeight/4*3)*j;
+                            //
+                           // console.log(i,j);
+                            hexagonArray[i][j] = new SimpleTile(this,i,j,hexagonX,hexagonY);
+                        }
+                        if(this.walkableArray[i][j] == 0)
+                        {                    
+                            hexagonArray[i][j].walkable = false;
+                        }
+                    }
+                }
+            }
+           // continue;
+            //
+
+            maskableobjects = [];
+             
+            if(layer1.objects)
+            {
+                var objects = layer1.objects;
+                var spotx,spoty;
+                for(var i = 0; i < objects.length; i ++)
+                {
+                    if(objects[i].triggers)//if have actions then is an interactive object
+                    {
+                        if(!objects[i].destroyed)//object has been destroyed
+                        {
+                            var interactiveobject = new InteractiveObject(this, objects[i],tileobject);
+                            this.interactiveObjects.push(interactiveobject);
+                            //interactive objects are never maskable
+                        }
+                    }
+                    else
+                    {
+                        var objectreference = this.getTile(objects[i].name,objects[i].tilesetid);
+                        spotx = objects[i].x;
+                        spoty = objects[i].y;
+                        var tileobject = this.game.make.image(objects[i].x * 100 + this.mapGroup.x, 
+                                                               objects[i].y * 100 + this.mapGroup.y, 
+                                                               objectreference.spritesheet, objectreference.tile+".png");
+                       /* var tileobject = this.game.make.image(objects[i].offsetx * hexagonWidth + this.mapGroup.x + hexagonArray[spotx][spoty].x, 
+                                                               objects[i].offsety * hexagonHeight + this.mapGroup.y + hexagonArray[spotx][spoty].y, 
+                                                               objectreference.spritesheet, objectreference.tile+".png");*/
+                        //hexagonArray[spotx][spoty].addChild(tileobject);
+                        this.objectGroup.add(tileobject);
+                        tileobject.anchor.x = 0.5;
+                        tileobject.anchor.y = 1.0; 
+
+                        if(objects[i].maskable){//maskable objects to check when player move
+                            maskableobjects.push(tileobject);
+                        }
+                    }
+                }
+            }
+            var actionSpots = layer1.actionSpots;
+            if(actionSpots)
+            {
+                for(var i = 0; i < actionSpots.length; i ++)
+                {
+                    var selectedtile = hexagonArray[actionSpots[i].x][actionSpots[i].y];
+                    if(selectedtile)
+                    {
+                        if(!selectedtile.eventDispatcher)
+                        {
+                            selectedtile.eventDispatcher = new EventDispatcher(this.game,this,selectedtile);
+                        }
+                        selectedtile.eventDispatcher.receiveData(actionSpots[i].triggers);
+                    }
+                }
+            }
+        }
+        //
         this.hexHandler.hexagonArray = hexagonArray;
         this.hexHandler.waterTilesArray = waterTilesArray;
-        var objects = layer1.objects;
-        var spotx,spoty;
-        for(var i = 0; i < objects.length; i ++)
-        {
-            if(objects[i].triggers)//if have actions then is an interactive object
-            {
-                if(!objects[i].destroyed)//object has been destroyed
-                {
-                    var interactiveobject = new InteractiveObject(this, objects[i],tileobject);
-                    this.interactiveObjects.push(interactiveobject);
-                }
-            }
-            else
-            {
-                var objectreference = this.getTile(objects[i].name,objects[i].tilesetid);
-                spotx = objects[i].x;
-                spoty = objects[i].y;
-                var tileobject = this.game.make.sprite(objects[i].offsetx * hexagonWidth + this.mapGroup.x + hexagonArray[spotx][spoty].x, 
-                                                       objects[i].offsety * hexagonHeight + this.mapGroup.y + hexagonArray[spotx][spoty].y, 
-                                                       objectreference.spritesheet, objectreference.tile+".png");
-                //hexagonArray[spotx][spoty].addChild(tileobject);
-                this.objectGroup.add(tileobject);
-                tileobject.anchor.x = 0.5;
-                tileobject.anchor.y = 1.0;
-            }
-        }
-        var actionSpots = layer1.actionSpots;
-        for(var i = 0; i < actionSpots.length; i ++)
-        {
-            var selectedtile = hexagonArray[actionSpots[i].x][actionSpots[i].y];
-            if(selectedtile)
-            {
-                if(!selectedtile.eventDispatcher)
-                {
-                    selectedtile.eventDispatcher = new EventDispatcher(this.game,this,selectedtile);
-                }
-                selectedtile.eventDispatcher.receiveData(actionSpots[i].triggers);
-            }
-        }
         //these should be screen width and height
 		this.mapGroup.y = (600/2-hexagonHeight*Math.ceil(this.gridSizeY/2))/2;
         if(this.gridSizeY%2==0){
@@ -243,6 +282,8 @@ BasicGame.Game.prototype = {
             this.playerCharacter.setLocationByTile(hexagonArray[this.startpos.x][this.startpos.y]);
         }
         this.objectGroup.add(this.playerCharacter);
+        
+        this.pathfinder.setGrid(this.walkableArray, [1]);
         //
         this.hexagonGroup.sort('y', Phaser.Group.SORT_ASCENDING);
     },
@@ -284,6 +325,7 @@ BasicGame.Game.prototype = {
         }
         //this.hexagonGroup.sort('y', Phaser.Group.SORT_ASCENDING);
         this.objectGroup.sort('y', Phaser.Group.SORT_ASCENDING);
+        //
         if(this.updatewalkable)
         {
            this.pathfinder.setGrid(this.walkableArray, [1]);
@@ -404,3 +446,10 @@ var Point = function(x, y) {
   this.y = y;
 };
 
+/*
+ if(false)//tilereference.tile=="tileWater"){
+                    temptile = new WaterTile(this, tilereference.tile+".png", tilereference.spritesheet, i, j, hexagonX, hexagonY);
+                    waterTilesArray.push(temptile);
+                }
+                else{
+                */

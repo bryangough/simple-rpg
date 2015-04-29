@@ -181,8 +181,8 @@ InteractiveObject.prototype.setupArt = function(json)
     var offsety = this.jsondata.offsetx || 0.5;
     var tile = this.maingame.hexHandler.getTileByCords(spotx,spoty);
     Phaser.Sprite.call(this, this.game, 
-                       offsetx*this.maingame.hexHandler.hexagonWidth + this.maingame.mapGroup.x + tile.x,
-                       offsety*this.maingame.hexHandler.hexagonHeight + this.maingame.mapGroup.y + tile.y, 
+                       offsetx*this.maingame.hexHandler.hexagonWidth + this.maingame.mapGroup.x,// + tile.x,
+                       offsety*this.maingame.hexHandler.hexagonHeight + this.maingame.mapGroup.y,// + tile.y, 
                        objectreference.spritesheet, objectreference.tile+".png");
     this.maingame.objectGroup.add(this);
     this.anchor.x = 0.5;

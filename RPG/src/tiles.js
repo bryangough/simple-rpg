@@ -1,3 +1,41 @@
+//Simple tile for non-graphic grid. Used to movement.
+var SimpleTile = function(maingame, posx, posy, x, y)
+{
+    this.walkable = true;  
+    this.openair = true;
+    this.x = x;
+    this.y = y;
+    this.posx = posx;
+    this.posy = posy;
+}
+SimpleTile.prototype.callFunction = function(fnstring,fnparams) 
+{
+    var fn = window[fnstring];
+    if (typeof fn === "function") fn.apply(null, fnparams);
+}
+SimpleTile.prototype.changeWalkable = function(walkableto) 
+{
+    if(walkableto)
+        this.maingame.walkableArray[this.posx][this.posy] = 1;
+    else
+        this.maingame.walkableArray[this.posx][this.posy] = 0;
+    //
+    this.walkable = walkableto;
+    this.maingame.updatewalkable = true;
+}
+SimpleTile.prototype.enterTile = function()
+{
+    if(this.eventDispatcher)
+        this.eventDispatcher.doAction("OnEnter");
+};
+
+//none moveable ground tiles will use new Image(game, x, y, key, frame)
+//walls? walls at different layers
+
+/*
+Tiles below are for graphic tiles that are also used for walkable
+
+*/
 var BaseTile = function(game, tileName, spritesheet, posx, posy, x, y, maingame)
 {
    // console.log(spritesheet,tileName);
@@ -8,7 +46,7 @@ var BaseTile = function(game, tileName, spritesheet, posx, posy, x, y, maingame)
     //this.posy = posy;
 }
 BaseTile.prototype = Object.create(Phaser.Sprite.prototype);
-BaseTile.constructor = WalkableTile;
+BaseTile.constructor = BaseTile;
 
 BaseTile.prototype.callFunction = function(fnstring,fnparams) 
 {

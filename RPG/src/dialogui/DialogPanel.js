@@ -1,3 +1,7 @@
+//bg
+//button1,button2,button3
+//text font
+
 //***** DialogPanel ********
 var DialogPanel = function(game, maingame, dialogEngine, parent){
 	Phaser.Group.call(this, game, parent);
@@ -5,58 +9,58 @@ var DialogPanel = function(game, maingame, dialogEngine, parent){
     this.overTint = 0xff5500;
     this.maingame = maingame;
     this.dialogEngine = dialogEngine;
-
-    var bg = this.game.make.sprite(0,0,"dialogui","dialog_main.png");
-    this.add(bg);
-    this.btnPlay1 = this.game.make.button(36.95, -22.4, 'dialogui', this.play1, this,'dialog_10002.png', 'dialog_10001.png', 'dialog_10001.png','dialog_10002.png');
-    this.btnPlay2 = this.game.make.button(37.4, 25.25, 'dialogui', this.play2, this,'dialog_20002.png', 'dialog_20001.png', 'dialog_20001.png','dialog_20002.png');    
-    this.btnPlay3 = this.game.make.button(35.95, 45.8, 'dialogui', this.play3, this,'dialog_30002.png', 'dialog_30001.png', 'dialog_30001.png','dialog_30002.png');
-    //
-    this.add(this.btnPlay1);
-    this.add(this.btnPlay3);
-    this.add(this.btnPlay2);
-    
-    this.btnPlay1.events.onInputOver.add(this.buttonOver, this);
-    this.btnPlay2.events.onInputOver.add(this.buttonOver, this);
-    this.btnPlay3.events.onInputOver.add(this.buttonOver, this);
-    
-    //this.btnPlay1.input.pixelPerfectOver = true;
-    this.btnPlay1.input.useHandCursor = true;
-    //this.btnPlay2.input.pixelPerfectOver = true;
-    this.btnPlay2.input.useHandCursor = true;
-    //this.btnPlay3.input.pixelPerfectOver = true;
-    this.btnPlay3.input.useHandCursor = true;
-
-    this.btnPlay1.events.onInputOut.add(this.buttonOut, this);
-    this.btnPlay2.events.onInputOut.add(this.buttonOut, this);
-    this.btnPlay3.events.onInputOut.add(this.buttonOut, this);
-
-     
-    this.text1 = this.game.make.bitmapText(95, -10, "badabb", "1. Check", 25);
-    this.text2 = this.game.make.bitmapText(95, 35, "badabb", "2. Match", 25);
-    this.text3 = this.game.make.bitmapText(95, 82, "badabb", "3. Mate", 25);
-
-    this.btnPlay1.textRef = this.text1;
-    this.btnPlay2.textRef = this.text2;
-    this.btnPlay3.textRef = this.text3;
-    
-    this.textMain = this.game.make.bitmapText(0, -60, "badabb", "Text goes here.", 25);
-    
-    this.add(this.textMain);
-    this.add(this.text1);
-    this.add(this.text2);
-    this.add(this.text3);
-
-	// Place it out of bounds
-	this.x = 300;
-	//this.y = 250;
-    this.y = -1000;
-};
-
+}
 DialogPanel.prototype = Object.create(Phaser.Group.prototype);
 DialogPanel.constructor = DialogPanel;
 
-//roll over
+
+//
+DialogPanel.prototype.setup = function(button){   
+    //
+    this.setupBG("dialogui","dialog_main.png");
+    //
+    this.btnPlay1 = this.setupButton(36.95, -22.4, 'dialogui', this.play1,'dialog_10002.png', 'dialog_10001.png', 'dialog_10001.png','dialog_10002.png');
+    this.btnPlay2 = this.setupButton(37.4, 25.25, 'dialogui', this.play2,'dialog_20002.png', 'dialog_20001.png', 'dialog_20001.png','dialog_20002.png');    
+    this.btnPlay3 = this.setupButton(35.95, 45.8, 'dialogui', this.play3,'dialog_30002.png', 'dialog_30001.png', 'dialog_30001.png','dialog_30002.png');
+    //
+    this.setupText(0, -60, "badabb", "Text goes here.", 25); 
+    this.btnPlay1.textRef = this.setupText(95, -10, "badabb", "1. ", 25);
+    this.btnPlay2.textRef = this.setupText(95, 35, "badabb", "2. ", 25);
+    this.btnPlay3.textRef = this.setupText(95, 82, "badabb", "3. ", 25);
+	// Place it out of bounds (?)
+	this.x = 300;
+    this.y = -1000;
+};
+//
+DialogPanel.prototype.setupBG = function(spritesheet,sprite)
+{    
+    var bg = this.game.make.sprite(0,0,spritesheet,sprite);
+    this.add(bg);
+}
+//
+DialogPanel.prototype.setupButton = function(x,y,spritesheet,callback,overFrame, outFrame, downFrame, upFrame)
+{    
+    var newBtn = this.game.make.button(x,y,spritesheet,callback, this,overFrame, outFrame, downFrame, upFrame);
+    this.add(this.btnPlay1);
+    //
+    newBtn.events.onInputOver.add(this.buttonOver, this);
+    newBtn.events.onInputOut.add(this.buttonOut, this);
+    //
+    //this.btnPlay2.input.pixelPerfectOver = true;
+    newBtn.input.useHandCursor = true;
+    return newBtn;
+}
+//
+DialogPanel.prototype.setupText = function(x, y, font, text, size)
+{
+    var newtext = this.game.make.bitmapText(x, y, font, text, size); 
+    this.add(newtext);
+    return newtext;
+}
+
+/*
+Button events
+*/
 DialogPanel.prototype.buttonOver = function(button){
     button.textRef.tint = this.overTint;
 };
@@ -86,6 +90,11 @@ DialogPanel.prototype.nextDialog = function(){
 }
 //
 DialogPanel.prototype.setupDialog = function(){    
+    if(this.dialogData)
+    {
+        console.log("dialog data not set");
+        return;
+    }
     this.textMain.text = this.dialogData.actor.Name +": " + this.dialogData.current.DialogueText;
     for(var i=0;i<3;i++)
     {
