@@ -31,6 +31,18 @@ SimpleTile.prototype.enterTile = function()
 
 //none moveable ground tiles will use new Image(game, x, y, key, frame)
 //walls? walls at different layers
+// this might not be needed
+var GraphicTile = function(game, tileName, spritesheet, posx, posy, x, y, maingame)
+{
+    Phaser.Image.call(this, game, x,y, spritesheet, tileName);
+    this.game = game;
+    this.maingame = maingame;
+    //this.posx = posx;
+    //this.posy = posy;
+}
+GraphicTile.prototype = Object.create(Phaser.Image.prototype);
+GraphicTile.constructor = GraphicTile;
+
 
 /*
 Tiles below are for graphic tiles that are also used for walkable

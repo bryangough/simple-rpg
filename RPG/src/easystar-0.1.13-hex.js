@@ -404,14 +404,16 @@ EasyStar.js = function() {
 			var searchNode = instances[0].openList.shiftHighestPriorityElement();
 			searchNode.list = EasyStar.Node.CLOSED_LIST;
             //
-            if(searchNode.y % 2 == 1)
+            //if(searchNode.y % 2 == 1)
+            if(searchNode.x % 2 == 1)
 			{
 				if(testNode(searchNode, 0,    -1))continue;
 				if(testNode(searchNode, -1,   0))continue;
 				if(testNode(searchNode, 0,    +1))continue;
 				if(testNode(searchNode, +1,   +1))continue;
 				if(testNode(searchNode, +1,   0))continue;
-				if(testNode(searchNode, 1,   -1))continue;
+                if(testNode(searchNode, -1,   1))continue;
+				//if(testNode(searchNode, 1,   -1))continue;
 			}
 			else
 			{
@@ -420,7 +422,8 @@ EasyStar.js = function() {
 				if(testNode(searchNode, 0,    +1))continue;
 				if(testNode(searchNode, +1,   0))continue
 				if(testNode(searchNode, 0,    -1))continue;
-                if(testNode(searchNode, -1,   1))continue;
+                if(testNode(searchNode, 1,   -1))continue;
+                //if(testNode(searchNode, -1,   1))continue;
 			}
 		}
 	};

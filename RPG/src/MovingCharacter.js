@@ -66,6 +66,7 @@ MovingCharacter.prototype.setDirection = function()
     this.dir.x =  this.nextTile.x+this.maingame.hexHandler.halfHex-this.x;
     this.dir.y =  this.nextTile.y+this.maingame.hexHandler.halfHexHeight-this.y;
     this.dir.normalize();
+    //console.log(this.nextTile);
 }
 MovingCharacter.prototype.setPath = function(path) 
 {
@@ -88,6 +89,7 @@ MovingCharacter.prototype.step = function(elapseTime)
         {
             //need to test if next spot is now not walkable
             this.currentTile = this.maingame.hexHandler.checkHex(this.x,this.y);
+            //console.log(this.currentTile.posx,this.currentTile.posy,this.currentTile.posx==this.nextTile.posx, this.currentTile.posy==this.nextTile.posy);
             if(this.currentTile.posx==this.nextTile.posx && this.currentTile.posy==this.nextTile.posy)
             {
                 
@@ -97,6 +99,7 @@ MovingCharacter.prototype.step = function(elapseTime)
                     this.pathlocation=this.path.length;
                     var testx = this.currentTile.x+this.maingame.hexHandler.halfHex;
                     var testy = this.currentTile.y+this.maingame.hexHandler.halfHexHeight;
+                    
                     var range = 3;
                     if(testx-range<this.x && testx+range>this.x && testy-range<this.y && testy+range>this.y)
                     {

@@ -20,7 +20,7 @@ HighlightHex.prototype.setup = function()
     for(var i=0;i<40;i++)
     {
         var light = this.add(new Phaser.Group(this.game,null));
-        var high = this.add(new Phaser.Sprite(this.game, 0,0, "tiles2", "tile_highlight0002.png"));
+        var high = this.add(new Phaser.Sprite(this.game, 0,0, "tiles2", "tile_highlight0005.png"));
         this.neighborLights.push(light);
         light.add(high);
         this.add(light);
@@ -110,15 +110,17 @@ HighlightHex.prototype.highilightneighbors = function(thistile)
     var moveIndex =  this.hexHandler.checkHex(this.input.worldX-this.hexagonGroup.x,this.input.worldY-this.hexagonGroup.y);*/
     if(thistile==null)
         return;
-    if(thistile.posy % 2 == 1)
+    //if(thistile.posy % 2 == 1)
+    //if(false)
+    if(thistile.posx % 2 == 1)
     {
         this.highlighttileoffset(0, 0,    -1, thistile);
         this.highlighttileoffset(1, -1,   0, thistile);
         this.highlighttileoffset(2, 0,    +1, thistile);
         this.highlighttileoffset(3, +1,   +1, thistile);
         this.highlighttileoffset(4, +1,   0, thistile);
-        //this.highlighttileoffset(5, -1,   1, thistile);
-        this.highlighttileoffset(5, 1,   -1, thistile);
+        this.highlighttileoffset(5, -1,   1, thistile);
+        //this.highlighttileoffset(5, 1,   -1, thistile);
     }
     else
     {
@@ -127,8 +129,8 @@ HighlightHex.prototype.highilightneighbors = function(thistile)
         this.highlighttileoffset(2, 0,    +1, thistile);
         this.highlighttileoffset(3, +1,   0, thistile);
         this.highlighttileoffset(4, 0,    -1, thistile);
-        //this.highlighttileoffset(5, 1,   -1, thistile);
-        this.highlighttileoffset(5, -1,   1, thistile);
+        this.highlighttileoffset(5, 1,   -1, thistile);
+        //this.highlighttileoffset(5, -1,   1, thistile);
     }
 }
 //
