@@ -321,7 +321,7 @@ BasicGame.Game.prototype = {
         this.objectGroup.add(this.playerCharacter);
         
         this.pathfinder.setGrid(this.walkableArray, [1]);
-        this.masker = new Masker(this.game, this, this.maskableobjects);
+        this.masker = new CheapMasker(this.game, this, this.maskableobjects);
         //
         this.hexagonGroup.sort('y', Phaser.Group.SORT_ASCENDING);
     },
@@ -375,7 +375,8 @@ BasicGame.Game.prototype = {
            this.pathfinder.setGrid(this.walkableArray, [1]);
             this.updatewalkable = false;
         }
-        this.masker.updateMasks(this.input.worldX-this.mapGroup.x,this.input.worldY-this.mapGroup.y);
+        //this.masker.updateMasks(this.input.worldX-this.mapGroup.x,this.input.worldY-this.mapGroup.y);
+        this.masker.updateMasks(this.playerCharacter.x,this.playerCharacter.y);
         //fps.text = this.game.time.fps;
     },
     //
