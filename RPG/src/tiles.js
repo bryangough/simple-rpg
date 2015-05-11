@@ -1,3 +1,90 @@
+var SimpleObject = function (game, x,y, spritesheet, imagename) 
+{
+    Phaser.Image.call(this, game, x,y, spritesheet, imagename);
+    this.posx;
+    this.posy;
+}
+SimpleObject.prototype = Object.create(Phaser.Image.prototype);
+SimpleObject.constructor = SimpleObject;
+//
+var Grid = function(layer1)
+{
+    this.width = layer1.hexWidth;
+    this.height = layer1.hexHeight;
+
+    this.gridSizeY = layer1.height;
+    this.gridSizeX = layer1.width;
+    this.offsetx = layer1.offsetx || 0;
+    this.offsety = layer1.offsety || 0;
+    this.type = layer1.tiletype;
+    
+    this.coords = new Point(0,0);
+}
+Grid.prototype.GetMapCoords = function(i,j)
+{
+    //flip y over unity
+    if(this.type=="Hex")
+    {
+        this.coords.x = this.width*i;
+        this.coords.x += this.width/2*(j%2);
+        
+        this.coords.y = (this.height/4*3)*j;
+    }
+    else if(this.type=="HexIso")
+    {
+        var offset = Math.floor(i/2);
+        this.coords.x = this.width*i + this.width/2*j;
+        this.coords.y = (this.height/4*3)*j; 
+
+        this.coords.x -= this.width/2 * offset;
+        this.coords.y -= (this.height/4*3) * offset;
+    }
+    else if(this.type=="HexIsoFallout")
+    {
+        this.coords.x = 48 * i + 32 * j;
+        this.coords.y = -24 * j + 12 * i;
+        this.coords.y *= -1;
+        //offset
+        this.coords.x += 16;
+        this.coords.y -= 4;
+    }
+    else
+    {
+        this.coords.x = 0;
+        this.coords.y = 0;
+    }
+    return this.coords;
+}
+Grid.prototype.PosToMap = function(x,y)
+{
+    if(this.type=="HexIsoFallout")
+    {
+        x -= 16;//offset
+        y += 4;
+
+        x -= 40;//center
+        y -= 16;
+        
+        y*= -1;
+       // y -= 132;
+        
+        i = (3 * x + 4 * y )/192;
+        j = (x - 4 * y)/128;
+        //j = (12 * i - y)/24
+        //i = (x - 32 * j )/48;
+        this.coords.x = Math.round(i);
+        this.coords.y = Math.round(j);
+       // console.log(x,y,i,j,this.coords.x,this.coords.y);
+    }
+    else
+    {
+        this.coords.x = -1;
+        this.coords.y = -1;
+    }
+    return this.coords;
+}
+
+
 //Simple tile for non-graphic grid. Used to movement.
 var SimpleTile = function(maingame, posx, posy, x, y)
 {

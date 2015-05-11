@@ -6,16 +6,38 @@ var CheapMasker = function (game, maingame, maskableobjects)
     this.maingame = maingame;
     this.maskableobjects = maskableobjects;
 }
-CheapMasker.prototype.updateMasks = function(locx,locy) {
+CheapMasker.prototype.updateMasks = function(locx,locy,tilex,tiley) {
     if(this.maskableobjects)
     {
         var object;
+        var flag = false;
         for(var i=0;i<this.maskableobjects.length;i++)
         {
             object = this.maskableobjects[i];
             if(object!=null)
             {
+                //should test 3 points
                 if(object.left <= locx && locx < object.right && object.top <= locy && locy < object.bottom)
+                {
+                    flag = true;
+                    
+                    if(object.posy==tiley){
+                        if(object.posx<tilex){
+                            flag = true;
+                        }
+                        else if(object.posx>tilex){
+                            flag = false;
+                        }
+                    }
+                    else if(object.posy>tiley){
+                        flag = true;
+                    }
+                    else if(object.posy<tiley){
+                        flag = false;
+                    }   
+                }
+                //if object is infront of test
+                if(flag)
                 {
                     object.alpha = 0.5;
                 }
@@ -25,6 +47,7 @@ CheapMasker.prototype.updateMasks = function(locx,locy) {
                         object.alpha = 1.0;
                 }
             }
+            flag = false;
         } 
     }
 }

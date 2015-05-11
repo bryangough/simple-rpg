@@ -297,6 +297,8 @@ HexHandler.prototype.areTilesNeighbors=function(starttile,testtile)
     var posx = starttile.x-testtile.x;
     var posy = starttile.y-testtile.y;
     //
+    //console.log("HexHandler",posx,posy);
+    //
     if(starttile.x % 2 == 1)
     {
         if(posx==0&&posy==-1)return true;
@@ -345,7 +347,7 @@ HexHandler.prototype.flush=function()
 	HexIso = 16,//?
 	Square = 32
 */
-HexHandler.GetMapCoords = function(type,coords,width,height,i,j)
+/*HexHandler.GetMapCoords = function(type,coords,width,height,i,j)
 {
     //flip y over unity
     if(type=="Hex")
@@ -369,8 +371,11 @@ HexHandler.GetMapCoords = function(type,coords,width,height,i,j)
         coords.x = 48 * i + 32 * j;
         coords.y = -24 * j + 12 * i;
         coords.y *= -1;
+        //offset
+        coords.x += 16;
+        coords.y -= 4;
     }
-}
+}*/
 // 
 var DiamondHexHandler = function (maingame, game, hexagonWidth, hexagonHeight) 
 {
@@ -405,7 +410,7 @@ DiamondHexHandler.prototype.checkHex=function(checkx, checky){
     i = Math.floor(i);
     j = Math.floor(j);
 
-    if(i<0 || j<0 || j>=this.maingame.gridSizeY || i>=this.maingame.gridSizeX)
+    if(i<0 || j<0 || j>=this.maingame.movementgrid.gridSizeY || i>=this.maingame.movementgrid.gridSizeX)
     {
         return;
     }
@@ -413,6 +418,8 @@ DiamondHexHandler.prototype.checkHex=function(checkx, checky){
     //
     //var isInside = this.isInsideTriangle(new Point(tile.x,tile.y),new Point(tile.x+24,tile.y+16),new Point(tile.x,tile.y+16),new Point(checkx,checky));
     //console.log(isInside);
+    if(tile==null)
+        return;
     
     var hex = this.touchmap.getPixel32(checkx-tile.x,checky-tile.y);
     var r = ( hex       ) & 0xFF; // get the r
@@ -469,18 +476,23 @@ DiamondHexHandler.prototype.checkHex=function(checkx, checky){
     {
         //console.log(r,g,b);
     }
-     if(i<0 || j<0 || j>=this.maingame.gridSizeY || i>=this.maingame.gridSizeX)
+    if(i<0 || j<0 || j>=this.maingame.movementgrid.gridSizeY || i>=this.maingame.movementgrid.gridSizeX)
     {
         return;
     }
+    //console.log(i,j,this.maingame.movementgrid.gridSizeY,this.maingame.movementgrid.gridSizeX);
     tile = this.hexagonArray[i][j]; 
     return tile;
  }
 DiamondHexHandler.prototype.areTilesNeighbors=function(starttile,testtile)
 {
-    var posx = starttile.x-testtile.x;
-    var posy = starttile.y-testtile.y;
+    var posx = starttile.posx-testtile.posx;
+    var posy = starttile.posy-testtile.posy;
     //
+    //console.log("DiamondHexHandler",posx,posy);
+    //
+    if(starttile==testtile)
+        return true;
     if(starttile.x % 2 == 1)
     {
         if(posx==0&&posy==-1)return true;

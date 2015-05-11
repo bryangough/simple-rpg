@@ -222,9 +222,9 @@ EventDispatcher.prototype.testConditions = function(conditions)
 EventDispatcher.prototype.doAction = function(activation) 
 {
     var actionEvent = this.getEventType(activation); 
-    //console.log(activation,actionEvent);
     this.completeAction(actionEvent);
 }
+//
 EventDispatcher.prototype.completeAction = function(actionEvent)
 {
     var lastcon;

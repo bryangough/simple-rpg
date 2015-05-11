@@ -6,11 +6,15 @@ var MovingCharacter = function (maingame, jsondata)
     InteractiveObject.call(this, maingame, jsondata);
     //
     this.oldTile;
-    this.currentTile;
+    
     //
     this.path=null;
     this.pathlocation = 0;
     this.nextTile;
+    
+    //
+    this.prevx;
+    this.prevy;
     //
     this.dir = new Phaser.Point();
     
@@ -54,6 +58,8 @@ MovingCharacter.prototype.setLocationByTile = function(tile)
     this.currentTile = tile;
     //
     this.updateLocation(tile);
+    
+    this.findtile();
 }
 //this is only avaliable to players - for when we have multiple players moving around
 MovingCharacter.prototype.gotoAnotherMap = function(map, tile) 
@@ -63,6 +69,7 @@ MovingCharacter.prototype.gotoAnotherMap = function(map, tile)
 //
 MovingCharacter.prototype.setDirection = function() 
 {
+    //console.log(this.nextTile.x,this.maingame.hexHandler.halfHex,this.nextTile.x+this.maingame.hexHandler.halfHex, this.nextTile.x-this.maingame.hexHandler.halfHex);
     this.dir.x =  this.nextTile.x+this.maingame.hexHandler.halfHex-this.x;
     this.dir.y =  this.nextTile.y+this.maingame.hexHandler.halfHexHeight-this.y;
     this.dir.normalize();
@@ -81,18 +88,49 @@ MovingCharacter.prototype.setPath = function(path)
     this.setDirection();
     this.animations.play("walk");
 }
+MovingCharacter.prototype.moveto = function(moveIndex){
+    if(moveIndex!=null)
+    {
+        //straight line movement
+        //var path = this.hexHandler.getlinepath(playertile,moveIndex);
+        //this.playerCharacter.setPath(path);
+        //
+        this.maingame.pathfinder.setCallbackFunction(this.movercallback, this);
+        this.maingame.pathfinder.preparePathCalculation( [this.currentTile.posx,this.currentTile.posy], [moveIndex.posx,moveIndex.posy] );
+        this.maingame.pathfinder.calculatePath();
+    }
+}
+MovingCharacter.prototype.movercallback = function(path){
+    path = path || [];
+    path = this.maingame.hexHandler.pathCoordsToTiles(path);
+    this.setPath(path);
+}
+MovingCharacter.prototype.findtile = function()
+{
+    var onmap = this.maingame.spritegrid.PosToMap(this.x,this.y);
+    //console.log("--",onmap.x,onmap.y);
+   // onmap = this.maingame.spritegrid.GetMapCoords(onmap.x,onmap.y);
+    this.posx = onmap.x;
+    this.posy = onmap.y;
+  //  console.log("find tile",this.posx,this.posy);
+}
 MovingCharacter.prototype.step = function(elapseTime) 
 {
+    if(this.currentTile==null)
+        this.currentTile = this.maingame.hexHandler.checkHex(this.x,this.y);
     if(this.path!=null)
     {
         if(this.path.length>0)
         {
             //need to test if next spot is now not walkable
+            this.oldTile = this.currentTile;
             this.currentTile = this.maingame.hexHandler.checkHex(this.x,this.y);
-            //console.log(this.currentTile.posx,this.currentTile.posy,this.currentTile.posx==this.nextTile.posx, this.currentTile.posy==this.nextTile.posy);
+            if(this.currentTile==null)
+            {
+                //center old then try again
+            }
             if(this.currentTile.posx==this.nextTile.posx && this.currentTile.posy==this.nextTile.posy)
             {
-                
                 this.pathlocation++;
                 if(this.pathlocation>=this.path.length)// at last tile, now walk to the center
                 {
@@ -123,13 +161,26 @@ MovingCharacter.prototype.step = function(elapseTime)
             }
         }
     }
-    this.x += this.dir.x * this.walkspeed * elapseTime;
-    this.y += this.dir.y * this.walkspeed * elapseTime;
+    var nextx = this.x + this.dir.x * this.walkspeed * elapseTime;
+    var nexty = this.y + this.dir.y * this.walkspeed * elapseTime;
     
+    //test if next coords are both walkable and moveable, else
+    //may not need prevx, can just use x
+    if(this.prevx != nextx || this.prevy != nexty)
+    {
+        this.x = nextx;
+        this.y = nexty;
+        this.findtile();
+        
+        this.prevx = this.x;
+        this.prevy = this.y;
+    }
+    //
     if(this.dir.x<0)
         this.scale.x = -1;
     else if(this.dir.x>0)
         this.scale.x = 1;
+    
 }
 
     //this.animations.play("idle");

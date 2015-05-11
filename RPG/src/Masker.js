@@ -8,7 +8,7 @@ var Masker = function (game, maingame, maskableobjects)
     
     this.maskableobjects = maskableobjects;
     
-    this.mask = new Phaser.Image(game, 0, 0, "tiles2", "seethrough.png")
+    this.mask = new Phaser.Image(game, 0, 0, "tiles2", "box/seethrough.png")
     //this.maingame.objectGroup.add(this.mask);
     //this.maingame.objectGroup.add(mask);
 }
@@ -49,22 +49,38 @@ Masker.prototype.updateMasks = function(locx,locy) {
                     {
                         var maskedObject = new MaskedObject();
                         var bmd = this.game.make.bitmapData(object.width, object.height);
-
+                        var mask = this.game.make.bitmapData(object.width, object.height);
+                        
+                        mask.ctx.beginPath();
+                        mask.ctx.rect(0,0,object.width, object.height);
+                        mask.ctx.fillStyle = '#ffff00';
+                        mask.ctx.fill();
+                        
+                        mask.draw(this.mask);
                         
                         var x = object.x;
                         var y = object.y;
                         
                         object.x = 0;
                         object.y = 0;
+                        object.anchor.x = 0.0;
+                        object.anchor.y = 0.0; 
                         
-                        //bmd.alphaMask(object, this.mask);
-                        bmd.draw(object);
-                        //bmd.draw(this.mask);
+                        bmd.alphaMask(object, mask);
+                        //bmd.alphaMask(bmd, object);
+                        //bmd.draw(object, -object.width/2, -object.height, object.width,  object.height);
+                       // bmd.draw(object);
+                        object.anchor.x = 0.5;
+                        object.anchor.y = 1.0; 
+                        
                         //
                         maskedObject.thebitmapdata = bmd;
                         maskedObject.object = object;
                         //
-                        maskedObject.image = this.game.add.image(x, y, bmd);
+                        maskedObject.image = new Phaser.Image(this.game, x, y, bmd);          
+                        this.game.add.existing(maskedObject.image);
+                        //console.log(maskedObject.image.width, bmd);
+                        //this.game.add.image(x, y, bmd);
                         maskedObject.image.anchor.x = 0.5;
                         maskedObject.image.anchor.y = 1.0;                        
                         this.maingame.objectGroup.add(maskedObject.image);
@@ -72,6 +88,8 @@ Masker.prototype.updateMasks = function(locx,locy) {
                         this.maskedobjects[i] = maskedObject;
                         
                         object.visible  = false;
+                        object.x  = object.x;
+                        object.y  = object.y;
                     }
                     else
                     {

@@ -9,9 +9,6 @@ BasicGame.Game = function (game) {
     
     this.neighborLights = [];
 
-    this.gridSizeX = 30;//slotted for removal
-	this.gridSizeY = 15;//slotted for removal
-
     this.hexHandler;//hex helper functions
     this.highlightHex;
     this.pathfinder;//a* searcher
@@ -42,6 +39,10 @@ BasicGame.Game = function (game) {
     
     this.tiletest;
     this.masker;
+    
+    this.movementgrid;
+    this.spritegrid;
+    
 };
 
 //
@@ -56,7 +57,7 @@ BasicGame.Game.prototype = {
         
         
         
-        this.stage.backgroundColor = "#666666"
+        this.stage.backgroundColor = "#444444"
         this.pathfinder = this.game.plugins.add(Phaser.Plugin.PathFinderPlugin);
        
         this.interactiveObjects = [];
@@ -111,6 +112,8 @@ BasicGame.Game.prototype = {
         var hexagonArray = [];
         var waterTilesArray = [];
         //
+        this.interactiveObjects = [];
+        //
         this.objectGroup = this.add.group();
         this.highlightGroup = this.add.group();
         this.hexagonGroup = this.add.group();
@@ -135,37 +138,41 @@ BasicGame.Game.prototype = {
             var hexagonWidth = layer1.hexWidth;
             var hexagonHeight = layer1.hexHeight;
 
-            this.gridSizeY = layer1.height;
-            this.gridSizeX = layer1.width;
+            var gridSizeY = layer1.height;
+            var gridSizeX = layer1.width;
             var tiles = layer1.data;
             var tilesetid = layer1.tilesetid;
-            var objectName;
-            var tilereference;
-            var temptile;
-            
             var offsetx = layer1.offsetx || 0;
             var offsety = layer1.offsety || 0;
-            //
             
+            if(layer1.handleMovement)
+            {
+                this.movementgrid = new Grid(layer1);
+            }
+            if(layer1.handleSprite)
+            {
+                this.spritegrid = new Grid(layer1);
+            }
+            
+            var objectName;
+            var tilereference;
+            var temptile;            
             var tempPoint = new Point(0,0);
             var offset = 0;
             
             //
             if(layer1.handleSprite)
             {
-                for(var i = 0; i < this.gridSizeX; i ++)
+                for(var i = 0; i < gridSizeX; i ++)
                 {
                     
                     if(layer1.handleMovement)
                         hexagonArray[i] = [];
-                    for(var j = 0; j < this.gridSizeY; j ++)
+                    for(var j = 0; j < gridSizeY; j ++)
                     {
-                        objectName = tiles[j*this.gridSizeX+i];
+                        objectName = tiles[j*gridSizeX+i];
                         tilereference = this.getTile(objectName,tilesetid);
-                        
-                        HexHandler.GetMapCoords(layer1.tiletype, tempPoint, hexagonWidth, hexagonHeight, i, j);
-                        tempPoint.x += 16;
-                        tempPoint.y -= 4;
+                        tempPoint = this.spritegrid.GetMapCoords(i,j);
                         
                         if(layer1.handleMovement)//make tile
                         {
@@ -185,30 +192,33 @@ BasicGame.Game.prototype = {
             if(layer1.handleMovement)
             {
                 
-                for(var i = 0; i < this.gridSizeX; i ++)
+                for(var i = 0; i < gridSizeX; i ++)
                 {
                     if(!layer1.handleSprite)
                         hexagonArray[i] = [];
                     this.walkableArray[i] = [];
-                    for(var j = 0; j < this.gridSizeY; j ++)
+                    for(var j = 0; j < gridSizeY; j ++)
                     {
-                        this.walkableArray[i][j] = layer1.walkable[j*this.gridSizeX+i];
+                        this.walkableArray[i][j] = layer1.walkable[j*gridSizeX+i];
                         if(!layer1.handleSprite)//no sprite - need to something to select (this might not need to be destroyed)
                         {
                             //this needs to be switched out
-                            HexHandler.GetMapCoords(layer1.tiletype, tempPoint, hexagonWidth, hexagonHeight, i, j);
+                            tempPoint = this.movementgrid.GetMapCoords(i,j);
                             //
-                           // console.log(i,j);
+                            //console.log(i,j);
                             //console.log(tempPoint);
                             //
-                            /*var tile;
-                            if(this.walkableArray[i][j]==0)
-                                tile = new GraphicTile(this, "tile_highlight0003.png", "tiles2", i, j, tempPoint.x, tempPoint.y, this);
-                            else
-                                tile = new GraphicTile(this, "tile_highlight0002.png", "tiles2", i, j, tempPoint.x, tempPoint.y, this);
-                            
-                            this.highlightGroup.add(tile);
-                            this.addLocationTextToTile(tempPoint.x,tempPoint.y,hexagonWidth,hexagonHeight,i,j);*/
+                            if(this.game.global.showmovetile)
+                            {
+                                var tile;
+                                if(this.walkableArray[i][j]==0)
+                                    tile = new GraphicTile(this, "tile_highlight0003.png", "tiles2", i, j, tempPoint.x, tempPoint.y, this);
+                                else
+                                    tile = new GraphicTile(this, "tile_highlight0002.png", "tiles2", i, j, tempPoint.x, tempPoint.y, this);
+
+                                this.highlightGroup.add(tile);
+                                this.addLocationTextToTile(tempPoint.x,tempPoint.y,hexagonWidth,hexagonHeight,i,j);
+                            }
                             //
                             hexagonArray[i][j] = new SimpleTile(this,i,j,tempPoint.x,tempPoint.y);
                         }
@@ -219,23 +229,6 @@ BasicGame.Game.prototype = {
                     }
                 }
             }
-            if(hexagonArray.length>0)
-            {
-                var tile1 = hexagonArray[0][0];
-                var tile2 = hexagonArray[0][20];
-                var tile3 = hexagonArray[20][0];
-                //console.log(tile3.x,tile1.x,tile3.y,tile1.y);
-            //console.log(tile2.x-tile1.x,tile2.y-tile1.y,tile3.x-tile1.x,tile3.y-tile1.y);
-            }
-            
-            
-            //this.tiletest = this.game.make.image(0,0,"tiles2","hextiletouchmap.png");
-            //this.highlightGroup.add(this.tiletest);
-           // continue;
-            //
-
-            
-             
             if(layer1.objects)
             {
                 var objects = layer1.objects;
@@ -246,9 +239,11 @@ BasicGame.Game.prototype = {
                     {
                         if(!objects[i].destroyed)//object has been destroyed
                         {
-                            var interactiveobject = new InteractiveObject(this, objects[i],tileobject);
+                            var interactiveobject = new InteractiveObject(this, objects[i]);
                             this.interactiveObjects.push(interactiveobject);
-                            //interactive objects are never maskable
+                            
+                            interactiveobject.posx = objects[i].posx;
+                            interactiveobject.posy = objects[i].posy;
                         }
                     }
                     else
@@ -256,20 +251,18 @@ BasicGame.Game.prototype = {
                         var objectreference = this.getTile(objects[i].name,objects[i].tilesetid);
                         spotx = objects[i].x;
                         spoty = objects[i].y;
-                       // console.log(objects[i].x,objects[i].y*-1);
-                        //why 16?
-                        var tileobject = this.game.make.image(objects[i].x + 16, 
+                        //
+                        var tileobject = new SimpleObject(this.game,objects[i].x + 16, 
                                                                objects[i].y*-1 + 16, 
                                                                objectreference.spritesheet, objectreference.tile+".png");
-                       /* var tileobject = this.game.make.image(objects[i].offsetx * hexagonWidth + this.mapGroup.x + hexagonArray[spotx][spoty].x, 
-                                                               objects[i].offsety * hexagonHeight + this.mapGroup.y + hexagonArray[spotx][spoty].y, 
-                                                               objectreference.spritesheet, objectreference.tile+".png");*/
-                        //hexagonArray[spotx][spoty].addChild(tileobject);
+                        tileobject.posx = objects[i].posx;
+                        tileobject.posy = objects[i].posy;
+                        //
                         this.objectGroup.add(tileobject);
                         tileobject.anchor.x = 0.5;
                         tileobject.anchor.y = 1.0; 
                         
-                        if(objects[i].maskable){//maskable objects to check when player move
+                        if(objects[i].maskable){//maskable objects to check when player/mouse move
                             this.maskableobjects.push(tileobject);
                             //console.log(this.maskableobjects);
                         }
@@ -297,12 +290,13 @@ BasicGame.Game.prototype = {
         this.hexHandler.hexagonArray = hexagonArray;
         this.hexHandler.waterTilesArray = waterTilesArray;
         //these should be screen width and height
-		this.mapGroup.y = (440-hexagonHeight*Math.ceil(this.gridSizeY/2))/2;
-        //if(this.gridSizeY%2==0){
+		this.mapGroup.y = (440-hexagonHeight*Math.ceil(gridSizeY/2))/2;
+      
+        //if(gridSizeY%2==0){
         //    this.mapGroup.y-=hexagonHeight/4;
         //}
-        this.mapGroup.x = 0;//(900-Math.ceil(this.gridSizeX)*hexagonWidth)/2;
-        //if(this.gridSizeX%2==0){
+        this.mapGroup.x = 0;//(900-Math.ceil(gridSizeX)*hexagonWidth)/2;
+        //if(gridSizeX%2==0){
         //    this.mapGroup.x-=hexagonWidth/8;
         //}
         //
@@ -311,6 +305,13 @@ BasicGame.Game.prototype = {
         this.highlightHex.setup();
         this.highlightGroup.add(this.highlightHex);
                 
+        //
+        //console.log(this.game);
+        for(var i=0;i<this.interactiveObjects.length;i++)
+        {
+            if(this.interactiveObjects[i])
+                this.interactiveObjects[i].dosetup();
+        }
         //create player
         if(!this.playerCharacter)
         {
@@ -319,11 +320,57 @@ BasicGame.Game.prototype = {
             this.playerCharacter.setLocationByTile(hexagonArray[this.startpos.x][this.startpos.y]);
         }
         this.objectGroup.add(this.playerCharacter);
+       
         
         this.pathfinder.setGrid(this.walkableArray, [1]);
         this.masker = new CheapMasker(this.game, this, this.maskableobjects);
         //
         this.hexagonGroup.sort('y', Phaser.Group.SORT_ASCENDING);
+        //
+
+    },
+    customSortHexOffsetIso:function(a,b){
+        //console.log(a,b);
+        
+        if(b.IsPlayer||a.IsPlayer)
+        {
+            //console.log(a.posy,b.posy,a.y,b.y);
+        }
+        if(a.posy==b.posy)
+        {
+            if(a.posx<b.posx)
+            {
+                return 1;
+            }
+            else if(a.posx>b.posx)
+            {
+                return -1;
+            }
+            else
+            {
+                if(a.y<b.y)
+                {
+                    return -1;
+                }
+                if(a.y>b.y)
+                {
+                    return 1;
+                }
+            }
+        }
+        else if(a.posy<b.posy)
+        {
+            return -1;
+        }
+        else if(a.posy>b.posy)
+        {
+            return 1;
+        }
+        return 0;
+        //-1 if a > b, 1 if a < b or 0 if a === b
+        //test tile
+        //if same tile test y
+        //test level?
     },
     addLocationTextToTile:function(x,y,width,height,i,j){
         var hexagonText = this.add.text(x+width/4,y+3,i+","+j);
@@ -349,6 +396,8 @@ BasicGame.Game.prototype = {
         this.createMapTiles(currentmap);        
     },
     flushEntireMap: function(){
+        this.interactiveObjects = [];
+        
         this.hexagonGroup.removeAll(true);
         this.highlightGroup.removeAll(true);
         this.objectGroup.removeAll(true);
@@ -360,23 +409,21 @@ BasicGame.Game.prototype = {
     update: function () {
         var elapsedTime = this.game.time.elapsed;
         this.hexHandler.update(elapsedTime);
-        
+        //
         if(!this.game.global.pause)
         {
             this.playerCharacter.step(elapsedTime);
-            //this.playerHex = this.hexHandler.checkHex(this.playerCharacter.x,this.playerCharacter.y);
-            //var this.hexHandler.doFloodFill(this.playerHex,3);
         }
-        //this.hexagonGroup.sort('y', Phaser.Group.SORT_ASCENDING);
-        this.objectGroup.sort('y', Phaser.Group.SORT_ASCENDING);
+        this.objectGroup.customSort (this.customSortHexOffsetIso);
         //
         if(this.updatewalkable)
         {
            this.pathfinder.setGrid(this.walkableArray, [1]);
             this.updatewalkable = false;
         }
-        //this.masker.updateMasks(this.input.worldX-this.mapGroup.x,this.input.worldY-this.mapGroup.y);
-        this.masker.updateMasks(this.playerCharacter.x,this.playerCharacter.y);
+        //this.spritegrid.PosToMap(this.input.worldX-this.mapGroup.x,this.input.worldY-this.mapGroup.y);
+        this.masker.updateMasks(this.input.worldX-this.mapGroup.x,this.input.worldY-this.mapGroup.y);
+        //this.masker.updateMasks(this.playerCharacter.x, this.playerCharacter.y, this.playerCharacter.posx, this.playerCharacter.posy);
         //fps.text = this.game.time.fps;
     },
     //
@@ -424,7 +471,7 @@ BasicGame.Game.prototype = {
             return;
         }
         var moveIndex =  this.hexHandler.checkHex(this.input.worldX-this.mapGroup.x,this.input.worldY-this.mapGroup.y);
-        var playertile = this.hexHandler.checkHex(this.playerCharacter.x,this.playerCharacter.y);
+        //var playertile = this.hexHandler.checkHex(this.playerCharacter.x,this.playerCharacter.y);
         if(moveIndex)
         {
             //this.tiletest.x = moveIndex.x;
@@ -437,7 +484,7 @@ BasicGame.Game.prototype = {
         
         //console.log(this.input.worldX,this.mapGroup.x,this.input.worldX-this.mapGroup.x);
         
-        //this.highlightHex.doShowPath(this.pathfinder,playertile,moveIndex);
+        this.highlightHex.doShowPath(this.pathfinder,this.playerCharacter.currentTile,moveIndex);
         //this.hexHandler.dolines(playertile,moveIndex,false,this.highlightHex);
         //var fridges = this.hexHandler.doFloodFill(moveIndex,4);
         //this.highlightHex.drawFringes(fridges);
@@ -458,36 +505,13 @@ BasicGame.Game.prototype = {
         {
             if(this.game.currentacion==this.game.WALK)
             {
-                //activate this to make it not able to walk to spot
-                //if(moveIndex.walkable)
-                //{
-                    var playertile = this.hexHandler.checkHex(this.playerCharacter.x,this.playerCharacter.y);
-                    if(playertile)
-                    {
-                        //straight line walk
-                        //var path = this.hexHandler.getlinepath(playertile,moveIndex);
-                        //this.playerCharacter.setPath(path);
-                        //a* walk
-                        this.pathfinder.setCallbackFunction(this.playercallback, this);
-                        this.pathfinder.preparePathCalculation( [playertile.posx,playertile.posy], [moveIndex.posx,moveIndex.posy] );
-                        this.pathfinder.calculatePath();
-                    }
-                /*}
-                else
-                {
-                    //console.log(moveIndex);
-                    //console.log("not walkable");
-                }*/
+                this.playerCharacter.moveto(moveIndex);
             }
         }
-    },
-    playercallback:function(path){
-        path = path || [];
-        path = this.hexHandler.pathCoordsToTiles(path);
-        this.playerCharacter.setPath(path);
-    },    
+    },   
     getTile: function(name, tilesetid){
-        return {tile:this.mapData.tileSets[tilesetid][name],spritesheet:this.mapData.tileSets[tilesetid].tileset};
+       // console.log(tilesetid,name);
+        return {tile:this.mapData.tileSets[tilesetid][name], spritesheet:this.mapData.tileSets[tilesetid].tileset};
     }
     
 };
@@ -505,3 +529,36 @@ var Point = function(x, y) {
                 }
                 else{
                 */
+
+/*
+graph for touching grids
+        var cords;
+        var graph = this.game.add.graphics(0, 0);
+        this.hexagonGroup.add(graph);
+        //graph.y += this.mapGroup.y;
+        cords = this.spritegrid.PosToMap(0,0);
+        graph.lineStyle(10, 0xFF0000, 1.0);
+        graph.beginFill(0x000000, 0.0);
+        var xstart = 350;
+        var ystart = 100;
+/*
+        for(var i=ystart;i<250;i+=25)
+        {
+            this.spritegrid.PosToMap(xstart,i);
+            graph.lineStyle(0);
+            graph.beginFill(0xFFFF0B, 0.5);
+            graph.drawCircle(xstart+16,i,10);
+            console.log(cords.x,cords.y);
+            graph.endFill();
+        }*/
+        /*
+        for(var i=xstart;i<xstart+250;i+=25)
+        {
+            //this.spritegrid.PosToMap(i-40,ystart-16);
+            this.spritegrid.PosToMap(i,ystart);
+            graph.lineStyle(0);
+            graph.beginFill(0xFFFF0B, 0.5);
+            graph.drawCircle(i,ystart,10);
+            console.log(cords.x,cords.y);
+            graph.endFill();
+        }*/

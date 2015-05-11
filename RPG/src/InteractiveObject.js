@@ -16,13 +16,23 @@ var InteractiveObject = function (maingame, jsondata)
 {
     this.maingame = maingame;
     this.game = maingame.game;
+    
     this.jsondata = jsondata;
 
-    this.jsondata.state = "idle";
-    
+    this.jsondata.state = "idle";    
+    this.posx;//sprite locations
+    this.posy;
+    this.currentTile;//moveable location
+    this.hasstates = false;
     this.eventDispatcher = new EventDispatcher(this.game,this.maingame,this);
-    this.eventDispatcher.init(this.jsondata.triggers);
+}
+InteractiveObject.prototype = Object.create(Phaser.Sprite.prototype);
+InteractiveObject.constructor = InteractiveObject;
 
+InteractiveObject.prototype.dosetup = function() 
+{
+    this.eventDispatcher.init(this.jsondata.triggers);
+   
     this.setupArt(this.jsondata);
 
     //this.events.onInputDown.add(this.handleClick, this);    
@@ -34,13 +44,14 @@ var InteractiveObject = function (maingame, jsondata)
     {
         if(actions[i].type=="actorset")
         {
-            this.actor = maingame.globalHandler.getActorByID(actions[i].id);
+            this.actor = this.maingame.globalHandler.getActorByID(actions[i].id);
             //maingame.globalHandler.getActorByID
         }
         if(actions[i].type=="animations")
         {
             var animations = actions[i].animations;
             var tempanimation;
+            this.hasstates = true;
             for(var j=0;j<animations.length;j++)
             {
                 if(animations[j].start==0&&animations[j].stop==0){
@@ -49,6 +60,8 @@ var InteractiveObject = function (maingame, jsondata)
                 else{
                     tempanimation =  this.animations.add(animations[j].id, Phaser.Animation.generateFrameNames(animations[j].name, animations[j].start, animations[j].stop, ".png", 4), 12, animations[j].loop, false);
                 }
+                if(j==0)
+                    this.jsondata.state = animations[j].id;
             }
             /*if(tempanimation!=null)
             {
@@ -67,32 +80,40 @@ var InteractiveObject = function (maingame, jsondata)
         this.changeState(this.actor.getValue("state"));
     }
     else{
-        this.changeState("idle");
+        this.changeState(this.jsondata.state);
     }
     //
     //
     //this will move
     if(this.eventDispatcher)
         this.eventDispatcher.doAction("OnActivate");
+    this.currentTile = this.maingame.hexHandler.checkHex(this.x,this.y);
+    //get tile? these tiles don't exists
 }
-InteractiveObject.prototype = Object.create(Phaser.Sprite.prototype);
-InteractiveObject.constructor = InteractiveObject;
 //
 //  
 InteractiveObject.prototype.changeState = function(newstate) 
 {
     //need to test if state exists
-    var nextAnimation = this.animations.getAnimation(newstate);
-    if(nextAnimation)
+    
+    if(this.hasstates)
     {
-        this.animations.play(newstate);
-        if(this.actor)
-            this.actor.updateValue("state",newstate);
-        this.jsondata.state = newstate;
+        var nextAnimation = this.animations.getAnimation(newstate);
+        if(nextAnimation)
+        {
+            this.animations.play(newstate);
+            if(this.actor)
+                this.actor.updateValue("state",newstate);
+            this.jsondata.state = newstate;
+        }
+        else
+        {
+            console.log(this,newstate,"state doesn't exist.");
+        }
     }
     else
     {
-        console.log(this,newstate,"state doesn't exist.");
+        this.jsondata.state = newstate;
     }
 }
 InteractiveObject.prototype.callFunction = function(fnstring,fnparams) 
@@ -164,7 +185,20 @@ InteractiveObject.prototype.handleClick = function()
     if(GlobalEvents.currentacion == GlobalEvents.WALK)
         return;
     else if(GlobalEvents.currentacion == GlobalEvents.TOUCH)
-        this.eventDispatcher.doAction("OnTouch");
+    {
+        //test if neighbor
+        var neighbours = this.maingame.hexHandler.areTilesNeighbors(this.currentTile, this.maingame.playerCharacter.currentTile);
+        //
+        if(this.game.global.movetotouch){
+            if(neighbours)
+                this.eventDispatcher.doAction("OnTouch");
+            else
+                this.maingame.playerCharacter.moveto(this.currentTile);
+        }
+        else{
+            this.eventDispatcher.doAction("OnTouch");
+        }
+    }
     else if(GlobalEvents.currentacion == GlobalEvents.LOOK)
         this.eventDispatcher.doAction("OnLook");
     else if(GlobalEvents.currentacion == GlobalEvents.TALK)
@@ -180,9 +214,16 @@ InteractiveObject.prototype.setupArt = function(json)
     var offsetx = this.jsondata.offsetx || 0.5;
     var offsety = this.jsondata.offsetx || 0.5;
     var tile = this.maingame.hexHandler.getTileByCords(spotx,spoty);
+    
+      //  objects[i].x + 16, 
+    //    objects[i].y*-1 + 16
+    
+    //console.log(this.game,this.maingame,objectreference);
     Phaser.Sprite.call(this, this.game, 
-                       offsetx*this.maingame.hexHandler.hexagonWidth + this.maingame.mapGroup.x,// + tile.x,
-                       offsety*this.maingame.hexHandler.hexagonHeight + this.maingame.mapGroup.y,// + tile.y, 
+                       spotx + 16, 
+                        spoty*-1 + 16,
+                       //offsetx*this.maingame.hexHandler.hexagonWidth + this.maingame.mapGroup.x,// + tile.x,
+                       //offsety*this.maingame.hexHandler.hexagonHeight + this.maingame.mapGroup.y,// + tile.y, 
                        objectreference.spritesheet, objectreference.tile+".png");
     this.maingame.objectGroup.add(this);
     this.anchor.x = 0.5;
