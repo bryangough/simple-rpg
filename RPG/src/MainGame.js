@@ -43,6 +43,8 @@ BasicGame.Game = function (game) {
     this.movementgrid;
     this.spritegrid;
     
+    this.rollovertext;
+    
 };
 
 //
@@ -82,6 +84,12 @@ BasicGame.Game.prototype = {
         this.justTextPopup = new JustTextPopup(this.game,this,this.dialoghandler);
         this.game.add.existing(this.justTextPopup);
         this.uiGroup.add(this.justTextPopup);
+        
+        this.rollovertext = this.game.make.bitmapText(0, 0, "badabb", "Text goes here.", 25);
+        this.rollovertext.visible = false;
+        this.game.add.existing(this.rollovertext);
+        this.uiGroup.add(this.rollovertext);
+        
         
         this.inventory = new InventoryGraphics(this.game,this,this.globalHandler);
 	    this.game.add.existing(this.inventory);
@@ -428,18 +436,45 @@ BasicGame.Game.prototype = {
     },
     //
     showDialog:function(convid){
+        //console.log("showDialog");
         this.diagpanel.startDialog(convid);
+        GlobalEvents.tempDisableEvents();
         this.pauseGame();
     },
+    //this needs to be controlled by a queue?
+    //if 2 are show at once, they are displayed 1 after the other
     showJustText:function(textDisplay)
     {
+        //console.log("showJustText");
         this.justTextPopup.showText(textDisplay);
+        GlobalEvents.tempDisableEvents();
         this.pauseGame();
     },
     showJustTextDialog:function(convid)
     {
+        //console.log("showJustTextDialog");
         this.justTextPopup.showTextFromHandler(convid);
+        GlobalEvents.tempDisableEvents();
         this.pauseGame();
+    },
+    showRollover:function(object)
+    {
+        if(!this.rollovertext)
+            return;
+        this.rollovertext.text = object.jsondata.displayName;
+        this.rollovertext.x = object.x;//-this.maingame.rollovertext.width/2;
+        this.rollovertext.y = object.y;
+        this.rollovertext.visible = true;
+        //if display is off the screen
+        if(this.rollovertext.y<0){
+            this.rollovertext.y = object.y + object.height;
+        }
+    },
+    moveToAction:function(totile,actions)
+    {
+        this.playerCharacter.moveto(totile);
+        //this.playerCharacter.movingtotile = totile;
+        this.playerCharacter.actionsaftermove = actions;
     },
     //
     pauseGame:function(){
@@ -454,6 +489,8 @@ BasicGame.Game.prototype = {
         {
             this.game.global.pause = false;
             //unpause everything
+            
+            GlobalEvents.reEnableEvents();
         }
     },
     quitGame: function (pointer) {
@@ -484,7 +521,7 @@ BasicGame.Game.prototype = {
         
         //console.log(this.input.worldX,this.mapGroup.x,this.input.worldX-this.mapGroup.x);
         
-        this.highlightHex.doShowPath(this.pathfinder,this.playerCharacter.currentTile,moveIndex);
+        //this.highlightHex.doShowPath(this.pathfinder,this.playerCharacter.currentTile,moveIndex);
         //this.hexHandler.dolines(playertile,moveIndex,false,this.highlightHex);
         //var fridges = this.hexHandler.doFloodFill(moveIndex,4);
         //this.highlightHex.drawFringes(fridges);
@@ -506,6 +543,7 @@ BasicGame.Game.prototype = {
             if(this.game.currentacion==this.game.WALK)
             {
                 this.playerCharacter.moveto(moveIndex);
+                
             }
         }
     },   

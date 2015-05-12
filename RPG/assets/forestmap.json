@@ -2,6 +2,8 @@
     "mapData": {},
     "Player": {
         "name": 7,
+        "displayName": "",
+        "state": "idle",
         "maskable": true,
         "tilesetid": "interactiveactors",
         "triggers": [
@@ -157,16 +159,54 @@
                 "objects": [
                     {
                         "name": 2,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 7,
                         "posy": 9,
                         "x": 644,
                         "y": -144,
                         "maskable": true,
-                        "tilesetid": "isotileobjects"
+                        "tilesetid": "isotileobjects",
+                        "triggers": [
+                            {
+                                "type": "interacttrigger",
+                                "itemid": "3",
+                                "trigger": "OnUseItem",
+                                "once": false,
+                                "walkto": true,
+                                "actions": [
+                                    {
+                                        "type": "Item",
+                                        "name": 3,
+                                        "mode": "To",
+                                        "variable": "Inventory",
+                                        "value": false
+                                    },
+                                    {
+                                        "type": "SIMPLE",
+                                        "text": "You place the crab into the other tree. It seems happier."
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": [
+                                        {
+                                            "type": "Item",
+                                            "name": 3,
+                                            "variable": "Inventory",
+                                            "compare": "Is",
+                                            "value": true
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
                     },
                     {
                         "name": 1,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 7,
                         "posy": 8,
@@ -177,6 +217,8 @@
                     },
                     {
                         "name": 1,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 4,
                         "posy": 4,
@@ -187,6 +229,8 @@
                     },
                     {
                         "name": 1,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 9,
                         "posy": 0,
@@ -197,16 +241,119 @@
                     },
                     {
                         "name": 3,
+                        "displayName": "A tree",
+                        "state": "seed",
                         "tilebase": false,
                         "posx": 0,
                         "posy": 7,
                         "x": 275,
                         "y": -177,
                         "maskable": true,
-                        "tilesetid": "isotileobjects"
+                        "tilesetid": "isotileobjects",
+                        "triggers": [
+                            {
+                                "type": "interacttrigger",
+                                "trigger": "OnTouch",
+                                "once": true,
+                                "walkto": true,
+                                "actions": [
+                                    {
+                                        "type": "Item",
+                                        "name": 3,
+                                        "mode": "To",
+                                        "variable": "Inventory",
+                                        "value": true
+                                    },
+                                    {
+                                        "type": "THIS",
+                                        "function": "changeState",
+                                        "parameters": "noseed"
+                                    },
+                                    {
+                                        "type": "SIMPLE",
+                                        "text": "You pick the acorn from the tree."
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": [
+                                        {
+                                            "type": "THIS",
+                                            "name": -1,
+                                            "variable": "state",
+                                            "compare": "Is",
+                                            "value": "seed"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "type": "actiontext",
+                                "walkto": false,
+                                "trigger": "OnLook",
+                                "actions": [
+                                    {
+                                        "type": "SIMPLE",
+                                        "text": "A tree with an acorn."
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": [
+                                        {
+                                            "type": "THIS",
+                                            "name": -1,
+                                            "variable": "state",
+                                            "compare": "Is",
+                                            "value": "seed"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "type": "actiontext",
+                                "walkto": false,
+                                "trigger": "OnTalk",
+                                "actions": [
+                                    {
+                                        "type": "SIMPLE",
+                                        "text": "It doesn't want to talk."
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": []
+                                }
+                            },
+                            {
+                                "type": "actiontext",
+                                "walkto": false,
+                                "trigger": "OnLook",
+                                "actions": [
+                                    {
+                                        "type": "SIMPLE",
+                                        "text": "No acorn left."
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": [
+                                        {
+                                            "type": "THIS",
+                                            "name": -1,
+                                            "variable": "state",
+                                            "compare": "Is",
+                                            "value": "noseed"
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
                     },
                     {
                         "name": 11,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 6,
                         "posy": 1,
@@ -217,6 +364,8 @@
                     },
                     {
                         "name": 11,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 7,
                         "posy": 1,
@@ -227,6 +376,8 @@
                     },
                     {
                         "name": 11,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 8,
                         "posy": 1,
@@ -237,6 +388,8 @@
                     },
                     {
                         "name": 11,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 9,
                         "posy": 1,
@@ -247,6 +400,8 @@
                     },
                     {
                         "name": 0,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 6,
                         "posy": 4,
@@ -257,6 +412,8 @@
                     },
                     {
                         "name": 0,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 8,
                         "posy": 4,
@@ -267,6 +424,8 @@
                     },
                     {
                         "name": 0,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 9,
                         "posy": 4,
@@ -277,6 +436,8 @@
                     },
                     {
                         "name": 7,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 6,
                         "posy": 2,
@@ -287,6 +448,8 @@
                     },
                     {
                         "name": 7,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 6,
                         "posy": 2,
@@ -297,6 +460,8 @@
                     },
                     {
                         "name": 7,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 6,
                         "posy": 2,
@@ -307,6 +472,8 @@
                     },
                     {
                         "name": 7,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 6,
                         "posy": 3,
@@ -317,6 +484,8 @@
                     },
                     {
                         "name": 7,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 6,
                         "posy": 3,
@@ -327,6 +496,8 @@
                     },
                     {
                         "name": 7,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 6,
                         "posy": 3,
@@ -337,6 +508,8 @@
                     },
                     {
                         "name": 7,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 6,
                         "posy": 4,
@@ -347,6 +520,8 @@
                     },
                     {
                         "name": 9,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 10,
                         "posy": 2,
@@ -357,6 +532,8 @@
                     },
                     {
                         "name": 9,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 10,
                         "posy": 3,
@@ -367,6 +544,8 @@
                     },
                     {
                         "name": 9,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 10,
                         "posy": 4,
@@ -377,6 +556,8 @@
                     },
                     {
                         "name": 6,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 7,
                         "posy": 4,
@@ -387,6 +568,8 @@
                     },
                     {
                         "name": 5,
+                        "displayName": "House Door",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 5,
                         "posy": -1,
@@ -397,6 +580,7 @@
                         "triggers": [
                             {
                                 "trigger": "OnTouch",
+                                "walkto": false,
                                 "actions": [
                                     {
                                         "type": "ChangeMap",
@@ -411,92 +595,110 @@
                     },
                     {
                         "name": 11,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 0,
                         "posy": -1,
                         "x": 21,
                         "y": 6.999999,
-                        "maskable": true,
+                        "maskable": false,
                         "tilesetid": "boxes"
                     },
                     {
                         "name": 11,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 1,
                         "posy": -1,
                         "x": 69,
                         "y": 19,
-                        "maskable": true,
+                        "maskable": false,
                         "tilesetid": "boxes"
                     },
                     {
                         "name": 11,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 6,
                         "posy": -1,
                         "x": 309,
                         "y": 79,
-                        "maskable": true,
+                        "maskable": false,
                         "tilesetid": "boxes"
                     },
                     {
                         "name": 11,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 7,
                         "posy": -1,
                         "x": 357,
                         "y": 90.99999,
-                        "maskable": true,
+                        "maskable": false,
                         "tilesetid": "boxes"
                     },
                     {
                         "name": 11,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 8,
                         "posy": -1,
                         "x": 405,
                         "y": 103,
-                        "maskable": true,
+                        "maskable": false,
                         "tilesetid": "boxes"
                     },
                     {
                         "name": 11,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 9,
                         "posy": -1,
                         "x": 453,
                         "y": 115,
-                        "maskable": true,
+                        "maskable": false,
                         "tilesetid": "boxes"
                     },
                     {
                         "name": 11,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 4,
                         "posy": -1,
                         "x": 213,
                         "y": 55,
-                        "maskable": true,
+                        "maskable": false,
                         "tilesetid": "boxes"
                     },
                     {
                         "name": 11,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 3,
                         "posy": -1,
                         "x": 165,
                         "y": 43,
-                        "maskable": true,
+                        "maskable": false,
                         "tilesetid": "boxes"
                     },
                     {
                         "name": 11,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 2,
                         "posy": -1,
                         "x": 117,
                         "y": 31,
-                        "maskable": true,
+                        "maskable": false,
                         "tilesetid": "boxes"
                     }
                 ]
@@ -581,7 +783,6 @@
                     1,
                     1,
                     1,
-                    0,
                     1,
                     1,
                     1,
@@ -601,36 +802,8 @@
                     1,
                     1,
                     1,
-                    0,
-                    0,
-                    0,
                     1,
                     1,
-                    1,
-                    1,
-                    1,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    1,
-                    1,
-                    1,
-                    1,
-                    0,
-                    0,
-                    0,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    0,
                     1,
                     1,
                     1,
@@ -639,11 +812,40 @@
                     1,
                     1,
                     0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
                     1,
                     1,
                     1,
                     1,
                     0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
                     1,
                     1,
                     1,
@@ -1016,16 +1218,20 @@
                 "objects": [
                     {
                         "name": 11,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 0,
-                        "posy": -1,
-                        "x": 21,
-                        "y": 7.000005,
+                        "posy": -85,
+                        "x": -2667,
+                        "y": 2023,
                         "maskable": false,
                         "tilesetid": "boxes"
                     },
                     {
                         "name": 11,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 1,
                         "posy": -1,
@@ -1036,6 +1242,8 @@
                     },
                     {
                         "name": 11,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 2,
                         "posy": -1,
@@ -1046,6 +1254,8 @@
                     },
                     {
                         "name": 11,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 3,
                         "posy": -1,
@@ -1056,6 +1266,8 @@
                     },
                     {
                         "name": 11,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 4,
                         "posy": -1,
@@ -1066,6 +1278,8 @@
                     },
                     {
                         "name": 11,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 5,
                         "posy": -1,
@@ -1076,6 +1290,8 @@
                     },
                     {
                         "name": 11,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 6,
                         "posy": -1,
@@ -1086,6 +1302,8 @@
                     },
                     {
                         "name": 11,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 7,
                         "posy": -1,
@@ -1096,6 +1314,8 @@
                     },
                     {
                         "name": 11,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 8,
                         "posy": -1,
@@ -1106,6 +1326,8 @@
                     },
                     {
                         "name": 11,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 9,
                         "posy": -1,
@@ -1116,6 +1338,8 @@
                     },
                     {
                         "name": 9,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 10,
                         "posy": 0,
@@ -1126,6 +1350,8 @@
                     },
                     {
                         "name": 9,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 10,
                         "posy": 3,
@@ -1136,6 +1362,8 @@
                     },
                     {
                         "name": 9,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 10,
                         "posy": 2,
@@ -1146,6 +1374,8 @@
                     },
                     {
                         "name": 9,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 10,
                         "posy": 1,
@@ -1156,6 +1386,8 @@
                     },
                     {
                         "name": 14,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 9,
                         "posy": 0,
@@ -1166,6 +1398,8 @@
                     },
                     {
                         "name": 14,
+                        "displayName": "",
+                        "state": "idle",
                         "tilebase": false,
                         "posx": 0,
                         "posy": 0,
@@ -1501,7 +1735,7 @@
             },
             {
                 "id": 3,
-                "Name": "New Item 3",
+                "Name": "Acorn",
                 "Description": "",
                 "State": "",
                 "SuccessAction": "",
@@ -1521,8 +1755,8 @@
                 "onTalk": "",
                 "VisibleInventory": true,
                 "Count": 0,
-                "InventoryGraphicName": "",
-                "InvetoryGraphicSheet": "",
+                "InventoryGraphicName": "inv_crab",
+                "InvetoryGraphicSheet": "dialogui",
                 "Combine Count": 2
             }
         ],

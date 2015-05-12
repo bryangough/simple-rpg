@@ -19,7 +19,7 @@ var InteractiveObject = function (maingame, jsondata)
     
     this.jsondata = jsondata;
 
-    this.jsondata.state = "idle";    
+    //this.jsondata.state = "idle";    
     this.posx;//sprite locations
     this.posy;
     this.currentTile;//moveable location
@@ -60,8 +60,8 @@ InteractiveObject.prototype.dosetup = function()
                 else{
                     tempanimation =  this.animations.add(animations[j].id, Phaser.Animation.generateFrameNames(animations[j].name, animations[j].start, animations[j].stop, ".png", 4), 12, animations[j].loop, false);
                 }
-                if(j==0)
-                    this.jsondata.state = animations[j].id;
+                //if(j==0)
+                //    this.jsondata.state = animations[j].id;
             }
             /*if(tempanimation!=null)
             {
@@ -116,6 +116,27 @@ InteractiveObject.prototype.changeState = function(newstate)
         this.jsondata.state = newstate;
     }
 }
+InteractiveObject.prototype.testTHISValues = function(variablein,compare,value)
+{
+    var variable = this[variablein];
+    if(variable==null||variable==undefined)
+    {
+        variable = this.jsondata[variablein];
+    }
+    if(compare=="Is")
+        return (variable == value);
+    if(compare=="IsNot")
+        return (variable != value);
+    if(compare=="Less")
+        return (variable < value);
+    if(compare=="Greater")
+        return (variable > value);
+    if(compare=="LessEqual")
+        return (variable <= value);
+    if(compare=="GreaterEqual")
+        return (variable >= value);
+    return false;
+}
 InteractiveObject.prototype.callFunction = function(fnstring,fnparams) 
 {
     var fn = this[fnstring];
@@ -165,10 +186,16 @@ InteractiveObject.prototype.destroySelf = function(elapseTime)
 InteractiveObject.prototype.handleOver = function() 
 {
     this.tint = 0x00ffff;
+    if(this.jsondata.displayName!="")
+    {
+        this.maingame.showRollover(this);
+    }
 }
 InteractiveObject.prototype.handleOut = function() 
 {
     this.tint = 0xffffff;
+    if(this.maingame.rollovertext)
+        this.maingame.rollovertext.visible = false;
 }
 
 InteractiveObject.prototype.step = function(elapseTime) 
@@ -185,26 +212,15 @@ InteractiveObject.prototype.handleClick = function()
     if(GlobalEvents.currentacion == GlobalEvents.WALK)
         return;
     else if(GlobalEvents.currentacion == GlobalEvents.TOUCH)
-    {
-        //test if neighbor
-        var neighbours = this.maingame.hexHandler.areTilesNeighbors(this.currentTile, this.maingame.playerCharacter.currentTile);
-        //
-        if(this.game.global.movetotouch){
-            if(neighbours)
-                this.eventDispatcher.doAction("OnTouch");
-            else
-                this.maingame.playerCharacter.moveto(this.currentTile);
-        }
-        else{
-            this.eventDispatcher.doAction("OnTouch");
-        }
-    }
+        this.eventDispatcher.doAction("OnTouch");
     else if(GlobalEvents.currentacion == GlobalEvents.LOOK)
         this.eventDispatcher.doAction("OnLook");
     else if(GlobalEvents.currentacion == GlobalEvents.TALK)
         this.eventDispatcher.doAction("OnTalk");
     else if(GlobalEvents.currentacion == GlobalEvents.ITEM)
         this.eventDispatcher.doAction("OnUseItem");
+    
+    this.handleOut();
 }
 InteractiveObject.prototype.setupArt = function(json) 
 {

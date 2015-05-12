@@ -78,7 +78,7 @@ EventDispatcher.prototype.init = function(triggers)
             {
                 action = trigger.actions[j];
                 eventAction = this.getEventType(activation);
-                this.setActions(eventAction, action, trigger.once, con);
+                this.setActions(eventAction, action, trigger.once, con, trigger.walkto);
             }
         }
        /* else if(trigger.type=="actiontext")
@@ -104,25 +104,25 @@ EventDispatcher.prototype.helpSetActions = function(eventAction, actions, once, 
     if(actions!=null){            
         for(var j=0;j<actions.length;j++){
             if(actions[j]!=null)
-                this.setActions(eventAction, actions[j], once, con);
+                this.setActions(eventAction, actions[j], once, con, false);
         }
     }
 }
-EventDispatcher.prototype.setActions = function(eventAction,action, once, con)
+EventDispatcher.prototype.setActions = function(eventAction,action, once, con, walkto)
 {
     if(action.type=="ChangeMap")
         {
             //console.log(action);
-            eventAction.push({func:this.maingame.userExit, para:[action], removeself:once, callee:this.maingame, con:con});
+            eventAction.push({func:this.maingame.userExit, para:[action], removeself:once, callee:this.maingame, con:con, walkto:walkto});
         }
         //
         else if(action.type=="CONVERSATION")
         {
-            eventAction.push({func:this.maingame.showDialog, para:[action.id], removeself:once, callee:this.maingame, con:con});
+            eventAction.push({func:this.maingame.showDialog, para:[action.id], removeself:once, callee:this.maingame, con:con, walkto:walkto});
         }
         else if(action.type=="SIMPLE")
         {
-            eventAction.push({func:this.maingame.showJustText, para:[action.text], removeself:once, callee:this.maingame, con:con});
+            eventAction.push({func:this.maingame.showJustText, para:[action.text], removeself:once, callee:this.maingame, con:con, walkto:walkto});
         }
         else if(action.type=="BARK")
         {
@@ -130,20 +130,20 @@ EventDispatcher.prototype.setActions = function(eventAction,action, once, con)
         //
         else if(action.type=="THIS")//call function on this
         {
-            eventAction.push({func:this.object.callFunction, para:[action.function, action.parameters], removeself:false, callee:this.object, con:con});
+            eventAction.push({func:this.object.callFunction, para:[action.function, action.parameters], removeself:false, callee:this.object, con:con, walkto:walkto});
         }
         else if(action.type=="Item")
         {
-            eventAction.push({func:this.maingame.globalHandler.updateItem, para:[action.name,action.mode, action.variable,action.value],  removeself:false, callee:this.maingame.globalHandler, con:con});
+            eventAction.push({func:this.maingame.globalHandler.updateItem, para:[action.name,action.mode, action.variable,action.value],  removeself:false, callee:this.maingame.globalHandler, con:con, walkto:walkto});
 
         }
         else if(action.type=="Actor")
         {
-            eventAction.push({func:this.maingame.globalHandler.updateActor, para:[action.name,action.mode, action.variable,action.value],  removeself:false, callee:this.maingame.globalHandler, con:con});
+            eventAction.push({func:this.maingame.globalHandler.updateActor, para:[action.name,action.mode, action.variable,action.value],  removeself:false, callee:this.maingame.globalHandler, con:con, walkto:walkto});
         }
         else if(action.type=="Variable")
         {
-            eventAction.push({func:this.maingame.globalHandler.updateVariableByID, para:[action.name,action.mode, action.value],  removeself:false, callee:this.maingame.globalHandler, con:con});
+            eventAction.push({func:this.maingame.globalHandler.updateVariableByID, para:[action.name,action.mode, action.value],  removeself:false, callee:this.maingame.globalHandler, con:con, walkto:walkto});
         }
         else if(action.type=="Quest")
         {
@@ -180,15 +180,20 @@ EventDispatcher.prototype.applyConditions = function(con, conditions)
         {
             savedConditions.push({func:this.maingame.globalHandler.compareQuestValue, para:[condition.name, condition.compare, condition.value], callee:this.maingame.globalHandler});
         }
+        else if(condition.type=="THIS")
+        {
+            savedConditions.push({func:this.object.testTHISValues, para:[condition.variable, condition.compare, condition.value], callee:this.object})
+        }
         else
         {
-            console("Apply conditions unknown",action.type,action);
+            console("Apply conditions unknown",condition.type,condition);
         }
     }
     con.logic = logic;
     con.list = savedConditions;
     return con;
 }
+
 //
 EventDispatcher.prototype.testConditions = function(conditions) 
 {
@@ -229,7 +234,8 @@ EventDispatcher.prototype.completeAction = function(actionEvent)
 {
     var lastcon;
     var lastconreturn = false;
-    var actionstoactivate = []
+    var actionstoactivate = [];
+    var walktoactions = [];
     if(actionEvent.length>0)
     {
         //test all conditions
@@ -249,21 +255,41 @@ EventDispatcher.prototype.completeAction = function(actionEvent)
                         continue;
                 }
                 //push activated events into array and fire them later
+                if(actionEvent[i].walkto)
+                {
+                    //this should be called only once
+                     var neighbours = this.maingame.hexHandler.areTilesNeighbors(this.object.currentTile, this.maingame.playerCharacter.currentTile);
+                    if(!neighbours)
+                    {
+                        walktoactions.push(actionEvent[i]);
+                        continue;
+                    }
+                }
                 actionstoactivate.push(actionEvent[i]);
             }
         }
-        //all actions now happens after all conditions are tested
-        for(var i=0;i<actionstoactivate.length;i++)
+        //
+        if(walktoactions.length>0)
         {
-            actionstoactivate[i].func.apply(actionstoactivate[i].callee, actionstoactivate[i].para);
+            this.maingame.moveToAction(this.object.currentTile,walktoactions);
+        }
+        //all actions now happens after all conditions are tested
+        this.dogivenactions(actionstoactivate);
+    }
+};
+EventDispatcher.prototype.dogivenactions = function(actionstoactivate) 
+{
+    for(var i=0;i<actionstoactivate.length;i++)
+        {
+            if(actionstoactivate[i])
+                actionstoactivate[i].func.apply(actionstoactivate[i].callee, actionstoactivate[i].para);
             if(actionstoactivate[i].removeself)
             {
-                actionstoactivate[i] = null;//splice too? yes?
+                actionstoactivate[i] = null;//splice too? yes? what about the json part
                 console.log("remove event");
             }       
         }
-    }
-};
+}
 //
 EventDispatcher.prototype.getEventType = function(activation) 
 {

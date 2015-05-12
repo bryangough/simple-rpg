@@ -486,6 +486,8 @@ DiamondHexHandler.prototype.checkHex=function(checkx, checky){
  }
 DiamondHexHandler.prototype.areTilesNeighbors=function(starttile,testtile)
 {
+    if(starttile==null||testtile==null)
+        return false;
     var posx = starttile.posx-testtile.posx;
     var posy = starttile.posy-testtile.posy;
     //

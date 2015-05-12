@@ -20,6 +20,10 @@ var MovingCharacter = function (maingame, jsondata)
     
     this.walkspeed = 0.1875;
     var actions = this.jsondata.triggers;
+    //
+    this.actionsaftermove;
+    this.movingtotile=null;
+    //
     for(var i=0;i<actions.length;i++)
     {
         if(actions[i].type=="mover")
@@ -98,12 +102,41 @@ MovingCharacter.prototype.moveto = function(moveIndex){
         this.maingame.pathfinder.setCallbackFunction(this.movercallback, this);
         this.maingame.pathfinder.preparePathCalculation( [this.currentTile.posx,this.currentTile.posy], [moveIndex.posx,moveIndex.posy] );
         this.maingame.pathfinder.calculatePath();
+        
+        this.clearTargetTile();
+        this.movingtotile = moveIndex;
     }
 }
 MovingCharacter.prototype.movercallback = function(path){
     path = path || [];
     path = this.maingame.hexHandler.pathCoordsToTiles(path);
     this.setPath(path);
+}
+MovingCharacter.prototype.neighborOfTile = function()
+{
+    if(this.actionsaftermove)
+    {
+        this.eventDispatcher.completeAction(this.actionsaftermove);
+    }
+    this.actionsaftermove = null;
+    this.movingtotile = null;
+}
+
+MovingCharacter.prototype.atTargetTile = function()
+{
+    if(this.actionsaftermove)
+    {
+        //must do use animation first!
+        //should pass what type of action it is
+        this.eventDispatcher.completeAction(this.actionsaftermove);
+    }
+    this.actionsaftermove = null;
+    this.movingtotile = null;
+}
+MovingCharacter.prototype.clearTargetTile = function()
+{
+    this.actionsaftermove = null;
+    this.movingtotile = null;
 }
 MovingCharacter.prototype.findtile = function()
 {
@@ -148,6 +181,13 @@ MovingCharacter.prototype.step = function(elapseTime)
                         this.dir.y = 0;
                         this.currentTile.enterTile();
                         this.animations.play("idle");
+                        //console.log(this.movingtotile,this.currentTile);
+                        if(this.movingtotile!=null && this.currentTile!=null){
+                            if(this.movingtotile==this.currentTile)
+                                this.atTargetTile();
+                            if(this.maingame.hexHandler.areTilesNeighbors(this.currentTile,this.movingtotile))
+                                this.neighborOfTile();
+                        }
                     }
                     this.setDirection();
                 }
