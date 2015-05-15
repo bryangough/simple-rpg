@@ -7,10 +7,14 @@ var GlobalHandler = function (game, maingame, actors, variables, quests, items)
     this.maingame = maingame;
     //
     this.actors = [];
+    this.playerActor;
     for(var i=0;i<actors.length;i++)
     {
         this.actors[actors[i].id.toString()] = new ActorObject(actors[i]);
+        if(actors[i].Name=="Player")
+            this.playerActor = this.actors[actors[i].id.toString()];
     }
+    
     //
     this.variables = [];
     for(var i=0;i<variables.length;i++)
@@ -160,6 +164,10 @@ GlobalHandler.prototype.getActorValue = function(id,variable)
     if(!this.actors[id])
         return null;
     return this.actors[id].json[variable];
+}
+GlobalHandler.prototype.getPlayerActor = function()
+{
+    return this.playerActor;
 }
 GlobalHandler.prototype.getActorByID = function(id)
 {

@@ -34,7 +34,7 @@ InteractiveObject.prototype.dosetup = function()
     this.eventDispatcher.init(this.jsondata.triggers);
    
     this.setupArt(this.jsondata);
-
+    this.footprint;//
     //this.events.onInputDown.add(this.handleClick, this);    
     this.setupReactToAction();
     this.inputEnabled = true;
@@ -47,10 +47,19 @@ InteractiveObject.prototype.dosetup = function()
             this.actor = this.maingame.globalHandler.getActorByID(actions[i].id);
             //maingame.globalHandler.getActorByID
         }
+        if(actions[i].type=="walkTiles")
+        {
+            this.footprint = [];
+            for(var j=0;j<actions[i].tiles.length;j++)
+            {
+                this.footprint.push(this.maingame.hexHandler.getTileByCords(actions[i].tiles[j].posx,actions[i].tiles[j].posy));
+            }
+        }
         if(actions[i].type=="animations")
         {
             var animations = actions[i].animations;
             var tempanimation;
+            var complete;
             this.hasstates = true;
             for(var j=0;j<animations.length;j++)
             {
@@ -60,20 +69,13 @@ InteractiveObject.prototype.dosetup = function()
                 else{
                     tempanimation =  this.animations.add(animations[j].id, Phaser.Animation.generateFrameNames(animations[j].name, animations[j].start, animations[j].stop, ".png", 4), 12, animations[j].loop, false);
                 }
-                //if(j==0)
-                //    this.jsondata.state = animations[j].id;
+                if(animations[j].onComplete)
+                {
+                    tempanimation.onComplete.add(function () {
+                        this.caller.callFunction(animations[this.stateNum].onComplete, animations[this.stateNum].onCompleteParams);
+                    }, {stateNum:j,caller:this});
+                }
             }
-            /*if(tempanimation!=null)
-            {
-                tempanimation.onComplete.add(function () {
-                    this.changeState(animations[0].nextState);
-                }, this);
-            }*/
-            //will try this - if the animation doesn't look, it will go to base
-            //eventual should setup next
-            //this.animations.currentAnim.onComplete.add(function () {
-            //    this.animations.play(animations[0].id);
-            //}, this);
         }
     }
     if(this.actor&&this.actor.getValue("state")!=""){
@@ -141,14 +143,12 @@ InteractiveObject.prototype.callFunction = function(fnstring,fnparams)
 {
     var fn = this[fnstring];
     fnparams = fnparams.split(',');
-    if (typeof fn === "function") 
-    {
+    if (typeof fn === "function") {
         fn.apply(this, fnparams);
     }
 }
 InteractiveObject.prototype.moveto = function(tox,toy) 
 {
-    //console.log("moveto",tox,toy);
     if(tox!=null)
         var tile = this.maingame.hexHandler.getTileByCords(tox,toy);
     if(tile)
@@ -163,6 +163,22 @@ InteractiveObject.prototype.moveto = function(tox,toy)
     }
     //
     this.handleOut();
+}
+InteractiveObject.prototype.areWeNeighbours = function(fromtile)
+{
+    if(this.footprint){
+        for(var i=0;i<this.footprint.length;i++){
+            if(fromtile==this.footprint[i])
+                return true;
+            if(this.maingame.hexHandler.areTilesNeighbors(this.footprint[i],fromtile))
+                return true;
+        }
+    }
+    if(fromtile==this.currentTile)
+        return true;
+    if(this.maingame.hexHandler.areTilesNeighbors(this.currentTile,fromtile))
+        return true;
+    return false;
 }
 InteractiveObject.prototype.updateLocation = function(tile)
 {
@@ -197,7 +213,24 @@ InteractiveObject.prototype.handleOut = function()
     if(this.maingame.rollovertext)
         this.maingame.rollovertext.visible = false;
 }
-
+//
+InteractiveObject.prototype.setWalkable = function(walkableto) 
+{
+    
+    if(this.footprint)
+    {
+        for(var i=0;i<this.footprint.length;i++)
+        {
+            
+            this.footprint[i].changeWalkable(walkableto);
+        }
+    }
+    else
+    {
+        this.currentTile.changeWalkable(walkableto);
+    }
+}
+//
 InteractiveObject.prototype.step = function(elapseTime) 
 {
 }
@@ -234,7 +267,7 @@ InteractiveObject.prototype.setupArt = function(json)
       //  objects[i].x + 16, 
     //    objects[i].y*-1 + 16
     
-    //console.log(this.game,this.maingame,objectreference);
+
     Phaser.Sprite.call(this, this.game, 
                        spotx + 16, 
                         spoty*-1 + 16,

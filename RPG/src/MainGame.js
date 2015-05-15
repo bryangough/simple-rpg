@@ -5,6 +5,7 @@ BasicGame.Game = function (game) {
     
     this.diagpanel;//Dialog UI;
     this.justTextPopup;//Single text display
+    this.barkHandler;
     this.activeButtons;//Action Buttons ui
     
     this.neighborLights = [];
@@ -44,7 +45,7 @@ BasicGame.Game = function (game) {
     this.spritegrid;
     
     this.rollovertext;
-    
+    this.highlightArray;
 };
 
 //
@@ -80,10 +81,15 @@ BasicGame.Game.prototype = {
         this.diagpanel = new DialogPanel(this.game,this,this.dialoghandler);
 	    this.game.add.existing(this.diagpanel);
         this.uiGroup.add(this.diagpanel);
+        this.diagpanel.setup();
         
         this.justTextPopup = new JustTextPopup(this.game,this,this.dialoghandler);
         this.game.add.existing(this.justTextPopup);
         this.uiGroup.add(this.justTextPopup);
+        
+        this.barkHandler = new BarkTextHandler(this.game,this);
+        this.game.add.existing(this.barkHandler);
+        this.uiGroup.add(this.barkHandler);
         
         this.rollovertext = this.game.make.bitmapText(0, 0, "badabb", "Text goes here.", 25);
         this.rollovertext.visible = false;
@@ -197,38 +203,37 @@ BasicGame.Game.prototype = {
                 }
             }
             //
+            highlightArray = [];
             if(layer1.handleMovement)
-            {
-                
+            { 
                 for(var i = 0; i < gridSizeX; i ++)
                 {
                     if(!layer1.handleSprite)
+                    {
                         hexagonArray[i] = [];
+                        highlightArray[i] = [];
+                    }
                     this.walkableArray[i] = [];
                     for(var j = 0; j < gridSizeY; j ++)
                     {
                         this.walkableArray[i][j] = layer1.walkable[j*gridSizeX+i];
                         if(!layer1.handleSprite)//no sprite - need to something to select (this might not need to be destroyed)
                         {
-                            //this needs to be switched out
                             tempPoint = this.movementgrid.GetMapCoords(i,j);
-                            //
-                            //console.log(i,j);
-                            //console.log(tempPoint);
-                            //
+                            hexagonArray[i][j] = new SimpleTile(this,i,j,tempPoint.x,tempPoint.y);
+                            
+                            //this needs to be switched out
                             if(this.game.global.showmovetile)
                             {
-                                var tile;
+                                var tile = new GraphicTile(this, "tile_highlight0002.png", "tiles2", i, j, tempPoint.x, tempPoint.y, this);
                                 if(this.walkableArray[i][j]==0)
-                                    tile = new GraphicTile(this, "tile_highlight0003.png", "tiles2", i, j, tempPoint.x, tempPoint.y, this);
-                                else
-                                    tile = new GraphicTile(this, "tile_highlight0002.png", "tiles2", i, j, tempPoint.x, tempPoint.y, this);
-
+                                    tile.tint = 0xff0000;
+                                    
+                                highlightArray[i][j] = tile;
                                 this.highlightGroup.add(tile);
                                 this.addLocationTextToTile(tempPoint.x,tempPoint.y,hexagonWidth,hexagonHeight,i,j);
                             }
                             //
-                            hexagonArray[i][j] = new SimpleTile(this,i,j,tempPoint.x,tempPoint.y);
                         }
                         if(this.walkableArray[i][j] == 0)
                         {                    
@@ -426,9 +431,12 @@ BasicGame.Game.prototype = {
         //
         if(this.updatewalkable)
         {
-           this.pathfinder.setGrid(this.walkableArray, [1]);
+            this.pathfinder.setGrid(this.walkableArray, [1]);
             this.updatewalkable = false;
+            if(this.game.global.showmovetile)
+                this.refreshWalkablView();
         }
+        this.barkHandler.step(elapsedTime);
         //this.spritegrid.PosToMap(this.input.worldX-this.mapGroup.x,this.input.worldY-this.mapGroup.y);
         this.masker.updateMasks(this.input.worldX-this.mapGroup.x,this.input.worldY-this.mapGroup.y);
         //this.masker.updateMasks(this.playerCharacter.x, this.playerCharacter.y, this.playerCharacter.posx, this.playerCharacter.posy);
@@ -436,7 +444,7 @@ BasicGame.Game.prototype = {
     },
     //
     showDialog:function(convid){
-        //console.log("showDialog");
+        console.log("showDialog",convid);
         this.diagpanel.startDialog(convid);
         GlobalEvents.tempDisableEvents();
         this.pauseGame();
@@ -450,31 +458,36 @@ BasicGame.Game.prototype = {
         GlobalEvents.tempDisableEvents();
         this.pauseGame();
     },
-    showJustTextDialog:function(convid)
+    showBark:function(object,text)
+    {
+        this.barkHandler.barkOverObject(object,text);
+    },
+    /*showJustTextDialog:function(convid)
     {
         //console.log("showJustTextDialog");
         this.justTextPopup.showTextFromHandler(convid);
         GlobalEvents.tempDisableEvents();
         this.pauseGame();
-    },
+    },*/
     showRollover:function(object)
     {
         if(!this.rollovertext)
             return;
         this.rollovertext.text = object.jsondata.displayName;
-        this.rollovertext.x = object.x;//-this.maingame.rollovertext.width/2;
+        this.rollovertext.anchor.x = 0.5;
+        this.rollovertext.x = object.x;
         this.rollovertext.y = object.y;
         this.rollovertext.visible = true;
+        
         //if display is off the screen
-        if(this.rollovertext.y<0){
+    //    if(this.rollovertext.y<0){
             this.rollovertext.y = object.y + object.height;
-        }
+    //    }
+        this.rollovertext.tint = 0x9999ff;
     },
-    moveToAction:function(totile,actions)
+    moveToAction:function(object,tile,actions)
     {
-        this.playerCharacter.moveto(totile);
-        //this.playerCharacter.movingtotile = totile;
-        this.playerCharacter.actionsaftermove = actions;
+        this.playerCharacter.moveToObject(object,tile,actions);
     },
     //
     pauseGame:function(){
@@ -550,8 +563,21 @@ BasicGame.Game.prototype = {
     getTile: function(name, tilesetid){
        // console.log(tilesetid,name);
         return {tile:this.mapData.tileSets[tilesetid][name], spritesheet:this.mapData.tileSets[tilesetid].tileset};
+    },
+    refreshWalkablView:function(){
+        
+        for(var i = 0; i < this.movementgrid.gridSizeX; i ++)
+        { 
+            for(var j = 0; j < this.movementgrid.gridSizeY; j ++)
+            {
+                var tile = highlightArray[i][j];
+                if(this.walkableArray[i][j]==0)
+                    tile.tint = 0xff00ff;
+                else
+                    tile.tint = 0xffffff;
+            }
+        }
     }
-    
 };
 
 //

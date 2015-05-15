@@ -319,7 +319,27 @@ HexHandler.prototype.areTilesNeighbors=function(starttile,testtile)
     }
     return false;
 }
-
+//currenttile should be last, if any tiles exist in path then that becomes the whole path
+HexHandler.prototype.findClosesInPath = function(currenttile, tiles, path)
+{
+    var lowestj = -1;
+    var lowesti = -1;
+    for(var i=path.length;i>0;i--){
+        for(var j = 0; j<tiles.length; j++){
+            if(path[i]===tiles[j]){
+                lowesti = i;
+                lowestj = j;
+            }
+        }
+    }
+    if(lowesti!=-1){
+        path = path.splice(lowesti,path.length-lowesti);
+        return tiles[j];
+    }
+    else{
+        return currenttile;
+    }
+}
 HexHandler.prototype.pathCoordsToTiles = function(path)
 {
     newpath = [];

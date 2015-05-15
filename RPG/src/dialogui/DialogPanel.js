@@ -16,6 +16,7 @@ DialogPanel.constructor = DialogPanel;
 
 //
 DialogPanel.prototype.setup = function(button){   
+    
     //
     this.setupBG("dialogui","dialog_main.png");
     //
@@ -23,7 +24,7 @@ DialogPanel.prototype.setup = function(button){
     this.btnPlay2 = this.setupButton(37.4, 25.25, 'dialogui', this.play2,'dialog_20002.png', 'dialog_20001.png', 'dialog_20001.png','dialog_20002.png');    
     this.btnPlay3 = this.setupButton(35.95, 45.8, 'dialogui', this.play3,'dialog_30002.png', 'dialog_30001.png', 'dialog_30001.png','dialog_30002.png');
     //
-    this.setupText(0, -60, "badabb", "Text goes here.", 25); 
+    this.textMain = this.setupText(0, -60, "badabb", "Text goes here.", 25); 
     this.btnPlay1.textRef = this.setupText(95, -10, "badabb", "1. ", 25);
     this.btnPlay2.textRef = this.setupText(95, 35, "badabb", "2. ", 25);
     this.btnPlay3.textRef = this.setupText(95, 82, "badabb", "3. ", 25);
@@ -41,7 +42,6 @@ DialogPanel.prototype.setupBG = function(spritesheet,sprite)
 DialogPanel.prototype.setupButton = function(x,y,spritesheet,callback,overFrame, outFrame, downFrame, upFrame)
 {    
     var newBtn = this.game.make.button(x,y,spritesheet,callback, this,overFrame, outFrame, downFrame, upFrame);
-    this.add(this.btnPlay1);
     //
     newBtn.events.onInputOver.add(this.buttonOver, this);
     newBtn.events.onInputOut.add(this.buttonOut, this);
@@ -68,7 +68,7 @@ DialogPanel.prototype.buttonOut = function(button){
     button.textRef.tint = 0xffffff;
 };
 
-//
+//how to handle just next
 DialogPanel.prototype.play1 = function(button){
     this.dialogData = this.dialogData.links[0];
     this.nextDialog();
@@ -81,6 +81,12 @@ DialogPanel.prototype.play3 = function(button){
     this.dialogData = this.dialogData.links[2];
     this.nextDialog();
 };
+DialogPanel.prototype.justDoNext = function(){
+    this.dialogData = this.dialogData.links[0];
+    this.nextDialog();
+};
+
+//
 DialogPanel.prototype.nextDialog = function(){
     this.dialogData = this.dialogEngine.getNextDialog(this.dialogData);
     if(this.dialogData==null)
@@ -90,19 +96,24 @@ DialogPanel.prototype.nextDialog = function(){
 }
 //
 DialogPanel.prototype.setupDialog = function(){    
-    if(this.dialogData)
+    if(this.dialogData==null)
     {
         console.log("dialog data not set");
         return;
     }
-    this.textMain.text = this.dialogData.actor.Name +": " + this.dialogData.current.DialogueText;
+    console.log(this.dialogData);
+    this.textMain.text = this.dialogData.actor.json.Name +": " + this.dialogData.current.DialogueText;
+    
+    //if links are players do normal
+    //else can click anywhere?
+
     for(var i=0;i<3;i++)
     {
-        if(this.dialogData.links[i]!=null)
+        if(this.dialogData.links[i]!=null && this.dialogData.links[i].Actor==0)
         {
             this["btnPlay"+(i+1)].visible = true;
             this["btnPlay"+(i+1)].textRef.visible = true;
-            this["btnPlay"+(i+1)].textRef.text = (i+1)+". " + this.dialogData.links[i].MenuText;
+            this["btnPlay"+(i+1)].textRef.text = (i+1)+". " + this.dialogData.links[i].DialogueText;
             this["btnPlay"+(i+1)].textRef.tint = 0xffffff;
         }
         else
@@ -113,10 +124,17 @@ DialogPanel.prototype.setupDialog = function(){
             this["btnPlay"+(i+1)].textRef.tint = 0xffffff;
         }
     }
+    if(this.dialogData.links[0]!=null && this.dialogData.links[0].Actor!=0){
+        this.game.input.onDown.add(this.justDoNext, this); 
+    }
+    else{
+        this.game.input.onDown.remove(this.justDoNext, this); 
+    }
 }
 //
 DialogPanel.prototype.startDialog = function(id){
     this.dialogData = this.dialogEngine.startConvo(id);
+    console.log(this.dialogData,id);
     if(this.dialogData){
         this.visible = true;
         this.y = 250;

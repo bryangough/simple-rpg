@@ -1,20 +1,20 @@
 //***** BasicObjectPool ********
 // simple object pool to handle barks and other little things
-BasicObjectPool = function(pooleditems)
+BasicObjectPool = function(handler)//pooleditems
 {
-    this.openArray = [] || pooleditems;
-    this.allObjectsArray = [] || pooleditems;
-    
+    this.openArray = [];// || pooleditems;
+    this.allObjectsArray = [];// || pooleditems;   
+    this.handler = handler || null;
 }
 BasicObjectPool.prototype.getObject = function(){
     if(this.openArray.length>0)
         return this.openArray.pop();
-    //else{
-        //var newObject = 
-        //this.openArray.push(newObject);
-        //this.allObjectsArray.push(newObject);
+    else{
+        var newObject = this.handler.createItem();
+        this.openArray.push(newObject);
+        this.allObjectsArray.push(newObject);
         return newObject;
-    //}
+    }
     return null;
 }
 BasicObjectPool.prototype.addObject = function(returnedobject){

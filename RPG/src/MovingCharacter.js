@@ -22,6 +22,7 @@ var MovingCharacter = function (maingame, jsondata)
     var actions = this.jsondata.triggers;
     //
     this.actionsaftermove;
+    this.objectmovingto;
     this.movingtotile=null;
     //
     for(var i=0;i<actions.length;i++)
@@ -43,11 +44,11 @@ MovingCharacter.prototype.isMoving = function()
        return false;
     return true;
 }
-MovingCharacter.prototype.callFunction = function(fnstring,fnparams) 
+/*MovingCharacter.prototype.callFunction = function(fnstring,fnparams) 
 {
     var fn = window[fnstring];
     if (typeof fn === "function") fn.apply(null, fnparams);
-}
+}*/
 //
 MovingCharacter.prototype.setLocation = function(inx,iny) 
 {
@@ -81,30 +82,52 @@ MovingCharacter.prototype.setDirection = function()
 }
 MovingCharacter.prototype.setPath = function(path) 
 {
-    //
     if(!path)
         return;
     if(path.length<=0)
         return;
+    if(this.objectmovingto!=null && this.objectmovingto.footprint!=null)
+    {
+        this.movingtotile = this.maingame.hexHandler.findClosesInPath(this.objectmovingto.currentTile, this.objectmovingto.footprint, path);
+    }
+    
     this.path = path;
     this.pathlocation = 0;
     this.nextTile = path[this.pathlocation];//this.maingame.hexHandler.getTileByCords( path[this.pathlocation].x, path[this.pathlocation].y);
     this.setDirection();
     this.animations.play("walk");
 }
+MovingCharacter.prototype.moveToObject = function(object,tile,actions)
+{
+    this.objectmovingto = object;
+    //
+    this.actionsaftermove = actions;
+    this.objectmovingto = object;
+    //
+    this.moveto(tile);
+    //find closes hex
+    this.actionsaftermove = actions;
+    this.objectmovingto = object;
+}
 MovingCharacter.prototype.moveto = function(moveIndex){
     if(moveIndex!=null)
     {
-        //straight line movement
-        //var path = this.hexHandler.getlinepath(playertile,moveIndex);
-        //this.playerCharacter.setPath(path);
-        //
-        this.maingame.pathfinder.setCallbackFunction(this.movercallback, this);
-        this.maingame.pathfinder.preparePathCalculation( [this.currentTile.posx,this.currentTile.posy], [moveIndex.posx,moveIndex.posy] );
-        this.maingame.pathfinder.calculatePath();
-        
-        this.clearTargetTile();
-        this.movingtotile = moveIndex;
+        if(this.objectmovingto!=null && this.objectmovingto.areWeNeighbours(this.currentTile)){
+            this.atTargetTile();
+        }
+        else
+        {
+            //straight line movement
+            //var path = this.hexHandler.getlinepath(playertile,moveIndex);
+            //this.playerCharacter.setPath(path);
+            //
+            this.maingame.pathfinder.setCallbackFunction(this.movercallback, this);
+            this.maingame.pathfinder.preparePathCalculation( [this.currentTile.posx,this.currentTile.posy], [moveIndex.posx,moveIndex.posy] );
+            this.maingame.pathfinder.calculatePath();
+
+            this.clearTargetTile();
+            this.movingtotile = moveIndex;
+        }
     }
 }
 MovingCharacter.prototype.movercallback = function(path){
@@ -112,31 +135,19 @@ MovingCharacter.prototype.movercallback = function(path){
     path = this.maingame.hexHandler.pathCoordsToTiles(path);
     this.setPath(path);
 }
-MovingCharacter.prototype.neighborOfTile = function()
-{
-    if(this.actionsaftermove)
-    {
-        this.eventDispatcher.completeAction(this.actionsaftermove);
-    }
-    this.actionsaftermove = null;
-    this.movingtotile = null;
-}
-
 MovingCharacter.prototype.atTargetTile = function()
 {
     if(this.actionsaftermove)
     {
-        //must do use animation first!
         //should pass what type of action it is
-        this.eventDispatcher.completeAction(this.actionsaftermove);
-    }
-    this.actionsaftermove = null;
-    this.movingtotile = null;
+        this.changeState("use");
+    }   
 }
 MovingCharacter.prototype.clearTargetTile = function()
 {
     this.actionsaftermove = null;
     this.movingtotile = null;
+    this.objectmovingto = null;
 }
 MovingCharacter.prototype.findtile = function()
 {
@@ -147,6 +158,17 @@ MovingCharacter.prototype.findtile = function()
     this.posy = onmap.y;
   //  console.log("find tile",this.posx,this.posy);
 }
+//
+MovingCharacter.prototype.doUse = function()
+{
+    if(this.actionsaftermove)
+    {
+        this.eventDispatcher.completeAction(this.actionsaftermove, true);
+    }
+    this.clearTargetTile();
+    this.changeState("idle");
+}
+//
 MovingCharacter.prototype.step = function(elapseTime) 
 {
     if(this.currentTile==null)
@@ -181,12 +203,12 @@ MovingCharacter.prototype.step = function(elapseTime)
                         this.dir.y = 0;
                         this.currentTile.enterTile();
                         this.animations.play("idle");
-                        //console.log(this.movingtotile,this.currentTile);
-                        if(this.movingtotile!=null && this.currentTile!=null){
-                            if(this.movingtotile==this.currentTile)
+                        //
+                        if(this.objectmovingto!=null && this.currentTile!=null){
+                            //console.log(this.objectmovingto,this.currentTile,this.objectmovingto.areWeNeighbours(this.currentTile));
+                            if(this.objectmovingto.areWeNeighbours(this.currentTile)){
                                 this.atTargetTile();
-                            if(this.maingame.hexHandler.areTilesNeighbors(this.currentTile,this.movingtotile))
-                                this.neighborOfTile();
+                            }
                         }
                     }
                     this.setDirection();

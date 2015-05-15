@@ -88,6 +88,7 @@ Grid.prototype.PosToMap = function(x,y)
 //Simple tile for non-graphic grid. Used to movement.
 var SimpleTile = function(maingame, posx, posy, x, y)
 {
+    this.maingame = maingame;
     this.walkable = true;  
     this.openair = true;
     this.x = x;
@@ -102,11 +103,11 @@ SimpleTile.prototype.callFunction = function(fnstring,fnparams)
 }
 SimpleTile.prototype.changeWalkable = function(walkableto) 
 {
-    if(walkableto)
+    if(walkableto==true||walkableto=="true")
         this.maingame.walkableArray[this.posx][this.posy] = 1;
     else
         this.maingame.walkableArray[this.posx][this.posy] = 0;
-    //
+    //console.log("changeWalkable",walkableto,(walkableto=="true"),this.maingame.walkableArray[this.posx][this.posy]);
     this.walkable = walkableto;
     this.maingame.updatewalkable = true;
 }

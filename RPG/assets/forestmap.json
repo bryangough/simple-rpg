@@ -20,7 +20,6 @@
                         "start": 1,
                         "stop": 2,
                         "loop": true,
-                        "nextState": "",
                         "fps": -1
                     },
                     {
@@ -29,8 +28,17 @@
                         "start": 1,
                         "stop": 4,
                         "loop": true,
-                        "nextState": "",
                         "fps": -1
+                    },
+                    {
+                        "id": "use",
+                        "name": "movingPerson2_use",
+                        "start": 1,
+                        "stop": 7,
+                        "loop": false,
+                        "fps": 1,
+                        "onComplete": "doUse",
+                        "onCompleteParams": ""
                     }
                 ]
             },
@@ -293,8 +301,8 @@
                                 "trigger": "OnLook",
                                 "actions": [
                                     {
-                                        "type": "SIMPLE",
-                                        "text": "A tree with an acorn."
+                                        "type": "BARK",
+                                        "text": "A tree with an acorn.\nA special acorn."
                                     }
                                 ],
                                 "conditions": {
@@ -317,7 +325,7 @@
                                 "actions": [
                                     {
                                         "type": "SIMPLE",
-                                        "text": "It doesn't want to talk."
+                                        "text": "It doesn't want to talk.\nnot\nat\nall"
                                     }
                                 ],
                                 "conditions": {
@@ -331,7 +339,7 @@
                                 "trigger": "OnLook",
                                 "actions": [
                                     {
-                                        "type": "SIMPLE",
+                                        "type": "BARK",
                                         "text": "No acorn left."
                                     }
                                 ],
@@ -555,16 +563,102 @@
                         "tilesetid": "boxes"
                     },
                     {
-                        "name": 6,
+                        "name": 5,
                         "displayName": "",
-                        "state": "idle",
+                        "state": "closed",
                         "tilebase": false,
                         "posx": 7,
                         "posy": 4,
                         "x": 518,
                         "y": -29,
                         "maskable": true,
-                        "tilesetid": "boxes"
+                        "tilesetid": "boxes",
+                        "triggers": [
+                            {
+                                "type": "animations",
+                                "animations": [
+                                    {
+                                        "id": "closed",
+                                        "name": "box/box_door0001",
+                                        "start": 0,
+                                        "stop": 0,
+                                        "loop": false,
+                                        "fps": 0,
+                                        "onComplete": "setWalkable",
+                                        "onCompleteParams": "false"
+                                    },
+                                    {
+                                        "id": "open",
+                                        "name": "box/box_door0002",
+                                        "start": 0,
+                                        "stop": 0,
+                                        "loop": false,
+                                        "fps": 0,
+                                        "onComplete": "setWalkable",
+                                        "onCompleteParams": "true"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "interacttrigger",
+                                "trigger": "OnTouch",
+                                "once": false,
+                                "walkto": true,
+                                "actions": [
+                                    {
+                                        "type": "THIS",
+                                        "function": "changeState",
+                                        "parameters": "open"
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": [
+                                        {
+                                            "type": "THIS",
+                                            "name": -1,
+                                            "variable": "state",
+                                            "compare": "Is",
+                                            "value": "closed"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "type": "interacttrigger",
+                                "trigger": "OnTouch",
+                                "once": false,
+                                "walkto": true,
+                                "actions": [
+                                    {
+                                        "type": "THIS",
+                                        "function": "changeState",
+                                        "parameters": "closed"
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": [
+                                        {
+                                            "type": "THIS",
+                                            "name": -1,
+                                            "variable": "state",
+                                            "compare": "Is",
+                                            "value": "open"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "type": "walkTiles",
+                                "tiles": [
+                                    {
+                                        "posx": 15,
+                                        "posy": 9
+                                    }
+                                ]
+                            }
+                        ]
                     },
                     {
                         "name": 5,
@@ -700,6 +794,124 @@
                         "y": 31,
                         "maskable": false,
                         "tilesetid": "boxes"
+                    },
+                    {
+                        "name": 14,
+                        "displayName": "",
+                        "state": "idle",
+                        "tilebase": false,
+                        "posx": 1,
+                        "posy": 2,
+                        "x": 149,
+                        "y": -53,
+                        "maskable": true,
+                        "tilesetid": "boxes",
+                        "triggers": [
+                            {
+                                "type": "actiontext",
+                                "walkto": true,
+                                "trigger": "OnLook",
+                                "actions": [
+                                    {
+                                        "type": "BARK",
+                                        "text": "It's a brick."
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": []
+                                }
+                            },
+                            {
+                                "type": "actiontext",
+                                "walkto": true,
+                                "trigger": "OnTouch",
+                                "actions": [
+                                    {
+                                        "type": "BARK",
+                                        "text": "No touchy!"
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": []
+                                }
+                            },
+                            {
+                                "trigger": "OnTalk",
+                                "once": false,
+                                "actions": [
+                                    {
+                                        "type": "CONVERSATION",
+                                        "id": "2",
+                                        "skipIfNoValidEntries": false
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": []
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "name": 15,
+                        "displayName": "",
+                        "state": "idle",
+                        "tilebase": false,
+                        "posx": 3,
+                        "posy": 2,
+                        "x": 245,
+                        "y": -29,
+                        "maskable": true,
+                        "tilesetid": "boxes",
+                        "triggers": [
+                            {
+                                "type": "actiontext",
+                                "walkto": true,
+                                "trigger": "OnLook",
+                                "actions": [
+                                    {
+                                        "type": "SIMPLE",
+                                        "text": "It's a glowing brick."
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": []
+                                }
+                            },
+                            {
+                                "type": "actiontext",
+                                "walkto": true,
+                                "trigger": "OnTouch",
+                                "actions": [
+                                    {
+                                        "type": "SIMPLE",
+                                        "text": "Ouch Hot!"
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": []
+                                }
+                            },
+                            {
+                                "trigger": "OnTalk",
+                                "once": false,
+                                "actions": [
+                                    {
+                                        "type": "CONVERSATION",
+                                        "id": "1",
+                                        "skipIfNoValidEntries": false
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": []
+                                }
+                            }
+                        ]
                     }
                 ]
             },
@@ -712,8 +924,6 @@
                 "tiletype": "HexIso",
                 "handleSprite": false,
                 "handleMovement": true,
-                "offsetx": 0.8,
-                "offsety": 0,
                 "walkable": [
                     1,
                     1,
@@ -1699,8 +1909,15 @@
                 "state": ""
             },
             {
-                "id": 2,
-                "Name": "NPC",
+                "id": 3,
+                "Name": "Glowing Block",
+                "Description": "",
+                "IsPlayer": false,
+                "state": ""
+            },
+            {
+                "id": 4,
+                "Name": "Block",
                 "Description": "",
                 "IsPlayer": false,
                 "state": ""
@@ -1708,50 +1925,13 @@
         ],
         "Items": [
             {
-                "id": 2,
-                "Name": "New Quest 2",
-                "Description": "",
-                "State": "unassigned",
-                "SuccessAction": "",
-                "Success Description": "",
-                "Failure Description": "",
-                "Entry Count": 3,
-                "Entry 1 State": "active",
-                "Entry 1": "asdf",
-                "Entry 2 State": "unassigned",
-                "Entry 2": "asdf",
-                "Entry 3 State": "active",
-                "Entry 3": "fewfwrwe",
-                "onLookat": "",
-                "Is Item": "",
-                "Inventory": "",
-                "onEnterInventoryText": "",
-                "onTalk": "",
-                "VisibleInventory": "",
-                "Count": "",
-                "InventoryGraphicName": "",
-                "InvetoryGraphicSheet": "",
-                "Combine Count": ""
-            },
-            {
                 "id": 3,
                 "Name": "Acorn",
-                "Description": "",
-                "State": "",
-                "SuccessAction": "",
-                "Success Description": "",
-                "Failure Description": "",
-                "Entry Count": "",
-                "Entry 1 State": "",
-                "Entry 1": "",
-                "Entry 2 State": "",
-                "Entry 2": "",
-                "Entry 3 State": "",
-                "Entry 3": "",
                 "onLookat": "",
                 "Is Item": true,
                 "Inventory": false,
                 "onEnterInventoryText": "",
+                "Description": "",
                 "onTalk": "",
                 "VisibleInventory": true,
                 "Count": 0,
@@ -1767,6 +1947,12 @@
                 "Name": "Alert",
                 "Initial Value": "",
                 "Description": ""
+            },
+            {
+                "id": 2,
+                "Name": "Did Conv",
+                "Initial Value": false,
+                "Description": ""
             }
         ],
         "Conversations": [
@@ -1775,31 +1961,25 @@
                 "Title": "New Conversation 1",
                 "Description": "",
                 "Actor": "1",
-                "Conversant": "2",
+                "Conversant": "3",
                 "DialogueEntries": [
                     {
-                        "entrytag": "Player_1_0",
+                        "entrytag": "Glowing_Block_1_0",
                         "ConvID": 1,
                         "ID": 0,
-                        "Actor": 1,
-                        "Conversant": 2,
+                        "Actor": 3,
                         "Title": "START",
                         "MenuText": "",
-                        "DialogueText": "",
-                        "IsGroup": false,
-                        "FalseConditionAction": "Block",
-                        "ConditionPriority": "Normal",
-                        "Conditions": "",
-                        "Script": "",
-                        "Sequence": "None()",
+                        "DialogueText": "I will start talking.",
                         "Parenthetical": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
                         "links": [
                             {
                                 "OriginConvID": 1,
                                 "OriginID": 0,
                                 "DestConvID": 1,
-                                "DestID": 1,
-                                "ConditionPriority": "Normal"
+                                "DestID": 1
                             }
                         ],
                         "conditions": {
@@ -1809,42 +1989,22 @@
                         "actions": []
                     },
                     {
-                        "entrytag": "NPC_1_1",
+                        "entrytag": "Glowing_Block_1_1",
                         "ConvID": 1,
                         "ID": 1,
-                        "Actor": 2,
-                        "Conversant": 1,
+                        "Actor": 3,
                         "Title": "New Dialogue Entry",
                         "MenuText": "",
-                        "DialogueText": "",
-                        "IsGroup": false,
-                        "FalseConditionAction": "Block",
-                        "ConditionPriority": "Normal",
-                        "Conditions": "",
-                        "Script": "",
-                        "Sequence": "",
+                        "DialogueText": "I am talking.",
                         "Parenthetical": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
                         "links": [
                             {
                                 "OriginConvID": 1,
                                 "OriginID": 1,
                                 "DestConvID": 1,
-                                "DestID": 2,
-                                "ConditionPriority": "Normal"
-                            },
-                            {
-                                "OriginConvID": 1,
-                                "OriginID": 1,
-                                "DestConvID": 1,
-                                "DestID": 3,
-                                "ConditionPriority": "Normal"
-                            },
-                            {
-                                "OriginConvID": 1,
-                                "OriginID": 1,
-                                "DestConvID": 1,
-                                "DestID": 4,
-                                "ConditionPriority": "Normal"
+                                "DestID": 2
                             }
                         ],
                         "conditions": {
@@ -1854,22 +2014,36 @@
                         "actions": []
                     },
                     {
-                        "entrytag": "Player_1_2",
+                        "entrytag": "Glowing_Block_1_2",
                         "ConvID": 1,
                         "ID": 2,
-                        "Actor": 1,
-                        "Conversant": 2,
+                        "Actor": 3,
                         "Title": "New Dialogue Entry",
                         "MenuText": "",
-                        "DialogueText": "",
-                        "IsGroup": false,
-                        "FalseConditionAction": "Block",
-                        "ConditionPriority": "Normal",
-                        "Conditions": "",
-                        "Script": "",
-                        "Sequence": "",
+                        "DialogueText": "Now you make choices.",
                         "Parenthetical": "",
-                        "links": {},
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": [
+                            {
+                                "OriginConvID": 1,
+                                "OriginID": 2,
+                                "DestConvID": 1,
+                                "DestID": 3
+                            },
+                            {
+                                "OriginConvID": 1,
+                                "OriginID": 2,
+                                "DestConvID": 1,
+                                "DestID": 4
+                            },
+                            {
+                                "OriginConvID": 1,
+                                "OriginID": 2,
+                                "DestConvID": 1,
+                                "DestID": 5
+                            }
+                        ],
                         "conditions": {
                             "logic": "All",
                             "conditions": []
@@ -1881,17 +2055,63 @@
                         "ConvID": 1,
                         "ID": 3,
                         "Actor": 1,
-                        "Conversant": 2,
                         "Title": "New Dialogue Entry",
                         "MenuText": "",
-                        "DialogueText": "",
-                        "IsGroup": false,
-                        "FalseConditionAction": "Block",
-                        "ConditionPriority": "Normal",
-                        "Conditions": "",
-                        "Script": "",
-                        "Sequence": "",
+                        "DialogueText": "Another End Conv",
                         "Parenthetical": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": {},
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": [
+                                {
+                                    "type": "Variable",
+                                    "name": 2,
+                                    "variable": "",
+                                    "compare": "Is",
+                                    "value": true
+                                }
+                            ]
+                        },
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Player_1_4",
+                        "ConvID": 1,
+                        "ID": 4,
+                        "Actor": 1,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "Continue Text\n",
+                        "Parenthetical": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": [
+                            {
+                                "OriginConvID": 1,
+                                "OriginID": 4,
+                                "DestConvID": 1,
+                                "DestID": 6
+                            }
+                        ],
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Player_1_5",
+                        "ConvID": 1,
+                        "ID": 5,
+                        "Actor": 1,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "End Conv",
+                        "Parenthetical": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
                         "links": {},
                         "conditions": {
                             "logic": "All",
@@ -1899,30 +2119,208 @@
                         },
                         "actions": [
                             {
-                                "type": "Actor",
-                                "name": 1,
+                                "type": "Quest",
+                                "name": -1,
                                 "mode": "To",
-                                "variable": "Name",
-                                "value": ""
+                                "variable": "UNDEFINED",
+                                "value": "Unassigned"
                             }
                         ]
                     },
                     {
-                        "entrytag": "Player_1_4",
+                        "entrytag": "Glowing_Block_1_6",
                         "ConvID": 1,
-                        "ID": 4,
-                        "Actor": 1,
-                        "Conversant": 2,
+                        "ID": 6,
+                        "Actor": 3,
                         "Title": "New Dialogue Entry",
                         "MenuText": "",
-                        "DialogueText": "",
-                        "IsGroup": false,
-                        "FalseConditionAction": "Block",
-                        "ConditionPriority": "Normal",
-                        "Conditions": "",
-                        "Script": "",
-                        "Sequence": "",
+                        "DialogueText": "No",
                         "Parenthetical": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": [
+                            {
+                                "OriginConvID": 1,
+                                "OriginID": 6,
+                                "DestConvID": 1,
+                                "DestID": 7
+                            },
+                            {
+                                "OriginConvID": 1,
+                                "OriginID": 6,
+                                "DestConvID": 1,
+                                "DestID": 8
+                            }
+                        ],
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Player_1_7",
+                        "ConvID": 1,
+                        "ID": 7,
+                        "Actor": 1,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "End Conv Here.",
+                        "Parenthetical": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": {},
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Player_1_8",
+                        "ConvID": 1,
+                        "ID": 8,
+                        "Actor": 1,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "Start Over!",
+                        "Parenthetical": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": [
+                            {
+                                "OriginConvID": 1,
+                                "OriginID": 8,
+                                "DestConvID": 1,
+                                "DestID": 1
+                            }
+                        ],
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "Title": "New Conversation 2",
+                "Description": "",
+                "Actor": "1",
+                "Conversant": "3",
+                "DialogueEntries": [
+                    {
+                        "entrytag": "Block_2_0",
+                        "ConvID": 2,
+                        "ID": 0,
+                        "Actor": 4,
+                        "Title": "START",
+                        "MenuText": "",
+                        "DialogueText": "I'm a block",
+                        "Parenthetical": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": [
+                            {
+                                "OriginConvID": 2,
+                                "OriginID": 0,
+                                "DestConvID": 2,
+                                "DestID": 1
+                            }
+                        ],
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Block_2_1",
+                        "ConvID": 2,
+                        "ID": 1,
+                        "Actor": 4,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "Block block block",
+                        "Parenthetical": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": [
+                            {
+                                "OriginConvID": 2,
+                                "OriginID": 1,
+                                "DestConvID": 2,
+                                "DestID": 2
+                            }
+                        ],
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Glowing_Block_2_2",
+                        "ConvID": 2,
+                        "ID": 2,
+                        "Actor": 3,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "Me too!\n",
+                        "Parenthetical": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": [
+                            {
+                                "OriginConvID": 2,
+                                "OriginID": 2,
+                                "DestConvID": 2,
+                                "DestID": 3
+                            }
+                        ],
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Player_2_3",
+                        "ConvID": 2,
+                        "ID": 3,
+                        "Actor": 1,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "A block?",
+                        "Parenthetical": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": [
+                            {
+                                "OriginConvID": 2,
+                                "OriginID": 3,
+                                "DestConvID": 2,
+                                "DestID": 4
+                            }
+                        ],
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Block_2_4",
+                        "ConvID": 2,
+                        "ID": 4,
+                        "Actor": 4,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "Yes a block.",
+                        "Parenthetical": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
                         "links": {},
                         "conditions": {
                             "logic": "All",

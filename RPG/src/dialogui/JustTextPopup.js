@@ -1,25 +1,32 @@
 //***** JustTextPopup ********
 JustTextPopup = function(game, maingame, dialogEngine, parent){
     Phaser.Group.call(this, game, parent);
-    this.dialogEngine = dialogEngine;
+//
+    this.bg = this.game.make.image(0,0,"actors","textBox.png");
+    this.add(this.bg);
+//
     this.maingame = maingame;
-    this.textMain = this.game.make.bitmapText(0, 0, "badabb", "Text goes here.", 25);
+    this.textMain = this.game.make.bitmapText(10, 10, "badabb", "Text goes here.", 25);
     this.textMain.tint = 0x00ffff;
     this.add(this.textMain);
-    this.x = -1000;
-    //for if dialog
-    this.dialogData;
+//
+    this.visible = false;
 }
 JustTextPopup.prototype = Object.create(Phaser.Group.prototype);
 JustTextPopup.constructor = JustTextPopup;
 //
 JustTextPopup.prototype.showText = function(texttodisplay){
-    this.x = 0;
+    
+    this.x = this.game.width/2-this.width/2;
+    this.y = this.game.height/2-this.height/2;
+
+    
     this.textMain.text = texttodisplay;
-    this.dialogData = null;
-    this.game.input.onDown.add(this.nextPopup, this);
+    //this.dialogData = null;
+    this.visible = true;
+    this.game.input.onDown.add(this.closePopup, this);
 }
-JustTextPopup.prototype.showTextFromHandler = function(convoid){
+/*JustTextPopup.prototype.showTextFromHandler = function(convoid){
     this.dialogData = this.dialogEngine.startConvo(convoid);
     if(this.dialogData){
         this.visible = true;
@@ -37,11 +44,12 @@ JustTextPopup.prototype.nextPopup = function(){
         return;
     }
     this.textMain.text = this.dialogData.current.DialogueText;
-}
+}*/
 JustTextPopup.prototype.closePopup = function(){
-    this.dialogData = null
-    this.x = -1000;
-    this.game.input.onDown.remove(this.nextPopup, this);
+    //this.dialogData = null
+    //this.x = -1000;
+    this.visible = false;
+    this.game.input.onDown.remove(this.closePopup, this);
     
     this.maingame.unpauseGame();
 }

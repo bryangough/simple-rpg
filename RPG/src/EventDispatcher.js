@@ -42,7 +42,6 @@ EventDispatcher.prototype.shouldBeActive = function()
         return true;
     else if(GlobalEvents.currentacion == GlobalEvents.ITEM && this.onItemAction)
     {
-        //console.log("Use item",this.onItemAction);
         return true;
     }
     return false;
@@ -78,7 +77,7 @@ EventDispatcher.prototype.init = function(triggers)
             {
                 action = trigger.actions[j];
                 eventAction = this.getEventType(activation);
-                this.setActions(eventAction, action, trigger.once, con, trigger.walkto);
+                this.setActions(eventAction, action, trigger.once, con, trigger.walkto||false);
             }
         }
        /* else if(trigger.type=="actiontext")
@@ -112,7 +111,6 @@ EventDispatcher.prototype.setActions = function(eventAction,action, once, con, w
 {
     if(action.type=="ChangeMap")
         {
-            //console.log(action);
             eventAction.push({func:this.maingame.userExit, para:[action], removeself:once, callee:this.maingame, con:con, walkto:walkto});
         }
         //
@@ -126,6 +124,7 @@ EventDispatcher.prototype.setActions = function(eventAction,action, once, con, w
         }
         else if(action.type=="BARK")
         {
+            eventAction.push({func:this.maingame.showBark, para:[this.object, action.text], removeself:once, callee:this.maingame, con:con, walkto:walkto});
         }
         //
         else if(action.type=="THIS")//call function on this
@@ -207,8 +206,6 @@ EventDispatcher.prototype.testConditions = function(conditions)
     var eachreturn;
     for(var j=0;j<conditionlist.length;j++){
         eachreturn = conditionlist[j].func.apply(conditionlist[j].callee, conditionlist[j].para);
-        //console.log(eachreturn,logic, conditionlist[j]);
-        
         if(conditionlist[j].special && eachreturn==false)
             return false;
         if(logic=="All"){
@@ -227,10 +224,10 @@ EventDispatcher.prototype.testConditions = function(conditions)
 EventDispatcher.prototype.doAction = function(activation) 
 {
     var actionEvent = this.getEventType(activation); 
-    this.completeAction(actionEvent);
+    this.completeAction(actionEvent,false);
 }
 //
-EventDispatcher.prototype.completeAction = function(actionEvent)
+EventDispatcher.prototype.completeAction = function(actionEvent, atPoint)
 {
     var lastcon;
     var lastconreturn = false;
@@ -258,8 +255,8 @@ EventDispatcher.prototype.completeAction = function(actionEvent)
                 if(actionEvent[i].walkto)
                 {
                     //this should be called only once
-                     var neighbours = this.maingame.hexHandler.areTilesNeighbors(this.object.currentTile, this.maingame.playerCharacter.currentTile);
-                    if(!neighbours)
+                    var neighbours = this.maingame.hexHandler.areTilesNeighbors(this.object.currentTile, this.maingame.playerCharacter.currentTile);
+                    if(!neighbours || !atPoint)
                     {
                         walktoactions.push(actionEvent[i]);
                         continue;
@@ -271,7 +268,7 @@ EventDispatcher.prototype.completeAction = function(actionEvent)
         //
         if(walktoactions.length>0)
         {
-            this.maingame.moveToAction(this.object.currentTile,walktoactions);
+            this.maingame.moveToAction(this.object, this.object.currentTile, walktoactions);
         }
         //all actions now happens after all conditions are tested
         this.dogivenactions(actionstoactivate);
@@ -286,7 +283,6 @@ EventDispatcher.prototype.dogivenactions = function(actionstoactivate)
             if(actionstoactivate[i].removeself)
             {
                 actionstoactivate[i] = null;//splice too? yes? what about the json part
-                console.log("remove event");
             }       
         }
 }
