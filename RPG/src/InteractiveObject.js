@@ -89,8 +89,13 @@ InteractiveObject.prototype.dosetup = function()
     //this will move
     if(this.eventDispatcher)
         this.eventDispatcher.doAction("OnActivate");
+    //
     this.currentTile = this.maingame.hexHandler.checkHex(this.x,this.y);
     //get tile? these tiles don't exists
+    //this.finalSetup();
+}
+InteractiveObject.prototype.finalSetup = function()     
+{
 }
 //
 //  
@@ -155,7 +160,6 @@ InteractiveObject.prototype.moveto = function(tox,toy)
     {
         var currenttile = this.maingame.hexHandler.checkHex(this.x,this.y);
         currenttile.changeWalkable(true);
-        //
         this.x = tile.x;
         this.y = tile.y;
         tile.changeWalkable(false);
@@ -194,7 +198,7 @@ InteractiveObject.prototype.destroySelf = function(elapseTime)
 {
     this.jsondata.destroyed = true;
     this.eventDispatcher.destroy();
-    this.events.onInputDown.remove(this.handleClick, this);  
+    this.events.onInputUp.remove(this.handleClick, this);  
     this.events.onInputOver.remove(this.handleOver, this);//for rollover
     this.events.onInputOut.remove(this.handleOut, this);
     this.destroy();
@@ -236,7 +240,7 @@ InteractiveObject.prototype.step = function(elapseTime)
 }
 InteractiveObject.prototype.setupReactToAction = function() 
 {
-    this.events.onInputDown.add(this.handleClick, this);
+    this.events.onInputUp.add(this.handleClick, this);
     this.events.onInputOver.add(this.handleOver, this);//for rollover
     this.events.onInputOut.add(this.handleOut, this);
 }

@@ -29,11 +29,8 @@ DialogHandler.prototype.startConvo = function(id){
     }
     return null;
 }
-//for every other types (displaying the npcs text, players text as options, then going straight to next npc text)
-//passing in selected link returns next npc
-//passing in current displayed return next npc or pc
-DialogHandler.prototype.getNextDialog = function(currentDialog){
-    //do actions for this diaglog
+//do actions for this diaglog
+DialogHandler.prototype.doActions = function(currentDialog){
     if(currentDialog.actions && currentDialog.actions.length>0)
     {
         var eventActions = [];
@@ -41,12 +38,18 @@ DialogHandler.prototype.getNextDialog = function(currentDialog){
         if(eventActions.length>0)
             this.eventDispatcher.completeAction(eventActions);
     }
-    if(currentDialog.links.length<=0||currentDialog.links[0]==null)
+}
+//for every other types (displaying the npcs text, players text as options, then going straight to next npc text)
+//passing in selected link returns next npc
+//passing in current displayed return next npc or pc
+DialogHandler.prototype.getNextDialog = function(currentDialog){
+    if(currentDialog==null)
         return null;
-    //activate actions? //global dialog queue?
-    //if current dialog Actor == player - 
-    //lse 
-    return this.buildDialogByID(currentDialog.links[0].DestID);
+    this.doActions(currentDialog);    
+    //if(currentDialog.links.length<=0||currentDialog.links[0]==null)
+    //    return null;
+    //return this.buildDialogByID(currentDialog);//.links[0].DestID);
+    return this.buildDialogWithDiag(currentDialog);
 }
 //
 
@@ -70,7 +73,7 @@ DialogHandler.prototype.buildDialogWithDiag = function(currentDiag){
         }
     }
     var thisactor = this.maingame.globalHandler.getActorByID(currentDiag.Actor);//optimize this, save it somewhere
-    var diagPackage = {current:currentDiag,links:links, actor:thisactor};    
+    var diagPackage = {current:currentDiag, links:links, actor:thisactor};    
     return diagPackage;
 };
 
@@ -80,7 +83,7 @@ DialogHandler.prototype.buildDialogByID = function(id){
         return null;
     return this.buildDialogWithDiag(currentDiag);
 }
-//
+//these both need to be better sorted
 DialogHandler.prototype.getDialogByID = function(id){
     var l = this.currentConvo.DialogueEntries.length;
     for(var i=0;i<l;i++)

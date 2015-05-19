@@ -202,7 +202,7 @@ GlobalHandler.prototype.setActor = function(id,object)
 var BaseObject = function (json){
     this.OnChangeSignal = new Phaser.Signal();
     this.json = json;
-    this.id = -1;
+    this.id = json.id;
 };
 //should do value type
 BaseObject.prototype.updateValue = function(variable,value){
@@ -230,6 +230,7 @@ var ItemObject = function (json)
 {
     BaseObject.call(this,json);
     this.id = json.id;
+    
 }
 ItemObject.prototype = Object.create(BaseObject.prototype);
 ItemObject.constructor = ItemObject;

@@ -8,6 +8,8 @@ JustTextPopup = function(game, maingame, dialogEngine, parent){
     this.maingame = maingame;
     this.textMain = this.game.make.bitmapText(10, 10, "badabb", "Text goes here.", 25);
     this.textMain.tint = 0x00ffff;
+    this.textMain.wordWrap = true;
+    this.textMain.wordWrapWidth = 300;
     this.add(this.textMain);
 //
     this.visible = false;

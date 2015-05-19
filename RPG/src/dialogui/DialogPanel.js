@@ -28,20 +28,31 @@ DialogPanel.prototype.setup = function(button){
     this.btnPlay1.textRef = this.setupText(95, -10, "badabb", "1. ", 25);
     this.btnPlay2.textRef = this.setupText(95, 35, "badabb", "2. ", 25);
     this.btnPlay3.textRef = this.setupText(95, 82, "badabb", "3. ", 25);
+    
+    this.portrait1 = null;
+    this.portrait2 = null;
 	// Place it out of bounds (?)
 	this.x = 300;
     this.y = -1000;
 };
 //
+DialogPanel.prototype.setupPortrait = function(x,y,spritesheet,sprite)
+{    
+    var portrait = this.game.make.sprite(0,0,spritesheet,sprite);
+    this.add(portrait);
+    return portrait;
+}
+//
 DialogPanel.prototype.setupBG = function(spritesheet,sprite)
 {    
-    var bg = this.game.make.sprite(0,0,spritesheet,sprite);
+    var bg = this.game.make.image(0,0,spritesheet,sprite);
     this.add(bg);
 }
 //
 DialogPanel.prototype.setupButton = function(x,y,spritesheet,callback,overFrame, outFrame, downFrame, upFrame)
 {    
     var newBtn = this.game.make.button(x,y,spritesheet,callback, this,overFrame, outFrame, downFrame, upFrame);
+    this.add(newBtn);
     //
     newBtn.events.onInputOver.add(this.buttonOver, this);
     newBtn.events.onInputOut.add(this.buttonOut, this);
@@ -82,8 +93,16 @@ DialogPanel.prototype.play3 = function(button){
     this.nextDialog();
 };
 DialogPanel.prototype.justDoNext = function(){
-    this.dialogData = this.dialogData.links[0];
-    this.nextDialog();
+    if(this.dialogData==null)
+        this.endDialog();
+    else if(this.dialogData.links.length==0){
+        this.dialogData = null;
+        this.endDialog();
+    }
+    else{
+        this.dialogData = this.dialogData.links[0];
+        this.nextDialog();
+    }
 };
 
 //
@@ -101,40 +120,55 @@ DialogPanel.prototype.setupDialog = function(){
         console.log("dialog data not set");
         return;
     }
-    console.log(this.dialogData);
     this.textMain.text = this.dialogData.actor.json.Name +": " + this.dialogData.current.DialogueText;
+    
+    if(this.portrait1==null)
+        this.portrait1 = this.setupPortrait(0,0,"actors",this.dialogData.actor.json.Pictures+".png");
+    else if(this.portrait1.frameName != this.dialogData.actor.json.Pictures)
+        this.portrait1.frameName = this.dialogData.actor.json.Pictures+".png";
     
     //if links are players do normal
     //else can click anywhere?
-
-    for(var i=0;i<3;i++)
+    if(this.dialogData.links.length>1 && this.dialogData.links[0].Actor==this.dialogEngine.playerActor.id)
     {
-        if(this.dialogData.links[i]!=null && this.dialogData.links[i].Actor==0)
+        for(var i=0;i<3;i++)
         {
-            this["btnPlay"+(i+1)].visible = true;
-            this["btnPlay"+(i+1)].textRef.visible = true;
-            this["btnPlay"+(i+1)].textRef.text = (i+1)+". " + this.dialogData.links[i].DialogueText;
-            this["btnPlay"+(i+1)].textRef.tint = 0xffffff;
+            if(this.dialogData.links[i]!=null && this.dialogData.links[i].Actor==this.dialogEngine.playerActor.id)
+            {
+                this["btnPlay"+(i+1)].visible = true;
+                this["btnPlay"+(i+1)].textRef.visible = true;
+                this["btnPlay"+(i+1)].textRef.text = (i+1)+". " + this.dialogData.links[i].DialogueText;
+                this["btnPlay"+(i+1)].textRef.tint = 0xffffff;
+            }
+            else
+            {
+                this["btnPlay"+(i+1)].visible = false;
+                this["btnPlay"+(i+1)].textRef.visible = false;
+                this["btnPlay"+(i+1)].textRef.text = "";
+                this["btnPlay"+(i+1)].textRef.tint = 0xffffff;
+            }
         }
-        else
-        {
-            this["btnPlay"+(i+1)].visible = false;
-            this["btnPlay"+(i+1)].textRef.visible = false;
-            this["btnPlay"+(i+1)].textRef.text = "";
-            this["btnPlay"+(i+1)].textRef.tint = 0xffffff;
-        }
+        this.game.input.onDown.remove(this.justDoNext, this); 
     }
-    if(this.dialogData.links[0]!=null && this.dialogData.links[0].Actor!=0){
+    else
+    {
+        this.hideButtons();
         this.game.input.onDown.add(this.justDoNext, this); 
     }
-    else{
-        this.game.input.onDown.remove(this.justDoNext, this); 
+}
+//
+DialogPanel.prototype.hideButtons = function(){
+    for(var i=0;i<3;i++){
+        this["btnPlay"+(i+1)].visible = false;
+        this["btnPlay"+(i+1)].textRef.visible = false;
+        this["btnPlay"+(i+1)].textRef.text = "";
+        this["btnPlay"+(i+1)].textRef.tint = 0xffffff;
     }
 }
 //
 DialogPanel.prototype.startDialog = function(id){
     this.dialogData = this.dialogEngine.startConvo(id);
-    console.log(this.dialogData,id);
+    console.log("start Dialog",id);
     if(this.dialogData){
         this.visible = true;
         this.y = 250;

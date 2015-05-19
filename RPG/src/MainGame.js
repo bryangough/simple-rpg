@@ -46,6 +46,9 @@ BasicGame.Game = function (game) {
     
     this.rollovertext;
     this.highlightArray;
+    
+    this.dragScreen = false;
+    this.dragPoint = new Point(0,0);
 };
 
 //
@@ -107,7 +110,8 @@ BasicGame.Game.prototype = {
         //MOVE
         //this.input.onOver.add(this.onOn, this);
         this.input.addMoveCallback(this.onMove, this); 
-        this.input.onDown.add(this.clickedHex, this);
+        this.input.onDown.add(this.doDragScreen, this);
+        this.input.onUp.add(this.clickedHex, this);
         
         this.activeButtons = new ActionButtons(this.game, this);
         this.activeButtons.y = 400;
@@ -444,7 +448,7 @@ BasicGame.Game.prototype = {
     },
     //
     showDialog:function(convid){
-        console.log("showDialog",convid);
+        //console.log("showDialog",convid);
         this.diagpanel.startDialog(convid);
         GlobalEvents.tempDisableEvents();
         this.pauseGame();
@@ -510,8 +514,23 @@ BasicGame.Game.prototype = {
         this.state.start('MainMenu');
     },
     //
-    onMove:function()
+    onMove:function(pointer, x, y)
     {
+        if(this.dragScreen)
+        {
+            var diffx = this.dragPoint.x-x;
+            var diffy = this.dragPoint.y-y;
+            
+            this.dragPoint.x = x;
+            this.dragPoint.y = y;
+
+            this.mapGroup.x += diffx;
+            this.mapGroup.y += diffy;
+            
+            //console.log(diffx,diffy);
+            //move around
+            return;
+        }
         if(GlobalEvents.currentacion != GlobalEvents.WALK)
         {
             return;
@@ -542,8 +561,21 @@ BasicGame.Game.prototype = {
         this.highlightHex.highlighttilebytile(0,moveIndex);
         //this.highlightHex.highilightneighbors(moveIndex);
     },
-    clickedHex:function()
+    doDragScreen:function(pointer)
     {
+        this.dragScreen = true;
+        this.dragPoint.x = pointer.x;
+        this.dragPoint.y = pointer.y;
+    },
+    clickedHex:function(pointer)
+    {
+        this.dragScreen = false;
+        var diffx = this.dragPoint.x-pointer.x;
+        var diffy = this.dragPoint.y-pointer.y;
+        if(diffx!=0||diffy!=0)        //test distance did it actually drag. or do I make a drag screen button?
+        {
+            return;
+        }
         if(GlobalEvents.currentacion != GlobalEvents.WALK)
             return;
         if(this.game.global.pause)

@@ -5,7 +5,7 @@ var MovingCharacter = function (maingame, jsondata)
 {
     InteractiveObject.call(this, maingame, jsondata);
     //
-    this.oldTile;
+    this.oldTile=null;
     
     //
     this.path=null;
@@ -65,11 +65,12 @@ MovingCharacter.prototype.setLocationByTile = function(tile)
     this.updateLocation(tile);
     
     this.findtile();
+    
+    this.currentTile.changeWalkable(false);
 }
 //this is only avaliable to players - for when we have multiple players moving around
 MovingCharacter.prototype.gotoAnotherMap = function(map, tile) 
 {
-
 }
 //
 MovingCharacter.prototype.setDirection = function() 
@@ -173,13 +174,21 @@ MovingCharacter.prototype.step = function(elapseTime)
 {
     if(this.currentTile==null)
         this.currentTile = this.maingame.hexHandler.checkHex(this.x,this.y);
+    if(this.oldTile==null)
+        this.finalSetup();
     if(this.path!=null)
     {
         if(this.path.length>0)
         {
             //need to test if next spot is now not walkable
-            this.oldTile = this.currentTile;
             this.currentTile = this.maingame.hexHandler.checkHex(this.x,this.y);
+            if(this.oldTile != this.currentTile)
+            {
+                this.oldTile.changeWalkable(true);
+                this.oldTile = this.currentTile;
+                this.currentTile.changeWalkable(false);
+            }
+
             if(this.currentTile==null)
             {
                 //center old then try again

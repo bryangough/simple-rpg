@@ -1906,21 +1906,24 @@
                 "Name": "Player",
                 "Description": "",
                 "IsPlayer": true,
-                "state": ""
+                "state": "",
+                "Pictures": "portrait0003"
             },
             {
                 "id": 3,
                 "Name": "Glowing Block",
                 "Description": "",
                 "IsPlayer": false,
-                "state": ""
+                "state": "",
+                "Pictures": "portrait0005"
             },
             {
                 "id": 4,
                 "Name": "Block",
                 "Description": "",
                 "IsPlayer": false,
-                "state": ""
+                "state": "",
+                "Pictures": "portrait0004"
             }
         ],
         "Items": [
