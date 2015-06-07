@@ -14,6 +14,8 @@ BasicGame.Boot.prototype = {
         //  Phaser will automatically pause if the browser tab the game is in loses focus. You can disable that here:
         this.stage.disableVisibilityChange = true;
 
+        this.game.canvas.oncontextmenu = function (e) { e.preventDefault();  };//destroyAnchor();
+        
         if (this.game.device.desktop)
         {
             this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;

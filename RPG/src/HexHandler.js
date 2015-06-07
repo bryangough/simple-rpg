@@ -1,9 +1,10 @@
 //
-var HexHandler = function (maingame, game, hexagonWidth, hexagonHeight) 
+var HexHandler = function (maingame, game, hexagonWidth, hexagonHeight, tiletype) 
 {
     this.maingame = maingame;
     this.game = game;
     this.debug = true;
+    this.tiletype = tiletype;
     
     //for flood fill
     this.visited = [];
@@ -22,12 +23,16 @@ var HexHandler = function (maingame, game, hexagonWidth, hexagonHeight)
     
     this.halfHex = this.hexagonWidth/2;
     this.halfHexHeight = this.hexagonHeight/2;
+    
     this.gradient = (this.hexagonHeight/4)/(this.hexagonWidth/2);
 
-    var sprite = new Phaser.Image(game,0,0,"tiles2","hextiletouchmap.png");
-    this.touchmap = new Phaser.BitmapData (game,"touchmap",56, 16);
-	this.touchmap.draw(sprite, 0, 0);
+    //var sprite = new Phaser.Image(game,0,0,"tiles2","hextiletouchmap.png");
+    this.sprite = new Phaser.Image(game,0,0,"tiles2","halfiso/mousemapiso.png");
+    this.touchmap = new Phaser.BitmapData (game,"touchmap",100, 50);
+	this.touchmap.draw(this.sprite, 0, 0);
 	this.touchmap.update();
+    //this.maingame.highlightGroup.add(this.sprite);
+    this.tempcolour = {r:0,g:0,b:0}
 };
 HexHandler.prototype.update=function(elapsedTime)
 {
@@ -397,9 +402,9 @@ HexHandler.prototype.flush=function()
     }
 }*/
 // 
-var DiamondHexHandler = function (maingame, game, hexagonWidth, hexagonHeight) 
+var DiamondHexHandler = function (maingame, game, hexagonWidth, hexagonHeight, tiletype) 
 {
-    HexHandler.call(this, maingame, game, hexagonWidth, hexagonHeight);
+    HexHandler.call(this, maingame, game, hexagonWidth, hexagonHeight, tiletype);
 }
 DiamondHexHandler.prototype = Object.create(HexHandler.prototype);
 DiamondHexHandler.constructor = DiamondHexHandler;
@@ -440,8 +445,8 @@ DiamondHexHandler.prototype.checkHex=function(checkx, checky){
     //console.log(isInside);
     if(tile==null)
         return;
-    
-    var hex = this.touchmap.getPixel32(checkx-tile.x,checky-tile.y);
+    this.touchmap.update();
+    var hex = this.touchmap.getPixel32(checkx-tile.x, checky-tile.y);
     var r = ( hex       ) & 0xFF; // get the r
     var g = ( hex >>  8 ) & 0xFF; // get the g
     var b = ( hex >> 16 ) & 0xFF; // get the b
@@ -571,6 +576,132 @@ DiamondHexHandler.prototype.doFloodFill = function(tile,range)
     }
     return this.fringes;
 };
+//
+var IsoHandler = function (maingame, game, hexagonWidth, hexagonHeight, tiletype) 
+{
+    HexHandler.call(this, maingame, game, hexagonWidth, hexagonHeight, tiletype);
+}
+IsoHandler.prototype = Object.create(HexHandler.prototype);
+IsoHandler.constructor = IsoHandler;
+//
+IsoHandler.prototype.checkHex=function(checkx, checky){
+    if(!this.hexagonArray)
+        return;
+    
+    var i = Math.floor(checkx / (this.hexagonWidth - 2));
+    var j = Math.floor(checky / (this.hexagonHeight - 1)) * 2;
+
+    var xQuadrant = Math.floor(checkx % (this.hexagonWidth - 2));
+    var yQuadrant = Math.floor( checky % (this.hexagonHeight - 1));
+
+    
+    if(i<0 || j<0 || j>=this.maingame.movementgrid.gridSizeY || i>=this.maingame.movementgrid.gridSizeX)
+    {
+        return;
+    }
+    tile = this.hexagonArray[i][j]; 
+    if(tile!=null)
+    {
+        //this.sprite.x = tile.x;
+        //this.sprite.y = tile.y;
+    }
+    //
+    this.touchmap.update();
+    this.touchmap.getPixelRGB (xQuadrant, yQuadrant, this.tempcolour);
+    
+    //console.log(this.tempcolour,xQuadrant, yQuadrant,this.touchmap);
+    //
+    //console.log(this.tempcolour,xQuadrant, yQuadrant);
+    if(this.tempcolour.r==0xFF && this.tempcolour.g==0x00 && this.tempcolour.b==0x00)
+    {
+        //case 0xFF0000: // red top left        
+        i--;
+        j--;
+    }
+    if(this.tempcolour.r==0x00 && this.tempcolour.g==0xFF && this.tempcolour.b==0x00)
+    {
+        //case 0x00FF00: // green top right
+        j--;
+    }
+    if(this.tempcolour.r==0x00 && this.tempcolour.g==0x00 && this.tempcolour.b==0x00)
+    {
+        //case 0x000000: // black bottom left
+        i--;
+        j++;
+    }
+    if(this.tempcolour.r==0x00 && this.tempcolour.g==0x00 && this.tempcolour.b==0xFF)
+    {
+        //case 0x0000FF: // blue bottom right
+        j++;
+    }
+    //  
+    if(i<0 || j<0 || j>=this.maingame.movementgrid.gridSizeY || i>=this.maingame.movementgrid.gridSizeX)
+    {
+        return;
+    }
+    tile = this.hexagonArray[i][j]; 
+    return tile;
+ }
+IsoHandler.prototype.areTilesNeighbors=function(starttile,testtile)
+{
+    if(starttile==null||testtile==null)
+        return false;
+    var posx = starttile.posx-testtile.posx;
+    var posy = starttile.posy-testtile.posy;
+    //
+    //console.log("IsoHandler",posx,posy);
+    //
+    if(starttile==testtile)
+        return true;
+    if(starttile.y % 2 == 1)
+    {
+        if(posx==1&&posy==-1)return true;
+        if(posx==1&&posy==1 )return true;
+        if(posx==0&&posy==1)return true;
+        if(posx==0&&posy==-1)return true;
+    }
+    else
+    {        
+        if(posx==0&&posy==-1)return true;
+        if(posx==0&&posy==1)return true;
+        if(posx==-1&&posy==1)return true;
+        if(posx==-1&&posy==-1)return true;
+    }
+    return false;
+}
+IsoHandler.prototype.doFloodFill = function(tile,range)
+{
+    if(tile==null)
+        return;
+    this.visited = [];
+    this.visited.push(tile);
+    this.fringes = [];
+    this.fringes.push([tile]);
+    for(var k=1;k<=range;k++)
+    {
+        this.fringes.push([]);
+        for(var i=0;i<this.fringes[k-1].length;i++)
+        { 
+            var n = this.fringes[k-1][i];
+            if(n.posy % 2 == 1)
+            {
+                this.addNeighbor(n, 1,    -1,k);
+                this.addNeighbor(n, 1,     1,k);
+                this.addNeighbor(n, 0,    1,k);
+                this.addNeighbor(n, 0,   -1,k);
+            }
+            else
+            {
+                this.addNeighbor(n, 0,   -1,k);
+                this.addNeighbor(n, 0,   1, k);
+                this.addNeighbor(n, -1,    +1,k);
+                this.addNeighbor(n, -1,   -1, k);
+            }
+        }
+    }
+    return this.fringes;
+};
+
 /*
 for grid:
 http://fifengine.net/fifesvnrepo/tags/2007.1/src/engine/map/gridgeometry.cpp

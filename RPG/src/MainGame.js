@@ -48,7 +48,10 @@ BasicGame.Game = function (game) {
     this.highlightArray;
     
     this.dragScreen = false;
+    this.didDrag = false;
     this.dragPoint = new Point(0,0);
+    
+    this.objectoffset = new Point(0,0);
 };
 
 //
@@ -57,7 +60,7 @@ BasicGame.Game = function (game) {
 BasicGame.Game.prototype = {
     preload: function () {
         //this.load.json('map', 'assets/desertIsland.json');//mission file - can I show a preloader? should I?        
-        this.load.json('map', 'assets/forestmap.json');
+        this.load.json('map', 'assets/maps/forestmap.json');
     },
     create: function () {
         
@@ -103,8 +106,8 @@ BasicGame.Game.prototype = {
         this.inventory = new InventoryGraphics(this.game,this,this.globalHandler);
 	    this.game.add.existing(this.inventory);
         this.uiGroup.add(this.inventory);
-        this.inventory.x = 350;
-        this.inventory.y = 400;
+        this.inventory.x = 600;
+        this.inventory.y = 490;
         //this.input.addMoveCallback(this.drawLine, this); 
         //this.input.onDown.add(this.drawLine, this); 
         //MOVE
@@ -114,7 +117,8 @@ BasicGame.Game.prototype = {
         this.input.onUp.add(this.clickedHex, this);
         
         this.activeButtons = new ActionButtons(this.game, this);
-        this.activeButtons.y = 400;
+        this.activeButtons.x = 20;
+        this.activeButtons.y = 490;
         this.game.add.existing(this.activeButtons);
         this.uiGroup.add(this.activeButtons);
         
@@ -151,7 +155,9 @@ BasicGame.Game.prototype = {
             //var layer1 = passedMap[1];
             var layer1 = passedMap[mapscounter];
             if(layer1.handleMovement)
-                this.hexHandler = new DiamondHexHandler(this,this.game, layer1.hexWidth,layer1.hexHeight);
+                this.hexHandler = new IsoHandler(this, this.game, layer1.hexWidth, layer1.hexHeight, layer1.tiletype);
+                //this.hexHandler = new DiamondHexHandler(this,this.game, layer1.hexWidth,layer1.hexHeight);
+                
             
             var hexagonWidth = layer1.hexWidth;
             var hexagonHeight = layer1.hexHeight;
@@ -162,14 +168,15 @@ BasicGame.Game.prototype = {
             var tilesetid = layer1.tilesetid;
             var offsetx = layer1.offsetx || 0;
             var offsety = layer1.offsety || 0;
+            var tiletype = layer1.tiletype;
             
             if(layer1.handleMovement)
             {
-                this.movementgrid = new Grid(layer1);
+                this.movementgrid = new Grid(this, layer1);
             }
             if(layer1.handleSprite)
             {
-                this.spritegrid = new Grid(layer1);
+                this.spritegrid = new Grid(this, layer1);
             }
             
             var objectName;
@@ -210,6 +217,9 @@ BasicGame.Game.prototype = {
             highlightArray = [];
             if(layer1.handleMovement)
             { 
+                this.objectoffset.x = hexagonWidth/2;
+                this.objectoffset.y = hexagonHeight;
+                console.log(this.objectoffset);
                 for(var i = 0; i < gridSizeX; i ++)
                 {
                     if(!layer1.handleSprite)
@@ -221,6 +231,7 @@ BasicGame.Game.prototype = {
                     for(var j = 0; j < gridSizeY; j ++)
                     {
                         this.walkableArray[i][j] = layer1.walkable[j*gridSizeX+i];
+                        //this.walkableArray[i][j] = 1;
                         if(!layer1.handleSprite)//no sprite - need to something to select (this might not need to be destroyed)
                         {
                             tempPoint = this.movementgrid.GetMapCoords(i,j);
@@ -229,13 +240,19 @@ BasicGame.Game.prototype = {
                             //this needs to be switched out
                             if(this.game.global.showmovetile)
                             {
-                                var tile = new GraphicTile(this, "tile_highlight0002.png", "tiles2", i, j, tempPoint.x, tempPoint.y, this);
+                                //var tile = new GraphicTile(this, "tile_highlight0002.png", "tiles2", i, j, tempPoint.x, tempPoint.y, this);
+                                var tile = null;
+                                console.log(tiletype);
+                                if(tiletype=="HexIso")
+                                    tile = new GraphicTile(this, "tile_highlight0001.png", "tiles2", i, j, tempPoint.x, tempPoint.y, this);
+                                else
+                                    tile = new GraphicTile(this, "halfiso/halfiso_highlight.png", "tiles2", i, j, tempPoint.x, tempPoint.y, this);
                                 if(this.walkableArray[i][j]==0)
                                     tile.tint = 0xff0000;
                                     
                                 highlightArray[i][j] = tile;
                                 this.highlightGroup.add(tile);
-                                this.addLocationTextToTile(tempPoint.x,tempPoint.y,hexagonWidth,hexagonHeight,i,j);
+                              //  this.addLocationTextToTile(tempPoint.x,tempPoint.y,hexagonWidth,hexagonHeight,i,j);
                             }
                             //
                         }
@@ -269,8 +286,8 @@ BasicGame.Game.prototype = {
                         spotx = objects[i].x;
                         spoty = objects[i].y;
                         //
-                        var tileobject = new SimpleObject(this.game,objects[i].x + 16, 
-                                                               objects[i].y*-1 + 16, 
+                        var tileobject = new SimpleObject(this.game,objects[i].x + this.objectoffset.x,// + 16, 
+                                                               objects[i].y*-1 + this.objectoffset.y,// + 16, 
                                                                objectreference.spritesheet, objectreference.tile+".png");
                         tileobject.posx = objects[i].posx;
                         tileobject.posy = objects[i].posy;
@@ -351,7 +368,7 @@ BasicGame.Game.prototype = {
         
         if(b.IsPlayer||a.IsPlayer)
         {
-            //console.log(a.posy,b.posy,a.y,b.y);
+        //    console.log(a.posx, a.posy, b.posx, b.posy,a.y,b.y);
         }
         if(a.posy==b.posy)
         {
@@ -390,9 +407,10 @@ BasicGame.Game.prototype = {
         //test level?
     },
     addLocationTextToTile:function(x,y,width,height,i,j){
-        var hexagonText = this.add.text(x+width/4,y+3,i+","+j);
+        var hexagonText = this.add.text(x+width/2-5,y+height/2+3,i+","+j);
         hexagonText.font = "arial";
-        hexagonText.fontSize = 8;
+        hexagonText.fontSize = 12;
+        //hexagonText.font = 0xffffff;
         this.highlightGroup.add(hexagonText);
     },
     setChangeMapTile:function(selectedtile){
@@ -479,14 +497,14 @@ BasicGame.Game.prototype = {
             return;
         this.rollovertext.text = object.jsondata.displayName;
         this.rollovertext.anchor.x = 0.5;
-        this.rollovertext.x = object.x;
-        this.rollovertext.y = object.y;
+        this.rollovertext.x = object.x + this.mapGroup.x;
+        this.rollovertext.y = object.y + this.mapGroup.y - object.height/2;
         this.rollovertext.visible = true;
         
         //if display is off the screen
-    //    if(this.rollovertext.y<0){
-            this.rollovertext.y = object.y + object.height;
-    //    }
+        if(this.rollovertext.y<0){
+            this.rollovertext.y = object.y + this.mapGroup.y;// + object.height;// + object.height;
+        }
         this.rollovertext.tint = 0x9999ff;
     },
     moveToAction:function(object,tile,actions)
@@ -524,8 +542,10 @@ BasicGame.Game.prototype = {
             this.dragPoint.x = x;
             this.dragPoint.y = y;
 
-            this.mapGroup.x += diffx;
-            this.mapGroup.y += diffy;
+            if(diffx!=0||diffy!=0)
+                this.didDrag = true;
+            this.mapGroup.x -= diffx;
+            this.mapGroup.y -= diffy;
             
             //console.log(diffx,diffy);
             //move around
@@ -540,7 +560,7 @@ BasicGame.Game.prototype = {
             return;
         }
         var moveIndex =  this.hexHandler.checkHex(this.input.worldX-this.mapGroup.x,this.input.worldY-this.mapGroup.y);
-        //var playertile = this.hexHandler.checkHex(this.playerCharacter.x,this.playerCharacter.y);
+        var playertile = this.hexHandler.checkHex(this.playerCharacter.x,this.playerCharacter.y);
         if(moveIndex)
         {
             //this.tiletest.x = moveIndex.x;
@@ -554,8 +574,8 @@ BasicGame.Game.prototype = {
         //console.log(this.input.worldX,this.mapGroup.x,this.input.worldX-this.mapGroup.x);
         
         //this.highlightHex.doShowPath(this.pathfinder,this.playerCharacter.currentTile,moveIndex);
-        //this.hexHandler.dolines(playertile,moveIndex,false,this.highlightHex);
-        //var fridges = this.hexHandler.doFloodFill(moveIndex,4);
+        //this.hexHandler.dolines(playertile,moveIndex,true,this.highlightHex);
+        //var fridges = this.hexHandler.doFloodFill(moveIndex,6);
         //this.highlightHex.drawFringes(fridges);
         
         this.highlightHex.highlighttilebytile(0,moveIndex);
@@ -570,10 +590,9 @@ BasicGame.Game.prototype = {
     clickedHex:function(pointer)
     {
         this.dragScreen = false;
-        var diffx = this.dragPoint.x-pointer.x;
-        var diffy = this.dragPoint.y-pointer.y;
-        if(diffx!=0||diffy!=0)        //test distance did it actually drag. or do I make a drag screen button?
+        if(this.didDrag)        //test distance did it actually drag. or do I make a drag screen button?
         {
+            this.didDrag = false;
             return;
         }
         if(GlobalEvents.currentacion != GlobalEvents.WALK)
@@ -588,7 +607,6 @@ BasicGame.Game.prototype = {
             if(this.game.currentacion==this.game.WALK)
             {
                 this.playerCharacter.moveto(moveIndex);
-                
             }
         }
     },   
@@ -617,44 +635,3 @@ var Point = function(x, y) {
   this.x = x;
   this.y = y;
 };
-
-/*
- if(false)//tilereference.tile=="tileWater"){
-                    temptile = new WaterTile(this, tilereference.tile+".png", tilereference.spritesheet, i, j, hexagonX, hexagonY);
-                    waterTilesArray.push(temptile);
-                }
-                else{
-                */
-
-/*
-graph for touching grids
-        var cords;
-        var graph = this.game.add.graphics(0, 0);
-        this.hexagonGroup.add(graph);
-        //graph.y += this.mapGroup.y;
-        cords = this.spritegrid.PosToMap(0,0);
-        graph.lineStyle(10, 0xFF0000, 1.0);
-        graph.beginFill(0x000000, 0.0);
-        var xstart = 350;
-        var ystart = 100;
-/*
-        for(var i=ystart;i<250;i+=25)
-        {
-            this.spritegrid.PosToMap(xstart,i);
-            graph.lineStyle(0);
-            graph.beginFill(0xFFFF0B, 0.5);
-            graph.drawCircle(xstart+16,i,10);
-            console.log(cords.x,cords.y);
-            graph.endFill();
-        }*/
-        /*
-        for(var i=xstart;i<xstart+250;i+=25)
-        {
-            //this.spritegrid.PosToMap(i-40,ystart-16);
-            this.spritegrid.PosToMap(i,ystart);
-            graph.lineStyle(0);
-            graph.beginFill(0xFFFF0B, 0.5);
-            graph.drawCircle(i,ystart,10);
-            console.log(cords.x,cords.y);
-            graph.endFill();
-        }*/

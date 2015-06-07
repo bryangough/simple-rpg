@@ -7,8 +7,9 @@ var SimpleObject = function (game, x,y, spritesheet, imagename)
 SimpleObject.prototype = Object.create(Phaser.Image.prototype);
 SimpleObject.constructor = SimpleObject;
 //
-var Grid = function(layer1)
+var Grid = function(maingame, layer1)
 {
+    this.maingame = maingame;
     this.width = layer1.hexWidth;
     this.height = layer1.hexHeight;
 
@@ -38,6 +39,17 @@ Grid.prototype.GetMapCoords = function(i,j)
 
         this.coords.x -= this.width/2 * offset;
         this.coords.y -= (this.height/4*3) * offset;
+    }
+    else if(this.type=="Iso")
+    {
+        //this.coords.x = i * (this.width - 2) + ((j % 2) * ((this.width / 2) - 1));          
+    //   this.coords.y = j * ((this.height - 1) / 2);
+        
+       
+        this.coords.x = i * (this.width) + ((j % 2) * ((this.width / 2)));          
+        this.coords.y = j * ((this.height) / 2);
+        //this.coords.x += 16;
+        //this.coords.y -= 10;
     }
     else if(this.type=="HexIsoFallout")
     {
@@ -75,6 +87,14 @@ Grid.prototype.PosToMap = function(x,y)
         this.coords.x = Math.round(i);
         this.coords.y = Math.round(j);
        // console.log(x,y,i,j,this.coords.x,this.coords.y);
+    }
+    else if(this.type=="Iso")
+    {
+        var tile = this.maingame.hexHandler.checkHex(x,y);
+        this.coords.x = tile.posx;
+        this.coords.y = tile.posy;
+        //this.coords.x = x * (this.width) + ((y % 2) * ((this.width / 2)));          
+        //this.coords.y = y * ((this.height) / 2);
     }
     else
     {

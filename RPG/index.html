@@ -5,6 +5,7 @@
 	<title>Simple RPG</title>
     <script src="js/phaser.js"></script>
     <script src="src/easystar-0.1.13-hex.js"></script>
+    <!--script src="src/easystar-0.2.1.js"></script-->
     <script src="src/Screens/Boot.js"></script>
 	<script src="src/Screens/Preloader.js"></script>
 	<script src="src/Screens/MainMenu.js"></script>
@@ -58,17 +59,13 @@ window.onload = function() {
     game.state.add('Game', BasicGame.Game);
     game.state.add('Instructions', BasicGame.Instructions);
     
-    /*Game = {
-        width = 900;
-        height = 600;
-        scaleValue;
-    };*/
-    //
+    //game.canvas.oncontextmenu = function (e) { e.preventDefault(); destroyAnchor() };
+    
     game.global = {
         mute: false,
         pause: false,
         movetotouch:true,
-        showmovetile:true
+        showmovetile:false
     };
     
     game.state.start('Boot');

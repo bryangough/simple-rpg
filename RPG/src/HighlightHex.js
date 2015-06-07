@@ -10,6 +10,8 @@ var HighlightHex = function (game, maingame, hexhandler)
     this.neighborLights = [];
     
     this.showPath = true;//set this false to cancel any callbacks being shown
+    
+    this.type = "Iso";
 }
 HighlightHex.prototype = Object.create(Phaser.Group.prototype);
 HighlightHex.constructor = HighlightHex;
@@ -17,10 +19,15 @@ HighlightHex.constructor = HighlightHex;
 HighlightHex.prototype.setup = function() 
 {
     this.neighborLights = [];
-    for(var i=0;i<40;i++)
+    for(var i=0;i<45;i++)
     {
         var light = this.add(new Phaser.Group(this.game,null));
-        var high = this.add(new Phaser.Sprite(this.game, 0,0, "tiles2", "tile_highlight0005.png"));
+        var high;
+        if(this.hexhandler.tiletype=="HexIso")
+            high = this.add(new Phaser.Sprite(this.game, 0,0, "tiles2", "tile_highlight0001.png"));
+        else
+            high = this.add(new Phaser.Sprite(this.game, 0,0, "tiles2", "halfiso/halfiso_highlight.png"));
+        //
         this.neighborLights.push(light);
         light.add(high);
         this.add(light);
@@ -77,6 +84,8 @@ HighlightHex.prototype.showPathCallback = function(path)
     if(!this.showPath)
         return;
     this.cleanuptiles();
+    if(path==null||path.length==0)
+        return;
     for(var i=0;i<path.length;i++)
     {
         var overtile = this.hexhandler.getTileByCords(path[i].x,path[i].y);
@@ -103,34 +112,45 @@ HighlightHex.prototype.drawDebugLine = function(fromtile, totile)
 }
 HighlightHex.prototype.highilightneighbors = function(thistile) 
 {
-    /*if(this.game.global.pause)
-    {
-        return;
-    }
-    var moveIndex =  this.hexHandler.checkHex(this.input.worldX-this.hexagonGroup.x,this.input.worldY-this.hexagonGroup.y);*/
     if(thistile==null)
         return;
-    //if(thistile.posy % 2 == 1)
-    //if(false)
-    if(thistile.posx % 2 == 1)
+    if(this.type=="Iso")
     {
-        this.highlighttileoffset(0, 0,    -1, thistile);
-        this.highlighttileoffset(1, -1,   0, thistile);
-        this.highlighttileoffset(2, 0,    +1, thistile);
-        this.highlighttileoffset(3, +1,   +1, thistile);
-        this.highlighttileoffset(4, +1,   0, thistile);
-        this.highlighttileoffset(5, -1,   1, thistile);
-        //this.highlighttileoffset(5, 1,   -1, thistile);
+        if(thistile.posy % 2 == 1)
+        {
+            this.highlighttileoffset(0, 1,    -1, thistile);
+            this.highlighttileoffset(1, 1,   1, thistile);
+            this.highlighttileoffset(2, 0,    1, thistile);
+            this.highlighttileoffset(3, 0,   -1, thistile);
+        }
+        else
+        {
+            this.highlighttileoffset(0,  0,  -1, thistile);
+            this.highlighttileoffset(1,  0,   1, thistile);
+            this.highlighttileoffset(2, -1,   1, thistile);
+            this.highlighttileoffset(3, -1,  -1, thistile);
+        }
     }
-    else
+    if(this.type=="HexIsoFallout")
     {
-        this.highlighttileoffset(0, -1,   -1, thistile);
-        this.highlighttileoffset(1, -1,   0, thistile);
-        this.highlighttileoffset(2, 0,    +1, thistile);
-        this.highlighttileoffset(3, +1,   0, thistile);
-        this.highlighttileoffset(4, 0,    -1, thistile);
-        this.highlighttileoffset(5, 1,   -1, thistile);
-        //this.highlighttileoffset(5, -1,   1, thistile);
+        if(thistile.posx % 2 == 1)
+        {
+            this.highlighttileoffset(0, 0,    -1, thistile);
+            this.highlighttileoffset(1, -1,   0, thistile);
+            this.highlighttileoffset(2, 0,    +1, thistile);
+            this.highlighttileoffset(3, +1,   +1, thistile);
+            this.highlighttileoffset(4, +1,   0, thistile);
+            this.highlighttileoffset(5, -1,   1, thistile);
+        }
+        else
+        {
+            this.highlighttileoffset(0, -1,   -1, thistile);
+            this.highlighttileoffset(1, -1,   0, thistile);
+            this.highlighttileoffset(2, 0,    +1, thistile);
+            this.highlighttileoffset(3, +1,   0, thistile);
+            this.highlighttileoffset(4, 0,    -1, thistile);
+            this.highlighttileoffset(5, 1,   -1, thistile);
+        }
     }
 }
 //

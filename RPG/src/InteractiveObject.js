@@ -261,6 +261,7 @@ InteractiveObject.prototype.handleClick = function()
 }
 InteractiveObject.prototype.setupArt = function(json) 
 {
+    //console.log(this.jsondata.name,this.jsondata.tilesetid);
     var objectreference = this.maingame.getTile(this.jsondata.name,this.jsondata.tilesetid);
     var spotx = this.jsondata.x || 0;
     var spoty = this.jsondata.y || 0;
@@ -271,10 +272,10 @@ InteractiveObject.prototype.setupArt = function(json)
       //  objects[i].x + 16, 
     //    objects[i].y*-1 + 16
     
-
+    //console.log(objectreference.spritesheet, objectreference.tile+".png");
     Phaser.Sprite.call(this, this.game, 
-                       spotx + 16, 
-                        spoty*-1 + 16,
+                       spotx + this.maingame.objectoffset.x,
+                        spoty*-1 + this.maingame.objectoffset.y,
                        //offsetx*this.maingame.hexHandler.hexagonWidth + this.maingame.mapGroup.x,// + tile.x,
                        //offsety*this.maingame.hexHandler.hexagonHeight + this.maingame.mapGroup.y,// + tile.y, 
                        objectreference.spritesheet, objectreference.tile+".png");

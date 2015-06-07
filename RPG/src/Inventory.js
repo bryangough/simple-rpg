@@ -25,8 +25,10 @@ var InventoryGraphics = function(game,maingame,globalhandler)
     var items = this.globalhandler.items;
     if(items)
     {
-        for (var val of items)
+        //for (var val of items)
+        for(var i=0;i<items.length;i++)
         {
+            var val = items[i];
             if(val!=null)
             {//might be moved to inventory item
                 val.OnChangeSignal.add(this.makeReturn(val), this);

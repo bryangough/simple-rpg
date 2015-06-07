@@ -31,6 +31,7 @@ var MovingCharacter = function (maingame, jsondata)
             this.walkspeed = actions[i].walkSpeed;
     }
     
+    this.movetoCenterEvery = true;
     //
     //this.inventory = [];
     
@@ -123,7 +124,7 @@ MovingCharacter.prototype.moveto = function(moveIndex){
             //this.playerCharacter.setPath(path);
             //
             this.maingame.pathfinder.setCallbackFunction(this.movercallback, this);
-            this.maingame.pathfinder.preparePathCalculation( [this.currentTile.posx,this.currentTile.posy], [moveIndex.posx,moveIndex.posy] );
+            this.maingame.pathfinder.preparePathCalculation( [this.currentTile.posx,this.currentTile.posy], [moveIndex.posx, moveIndex.posy] );
             this.maingame.pathfinder.calculatePath();
 
             this.clearTargetTile();
@@ -141,7 +142,14 @@ MovingCharacter.prototype.atTargetTile = function()
     if(this.actionsaftermove)
     {
         //should pass what type of action it is
+        if(this.objectmovingto!=null)
+        {
+            //face object
+        }
+        
         this.changeState("use");
+        
+        
     }   
 }
 MovingCharacter.prototype.clearTargetTile = function()
@@ -157,6 +165,7 @@ MovingCharacter.prototype.findtile = function()
    // onmap = this.maingame.spritegrid.GetMapCoords(onmap.x,onmap.y);
     this.posx = onmap.x;
     this.posy = onmap.y;
+    //console.log(this.posx,this.posy);
   //  console.log("find tile",this.posx,this.posy);
 }
 //
@@ -193,6 +202,7 @@ MovingCharacter.prototype.step = function(elapseTime)
             {
                 //center old then try again
             }
+            //console.log(this.currentTile.posx,this.currentTile.posy,this.nextTile.posx,this.nextTile.posy);
             if(this.currentTile.posx==this.nextTile.posx && this.currentTile.posy==this.nextTile.posy)
             {
                 this.pathlocation++;

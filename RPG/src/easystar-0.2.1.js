@@ -1,18 +1,16 @@
-//Bryan Gough, March 18/2015 - removed diag, changed this.calculate to do 6 neighbors instead of 4
-//
 //NameSpace
-var EasyStarHex = EasyStarHex || {};
+var EasyStar = EasyStar || {};
 
 //For require.js
 if (typeof define === "function" && define.amd) {
 	define("easystar", [], function() {
-		return EasyStarHex;
+		return EasyStar;
 	});
 }
 
 //For browserify and node.js
 if (typeof module !== 'undefined' && module.exports) {
-	module.exports = EasyStarHex;
+	module.exports = EasyStar;
 }
 /**
 * A simple Node that represents a single tile on the grid.
@@ -22,7 +20,7 @@ if (typeof module !== 'undefined' && module.exports) {
 * @param {Number} costSoFar How far this node is in moves*cost from the start.
 * @param {Number} simpleDistanceToTarget Manhatten distance to the end point.
 **/
-EasyStarHex.Node = function(parent, x, y, costSoFar, simpleDistanceToTarget) {
+EasyStar.Node = function(parent, x, y, costSoFar, simpleDistanceToTarget) {
 	this.parent = parent;
 	this.x = x;
 	this.y = y;
@@ -38,8 +36,8 @@ EasyStarHex.Node = function(parent, x, y, costSoFar, simpleDistanceToTarget) {
 };
 
 //Constants
-EasyStarHex.Node.OPEN_LIST = 0;
-EasyStarHex.Node.CLOSED_LIST = 1;
+EasyStar.Node.OPEN_LIST = 0;
+EasyStar.Node.CLOSED_LIST = 1;
 /**
 * This is an improved Priority Queue data type implementation that can be used to sort any object type.
 * It uses a technique called a binary heap.
@@ -51,15 +49,15 @@ EasyStarHex.Node.CLOSED_LIST = 1;
 * 
 * @param {Number} heapType either PriorityQueue.MAX_HEAP or PriorityQueue.MIN_HEAP.
 **/
-EasyStarHex.PriorityQueue = function(criteria,heapType) {
+EasyStar.PriorityQueue = function(criteria,heapType) {
 	this.length = 0; //The current length of heap.
 	var queue = [];
 	var isMax = false;
 
 	//Constructor
-	if (heapType==EasyStarHex.PriorityQueue.MAX_HEAP) {
+	if (heapType==EasyStar.PriorityQueue.MAX_HEAP) {
 		isMax = true;
-	} else if (heapType==EasyStarHex.PriorityQueue.MIN_HEAP) {
+	} else if (heapType==EasyStar.PriorityQueue.MIN_HEAP) {
 		isMax = false;
 	} else {
 		throw heapType + " not supported.";
@@ -191,44 +189,48 @@ EasyStarHex.PriorityQueue = function(criteria,heapType) {
 };
 
 //Constants
-EasyStarHex.PriorityQueue.MAX_HEAP = 0;
-EasyStarHex.PriorityQueue.MIN_HEAP = 1;
+EasyStar.PriorityQueue.MAX_HEAP = 0;
+EasyStar.PriorityQueue.MIN_HEAP = 1;
 
 /**
- * Represents a single instance of EasyStarHex.
+ * Represents a single instance of EasyStar.
  * A path that is in the queue to eventually be found.
  */
-EasyStarHex.instance = function() {
+EasyStar.instance = function() {
 	this.isDoneCalculating = true;
 	this.pointsToAvoid = {};
 	this.startX;
 	this.callback;
-    this.callbackObj;
 	this.startY;
 	this.endX;
 	this.endY;
 	this.nodeHash = {};
 	this.openList;
-    this.endwalkable;
 };
 /**
-*	EasyStarHex.js
-*	github.com/prettymuchbryce/EasyStarHexJS
+*	EasyStar.js
+*	github.com/prettymuchbryce/EasyStarJS
 *	Licensed under the MIT license.
 * 
 *	Implementation By Bryce Neal (@prettymuchbryce)
 **/
-EasyStarHex.js = function() {
+EasyStar.js = function() {
 	var STRAIGHT_COST = 10;
+	var DIAGONAL_COST = 14;
+	var syncEnabled = false;
 	var pointsToAvoid = {};
 	var collisionGrid;
 	var costMap = {};
+	var pointsToCost = {};
+	var allowCornerCutting = true;
 	var iterationsSoFar;
 	var instances = [];
 	var iterationsPerCalculation = Number.MAX_VALUE;
 	var acceptableTiles;
+	var diagonalsEnabled = false;
+
 	/**
-	* Sets the collision grid that EasyStarHex uses.
+	* Sets the collision grid that EasyStar uses.
 	* 
 	* @param {Array|Number} tiles An array of numbers that represent 
 	* which tiles in your grid should be considered
@@ -245,13 +247,43 @@ EasyStarHex.js = function() {
 	};
 
 	/**
-	* Sets the collision grid that EasyStarHex uses.
+	* Enables sync mode for this EasyStar instance..
+	* if you're into that sort of thing.
+	**/
+	this.enableSync = function() {
+		syncEnabled = true;
+	};
+
+	/**
+	* Disables sync mode for this EasyStar instance.
+	**/
+	this.disableSync = function() {
+		syncEnabled = false;
+	};
+
+	/**
+	 * Enable diagonal pathfinding.
+	 */
+	this.enableDiagonals = function() {
+		diagonalsEnabled = true;
+	}
+
+	/**
+	 * Disable diagonal pathfinding.
+	 */
+	this.disableDiagonals = function() {
+		diagonalsEnabled = false;
+	}
+
+	/**
+	* Sets the collision grid that EasyStar uses.
 	* 
-	* @param {Array} grid The collision grid that this EasyStarHex instance will read from. 
+	* @param {Array} grid The collision grid that this EasyStar instance will read from. 
 	* This should be a 2D Array of Numbers.
 	**/
 	this.setGrid = function(grid) {
 		collisionGrid = grid;
+
 		//Setup cost map
 		for (var y = 0; y < collisionGrid[0].length; y++) {
 			for (var x = 0; x < collisionGrid.length; x++) {
@@ -260,7 +292,6 @@ EasyStarHex.js = function() {
 				}
 			}
 		}
-        //console.log("end");
 	};
 
 	/**
@@ -272,6 +303,35 @@ EasyStarHex.js = function() {
 	this.setTileCost = function(tileType, cost) {
 		costMap[tileType] = cost;
 	};
+
+	/**
+	* Sets the an additional cost for a particular point.
+	* Overrides the cost from setTileCost.
+	*
+	* @param {Number} x The x value of the point to cost.
+	* @param {Number} y The y value of the point to cost.
+	* @param {Number} The multiplicative cost associated with the given point.
+	**/
+	this.setAdditionalPointCost = function(x, y, cost) {
+		pointsToCost[x + '_' + y] = cost;
+	};
+
+	/**
+	* Remove the additional cost for a particular point.
+	*
+	* @param {Number} x The x value of the point to stop costing.
+	* @param {Number} y The y value of the point to stop costing.
+	**/
+	this.removeAdditionalPointCost = function(x, y) {
+		delete pointsToCost[x + '_' + y];
+	}
+
+	/**
+	* Remove all additional point costs.
+	**/
+	this.removeAllAdditionalPointCosts = function() {
+		pointsToCost = {};
+	}
 
 	/**
 	* Sets the number of search iterations per calculation. 
@@ -307,6 +367,20 @@ EasyStarHex.js = function() {
 	};
 
 	/**
+	* Enables corner cutting in diagonal movement.
+	**/
+	this.enableCornerCutting = function() {
+		allowCornerCutting = true;
+	};
+
+	/**
+	* Disables corner cutting in diagonal movement.
+	**/
+	this.disableCornerCutting = function() {
+		allowCornerCutting = false;
+	};
+
+	/**
 	* Stop avoiding all additional points on the grid.
 	**/
 	this.stopAvoidingAllAdditionalPoints = function() {
@@ -324,15 +398,29 @@ EasyStarHex.js = function() {
 	* is found, or no path is found.
 	* 
 	**/
-	this.findPath = function(startX, startY ,endX, endY, callback, callbackObj) {
+	this.findPath = function(startX, startY, endX, endY, callback, callbackObj) {
+		//Wraps the callback for sync vs async logic
+		var callbackWrapper = function(result) {
+			if (syncEnabled) {
+				//callback(result);
+                callback.apply(callbackObj,[result]);
+			} else {
+				setTimeout(function() {
+					//callback(result);
+                    callback.apply(callbackObj,[result]);
+				});
+			}
+		}
+
 		//No acceptable tiles were set
 		if (acceptableTiles === undefined) {
-			throw new Error("You can't set a path without first calling setAcceptableTiles() on EasyStarHex.");
+			throw new Error("You can't set a path without first calling setAcceptableTiles() on EasyStar.");
 		}
 		//No grid was set
 		if (collisionGrid === undefined) {
-			throw new Error("You can't set a path without first calling setGrid() on EasyStarHex.");
+			throw new Error("You can't set a path without first calling setGrid() on EasyStar.");
 		}
+
 		//Start or endpoint outside of scope.
 		if (startX < 0 || startY < 0 || endX < 0 || endX < 0 || 
 		startX > collisionGrid.length-1 || startY > collisionGrid[0].length-1 || 
@@ -342,12 +430,11 @@ EasyStarHex.js = function() {
 
 		//Start and end are the same tile.
 		if (startX===endX && startY===endY) {
-			callback.apply(callbackObj,[[]]);
+			callbackWrapper([]);
 			return;
 		}
 
 		//End point is not an acceptable tile.
-        //- this needs to change - if this is true, end 1 before
 		var endTile = collisionGrid[endX][endY];
 		var isAcceptable = false;
 		for (var i = 0; i < acceptableTiles.length; i++) {
@@ -356,31 +443,32 @@ EasyStarHex.js = function() {
 				break;
 			}
 		}
-		//if (isAcceptable === false) {
-			//callback.apply(callbackObj,[null]);
-			//return;
-		//}
+
+		if (isAcceptable === false) {
+			callbackWrapper(null);
+			return;
+		}
+
 		//Create the instance
-		var instance = new EasyStarHex.instance();
-		instance.openList = new EasyStarHex.PriorityQueue("bestGuessDistance",EasyStarHex.PriorityQueue.MIN_HEAP);
+		var instance = new EasyStar.instance();
+		instance.openList = new EasyStar.PriorityQueue("bestGuessDistance",EasyStar.PriorityQueue.MIN_HEAP);
 		instance.isDoneCalculating = false;
 		instance.nodeHash = {};
 		instance.startX = startX;
 		instance.startY = startY;
 		instance.endX = endX;
 		instance.endY = endY;
-		instance.callback = callback;
-        instance.callbackObj = callbackObj;
-		instance.endwalkable = isAcceptable;
+		instance.callback = callbackWrapper;
+
 		instance.openList.insert(coordinateToNode(instance, instance.startX, 
 			instance.startY, null, STRAIGHT_COST));
-		
+
 		instances.push(instance);
 	};
 
 	/**
 	* This method steps through the A* Algorithm in an attempt to
-	* find your path(s). It will search 4 tiles for every calculation.
+	* find your path(s). It will search 4-8 tiles (depending on diagonals) for every calculation.
 	* You can change the number of calculations done in a call by using
 	* easystar.setIteratonsPerCalculation().
 	**/
@@ -388,74 +476,150 @@ EasyStarHex.js = function() {
 		if (instances.length === 0 || collisionGrid === undefined || acceptableTiles === undefined) {
 			return;
 		}
-        
 		for (iterationsSoFar = 0; iterationsSoFar < iterationsPerCalculation; iterationsSoFar++) {
 			if (instances.length === 0) {
 				return;
 			}
+
+			if (syncEnabled) {
+				//If this is a sync instance, we want to make sure that it calculates synchronously. 
+				iterationsSoFar = 0;
+			}
+
 			//Couldn't find a path.
-			if (instances[0].openList.length===0) {
-                //console.log("can't find path");                
-			    instances[0].callback.apply(instances[0].callbackObj,[[]]);
+			if (instances[0].openList.length === 0) {
+				var ic = instances[0];
+				ic.callback(null);
 				instances.shift();
 				continue;
 			}
 
 			var searchNode = instances[0].openList.shiftHighestPriorityElement();
-			searchNode.list = EasyStarHex.Node.CLOSED_LIST;
-            //
-            //if(searchNode.y % 2 == 1)
-            if(searchNode.x % 2 == 1)
-			{
-				if(testNode(searchNode, 0,    -1))continue;
-				if(testNode(searchNode, -1,   0))continue;
-				if(testNode(searchNode, 0,    +1))continue;
-				if(testNode(searchNode, +1,   +1))continue;
-				if(testNode(searchNode, +1,   0))continue;
-                if(testNode(searchNode, -1,   1))continue;
-				//if(testNode(searchNode, 1,   -1))continue;
+			var tilesToSearch = [];
+			searchNode.list = EasyStar.Node.CLOSED_LIST;
+            
+            if(searchNode.y % 2 == 1)
+            {
+                testNode(searchNode,1,-1,instances[0],tilesToSearch);
+                testNode(searchNode,1,1,instances[0],tilesToSearch);
+                testNode(searchNode,0,1,instances[0],tilesToSearch);
+                testNode(searchNode,0,-1,instances[0],tilesToSearch);
+
+                if (diagonalsEnabled) {
+                    if (allowCornerCutting ||
+                        (isTileWalkable(collisionGrid, acceptableTiles, searchNode.x, searchNode.y-1) &&
+                        isTileWalkable(collisionGrid, acceptableTiles, searchNode.x-1, searchNode.y))) {
+
+                        testNode(searchNode,-1,-1,instances[0],tilesToSearch,DIAGONAL_COST);
+                    }
+                    if (allowCornerCutting ||
+                        (isTileWalkable(collisionGrid, acceptableTiles, searchNode.x, searchNode.y+1) &&
+                        isTileWalkable(collisionGrid, acceptableTiles, searchNode.x+1, searchNode.y))) {
+
+                        testNode(searchNode,1,1,instances[0],tilesToSearch,DIAGONAL_COST);
+                    }
+                    if (allowCornerCutting ||
+                        (isTileWalkable(collisionGrid, acceptableTiles, searchNode.x, searchNode.y-1) &&
+                        isTileWalkable(collisionGrid, acceptableTiles, searchNode.x+1, searchNode.y))) {
+
+                        testNode(searchNode,1,-1,instances[0],tilesToSearch,DIAGONAL_COST);
+                    }
+                    if (allowCornerCutting ||
+                        (isTileWalkable(collisionGrid, acceptableTiles, searchNode.x, searchNode.y+1) &&
+                        isTileWalkable(collisionGrid, acceptableTiles, searchNode.x-1, searchNode.y))) {
+
+                        testNode(searchNode,-1,1,instances[0],tilesToSearch,DIAGONAL_COST);
+                    }
+                }
+            }
+            else
+            {
+                testNode(searchNode,0,-1,instances[0],tilesToSearch);
+                testNode(searchNode,0,1,instances[0],tilesToSearch);
+                testNode(searchNode,-1,1,instances[0],tilesToSearch);
+                testNode(searchNode,-1,-1,instances[0],tilesToSearch);
+
+                if (diagonalsEnabled) {
+                    if (allowCornerCutting ||
+                        (isTileWalkable(collisionGrid, acceptableTiles, searchNode.x, searchNode.y-1) &&
+                        isTileWalkable(collisionGrid, acceptableTiles, searchNode.x-1, searchNode.y))) {
+
+                        testNode(searchNode,-1,-1,instances[0],tilesToSearch,DIAGONAL_COST);
+                    }
+                    if (allowCornerCutting ||
+                        (isTileWalkable(collisionGrid, acceptableTiles, searchNode.x, searchNode.y+1) &&
+                        isTileWalkable(collisionGrid, acceptableTiles, searchNode.x+1, searchNode.y))) {
+
+                        testNode(searchNode,1,1,instances[0],tilesToSearch,DIAGONAL_COST);
+                    }
+                    if (allowCornerCutting ||
+                        (isTileWalkable(collisionGrid, acceptableTiles, searchNode.x, searchNode.y-1) &&
+                        isTileWalkable(collisionGrid, acceptableTiles, searchNode.x+1, searchNode.y))) {
+
+                        testNode(searchNode,1,-1,instances[0],tilesToSearch,DIAGONAL_COST);
+                    }
+                    if (allowCornerCutting ||
+                        (isTileWalkable(collisionGrid, acceptableTiles, searchNode.x, searchNode.y+1) &&
+                        isTileWalkable(collisionGrid, acceptableTiles, searchNode.x-1, searchNode.y))) {
+
+                        testNode(searchNode,-1,1,instances[0],tilesToSearch,DIAGONAL_COST);
+                    }
+                }
+            }
+
+			// First sort all of the potential nodes we could search by their cost.
+			tilesToSearch.sort(function(a, b) {
+				if (a.cost < b.cost) {
+					return -1;
+				} else if (a.cost === b.cost) {
+					return 0;
+				} else {
+					return 1;
+				}
+			});
+
+			var isDoneCalculating = false;
+
+			//Search all of the surrounding nodes
+			for (var i = 0; i < tilesToSearch.length; i++) {
+				checkAdjacentNode(tilesToSearch[i].instance, tilesToSearch[i].searchNode, 
+					tilesToSearch[i].x, tilesToSearch[i].y, tilesToSearch[i].cost);
+				if (tilesToSearch[i].instance.isDoneCalculating === true) {
+					isDoneCalculating = true;
+					break;
+				}
 			}
-			else
-			{
-				if(testNode(searchNode, -1,   -1))continue;
-				if(testNode(searchNode, -1,   0))continue;
-				if(testNode(searchNode, 0,    +1))continue;
-				if(testNode(searchNode, +1,   0))continue
-				if(testNode(searchNode, 0,    -1))continue;
-                if(testNode(searchNode, 1,   -1))continue;
-                //if(testNode(searchNode, -1,   1))continue;
+
+			if (isDoneCalculating) {
+				instances.shift();
+				continue;
 			}
+
 		}
 	};
-    //
-    var testNode = function(searchNode,valx,valy){
+    var testNode = function(searchNode,valx,valy,instance,tilesToSearch,cost){
+        cost = cost || STRAIGHT_COST;
+        
         if(searchNode.x+valx > -1 && searchNode.x+valx < collisionGrid.length &&
            searchNode.y+valy > -1 && searchNode.y+valy < collisionGrid[0].length)
-            //
-            checkAdjacentNode(instances[0], searchNode, valx, valy, STRAIGHT_COST * 
-                          costMap[collisionGrid[searchNode.x+valx][searchNode.y+valy]]);
-        if (instances[0].isDoneCalculating===true) {
-            instances.shift();
-            return true;
-        }
-        return false
+
+            tilesToSearch.push({ instance: instance, searchNode: searchNode, 
+                x: valx, y: valy, cost: STRAIGHT_COST * getTileCost(searchNode.x+valx, searchNode.y+valy)});
+        
     }
 	//Private methods follow
 	var checkAdjacentNode = function(instance, searchNode, x, y, cost) {
 		var adjacentCoordinateX = searchNode.x+x;
 		var adjacentCoordinateY = searchNode.y+y;
 
-		if (pointsToAvoid[adjacentCoordinateX + "_" + adjacentCoordinateY] === undefined) {		
+		if (pointsToAvoid[adjacentCoordinateX + "_" + adjacentCoordinateY] === undefined) {
 			if (instance.endX === adjacentCoordinateX && instance.endY === adjacentCoordinateY) {
 				instance.isDoneCalculating = true;
 				var path = [];
 				var pathLen = 0;
-                if(instance.endwalkable)
-                {
-				    path[pathLen] = {x: adjacentCoordinateX, y: adjacentCoordinateY};
-				    pathLen++;    
-                }
-                path[pathLen] = {x: searchNode.x, y:searchNode.y};
+				path[pathLen] = {x: adjacentCoordinateX, y: adjacentCoordinateY};
+				pathLen++;
+				path[pathLen] = {x: searchNode.x, y:searchNode.y};
 				pathLen++;
 				var parent = searchNode.parent;
 				while (parent!=null) {
@@ -464,31 +628,48 @@ EasyStarHex.js = function() {
 					parent = parent.parent;
 				}
 				path.reverse();
-                instance.callback.apply(instance.callbackObj,[path]);
+				var ic = instance;
+				var ip = path;
+				ic.callback(ip);
 			}
 
-			for (var i = 0; i < acceptableTiles.length; i++) {
-				if (collisionGrid[adjacentCoordinateX][adjacentCoordinateY] === acceptableTiles[i]) {
-					var node = coordinateToNode(instance, adjacentCoordinateX, 
-						adjacentCoordinateY, searchNode, cost);
-					
-					if (node.list === undefined) {
-						node.list = EasyStarHex.Node.OPEN_LIST;
-						instance.openList.insert(node);
-					} else if (node.list === EasyStarHex.Node.OPEN_LIST) {
-						if (searchNode.costSoFar + cost < node.costSoFar) {
-							node.costSoFar = searchNode.costSoFar + cost;
-							node.parent = searchNode;
-						}
+			if (isTileWalkable(collisionGrid, acceptableTiles, adjacentCoordinateX, adjacentCoordinateY)) {
+				var node = coordinateToNode(instance, adjacentCoordinateX, adjacentCoordinateY, searchNode, cost);
+
+				if (node.list === undefined) {
+					node.list = EasyStar.Node.OPEN_LIST;
+					instance.openList.insert(node);
+				} else if (node.list === EasyStar.Node.OPEN_LIST) {
+					if (searchNode.costSoFar + cost < node.costSoFar) {
+						node.costSoFar = searchNode.costSoFar + cost;
+						node.parent = searchNode;
 					}
-					break;
 				}
 			}
-
 		}
 	};
 
 	//Helpers
+	var isTileWalkable = function(collisionGrid, acceptableTiles, x, y) {
+        
+        //console.log(x,y,collisionGrid.length,collisionGrid[0].length);
+        
+        if(x < 0 || x > collisionGrid.length || y < 0 || y > collisionGrid[0].length)
+                return false;
+        
+        
+		for (var i = 0; i < acceptableTiles.length; i++) {
+			if (collisionGrid[x][y] === acceptableTiles[i]) {
+				return true;
+			}
+		}
+
+		return false;
+	};
+
+	var getTileCost = function(x, y) {
+		return pointsToCost[x + '_' + y] || costMap[collisionGrid[x][y]]
+	};
 
 	var coordinateToNode = function(instance, x, y, parent, cost) {
 		if (instance.nodeHash[x + "_" + y]!==undefined) {
@@ -500,15 +681,16 @@ EasyStarHex.js = function() {
 		} else {
 			costSoFar = simpleDistanceToTarget;
 		}
-		var node = new EasyStarHex.Node(parent,x,y,costSoFar,simpleDistanceToTarget);
+		var node = new EasyStar.Node(parent,x,y,costSoFar,simpleDistanceToTarget);
 		instance.nodeHash[x + "_" + y] = node;
 		return node;
 	};
 
 	var getDistance = function(x1,y1,x2,y2) {
-		return Math.sqrt(Math.abs(x2-x1)*Math.abs(x2-x1) + Math.abs(y2-y1)*Math.abs(y2-y1)) * STRAIGHT_COST;
+		return Math.sqrt( (x2-=x1)*x2 + (y2-=y1)*y2 );
 	};
 }
+
 
 
 /*
@@ -525,12 +707,12 @@ EasyStarHex.js = function() {
  */
 Phaser.Plugin.PathFinderPlugin = function (parent) {
 
-    if (typeof EasyStarHex !== 'object') {
+    if (typeof EasyStar !== 'object') {
         throw new Error("Easystar is not defined!");
     }
 
     this.parent = parent;
-    this._easyStarHex = new EasyStarHex.js();
+    this._easyStar = new EasyStar.js();
     this._grid = null;
     this._callback = null;
     this._callbackObj = null;
@@ -553,6 +735,7 @@ Phaser.Plugin.PathFinderPlugin.prototype.setGrid = function (grid, walkables, it
     iterationsPerCount = iterationsPerCount || null;
 
     this._grid = [];
+    
     for (var i = 0; i < grid.length; i++)
     {
         this._grid[i] = [];
@@ -561,13 +744,13 @@ Phaser.Plugin.PathFinderPlugin.prototype.setGrid = function (grid, walkables, it
             if (grid[i][j])
                 this._grid[i][j] = grid[i][j];
             else
-                this._grid[i][j] = 0
+                this._grid[i][j] = 0;
         }
     }
     this._walkables = walkables;
 
-    this._easyStarHex.setGrid(this._grid);
-    this._easyStarHex.setAcceptableTiles(this._walkables);
+    this._easyStar.setGrid(this._grid);
+    this._easyStar.setAcceptableTiles(this._walkables);
 
     // initiate all walkable tiles with cost 1 so they will be walkable even if they are not on the grid map, jet.
     for (i = 0; i < walkables.length; i++)
@@ -576,7 +759,7 @@ Phaser.Plugin.PathFinderPlugin.prototype.setGrid = function (grid, walkables, it
     }
 
     if (iterationsPerCount !== null) {
-        this._easyStarHex.setIterationsPerCalculation(iterationsPerCount);
+        this._easyStar.setIterationsPerCalculation(iterationsPerCount);
     }
 };
 
@@ -587,7 +770,7 @@ Phaser.Plugin.PathFinderPlugin.prototype.setGrid = function (grid, walkables, it
  * @param cost {Number} The multiplicative cost associated with the given tile.
  */
 Phaser.Plugin.PathFinderPlugin.prototype.setTileCost = function (tileType, cost) {
-    this._easyStarHex.setTileCost(tileType, cost);
+    this._easyStar.setTileCost(tileType, cost);
 };
 
 /**
@@ -614,8 +797,7 @@ Phaser.Plugin.PathFinderPlugin.prototype.preparePathCalculation = function (from
         startY = from[1],
         destinationX = to[0],
         destinationY = to[1];
-
-    this._easyStarHex.findPath(startX, startY, destinationX, destinationY, this._callback, this._callbackObj);
+    this._easyStar.findPath(startX, startY, destinationX, destinationY, this._callback, this._callbackObj);
     this._prepared = true;
 };
 
@@ -627,5 +809,5 @@ Phaser.Plugin.PathFinderPlugin.prototype.calculatePath = function () {
         throw new Error("no Calculation prepared!");
     }
 
-    this._easyStarHex.calculate();
+    this._easyStar.calculate();
 };

@@ -14,7 +14,6 @@ var GlobalHandler = function (game, maingame, actors, variables, quests, items)
         if(actors[i].Name=="Player")
             this.playerActor = this.actors[actors[i].id.toString()];
     }
-    
     //
     this.variables = [];
     for(var i=0;i<variables.length;i++)
