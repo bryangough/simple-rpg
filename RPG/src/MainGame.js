@@ -149,15 +149,43 @@ BasicGame.Game.prototype = {
         this.maskableobjects = [];
         this.walkableArray = [];
         //
-        for(var mapscounter=0;mapscounter<passedMap.length;mapscounter++)
+        var mapscounter;
+        for(mapscounter=0;mapscounter<passedMap.length;mapscounter++)
+        {
+            var layer1 = passedMap[mapscounter];
+            if(layer1.handleMovement)
+            { 
+                var hexagonWidth = layer1.hexWidth;
+                var hexagonHeight = layer1.hexHeight;
+                this.objectoffset.x = hexagonWidth/2;
+                this.objectoffset.y = hexagonHeight;
+            }
+        }
+        console.log(this.objectoffset);
+        for(mapscounter=0;mapscounter<passedMap.length;mapscounter++)
         //if(true)
         {
             //var layer1 = passedMap[1];
             var layer1 = passedMap[mapscounter];
             if(layer1.handleMovement)
-                this.hexHandler = new IsoHandler(this, this.game, layer1.hexWidth, layer1.hexHeight, layer1.tiletype);
+            {
+                console.log(layer1.tilesetype);
+                if(layer1.tiletype=="Iso")
+                {
+                    this.hexHandler = new IsoHandler(this, this.game, layer1.hexWidth, layer1.hexHeight, layer1.tiletype);
+                }                                
+                else if(layer1.tiletype=="HexIso")
+                {
+                    this.hexHandler = new DiamondHexHandler(this,this.game, layer1.hexWidth, layer1.hexHeight, layer1.tiletype);
+                }
+                else
+                {
+                    this.hexHandler = new HexHandler(this, this.game, layer1.hexWidth, layer1.hexHeight, layer1.tiletype);
+                }
+                //Iso
+                //
                 //this.hexHandler = new DiamondHexHandler(this,this.game, layer1.hexWidth,layer1.hexHeight);
-                
+            }
             
             var hexagonWidth = layer1.hexWidth;
             var hexagonHeight = layer1.hexHeight;
@@ -209,7 +237,7 @@ BasicGame.Game.prototype = {
                             temptile = new GraphicTile(this, tilereference.tile+".png", tilereference.spritesheet, i, j, tempPoint.x, tempPoint.y, this);
                         }
                         this.hexagonGroup.add(temptile);
-                        //this.addLocationTextToTile(tempPoint.x,tempPoint.y,hexagonWidth,hexagonHeight,i,j);
+                        this.addLocationTextToTile(tempPoint.x,tempPoint.y,hexagonWidth,hexagonHeight,i,j);
                     }
                 }
             }
@@ -217,9 +245,9 @@ BasicGame.Game.prototype = {
             highlightArray = [];
             if(layer1.handleMovement)
             { 
-                this.objectoffset.x = hexagonWidth/2;
-                this.objectoffset.y = hexagonHeight;
-                console.log(this.objectoffset);
+               // this.objectoffset.x = hexagonWidth/2;
+                //this.objectoffset.y = hexagonHeight;
+                //console.log(this.objectoffset);
                 for(var i = 0; i < gridSizeX; i ++)
                 {
                     if(!layer1.handleSprite)
@@ -242,7 +270,6 @@ BasicGame.Game.prototype = {
                             {
                                 //var tile = new GraphicTile(this, "tile_highlight0002.png", "tiles2", i, j, tempPoint.x, tempPoint.y, this);
                                 var tile = null;
-                                console.log(tiletype);
                                 if(tiletype=="HexIso")
                                     tile = new GraphicTile(this, "tile_highlight0001.png", "tiles2", i, j, tempPoint.x, tempPoint.y, this);
                                 else
@@ -252,7 +279,7 @@ BasicGame.Game.prototype = {
                                     
                                 highlightArray[i][j] = tile;
                                 this.highlightGroup.add(tile);
-                              //  this.addLocationTextToTile(tempPoint.x,tempPoint.y,hexagonWidth,hexagonHeight,i,j);
+                                this.addLocationTextToTile(tempPoint.x,tempPoint.y,hexagonWidth,hexagonHeight,i,j);
                             }
                             //
                         }
@@ -265,6 +292,7 @@ BasicGame.Game.prototype = {
             }
             if(layer1.objects)
             {
+                
                 var objects = layer1.objects;
                 var spotx,spoty;
                 for(var i = 0; i < objects.length; i ++)
@@ -282,20 +310,20 @@ BasicGame.Game.prototype = {
                     }
                     else
                     {
+                        //
                         var objectreference = this.getTile(objects[i].name,objects[i].tilesetid);
                         spotx = objects[i].x;
-                        spoty = objects[i].y;
-                        //
-                        var tileobject = new SimpleObject(this.game,objects[i].x + this.objectoffset.x,// + 16, 
-                                                               objects[i].y*-1 + this.objectoffset.y,// + 16, 
-                                                               objectreference.spritesheet, objectreference.tile+".png");
+                        spoty = objects[i].y * -1;
+                        var tileobject = new SimpleObject(this.game,
+                                                                spotx + this.objectoffset.x,
+                                                                spoty + this.objectoffset.y,
+                                                                objectreference.spritesheet, objectreference.tile+".png");
                         tileobject.posx = objects[i].posx;
                         tileobject.posy = objects[i].posy;
-                        //
                         this.objectGroup.add(tileobject);
-                        tileobject.anchor.x = 0.5;
-                        tileobject.anchor.y = 1.0; 
+                        //
                         
+                        //
                         if(objects[i].maskable){//maskable objects to check when player/mouse move
                             this.maskableobjects.push(tileobject);
                             //console.log(this.maskableobjects);
@@ -408,8 +436,9 @@ BasicGame.Game.prototype = {
     },
     addLocationTextToTile:function(x,y,width,height,i,j){
         var hexagonText = this.add.text(x+width/2-5,y+height/2+3,i+","+j);
+        //var hexagonText = this.add.text(x+5,y+3,i+","+j);
         hexagonText.font = "arial";
-        hexagonText.fontSize = 12;
+        hexagonText.fontSize = 8;
         //hexagonText.font = 0xffffff;
         this.highlightGroup.add(hexagonText);
     },

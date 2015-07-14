@@ -82,7 +82,7 @@
 },
 "box/box_poster.png":
 {
-	"frame": {"x":629,"y":360,"w":23,"h":54},
+	"frame": {"x":728,"y":2,"w":23,"h":54},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":23,"h":54},
@@ -90,7 +90,7 @@
 },
 "box/box_r.png":
 {
-	"frame": {"x":592,"y":417,"w":32,"h":99},
+	"frame": {"x":592,"y":418,"w":32,"h":99},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":99},
@@ -154,7 +154,7 @@
 },
 "bushAutumn.png":
 {
-	"frame": {"x":728,"y":2,"w":15,"h":20},
+	"frame": {"x":555,"y":649,"w":15,"h":20},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":15,"h":20},
@@ -162,7 +162,7 @@
 },
 "bushDirt.png":
 {
-	"frame": {"x":298,"y":511,"w":15,"h":20},
+	"frame": {"x":481,"y":715,"w":15,"h":20},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":15,"h":20},
@@ -178,7 +178,7 @@
 },
 "bushMagic.png":
 {
-	"frame": {"x":527,"y":726,"w":15,"h":20},
+	"frame": {"x":728,"y":58,"w":15,"h":20},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":15,"h":20},
@@ -186,7 +186,7 @@
 },
 "bushSand.png":
 {
-	"frame": {"x":555,"y":518,"w":18,"h":24},
+	"frame": {"x":555,"y":519,"w":18,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":24},
@@ -194,7 +194,7 @@
 },
 "bushSnow.png":
 {
-	"frame": {"x":728,"y":24,"w":15,"h":20},
+	"frame": {"x":706,"y":501,"w":15,"h":20},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":15,"h":20},
@@ -226,7 +226,7 @@
 },
 "flowerWhite.png":
 {
-	"frame": {"x":385,"y":717,"w":12,"h":11},
+	"frame": {"x":658,"y":416,"w":12,"h":11},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":12,"h":11},
@@ -234,7 +234,7 @@
 },
 "flowerYellow.png":
 {
-	"frame": {"x":385,"y":730,"w":12,"h":11},
+	"frame": {"x":190,"y":320,"w":12,"h":11},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":12,"h":11},
@@ -392,9 +392,25 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":50},
 	"sourceSize": {"w":100,"h":50}
 },
+"hexmousemap1.png":
+{
+	"frame": {"x":48,"y":725,"w":32,"h":16},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":16},
+	"sourceSize": {"w":32,"h":16}
+},
+"hexmousemap2.png":
+{
+	"frame": {"x":680,"y":669,"w":32,"h":16},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":16},
+	"sourceSize": {"w":32,"h":16}
+},
 "hextiletouchmap.png":
 {
-	"frame": {"x":2,"y":725,"w":56,"h":16},
+	"frame": {"x":252,"y":511,"w":56,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":56,"h":16},
@@ -410,7 +426,7 @@
 },
 "hillDirt.png":
 {
-	"frame": {"x":544,"y":733,"w":33,"h":12},
+	"frame": {"x":630,"y":402,"w":33,"h":12},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":33,"h":12},
@@ -418,7 +434,7 @@
 },
 "hillGrass.png":
 {
-	"frame": {"x":579,"y":733,"w":33,"h":12},
+	"frame": {"x":498,"y":726,"w":33,"h":12},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":33,"h":12},
@@ -426,7 +442,7 @@
 },
 "hillMagic.png":
 {
-	"frame": {"x":706,"y":634,"w":33,"h":12},
+	"frame": {"x":481,"y":740,"w":33,"h":12},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":33,"h":12},
@@ -434,7 +450,7 @@
 },
 "hillSand.png":
 {
-	"frame": {"x":703,"y":720,"w":33,"h":12},
+	"frame": {"x":516,"y":740,"w":33,"h":12},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":33,"h":12},
@@ -442,7 +458,7 @@
 },
 "hillSnow.png":
 {
-	"frame": {"x":703,"y":734,"w":33,"h":12},
+	"frame": {"x":533,"y":726,"w":33,"h":12},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":33,"h":12},
@@ -450,7 +466,7 @@
 },
 "hillsGrass.png":
 {
-	"frame": {"x":252,"y":511,"w":44,"h":30},
+	"frame": {"x":104,"y":722,"w":44,"h":30},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":44,"h":30},
@@ -458,7 +474,7 @@
 },
 "hillsSand.png":
 {
-	"frame": {"x":60,"y":725,"w":44,"h":18},
+	"frame": {"x":2,"y":725,"w":44,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":44,"h":18},
@@ -474,7 +490,7 @@
 },
 "mapexit.png":
 {
-	"frame": {"x":563,"y":349,"w":64,"h":66},
+	"frame": {"x":582,"y":620,"w":64,"h":66},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":66},
@@ -482,7 +498,7 @@
 },
 "mousemap.png":
 {
-	"frame": {"x":106,"y":722,"w":44,"h":16},
+	"frame": {"x":252,"y":529,"w":44,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":44,"h":16},
@@ -490,7 +506,7 @@
 },
 "pineAutumn_high.png":
 {
-	"frame": {"x":582,"y":518,"w":30,"h":99},
+	"frame": {"x":582,"y":519,"w":30,"h":99},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":30,"h":99},
@@ -498,7 +514,7 @@
 },
 "pineAutumn_low.png":
 {
-	"frame": {"x":637,"y":657,"w":30,"h":79},
+	"frame": {"x":648,"y":608,"w":30,"h":79},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":30,"h":79},
@@ -514,7 +530,7 @@
 },
 "pineBlue_high.png":
 {
-	"frame": {"x":614,"y":518,"w":30,"h":99},
+	"frame": {"x":614,"y":519,"w":30,"h":99},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":30,"h":99},
@@ -522,7 +538,7 @@
 },
 "pineBlue_low.png":
 {
-	"frame": {"x":221,"y":664,"w":30,"h":79},
+	"frame": {"x":201,"y":672,"w":30,"h":79},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":30,"h":79},
@@ -538,7 +554,7 @@
 },
 "pineGreen_high.png":
 {
-	"frame": {"x":626,"y":417,"w":30,"h":99},
+	"frame": {"x":626,"y":418,"w":30,"h":99},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":30,"h":99},
@@ -546,7 +562,7 @@
 },
 "pineGreen_low.png":
 {
-	"frame": {"x":705,"y":386,"w":30,"h":79},
+	"frame": {"x":233,"y":655,"w":30,"h":79},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":30,"h":79},
@@ -562,7 +578,7 @@
 },
 "redRoofShort.png":
 {
-	"frame": {"x":659,"y":279,"w":65,"h":67},
+	"frame": {"x":563,"y":349,"w":65,"h":67},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":65,"h":67},
@@ -610,7 +626,7 @@
 },
 "rockRing.png":
 {
-	"frame": {"x":154,"y":672,"w":65,"h":76},
+	"frame": {"x":563,"y":271,"w":65,"h":76},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":65,"h":76},
@@ -674,7 +690,7 @@
 },
 "seethrough.png":
 {
-	"frame": {"x":675,"y":574,"w":40,"h":40},
+	"frame": {"x":630,"y":360,"w":40,"h":40},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":40},
@@ -682,7 +698,7 @@
 },
 "smallRockDirt.png":
 {
-	"frame": {"x":399,"y":715,"w":29,"h":33},
+	"frame": {"x":675,"y":569,"w":29,"h":33},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":29,"h":33},
@@ -690,7 +706,7 @@
 },
 "smallRockGrass.png":
 {
-	"frame": {"x":430,"y":715,"w":29,"h":33},
+	"frame": {"x":637,"y":719,"w":29,"h":33},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":29,"h":33},
@@ -698,7 +714,7 @@
 },
 "smallRockSnow.png":
 {
-	"frame": {"x":461,"y":715,"w":29,"h":33},
+	"frame": {"x":668,"y":719,"w":29,"h":33},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":29,"h":33},
@@ -706,7 +722,7 @@
 },
 "smallRockStone.png":
 {
-	"frame": {"x":717,"y":574,"w":29,"h":33},
+	"frame": {"x":680,"y":604,"w":29,"h":33},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":29,"h":33},
@@ -714,7 +730,7 @@
 },
 "tileDirt.png":
 {
-	"frame": {"x":253,"y":716,"w":42,"h":28},
+	"frame": {"x":347,"y":717,"w":42,"h":28},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":42,"h":28},
@@ -722,7 +738,7 @@
 },
 "tileGrass.png":
 {
-	"frame": {"x":669,"y":714,"w":32,"h":16},
+	"frame": {"x":699,"y":717,"w":32,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":16},
@@ -738,7 +754,7 @@
 },
 "tileMagic.png":
 {
-	"frame": {"x":297,"y":716,"w":42,"h":28},
+	"frame": {"x":637,"y":689,"w":42,"h":28},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":42,"h":28},
@@ -746,7 +762,7 @@
 },
 "tileSand.png":
 {
-	"frame": {"x":341,"y":717,"w":42,"h":28},
+	"frame": {"x":680,"y":639,"w":42,"h":28},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":42,"h":28},
@@ -754,7 +770,7 @@
 },
 "tileWater.png":
 {
-	"frame": {"x":664,"y":616,"w":40,"h":28},
+	"frame": {"x":681,"y":687,"w":40,"h":28},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":28},
@@ -762,7 +778,7 @@
 },
 "tile_highlight0001.png":
 {
-	"frame": {"x":669,"y":732,"w":32,"h":16},
+	"frame": {"x":699,"y":735,"w":32,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":16},
@@ -770,7 +786,7 @@
 },
 "tile_highlight0002.png":
 {
-	"frame": {"x":706,"y":616,"w":32,"h":16},
+	"frame": {"x":568,"y":726,"w":32,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":16},
@@ -778,7 +794,7 @@
 },
 "tile_highlight0003.png":
 {
-	"frame": {"x":703,"y":648,"w":32,"h":16},
+	"frame": {"x":714,"y":669,"w":32,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":16},
@@ -786,7 +802,7 @@
 },
 "tile_highlight0004.png":
 {
-	"frame": {"x":703,"y":666,"w":32,"h":16},
+	"frame": {"x":706,"y":523,"w":32,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":16},
@@ -794,7 +810,7 @@
 },
 "tile_highlight0005.png":
 {
-	"frame": {"x":703,"y":684,"w":32,"h":16},
+	"frame": {"x":706,"y":541,"w":32,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":16},
@@ -802,7 +818,7 @@
 },
 "tile_highlight0006.png":
 {
-	"frame": {"x":703,"y":702,"w":32,"h":16},
+	"frame": {"x":706,"y":559,"w":32,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":16},
@@ -834,7 +850,7 @@
 },
 "tileoffsetiso0001.png":
 {
-	"frame": {"x":582,"y":619,"w":80,"h":36},
+	"frame": {"x":555,"y":688,"w":80,"h":36},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":36},
@@ -842,7 +858,7 @@
 },
 "tileoffsetiso0002.png":
 {
-	"frame": {"x":555,"y":657,"w":80,"h":36},
+	"frame": {"x":265,"y":678,"w":80,"h":36},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":36},
@@ -850,7 +866,7 @@
 },
 "tileoffsetiso0003.png":
 {
-	"frame": {"x":555,"y":695,"w":80,"h":36},
+	"frame": {"x":265,"y":716,"w":80,"h":36},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":36},
@@ -858,7 +874,7 @@
 },
 "tileoffsetiso0004.png":
 {
-	"frame": {"x":253,"y":678,"w":80,"h":36},
+	"frame": {"x":399,"y":715,"w":80,"h":36},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":36},
@@ -866,7 +882,7 @@
 },
 "tileoffsetiso0005.png":
 {
-	"frame": {"x":659,"y":348,"w":80,"h":36},
+	"frame": {"x":672,"y":357,"w":80,"h":36},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":36},
@@ -874,7 +890,7 @@
 },
 "tileoffsetiso0006.png":
 {
-	"frame": {"x":658,"y":468,"w":80,"h":36},
+	"frame": {"x":672,"y":395,"w":80,"h":36},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":36},
@@ -938,7 +954,7 @@
 },
 "treeCactus_1.png":
 {
-	"frame": {"x":675,"y":506,"w":32,"h":66},
+	"frame": {"x":658,"y":433,"w":32,"h":66},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":66},
@@ -946,7 +962,7 @@
 },
 "treeCactus_2.png":
 {
-	"frame": {"x":709,"y":506,"w":29,"h":66},
+	"frame": {"x":675,"y":501,"w":29,"h":66},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":29,"h":66},
@@ -954,7 +970,7 @@
 },
 "treeCactus_3.png":
 {
-	"frame": {"x":669,"y":646,"w":32,"h":66},
+	"frame": {"x":692,"y":433,"w":32,"h":66},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":66},
@@ -962,7 +978,7 @@
 },
 "treeGreen_high.png":
 {
-	"frame": {"x":555,"y":417,"w":35,"h":99},
+	"frame": {"x":555,"y":418,"w":35,"h":99},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":35,"h":99},
@@ -970,7 +986,7 @@
 },
 "treeGreen_low.png":
 {
-	"frame": {"x":646,"y":518,"w":27,"h":87},
+	"frame": {"x":646,"y":519,"w":27,"h":87},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":27,"h":87},
@@ -986,7 +1002,7 @@
 },
 "treeMagic_mid0001.png":
 {
-	"frame": {"x":658,"y":386,"w":45,"h":80},
+	"frame": {"x":154,"y":672,"w":45,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":45,"h":80},
@@ -994,7 +1010,7 @@
 },
 "treeMagic_mid0002.png":
 {
-	"frame": {"x":658,"y":386,"w":45,"h":80},
+	"frame": {"x":154,"y":672,"w":45,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":45,"h":80},
@@ -1002,7 +1018,7 @@
 },
 "waveLava.png":
 {
-	"frame": {"x":492,"y":738,"w":33,"h":10},
+	"frame": {"x":602,"y":726,"w":33,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":33,"h":10},
@@ -1010,7 +1026,7 @@
 },
 "waveWater.png":
 {
-	"frame": {"x":492,"y":726,"w":33,"h":10},
+	"frame": {"x":602,"y":738,"w":33,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":33,"h":10},
@@ -1018,7 +1034,7 @@
 },
 "woodRing.png":
 {
-	"frame": {"x":563,"y":271,"w":65,"h":76},
+	"frame": {"x":659,"y":279,"w":65,"h":76},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":65,"h":76},
@@ -1029,8 +1045,8 @@
 	"version": "1.0",
 	"image": "tiles2.png",
 	"format": "RGBA8888",
-	"size": {"w":750,"h":750},
+	"size": {"w":754,"h":754},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:0ac9d7066bbdb3eec2b8ec5573d5cdca:a157e93d225646c2db198cc353f6e84b:a2ea7f1ef2bae323b6e6bbe3befb8be3$"
+	"smartupdate": "$TexturePacker:SmartUpdate:6d4e913693d75ad06c35fdb8c2186bb2:9a892ac07fb50b1ecff78f8b7f406368:a2ea7f1ef2bae323b6e6bbe3befb8be3$"
 }
 }

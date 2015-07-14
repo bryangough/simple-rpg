@@ -193,9 +193,9 @@ MovingCharacter.prototype.step = function(elapseTime)
             this.currentTile = this.maingame.hexHandler.checkHex(this.x,this.y);
             if(this.oldTile != this.currentTile)
             {
-                this.oldTile.changeWalkable(true);
-                this.oldTile = this.currentTile;
-                this.currentTile.changeWalkable(false);
+                //this.oldTile.changeWalkable(true);
+                //this.oldTile = this.currentTile;
+                //this.currentTile.changeWalkable(false);
             }
 
             if(this.currentTile==null)

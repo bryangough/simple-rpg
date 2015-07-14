@@ -23,8 +23,10 @@ HighlightHex.prototype.setup = function()
     {
         var light = this.add(new Phaser.Group(this.game,null));
         var high;
+        console.log(this.hexhandler.tiletype);
+        //
         if(this.hexhandler.tiletype=="HexIso")
-            high = this.add(new Phaser.Sprite(this.game, 0,0, "tiles2", "tile_highlight0001.png"));
+            high = this.add(new Phaser.Sprite(this.game, 0,0, "tiles2", "tile_highlight0002.png"));
         else
             high = this.add(new Phaser.Sprite(this.game, 0,0, "tiles2", "halfiso/halfiso_highlight.png"));
         //
@@ -109,7 +111,7 @@ HighlightHex.prototype.drawDebugLine = function(fromtile, totile)
     {
         this.hexHandler.dolines(fromtile,totile,false, this);
     }
-}
+}//this really should be asking hexhandler got get neighbours
 HighlightHex.prototype.highilightneighbors = function(thistile) 
 {
     if(thistile==null)

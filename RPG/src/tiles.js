@@ -1,8 +1,10 @@
 var SimpleObject = function (game, x,y, spritesheet, imagename) 
 {
-    Phaser.Image.call(this, game, x,y, spritesheet, imagename);
+    Phaser.Image.call(this, game, x, y, spritesheet, imagename);
     this.posx;
     this.posy;
+    this.anchor.x = 0.5;
+    this.anchor.y = 1.0;
 }
 SimpleObject.prototype = Object.create(Phaser.Image.prototype);
 SimpleObject.constructor = SimpleObject;

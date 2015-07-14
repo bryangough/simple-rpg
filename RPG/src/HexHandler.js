@@ -1,3 +1,6 @@
+//HexHandler - Normal flat hex
+//DiamondHexHandler - Squished hex. Width x2 Height.
+//IsoHandler - Flat iso. Width x2 Height.
 //
 var HexHandler = function (maingame, game, hexagonWidth, hexagonHeight, tiletype) 
 {
@@ -27,7 +30,11 @@ var HexHandler = function (maingame, game, hexagonWidth, hexagonHeight, tiletype
     this.gradient = (this.hexagonHeight/4)/(this.hexagonWidth/2);
 
     //var sprite = new Phaser.Image(game,0,0,"tiles2","hextiletouchmap.png");
-    this.sprite = new Phaser.Image(game,0,0,"tiles2","halfiso/mousemapiso.png");
+    if(this.tiletype=="HexIso")
+        this.sprite = new Phaser.Image(game,0,0,"tiles2","hexmousemap1.png");//mousemap
+    else
+        this.sprite = new Phaser.Image(game,0,0,"tiles2","halfiso/mousemapiso.png");
+    
     this.touchmap = new Phaser.BitmapData (game,"touchmap",100, 50);
 	this.touchmap.draw(this.sprite, 0, 0);
 	this.touchmap.update();
