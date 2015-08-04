@@ -23,7 +23,7 @@ HighlightHex.prototype.setup = function()
     {
         var light = this.add(new Phaser.Group(this.game,null));
         var high;
-        console.log(this.hexhandler.tiletype);
+        //console.log(this.hexhandler.tiletype);
         //
         if(this.hexhandler.tiletype=="HexIso")
             high = this.add(new Phaser.Sprite(this.game, 0,0, "tiles2", "tile_highlight0002.png"));

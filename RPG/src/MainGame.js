@@ -161,7 +161,6 @@ BasicGame.Game.prototype = {
                 this.objectoffset.y = hexagonHeight;
             }
         }
-        console.log(this.objectoffset);
         for(mapscounter=0;mapscounter<passedMap.length;mapscounter++)
         //if(true)
         {
@@ -169,7 +168,6 @@ BasicGame.Game.prototype = {
             var layer1 = passedMap[mapscounter];
             if(layer1.handleMovement)
             {
-                console.log(layer1.tilesetype);
                 if(layer1.tiletype=="Iso")
                 {
                     this.hexHandler = new IsoHandler(this, this.game, layer1.hexWidth, layer1.hexHeight, layer1.tiletype);
@@ -301,14 +299,31 @@ BasicGame.Game.prototype = {
                     {
                         if(!objects[i].destroyed)//object has been destroyed
                         {
-                            var interactiveobject = new InteractiveObject(this, objects[i]);
+                            var isMoveSpecial = false;
+                            for(var j=0;j<objects[i].triggers.length;j++)
+                            {
+                                if(objects[i].triggers[j].type=="mover" || objects[i].triggers[j].type=="combatAttributes")
+                                {
+                                    isMoveSpecial = true;
+                                    break;
+                                }
+                            }
+                            var interactiveobject;
+                            if(isMoveSpecial)
+                            {
+                                interactiveobject = new MovingCharacter(this, objects[i]);
+                            }
+                            else
+                            {
+                                interactiveobject = new InteractiveObject(this, objects[i]);
+                            }
                             this.interactiveObjects.push(interactiveobject);
-                            
+
                             interactiveobject.posx = objects[i].posx;
                             interactiveobject.posy = objects[i].posy;
                         }
                     }
-                    else
+                    else//this might not be complete true? //without any triggers the object is just a picture
                     {
                         //
                         var objectreference = this.getTile(objects[i].name,objects[i].tilesetid);

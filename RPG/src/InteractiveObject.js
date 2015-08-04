@@ -22,7 +22,7 @@ var InteractiveObject = function (maingame, jsondata)
     //this.jsondata.state = "idle";    
     this.posx;//sprite locations
     this.posy;
-    this.currentTile;//moveable location
+    this.currentTile=null;//moveable location
     this.hasstates = false;
     this.eventDispatcher = new EventDispatcher(this.game,this.maingame,this);
 }
@@ -92,10 +92,11 @@ InteractiveObject.prototype.dosetup = function()
     //
     this.currentTile = this.maingame.hexHandler.checkHex(this.x,this.y);
     //get tile? these tiles don't exists
-    //this.finalSetup();
+    this.finalSetup();
 }
 InteractiveObject.prototype.finalSetup = function()     
 {
+    
 }
 //
 //  

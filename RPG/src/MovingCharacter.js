@@ -4,6 +4,7 @@
 var MovingCharacter = function (maingame, jsondata) 
 {
     InteractiveObject.call(this, maingame, jsondata);
+    //console.log("create mover");
     //
     this.oldTile=null;
     
@@ -30,7 +31,6 @@ var MovingCharacter = function (maingame, jsondata)
         if(actions[i].type=="mover")
             this.walkspeed = actions[i].walkSpeed;
     }
-    
     this.movetoCenterEvery = true;
     //
     //this.inventory = [];
@@ -51,6 +51,12 @@ MovingCharacter.prototype.isMoving = function()
     if (typeof fn === "function") fn.apply(null, fnparams);
 }*/
 //
+MovingCharacter.prototype.finalSetup = function()     
+{
+    //this.currentTile = null;
+    this.setLocationByTile(this.currentTile);
+}
+
 MovingCharacter.prototype.setLocation = function(inx,iny) 
 {
     this.x = inx;
@@ -182,7 +188,10 @@ MovingCharacter.prototype.doUse = function()
 MovingCharacter.prototype.step = function(elapseTime) 
 {
     if(this.currentTile==null)
+    {
         this.currentTile = this.maingame.hexHandler.checkHex(this.x,this.y);
+        this.setLocationByTile(this.currentTile);
+    }
     if(this.oldTile==null)
         this.finalSetup();
     if(this.path!=null)
