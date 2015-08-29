@@ -96,7 +96,7 @@ MovingCharacter.prototype.setPath = function(path)
         return;
     if(this.objectmovingto!=null && this.objectmovingto.footprint!=null)
     {
-        this.movingtotile = this.maingame.hexHandler.findClosesInPath(this.objectmovingto.currentTile, this.objectmovingto.footprint, path);
+        this.movingtotile = this.maingame.hexHandler.findClosesInPath( this.objectmovingto.currentTile, this.objectmovingto.footprint, path);
     }
     
     this.path = path;

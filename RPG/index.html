@@ -5,43 +5,50 @@
 	<title>Simple RPG</title>
     <script src="js/phaser.js"></script>
     <!--script src="src/easystar-0.1.13-hex.js"></script-->
-    <script src="src/easystar-0.2.1.js"></script>
+    <script src="src/pathfinding/easystar-0.2.1.js"></script>
     <script src="src/Screens/Boot.js"></script>
 	<script src="src/Screens/Preloader.js"></script>
 	<script src="src/Screens/MainMenu.js"></script>
     <script src="src/Screens/Instructions.js"></script>
     <script src="src/MainGame.js"></script>
 
-    <script src="src/BasicObjectPool.js"></script>
+    <script src="src/utility/BasicObjectPool.js"></script>
     
     <script src="src/dialogui/BarkText.js"></script>
     <script src="src/dialogui/DialogPanel.js"></script>
     <script src="src/dialogui/JustTextPopup.js"></script>
     
-    <script src="src/ActionButtons.js"></script>
+    <script src="src/ui/ActionButtons.js"></script>
     
-    <script src="src/tiles.js"></script>
-    <script src="src/HexHandler.js"></script>
-    <script src="src/HighlightHex.js"></script>
+    <script src="src/level/tiles.js"></script>
+    <script src="src/handlers/HexHandler.js"></script>
+    <script src="src/level/HighlightHex.js"></script>
     
     
-    <script src="src/EventDispatcher.js"></script>
+    <script src="src/events/EventDispatcher.js"></script>
     
-    <script src="src/Globalhandler.js"></script>
-    <script src="src/InteractiveObject.js"></script>
-    <script src="src/MovingCharacter.js"></script>
-    <script src="src/PlayerCharacter.js"></script>
+    <script src="src/handlers/Globalhandler.js"></script>
+    <script src="src/gameobjects/InteractiveObject.js"></script>
+    <script src="src/gameobjects/MovingCharacter.js"></script>
+    <script src="src/gameobjects/PlayerCharacter.js"></script>
     
-    <script src="src/Map.js"></script>
+    <script src="src/level/Map.js"></script>
     
-    <script src="src/GlobalsEvents.js"></script>
-    <script src="src/DialogHandler.js"></script>
+    <script src="src/events/GlobalsEvents.js"></script>
+    <script src="src/handlers/DialogHandler.js"></script>
     
-    <script src="src/Inventory.js"></script>
+    <script src="src/ui/Inventory.js"></script>
     
-    <script src="src/Masker.js"></script>
-    <script src="src/CheapMasker.js"></script>
+    <script src="src/utility/Masker.js"></script>
+    <script src="src/utility/CheapMasker.js"></script>
     
+    <script src="src/handlers/CombatHandler.js"></script>
+
+    
+    <script src="src/states/BattleState.js"></script>
+    <script src="src/states/EmptyState.js"></script>
+    <script src="src/states/StateMachine.js"></script>
+    <script src="src/states/StateStack.js"></script>
 </head>
 <body>
 

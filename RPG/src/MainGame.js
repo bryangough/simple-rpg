@@ -52,6 +52,7 @@ BasicGame.Game = function (game) {
     this.dragPoint = new Point(0,0);
     
     this.objectoffset = new Point(0,0);
+    this.combatHandler = null;
 };
 
 //
@@ -364,6 +365,8 @@ BasicGame.Game.prototype = {
             }
         }
         //
+        this.combatHandler = new CombatHandler(this.game, this);
+        //
         this.hexHandler.hexagonArray = hexagonArray;
         this.hexHandler.waterTilesArray = waterTilesArray;
         //these should be screen width and height
@@ -502,6 +505,8 @@ BasicGame.Game.prototype = {
             if(this.game.global.showmovetile)
                 this.refreshWalkablView();
         }
+        
+        
         this.barkHandler.step(elapsedTime);
         //this.spritegrid.PosToMap(this.input.worldX-this.mapGroup.x,this.input.worldY-this.mapGroup.y);
         this.masker.updateMasks(this.input.worldX-this.mapGroup.x,this.input.worldY-this.mapGroup.y);
@@ -619,8 +624,8 @@ BasicGame.Game.prototype = {
         
         //this.highlightHex.doShowPath(this.pathfinder,this.playerCharacter.currentTile,moveIndex);
         //this.hexHandler.dolines(playertile,moveIndex,true,this.highlightHex);
-        //var fridges = this.hexHandler.doFloodFill(moveIndex,6);
-        //this.highlightHex.drawFringes(fridges);
+        var fridges = this.hexHandler.doFloodFill(moveIndex,6);
+        this.highlightHex.drawFringes(fridges);
         
         this.highlightHex.highlighttilebytile(0,moveIndex);
         //this.highlightHex.highilightneighbors(moveIndex);
