@@ -17,6 +17,7 @@
     <script src="src/dialogui/BarkText.js"></script>
     <script src="src/dialogui/DialogPanel.js"></script>
     <script src="src/dialogui/JustTextPopup.js"></script>
+    <script src="src/dialogui/TextUIHandler.js"></script>
     
     <script src="src/ui/ActionButtons.js"></script>
     
@@ -32,7 +33,7 @@
     <script src="src/gameobjects/MovingCharacter.js"></script>
     <script src="src/gameobjects/PlayerCharacter.js"></script>
     
-    <script src="src/level/Map.js"></script>
+    <script src="src/level/OtherMap.js"></script>
     
     <script src="src/events/GlobalsEvents.js"></script>
     <script src="src/handlers/DialogHandler.js"></script>
@@ -42,13 +43,18 @@
     <script src="src/utility/Masker.js"></script>
     <script src="src/utility/CheapMasker.js"></script>
     
-    <script src="src/handlers/CombatHandler.js"></script>
 
-    
-    <script src="src/states/BattleState.js"></script>
     <script src="src/states/EmptyState.js"></script>
+    <script src="src/states/BattleState.js"></script>
+    
     <script src="src/states/StateMachine.js"></script>
     <script src="src/states/StateStack.js"></script>
+    <script src="src/states/BattleTick.js"></script>
+    
+    <script src="src/map/Map.js"></script>
+    <script src="src/handlers/InputHandler.js"></script>
+    
+    <script src="src/utility/Utitlities.js"></script>
 </head>
 <body>
 
@@ -71,7 +77,7 @@ window.onload = function() {
     game.global = {
         mute: false,
         pause: false,
-        movetotouch:true,
+        //movetotouch:true,
         showmovetile:false
     };
     

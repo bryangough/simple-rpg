@@ -133,10 +133,10 @@ SimpleTile.prototype.changeWalkable = function(walkableto)
     this.walkable = walkableto;
     this.maingame.updatewalkable = true;
 }
-SimpleTile.prototype.enterTile = function()
+SimpleTile.prototype.enterTile = function(enterer)
 {
     if(this.eventDispatcher)
-        this.eventDispatcher.doAction("OnEnter");
+        this.eventDispatcher.doAction("OnEnter",enterer);
 };
 
 //none moveable ground tiles will use new Image(game, x, y, key, frame)
@@ -204,10 +204,10 @@ var WalkableTile = function(game,tileName,spritesheet, posx,posy,x,y, maingame)
 WalkableTile.prototype = Object.create(BaseTile.prototype);
 WalkableTile.constructor = WalkableTile;
 //move this test to moving character
-WalkableTile.prototype.enterTile = function()
+WalkableTile.prototype.enterTile = function(enterer)
 {
     if(this.eventDispatcher)
-        this.eventDispatcher.doAction("OnEnter");
+        this.eventDispatcher.doAction("OnEnter", enterer);
 };
 
 //

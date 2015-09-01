@@ -1,4 +1,4 @@
-var Map = function (maingame) 
+var OtherMap = function (maingame) 
 {
     this.maingame = maingame;
     this.game = maingame.game;

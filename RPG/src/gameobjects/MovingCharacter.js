@@ -1,9 +1,9 @@
 //characters that will be moving around the map using the patherfinder
 //
 //
-var MovingCharacter = function (maingame, jsondata) 
+var MovingCharacter = function (maingame, jsondata, map)
 {
-    InteractiveObject.call(this, maingame, jsondata);
+    InteractiveObject.call(this, maingame, jsondata, map);
     //console.log("create mover");
     //
     this.oldTile=null;
@@ -64,8 +64,8 @@ MovingCharacter.prototype.setLocation = function(inx,iny)
 }
 MovingCharacter.prototype.setLocationByTile = function(tile) 
 {
-    this.x = tile.x+this.maingame.hexHandler.halfHex;
-    this.y = tile.y+this.maingame.hexHandler.halfHexHeight;
+    this.x = tile.x+this.map.hexHandler.halfHex;
+    this.y = tile.y+this.map.hexHandler.halfHexHeight;
     this.oldTile = tile;
     this.currentTile = tile;
     //
@@ -82,9 +82,9 @@ MovingCharacter.prototype.gotoAnotherMap = function(map, tile)
 //
 MovingCharacter.prototype.setDirection = function() 
 {
-    //console.log(this.nextTile.x,this.maingame.hexHandler.halfHex,this.nextTile.x+this.maingame.hexHandler.halfHex, this.nextTile.x-this.maingame.hexHandler.halfHex);
-    this.dir.x =  this.nextTile.x+this.maingame.hexHandler.halfHex-this.x;
-    this.dir.y =  this.nextTile.y+this.maingame.hexHandler.halfHexHeight-this.y;
+    //console.log(this.nextTile.x,this.map.hexHandler.halfHex,this.nextTile.x+this.map.hexHandler.halfHex, this.nextTile.x-this.map.hexHandler.halfHex);
+    this.dir.x =  this.nextTile.x+this.map.hexHandler.halfHex-this.x;
+    this.dir.y =  this.nextTile.y+this.map.hexHandler.halfHexHeight-this.y;
     this.dir.normalize();
     //console.log(this.nextTile);
 }
@@ -96,12 +96,12 @@ MovingCharacter.prototype.setPath = function(path)
         return;
     if(this.objectmovingto!=null && this.objectmovingto.footprint!=null)
     {
-        this.movingtotile = this.maingame.hexHandler.findClosesInPath( this.objectmovingto.currentTile, this.objectmovingto.footprint, path);
+        this.movingtotile = this.map.hexHandler.findClosesInPath( this.objectmovingto.currentTile, this.objectmovingto.footprint, path);
     }
     
     this.path = path;
     this.pathlocation = 0;
-    this.nextTile = path[this.pathlocation];//this.maingame.hexHandler.getTileByCords( path[this.pathlocation].x, path[this.pathlocation].y);
+    this.nextTile = path[this.pathlocation];//this.map.hexHandler.getTileByCords( path[this.pathlocation].x, path[this.pathlocation].y);
     this.setDirection();
     this.animations.play("walk");
 }
@@ -140,7 +140,7 @@ MovingCharacter.prototype.moveto = function(moveIndex){
 }
 MovingCharacter.prototype.movercallback = function(path){
     path = path || [];
-    path = this.maingame.hexHandler.pathCoordsToTiles(path);
+    path = this.map.hexHandler.pathCoordsToTiles(path);
     this.setPath(path);
 }
 MovingCharacter.prototype.atTargetTile = function()
@@ -166,9 +166,9 @@ MovingCharacter.prototype.clearTargetTile = function()
 }
 MovingCharacter.prototype.findtile = function()
 {
-    var onmap = this.maingame.spritegrid.PosToMap(this.x,this.y);
+    var onmap = this.map.spritegrid.PosToMap(this.x,this.y);
     //console.log("--",onmap.x,onmap.y);
-   // onmap = this.maingame.spritegrid.GetMapCoords(onmap.x,onmap.y);
+   // onmap = this.map.spritegrid.GetMapCoords(onmap.x,onmap.y);
     this.posx = onmap.x;
     this.posy = onmap.y;
     //console.log(this.posx,this.posy);
@@ -189,7 +189,7 @@ MovingCharacter.prototype.step = function(elapseTime)
 {
     if(this.currentTile==null)
     {
-        this.currentTile = this.maingame.hexHandler.checkHex(this.x,this.y);
+        this.currentTile = this.map.hexHandler.checkHex(this.x,this.y);
         this.setLocationByTile(this.currentTile);
     }
     if(this.oldTile==null)
@@ -199,7 +199,7 @@ MovingCharacter.prototype.step = function(elapseTime)
         if(this.path.length>0)
         {
             //need to test if next spot is now not walkable
-            this.currentTile = this.maingame.hexHandler.checkHex(this.x,this.y);
+            this.currentTile = this.map.hexHandler.checkHex(this.x,this.y);
             if(this.oldTile != this.currentTile)
             {
                 //this.oldTile.changeWalkable(true);
@@ -218,8 +218,8 @@ MovingCharacter.prototype.step = function(elapseTime)
                 if(this.pathlocation>=this.path.length)// at last tile, now walk to the center
                 {
                     this.pathlocation=this.path.length;
-                    var testx = this.currentTile.x+this.maingame.hexHandler.halfHex;
-                    var testy = this.currentTile.y+this.maingame.hexHandler.halfHexHeight;
+                    var testx = this.currentTile.x+this.map.hexHandler.halfHex;
+                    var testy = this.currentTile.y+this.map.hexHandler.halfHexHeight;
                     
                     var range = 3;
                     if(testx-range<this.x && testx+range>this.x && testy-range<this.y && testy+range>this.y)
@@ -229,7 +229,7 @@ MovingCharacter.prototype.step = function(elapseTime)
                         this.path = null;//for now
                         this.dir.x = 0;
                         this.dir.y = 0;
-                        this.currentTile.enterTile();
+                        this.currentTile.enterTile(this);
                         this.animations.play("idle");
                         //
                         if(this.objectmovingto!=null && this.currentTile!=null){

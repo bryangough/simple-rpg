@@ -12,10 +12,11 @@ destroyed - if destroyed don't recreate on enter
 
 
 */
-var InteractiveObject = function (maingame, jsondata) 
+var InteractiveObject = function (maingame, jsondata, map) 
 {
     this.maingame = maingame;
     this.game = maingame.game;
+    this.map = map;
     
     this.jsondata = jsondata;
 
@@ -52,7 +53,7 @@ InteractiveObject.prototype.dosetup = function()
             this.footprint = [];
             for(var j=0;j<actions[i].tiles.length;j++)
             {
-                this.footprint.push(this.maingame.hexHandler.getTileByCords(actions[i].tiles[j].posx,actions[i].tiles[j].posy));
+                this.footprint.push(this.map.hexHandler.getTileByCords(actions[i].tiles[j].posx,actions[i].tiles[j].posy));
             }
         }
         if(actions[i].type=="animations")
@@ -88,9 +89,9 @@ InteractiveObject.prototype.dosetup = function()
     //
     //this will move
     if(this.eventDispatcher)
-        this.eventDispatcher.doAction("OnActivate");
+        this.eventDispatcher.doAction("OnActivate", null);
     //
-    this.currentTile = this.maingame.hexHandler.checkHex(this.x,this.y);
+    this.currentTile = this.map.hexHandler.checkHex(this.x,this.y);
     //get tile? these tiles don't exists
     this.finalSetup();
 }
@@ -156,10 +157,10 @@ InteractiveObject.prototype.callFunction = function(fnstring,fnparams)
 InteractiveObject.prototype.moveto = function(tox,toy) 
 {
     if(tox!=null)
-        var tile = this.maingame.hexHandler.getTileByCords(tox,toy);
+        var tile = this.map.hexHandler.getTileByCords(tox,toy);
     if(tile)
     {
-        var currenttile = this.maingame.hexHandler.checkHex(this.x,this.y);
+        var currenttile = this.map.hexHandler.checkHex(this.x,this.y);
         currenttile.changeWalkable(true);
         this.x = tile.x;
         this.y = tile.y;
@@ -175,13 +176,13 @@ InteractiveObject.prototype.areWeNeighbours = function(fromtile)
         for(var i=0;i<this.footprint.length;i++){
             if(fromtile==this.footprint[i])
                 return true;
-            if(this.maingame.hexHandler.areTilesNeighbors(this.footprint[i],fromtile))
+            if(this.map.hexHandler.areTilesNeighbors(this.footprint[i],fromtile))
                 return true;
         }
     }
     if(fromtile==this.currentTile)
         return true;
-    if(this.maingame.hexHandler.areTilesNeighbors(this.currentTile,fromtile))
+    if(this.map.hexHandler.areTilesNeighbors(this.currentTile,fromtile))
         return true;
     return false;
 }
@@ -209,14 +210,16 @@ InteractiveObject.prototype.handleOver = function()
     this.tint = 0x00ffff;
     if(this.jsondata.displayName!="")
     {
-        this.maingame.showRollover(this);
+        this.maingame.textUIHandler.showRollover(this);
     }
 }
 InteractiveObject.prototype.handleOut = function() 
 {
     this.tint = 0xffffff;
-    if(this.maingame.rollovertext)
-        this.maingame.rollovertext.visible = false;
+    if(this.maingame.textUIHandler)
+    {
+        this.maingame.textUIHandler.hideRollover();
+    }
 }
 //
 InteractiveObject.prototype.setWalkable = function(walkableto) 
@@ -250,19 +253,19 @@ InteractiveObject.prototype.handleClick = function()
     if(GlobalEvents.currentacion == GlobalEvents.WALK)
         return;
     else if(GlobalEvents.currentacion == GlobalEvents.TOUCH)
-        this.eventDispatcher.doAction("OnTouch");
+        this.eventDispatcher.doAction("OnTouch", this.map.playerCharacter);
     else if(GlobalEvents.currentacion == GlobalEvents.LOOK)
-        this.eventDispatcher.doAction("OnLook");
+        this.eventDispatcher.doAction("OnLook", this.map.playerCharacter);
     else if(GlobalEvents.currentacion == GlobalEvents.TALK)
-        this.eventDispatcher.doAction("OnTalk");
+        this.eventDispatcher.doAction("OnTalk", this.map.playerCharacter);
     else if(GlobalEvents.currentacion == GlobalEvents.ITEM)
-        this.eventDispatcher.doAction("OnUseItem");
+        this.eventDispatcher.doAction("OnUseItem", this.map.playerCharacter);
     
     this.handleOut();
 }
 InteractiveObject.prototype.setupArt = function(json) 
 {
-    var objectreference = this.maingame.getTile(this.jsondata.name,this.jsondata.tilesetid);
+    var objectreference = this.map.getTile(this.jsondata.name,this.jsondata.tilesetid);
     var spotx = this.jsondata.x || 0;
     var spoty = this.jsondata.y || 0;
 
@@ -270,13 +273,13 @@ InteractiveObject.prototype.setupArt = function(json)
     this.posy = this.jsondata.posy || 0;
    // console.log(this.jsondata,this.jsondata.posx);
     
-    var tile = this.maingame.hexHandler.getTileByCords(spotx,spoty);
+    var tile = this.map.hexHandler.getTileByCords(spotx,spoty);
     
     Phaser.Sprite.call(this, this.game, 
-                       spotx + this.maingame.objectoffset.x,
-                        spoty*-1 + this.maingame.objectoffset.y,
+                       spotx + this.map.objectoffset.x,
+                        spoty*-1 + this.map.objectoffset.y,
                        objectreference.spritesheet, objectreference.tile+".png");
-    this.maingame.objectGroup.add(this);
+    this.map.objectGroup.add(this);
     this.anchor.x = 0.5;
     this.anchor.y = 1.0;
 }

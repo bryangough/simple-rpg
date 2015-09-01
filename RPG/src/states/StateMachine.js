@@ -14,11 +14,15 @@ StateMachine.prototype.render = function()
 }
 StateMachine.prototype.change = function(stateName, params) 
 {
+    var newState = this.mStates[stateName];
+    if(newState==null)
+        return;
+    
     if(this.mCurrentState!=undefined)
         this.mCurrentState.onExit();
-    this.mCurrentState = this.mStates[stateName];
-    if(this.mCurrentState!=undefined)
-        this.mCurrentState.onEnter(params);
+    
+    this.mCurrentState = newState;
+    this.mCurrentState.onEnter(params);
 }
 StateMachine.prototype.add = function(name, state) 
 {

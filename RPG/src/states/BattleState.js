@@ -8,8 +8,8 @@ BattleState = function (game) {
     this.mEntities = [];//entitys
     this.mBattleStates = new StateMachine();
     
-    this.mBattleStates.Add("tick", new BattleTick(this.mBattleStates, this.mActions));
-    this.mBattleStates.Add("execute", new BattleExecute(this.mBattleStates, this.mActions));
+    this.mBattleStates.add("tick", new BattleTick(this.mBattleStates, this.mActions));
+    //this.mBattleStates.add("execute", new BattleExecute(this.mBattleStates, this.mActions));
 }
 
 BattleState.prototype = Object.create(EmptyState.prototype);

@@ -39,6 +39,10 @@ var InventoryGraphics = function(game,maingame,globalhandler)
             }
         }
     }
+    
+    this.activatedSignal = new Phaser.Signal();
+    this.closeButton = this.game.add.button(bg.width, 0, 'ui', this.closeThis, this, "Close Button0002.png", "Close Button0001.png", "Close Button0001.png", "Close Button0002.png");
+    this.addChild(this.closeButton);
 }
 InventoryGraphics.prototype = Object.create(Phaser.Group.prototype);
 InventoryGraphics.constructor = InventoryGraphics;
@@ -48,7 +52,10 @@ InventoryGraphics.prototype.makeReturn = function(value) {
         this.itemChanged(value);
     };
 }
-
+InventoryGraphics.prototype.closeThis = function(){
+    this.visible = false;
+    //this.activatedSignal.dispatchEvent();
+}
 InventoryGraphics.prototype.itemChanged = function(changeditem) 
 {
     if(changeditem==null)

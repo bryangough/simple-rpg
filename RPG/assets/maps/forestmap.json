@@ -686,7 +686,7 @@
                             },
                             {
                                 "type": "actiontext",
-                                "walkto": false,
+                                "walkto": true,
                                 "trigger": "OnTouch",
                                 "actions": [
                                     {

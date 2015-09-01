@@ -89,7 +89,7 @@ EventDispatcher.prototype.init = function(triggers)
             } 
             if(trigger.lookatactive)
             {
-                this.getEventType("OnLook").push({func:this.maingame.showJustText, para:[trigger.lookat], removeself:false, callee:this.maingame, con:con});
+                this.getEventType("OnLook").push({func:this.maingame.textUIHandler.showJustText, para:[trigger.lookat], removeself:false, callee:this.maingame, con:con});
             }
         }*/
     }
@@ -111,20 +111,20 @@ EventDispatcher.prototype.setActions = function(eventAction,action, once, con, w
 {
     if(action.type=="ChangeMap")
         {
-            eventAction.push({func:this.maingame.userExit, para:[action], removeself:once, callee:this.maingame, con:con, walkto:walkto});
+            eventAction.push({func:this.maingame.map.userExit, para:[action], removeself:once, callee:this.maingame.map, con:con, walkto:walkto});
         }
         //
         else if(action.type=="CONVERSATION")
         {
-            eventAction.push({func:this.maingame.showDialog, para:[action.id], removeself:once, callee:this.maingame, con:con, walkto:walkto});
+            eventAction.push({func:this.maingame.textUIHandler.showDialog, para:[action.id], removeself:once, callee:this.maingame.textUIHandler, con:con, walkto:walkto});
         }
         else if(action.type=="SIMPLE")
         {
-            eventAction.push({func:this.maingame.showJustText, para:[action.text], removeself:once, callee:this.maingame, con:con, walkto:walkto});
+            eventAction.push({func:this.maingame.textUIHandler.showJustText, para:[action.text], removeself:once, callee:this.maingame.textUIHandler, con:con, walkto:walkto});
         }
         else if(action.type=="BARK")
         {
-            eventAction.push({func:this.maingame.showBark, para:[this.object, action.text], removeself:once, callee:this.maingame, con:con, walkto:walkto});
+            eventAction.push({func:this.maingame.textUIHandler.showBark, para:[this.object, action.text], removeself:once, callee:this.maingame.textUIHandler, con:con, walkto:walkto});
         }
         //
         else if(action.type=="THIS")//call function on this
@@ -221,13 +221,14 @@ EventDispatcher.prototype.testConditions = function(conditions)
     return returned;
 }
 //
-EventDispatcher.prototype.doAction = function(activation) 
+//this should pass in who
+EventDispatcher.prototype.doAction = function(activation, activator) 
 {
     var actionEvent = this.getEventType(activation); 
-    this.completeAction(actionEvent,false);
+    this.completeAction(actionEvent, false, activator);
 }
 //
-EventDispatcher.prototype.completeAction = function(actionEvent, atPoint)
+EventDispatcher.prototype.completeAction = function(actionEvent, atPoint, activator)
 {
     var lastcon;
     var lastconreturn = false;
@@ -252,10 +253,10 @@ EventDispatcher.prototype.completeAction = function(actionEvent, atPoint)
                         continue;
                 }
                 //push activated events into array and fire them later
-                if(actionEvent[i].walkto)
+                if(actionEvent[i].walkto && activator!=null)
                 {
                     //this should be called only once
-                    var neighbours = this.maingame.hexHandler.areTilesNeighbors(this.object.currentTile, this.maingame.playerCharacter.currentTile);
+                    var neighbours = this.maingame.map.hexHandler.areTilesNeighbors( this.object.currentTile, activator.currentTile);
                     if(!neighbours || !atPoint)
                     {
                         walktoactions.push(actionEvent[i]);
@@ -268,7 +269,10 @@ EventDispatcher.prototype.completeAction = function(actionEvent, atPoint)
         //
         if(walktoactions.length>0)
         {
-            this.maingame.moveToAction(this.object, this.object.currentTile, walktoactions);
+            //if in combat can't do?
+            //if not walk to
+            //also need to make this generic
+            activator.moveToObject(this.object, this.object.currentTile, walktoactions);
         }
         //all actions now happens after all conditions are tested
         this.dogivenactions(actionstoactivate);
@@ -344,7 +348,7 @@ register list of active objects for each event: touch, talk, look, (invectory it
 turn on inputEnabled for current
 turn off inputEnabled for last (if not current also)
 
-- walk shuts all off
+//- walk shuts all off
 
 
 
@@ -374,7 +378,7 @@ turn off inputEnabled for last (if not current also)
 
 
 //***** EventConv ********
-var EventConv = function (game, maingame, destroyfunc, json) 
+/*var EventConv = function (game, maingame, destroyfunc, json) 
 {
     //this.convid = json.convid;
     //this.once = json.once;
@@ -386,7 +390,7 @@ EventConv.prototype.removeSelf = function()
 }
 EventConv.prototype.activateEvent = function() 
 {
-    this.maingame.showDialog(this.convid);
+    this.maingame.textUIHandler.showDialog(this.convid);
     if(this.once){
         //call destroy func
     }
@@ -394,7 +398,7 @@ EventConv.prototype.activateEvent = function()
 //
 var EventnText = function (json) 
 {
-}
+}*/
 /* 
 Actors/enemies animations
 - move x6

@@ -442,7 +442,7 @@ DiamondHexHandler.prototype.checkHex=function(checkx, checky){
     i = Math.floor(i);
     j = Math.floor(j);
 
-    if(i<0 || j<0 || j>=this.maingame.movementgrid.gridSizeY || i>=this.maingame.movementgrid.gridSizeX)
+    if(i<0 || j<0 || j>=this.maingame.map.movementgrid.gridSizeY || i>=this.maingame.map.movementgrid.gridSizeX)
     {
         return;
     }
@@ -602,7 +602,7 @@ IsoHandler.prototype.checkHex=function(checkx, checky){
     var yQuadrant = Math.floor( checky % (this.hexagonHeight - 1));
 
     
-    if(i<0 || j<0 || j>=this.maingame.movementgrid.gridSizeY || i>=this.maingame.movementgrid.gridSizeX)
+    if(i<0 || j<0 || j>=this.maingame.map.movementgrid.gridSizeY || i>=this.maingame.map.movementgrid.gridSizeX)
     {
         return;
     }
@@ -642,7 +642,7 @@ IsoHandler.prototype.checkHex=function(checkx, checky){
         j++;
     }
     //  
-    if(i<0 || j<0 || j>=this.maingame.movementgrid.gridSizeY || i>=this.maingame.movementgrid.gridSizeX)
+    if(i<0 || j<0 || j>=this.maingame.map.movementgrid.gridSizeY || i>=this.maingame.map.movementgrid.gridSizeX)
     {
         return;
     }

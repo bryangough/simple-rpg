@@ -1,10 +1,9 @@
 // extra json - map
 
-var PlayerCharacter = function (maingame, jsondata) 
+var PlayerCharacter = function (maingame, jsondata, map) 
 {
-    MovingCharacter.call(this, maingame, jsondata);
+    MovingCharacter.call(this, maingame, jsondata, map);
     this.IsPlayer = true;
-    //this.inventory = [];    
     this.dosetup();
 };
 PlayerCharacter.prototype = Object.create(MovingCharacter.prototype);
