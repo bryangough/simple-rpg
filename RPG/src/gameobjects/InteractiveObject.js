@@ -248,7 +248,7 @@ InteractiveObject.prototype.setupReactToAction = function()
     this.events.onInputOver.add(this.handleOver, this);//for rollover
     this.events.onInputOut.add(this.handleOut, this);
 }
-InteractiveObject.prototype.handleClick = function() 
+InteractiveObject.prototype.handleClick = function(touchedSprite, pointer) 
 {
     if(GlobalEvents.currentacion == GlobalEvents.WALK)
         return;
@@ -260,6 +260,8 @@ InteractiveObject.prototype.handleClick = function()
         this.eventDispatcher.doAction("OnTalk", this.map.playerCharacter);
     else if(GlobalEvents.currentacion == GlobalEvents.ITEM)
         this.eventDispatcher.doAction("OnUseItem", this.map.playerCharacter);
+    //else if(GlobalEvents.currentacion == GlobalEvents.COMBATSELECT)
+        //this.eventDispatcher.doAction("OnUseItem", this.map.playerCharacter);
     
     this.handleOut();
 }

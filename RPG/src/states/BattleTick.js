@@ -12,10 +12,14 @@ BattleTick.prototype.update = function(elapsedTime)
         var a = this.mActions[i];
         a.Update(elapsedTime);
     }
-
-    if(this.mActions.Top().IsReady())
+    if(this.mActions.length<=0)
     {
-        var top = this.mActions.Pop();
+        //console.log("end combat");
+        return;
+    }
+    if(this.mActions[this.mActions.length-1].isReady)
+    {
+        var top = this.mActions.pop();
         this.mStateMachine.change("execute", top);
     }
 }

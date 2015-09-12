@@ -32,6 +32,7 @@ var MovingCharacter = function (maingame, jsondata, map)
             this.walkspeed = actions[i].walkSpeed;
     }
     this.movetoCenterEvery = true;
+    this.douse = true;
     //
     //this.inventory = [];
     
@@ -107,8 +108,6 @@ MovingCharacter.prototype.setPath = function(path)
 }
 MovingCharacter.prototype.moveToObject = function(object,tile,actions)
 {
-    this.objectmovingto = object;
-    //
     this.actionsaftermove = actions;
     this.objectmovingto = object;
     //
@@ -116,6 +115,14 @@ MovingCharacter.prototype.moveToObject = function(object,tile,actions)
     //find closes hex
     this.actionsaftermove = actions;
     this.objectmovingto = object;
+    this.douse = true;
+}
+MovingCharacter.prototype.moveToSpot = function(tile,actions)
+{
+    this.actionsaftermove = actions;
+    this.moveto(tile);
+    this.actionsaftermove = actions;
+    this.douse = false;
 }
 MovingCharacter.prototype.moveto = function(moveIndex){
     if(moveIndex!=null)
@@ -152,10 +159,16 @@ MovingCharacter.prototype.atTargetTile = function()
         {
             //face object
         }
-        
-        this.changeState("use");
-        
-        
+        if(this.douse)
+        {
+            this.changeState("use");
+        }   
+        else
+        {
+            this.eventDispatcher.completeAction(this.actionsaftermove, true);
+            this.clearTargetTile();
+            this.changeState("idle");
+        }
     }   
 }
 MovingCharacter.prototype.clearTargetTile = function()
@@ -238,12 +251,17 @@ MovingCharacter.prototype.step = function(elapseTime)
                                 this.atTargetTile();
                             }
                         }
+                        else
+                        {
+                            this.atTargetTile();
+                        }
                     }
                     this.setDirection();
                 }
                 else//find next tile
                 {
                     this.nextTile = this.path[this.pathlocation]; 
+                    console.log(this.nextTile);
                     this.setDirection();
                 }
                 this.updateLocation(this.currentTile);
@@ -265,12 +283,11 @@ MovingCharacter.prototype.step = function(elapseTime)
         this.prevx = this.x;
         this.prevy = this.y;
     }
-    //
+    //this should be changed?
     if(this.dir.x<0)
         this.scale.x = -1;
     else if(this.dir.x>0)
         this.scale.x = 1;
-    
 }
 
     //this.animations.play("idle");

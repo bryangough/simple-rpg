@@ -42,7 +42,6 @@ ActionButtons.prototype.doInv = function(touchedSprite, pointer){
     if(this.gameref.inventory.visible==true)
     {
         this.gameref.inventory.visible = false;
-        
         //this.disableButton(this.inv);
     }
     else

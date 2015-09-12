@@ -1,31 +1,16 @@
-var InputHandler = function (game, gameref)
+var BatttleInputHandler = function (game, gameref)
 {
-    
-    this.game = game;
-    this.gameref = gameref;
-    
-    this.dragScreen = false;
-    this.didDrag = false;
-    this.dragPoint = new Point(0,0);
+    InputHandler.call(this, game, gameref);
     
 };
+BatttleInputHandler.prototype = Object.create(InputHandler.prototype);
+BatttleInputHandler.constructor = BatttleInputHandler;
+
+
 //
-InputHandler.prototype.turnOn = function(pointer, x, y)
+BatttleInputHandler.prototype.onMove = function(pointer, x, y)
 {
-    this.movecallbackindex = this.gameref.input.addMoveCallback(this.onMove, this); 
-    this.gameref.input.onDown.add(this.doDragScreen, this);
-    this.gameref.input.onUp.add(this.clickedHex, this);
-}
-InputHandler.prototype.turnOff = function(pointer, x, y)
-{
-    this.gameref.input.deleteMoveCallback(this.movecallbackindex); 
-    this.gameref.input.onDown.remove(this.doDragScreen, this);
-    this.gameref.input.onUp.remove(this.clickedHex, this);
-}
-//
-InputHandler.prototype.onMove = function(pointer, x, y)
-{
-    //console.log("move ",pointer.active);
+    //console.log("move2 ",pointer.active);
     //if(!pointer.active)
     //    return;
     
@@ -75,10 +60,10 @@ InputHandler.prototype.onMove = function(pointer, x, y)
     //this.hexHandler.dolines(playertile,moveIndex,true,this.highlightHex);
     //var fridges = this.gameref.map.hexHandler.doFloodFill(moveIndex,6);
     //this.gameref.map.highlightHex.drawFringes(fridges);
-    this.gameref.map.highlightHex.highlighttilebytile(0,moveIndex);
+    //this.gameref.map.highlightHex.highlighttilebytile(0,moveIndex);
     //this.highlightHex.highilightneighbors(moveIndex);
 },
-InputHandler.prototype.doDragScreen = function(pointer)
+BatttleInputHandler.prototype.doDragScreen = function(pointer)
 {
     //console.log("drag",pointer.active);
     if(!pointer.active)
@@ -88,7 +73,7 @@ InputHandler.prototype.doDragScreen = function(pointer)
     this.dragPoint.x = pointer.x;
     this.dragPoint.y = pointer.y;
 }
-InputHandler.prototype.clickedHex = function(pointer,b)
+BatttleInputHandler.prototype.clickedHex = function(pointer,b)
 {
     //console.log("hex",pointer.active);
     
@@ -118,7 +103,7 @@ InputHandler.prototype.clickedHex = function(pointer,b)
     {
         if(this.game.currentacion==this.game.WALK)
         {
-            this.gameref.map.playerCharacter.moveto(moveIndex);
+            //this.gameref.map.playerCharacter.moveto(moveIndex);
         }
     }
 } 

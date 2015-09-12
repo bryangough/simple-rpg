@@ -1,3 +1,8 @@
+var Condition = function ()
+{
+    this.logic = "Any";
+    this.list = [];
+}
 //
 var EventDispatcher = function (game, maingame, object)
 {
@@ -7,20 +12,11 @@ var EventDispatcher = function (game, maingame, object)
     
     if(object!=null)
         GlobalEvents.allEventDispatchers.push(this);
+    
+    this.actionArray = [];
 }
 EventDispatcher.prototype.receiveData = function(triggers) 
 {
-    //
-    //this.onTouchSignal = new Phaser.Signal();
-    this.onTouchAction;
-    this.onLookAction;
-    this.onTalkAction;
-    this.onItemAction;
-    //this.onEnterSignal = new Phaser.Signal();
-    this.onEnterAction;//done
-    this.onStartAction;//not done
-    this.onActivateAction//not done
-    //
     this.init(triggers);
 };
 EventDispatcher.prototype.testAction = function() 
@@ -34,16 +30,14 @@ EventDispatcher.prototype.shouldBeActive = function()
 {
     if(GlobalEvents.currentacion == GlobalEvents.WALK)
         return false;
-    else if(GlobalEvents.currentacion == GlobalEvents.TOUCH && this.onTouchAction)
+    else if(GlobalEvents.currentacion == GlobalEvents.TOUCH && this.actionArray["OnTouch"])
         return true;
-    else if(GlobalEvents.currentacion == GlobalEvents.LOOK && this.onLookAction)
+    else if(GlobalEvents.currentacion == GlobalEvents.LOOK && this.actionArray["OnLook"])
         return true;
-    else if(GlobalEvents.currentacion == GlobalEvents.TALK && this.onTalkAction)
+    else if(GlobalEvents.currentacion == GlobalEvents.TALK && this.actionArray["OnTalk"])
         return true;
-    else if(GlobalEvents.currentacion == GlobalEvents.ITEM && this.onItemAction)
-    {
+    else if(GlobalEvents.currentacion == GlobalEvents.ITEM && this.actionArray["OnUseItem"])
         return true;
-    }
     return false;
 }//if all action is null. clear out array?
 //this.onEnterSignal.dispatch([this])
@@ -63,7 +57,7 @@ EventDispatcher.prototype.init = function(triggers)
         con = null;
         if(trigger.conditions)
         {
-            con = {logic:"Any",list:[]};
+            con = new Condition();
             if(activation=="OnUseItem")
             {
                 con.list.push({special:true, func:GlobalEvents.checkSelectItem, para:[trigger.itemid], callee:this});
@@ -150,7 +144,7 @@ EventDispatcher.prototype.setActions = function(eventAction,action, once, con, w
 }
 //
 
-con = {logic:"Any",list:[]};
+
 
 
 EventDispatcher.prototype.applyConditions = function(con, conditions) 
@@ -196,6 +190,8 @@ EventDispatcher.prototype.applyConditions = function(con, conditions)
 //
 EventDispatcher.prototype.testConditions = function(conditions) 
 {
+    
+    
     if(!conditions.list)
         return true;
     if(conditions.list.length<=0)
@@ -205,7 +201,9 @@ EventDispatcher.prototype.testConditions = function(conditions)
     var returned = false;
     var eachreturn;
     for(var j=0;j<conditionlist.length;j++){
+        
         eachreturn = conditionlist[j].func.apply(conditionlist[j].callee, conditionlist[j].para);
+                
         if(conditionlist[j].special && eachreturn==false)
             return false;
         if(logic=="All"){
@@ -224,7 +222,9 @@ EventDispatcher.prototype.testConditions = function(conditions)
 //this should pass in who
 EventDispatcher.prototype.doAction = function(activation, activator) 
 {
+
     var actionEvent = this.getEventType(activation); 
+        
     this.completeAction(actionEvent, false, activator);
 }
 //
@@ -234,6 +234,7 @@ EventDispatcher.prototype.completeAction = function(actionEvent, atPoint, activa
     var lastconreturn = false;
     var actionstoactivate = [];
     var walktoactions = [];
+    
     if(actionEvent.length>0)
     {
         //test all conditions
@@ -248,6 +249,8 @@ EventDispatcher.prototype.completeAction = function(actionEvent, atPoint, activa
                     {
                         lastconreturn = this.testConditions(actionEvent[i].con);
                         lastcon = actionEvent[i].con;
+                        
+                        
                     }
                     if(!lastconreturn)
                         continue;
@@ -293,51 +296,13 @@ EventDispatcher.prototype.dogivenactions = function(actionstoactivate)
 //
 EventDispatcher.prototype.getEventType = function(activation) 
 {
-    if(activation=="OnEnter")
-    {
-        this.onEnterAction = this.onEnterAction || [];
-        return this.onEnterAction;
-    }
-    else if(activation=="OnStart")
-    {
-        this.onStartAction = this.onStartAction || [];
-        return this.onStartAction;
-    }
-    else if(activation=="OnTouch")
-    {
-        this.onTouchAction = this.onTouchAction || [];
-        return this.onTouchAction;
-    }
-    else if(activation=="OnTalk")
-    {
-        this.onTalkAction = this.onTalkAction || [];
-        return this.onTalkAction;
-    }
-    else if(activation=="OnLook")
-    {
-        this.onLookAction = this.onLookAction || [];
-        return this.onLookAction;
-    }
-    else if(activation=="OnActivate")
-    {
-        this.onActivateAction = this.onActivateAction || [];
-        return this.onActivateAction;
-    }
-    else if(activation=="OnUseItem")
-    {
-        this.onItemAction = this.onItemAction || [];
-        return this.onItemAction;
-    }
+    //console.log(this.actionArray);
+    this.actionArray[activation] = this.actionArray[activation] || [];
+    return this.actionArray[activation];
 };
 EventDispatcher.prototype.destroy = function() 
 {
-    this.onTouchAction = null;
-    this.onLookAction = null;
-    this.onTalkAction = null;
-    this.onItemAction = null;
-    this.onEnterAction = null;
-    this.onStartAction = null;
-    this.onActivateAction = null;
+    this.actionArray = [];
 }
 
 /*

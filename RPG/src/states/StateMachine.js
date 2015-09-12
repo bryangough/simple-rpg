@@ -1,6 +1,7 @@
 StateMachine = function (game) {
     this.mStates = [];//associative
     this.mCurrentState = null;
+    this.currentState = null;
 }
 StateMachine.prototype.update = function(elapsedTime) 
 {
@@ -23,6 +24,7 @@ StateMachine.prototype.change = function(stateName, params)
     
     this.mCurrentState = newState;
     this.mCurrentState.onEnter(params);
+    this.currentState = stateName;
 }
 StateMachine.prototype.add = function(name, state) 
 {

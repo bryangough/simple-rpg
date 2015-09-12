@@ -27091,9 +27091,7 @@ Phaser.Input.prototype = {
     * @return {number} The index of the callback entry. Use this index when calling Input.deleteMoveCallback.
     */
     addMoveCallback: function (callback, context) {
-
         return this.moveCallbacks.push({ callback: callback, context: context }) - 1;
-
     },
 
     /**

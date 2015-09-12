@@ -55,13 +55,15 @@
                 "shieldhp": 30,
                 "selfhp": 2,
                 "attackable": false,
-                "hostile": false
+                "hostile": false,
+                "meleeDmg": 1
             },
             {
                 "type": "weaponsInventory",
                 "weapons": [
                     {
                         "weaponname": "gun",
+                        "AIpower": 1,
                         "dmg": 2,
                         "range": 40,
                         "clipsize": 6,
@@ -257,7 +259,7 @@
                     1,
                     0,
                     1,
-                    0,
+                    1,
                     1,
                     1,
                     1,
@@ -392,7 +394,7 @@
                                 "animations": [
                                     {
                                         "id": "idle",
-                                        "name": "movingPerson1_idle",
+                                        "name": "_idle",
                                         "start": 1,
                                         "stop": 2,
                                         "loop": true,
@@ -401,7 +403,7 @@
                                     },
                                     {
                                         "id": "walk",
-                                        "name": "movingPerson1_walk",
+                                        "name": "_walk",
                                         "start": 1,
                                         "stop": 4,
                                         "loop": true,
@@ -410,7 +412,7 @@
                                     },
                                     {
                                         "id": "use",
-                                        "name": "movingPerson1_use",
+                                        "name": "_use",
                                         "start": 1,
                                         "stop": 7,
                                         "loop": false,
@@ -431,13 +433,15 @@
                                 "shieldhp": 10,
                                 "selfhp": 2,
                                 "attackable": true,
-                                "hostile": true
+                                "hostile": true,
+                                "meleeDmg": 1
                             },
                             {
                                 "type": "weaponsInventory",
                                 "weapons": [
                                     {
                                         "weaponname": "gun",
+                                        "AIpower": 1,
                                         "dmg": 2,
                                         "range": 40,
                                         "clipsize": 6,
@@ -445,6 +449,25 @@
                                         "buttonImg": "log.png"
                                     }
                                 ]
+                            },
+                            {
+                                "type": "interacttrigger",
+                                "trigger": "OnDeath",
+                                "once": false,
+                                "walkto": false,
+                                "actions": [
+                                    {
+                                        "type": "Variable",
+                                        "name": 3,
+                                        "mode": "Add",
+                                        "variable": "",
+                                        "value": 1
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": []
+                                }
                             }
                         ]
                     },
@@ -510,13 +533,15 @@
                                 "shieldhp": 10,
                                 "selfhp": 2,
                                 "attackable": true,
-                                "hostile": true
+                                "hostile": true,
+                                "meleeDmg": 1
                             },
                             {
                                 "type": "weaponsInventory",
                                 "weapons": [
                                     {
                                         "weaponname": "gun",
+                                        "AIpower": 1,
                                         "dmg": 2,
                                         "range": 40,
                                         "clipsize": 6,
@@ -524,6 +549,25 @@
                                         "buttonImg": "log.png"
                                     }
                                 ]
+                            },
+                            {
+                                "type": "interacttrigger",
+                                "trigger": "OnDeath",
+                                "once": false,
+                                "walkto": false,
+                                "actions": [
+                                    {
+                                        "type": "Variable",
+                                        "name": 3,
+                                        "mode": "Add",
+                                        "variable": "",
+                                        "value": 1
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": []
+                                }
                             }
                         ]
                     },
@@ -535,7 +579,7 @@
                         "x": 400,
                         "y": 0,
                         "posx": 4,
-                        "posy": 2,
+                        "posy": 0,
                         "offsetx": 0,
                         "offsety": 0,
                         "maskable": true,
@@ -589,13 +633,15 @@
                                 "shieldhp": 10,
                                 "selfhp": 2,
                                 "attackable": true,
-                                "hostile": true
+                                "hostile": true,
+                                "meleeDmg": 1
                             },
                             {
                                 "type": "weaponsInventory",
                                 "weapons": [
                                     {
                                         "weaponname": "gun",
+                                        "AIpower": 1,
                                         "dmg": 2,
                                         "range": 40,
                                         "clipsize": 6,
@@ -603,6 +649,25 @@
                                         "buttonImg": "log.png"
                                     }
                                 ]
+                            },
+                            {
+                                "type": "interacttrigger",
+                                "trigger": "OnDeath",
+                                "once": false,
+                                "walkto": false,
+                                "actions": [
+                                    {
+                                        "type": "Variable",
+                                        "name": 3,
+                                        "mode": "Add",
+                                        "variable": "",
+                                        "value": 1
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": []
+                                }
                             }
                         ]
                     },
@@ -625,10 +690,10 @@
                         "displayName": "",
                         "state": "idle",
                         "tilebase": false,
-                        "x": 150,
-                        "y": -75,
-                        "posx": 1,
-                        "posy": 3,
+                        "x": 0,
+                        "y": -50,
+                        "posx": 0,
+                        "posy": 2,
                         "offsetx": 0,
                         "offsety": 0,
                         "maskable": false,
@@ -686,7 +751,7 @@
                             },
                             {
                                 "type": "actiontext",
-                                "walkto": true,
+                                "walkto": false,
                                 "trigger": "OnTouch",
                                 "actions": [
                                     {
@@ -713,7 +778,24 @@
                         "offsetx": 0,
                         "offsety": 0,
                         "maskable": false,
-                        "tilesetid": "isoObjects"
+                        "tilesetid": "isoObjects",
+                        "triggers": [
+                            {
+                                "trigger": "OnTalk",
+                                "once": false,
+                                "actions": [
+                                    {
+                                        "type": "CONVERSATION",
+                                        "id": "1",
+                                        "skipIfNoValidEntries": false
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": []
+                                }
+                            }
+                        ]
                     }
                 ]
             }
@@ -814,44 +896,34 @@
                 "Count": 0,
                 "InventoryGraphicName": "inv_crab",
                 "InvetoryGraphicSheet": "dialogui",
-                "Combine Count": 4,
-                "Pictures": "",
-                "Success Description": "",
-                "Failure Description": "",
-                "State": ""
-            },
-            {
-                "id": 4,
-                "Name": "New Quest 4",
-                "onLookat": "",
-                "Is Item": false,
-                "Inventory": "",
-                "onEnterInventoryText": "",
-                "Description": "",
-                "onTalk": "",
-                "VisibleInventory": "",
-                "Count": "",
-                "InventoryGraphicName": "",
-                "InvetoryGraphicSheet": "",
-                "Combine Count": "",
-                "Pictures": "[]",
-                "Success Description": "",
-                "Failure Description": "",
-                "State": "unassigned"
+                "Combine Count": 5
             }
         ],
-        "Locations": {},
+        "Locations": [
+            {
+                "id": 1,
+                "Name": "New Location 1",
+                "Pictures": "[]",
+                "Description": ""
+            }
+        ],
         "Variables": [
             {
                 "id": 1,
                 "Name": "Alert",
-                "Initial Value": "",
-                "Description": ""
+                "Initial Value": 0,
+                "Description": "Num to kill."
             },
             {
                 "id": 2,
                 "Name": "Did Conv",
                 "Initial Value": false,
+                "Description": ""
+            },
+            {
+                "id": 3,
+                "Name": "Enemy Defeated",
+                "Initial Value": 0,
                 "Description": ""
             }
         ],
@@ -862,6 +934,7 @@
                 "Description": "",
                 "Actor": "1",
                 "Conversant": "3",
+                "Pictures": "",
                 "DialogueEntries": [
                     {
                         "entrytag": "Glowing_Block_1_0",
@@ -871,7 +944,11 @@
                         "Title": "START",
                         "MenuText": "",
                         "DialogueText": "I will start talking.",
+                        "Pictures": "[]",
+                        "Description": "",
                         "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
                         "Response Menu Sequence": "",
                         "Special Portrait": "",
                         "links": [
@@ -896,7 +973,11 @@
                         "Title": "New Dialogue Entry",
                         "MenuText": "",
                         "DialogueText": "I am talking.",
+                        "Pictures": "[]",
+                        "Description": "",
                         "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
                         "Response Menu Sequence": "",
                         "Special Portrait": "",
                         "links": [
@@ -921,7 +1002,11 @@
                         "Title": "New Dialogue Entry",
                         "MenuText": "",
                         "DialogueText": "Now you make choices.",
+                        "Pictures": "[]",
+                        "Description": "",
                         "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
                         "Response Menu Sequence": "",
                         "Special Portrait": "",
                         "links": [
@@ -958,7 +1043,11 @@
                         "Title": "New Dialogue Entry",
                         "MenuText": "",
                         "DialogueText": "Another End Conv",
+                        "Pictures": "[]",
+                        "Description": "",
                         "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
                         "Response Menu Sequence": "",
                         "Special Portrait": "",
                         "links": {},
@@ -984,7 +1073,11 @@
                         "Title": "New Dialogue Entry",
                         "MenuText": "",
                         "DialogueText": "Continue Text\n",
+                        "Pictures": "[]",
+                        "Description": "",
                         "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
                         "Response Menu Sequence": "",
                         "Special Portrait": "",
                         "links": [
@@ -1009,7 +1102,11 @@
                         "Title": "New Dialogue Entry",
                         "MenuText": "",
                         "DialogueText": "End Conv",
+                        "Pictures": "[]",
+                        "Description": "",
                         "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
                         "Response Menu Sequence": "",
                         "Special Portrait": "",
                         "links": {},
@@ -1035,7 +1132,11 @@
                         "Title": "New Dialogue Entry",
                         "MenuText": "",
                         "DialogueText": "No",
+                        "Pictures": "[]",
+                        "Description": "",
                         "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
                         "Response Menu Sequence": "",
                         "Special Portrait": "",
                         "links": [
@@ -1066,7 +1167,11 @@
                         "Title": "New Dialogue Entry",
                         "MenuText": "",
                         "DialogueText": "End Conv Here.",
+                        "Pictures": "[]",
+                        "Description": "",
                         "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
                         "Response Menu Sequence": "",
                         "Special Portrait": "",
                         "links": {},
@@ -1084,7 +1189,11 @@
                         "Title": "New Dialogue Entry",
                         "MenuText": "",
                         "DialogueText": "Start Over!",
+                        "Pictures": "[]",
+                        "Description": "",
                         "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
                         "Response Menu Sequence": "",
                         "Special Portrait": "",
                         "links": [
@@ -1109,6 +1218,7 @@
                 "Description": "",
                 "Actor": "1",
                 "Conversant": "3",
+                "Pictures": "",
                 "DialogueEntries": [
                     {
                         "entrytag": "Block_2_0",
@@ -1118,7 +1228,11 @@
                         "Title": "START",
                         "MenuText": "",
                         "DialogueText": "I'm a block",
+                        "Pictures": "[]",
+                        "Description": "",
                         "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
                         "Response Menu Sequence": "",
                         "Special Portrait": "",
                         "links": [
@@ -1143,7 +1257,11 @@
                         "Title": "New Dialogue Entry",
                         "MenuText": "",
                         "DialogueText": "Block block block",
+                        "Pictures": "[]",
+                        "Description": "",
                         "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
                         "Response Menu Sequence": "",
                         "Special Portrait": "",
                         "links": [
@@ -1168,7 +1286,11 @@
                         "Title": "New Dialogue Entry",
                         "MenuText": "",
                         "DialogueText": "Me too!\n",
+                        "Pictures": "[]",
+                        "Description": "",
                         "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
                         "Response Menu Sequence": "",
                         "Special Portrait": "",
                         "links": [
@@ -1193,7 +1315,11 @@
                         "Title": "New Dialogue Entry",
                         "MenuText": "",
                         "DialogueText": "A block?",
+                        "Pictures": "[]",
+                        "Description": "",
                         "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
                         "Response Menu Sequence": "",
                         "Special Portrait": "",
                         "links": [
@@ -1218,7 +1344,128 @@
                         "Title": "New Dialogue Entry",
                         "MenuText": "",
                         "DialogueText": "Yes a block.",
+                        "Pictures": "[]",
+                        "Description": "",
                         "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": {},
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    }
+                ]
+            },
+            {
+                "id": 3,
+                "Title": "New Conversation 3",
+                "Description": "",
+                "Actor": "1",
+                "Conversant": "3",
+                "Pictures": "[]",
+                "DialogueEntries": [
+                    {
+                        "entrytag": "Player_3_0",
+                        "ConvID": 3,
+                        "ID": 0,
+                        "Actor": 1,
+                        "Title": "START",
+                        "MenuText": "",
+                        "DialogueText": "",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": [
+                            {
+                                "OriginConvID": 3,
+                                "OriginID": 0,
+                                "DestConvID": 3,
+                                "DestID": 1
+                            },
+                            {
+                                "OriginConvID": 3,
+                                "OriginID": 0,
+                                "DestConvID": 3,
+                                "DestID": 2
+                            },
+                            {
+                                "OriginConvID": 3,
+                                "OriginID": 0,
+                                "DestConvID": 3,
+                                "DestID": 3
+                            }
+                        ],
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Glowing_Block_3_1",
+                        "ConvID": 3,
+                        "ID": 1,
+                        "Actor": 3,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": {},
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Glowing_Block_3_2",
+                        "ConvID": 3,
+                        "ID": 2,
+                        "Actor": 3,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": {},
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Glowing_Block_3_3",
+                        "ConvID": 3,
+                        "ID": 3,
+                        "Actor": 3,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
                         "Response Menu Sequence": "",
                         "Special Portrait": "",
                         "links": {},

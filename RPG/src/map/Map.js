@@ -18,7 +18,7 @@ var Map = function (game, gameRef)
     this.highlightArray;
     
     this.mapGroup;
-    this.scaledto = 0.5;
+    this.scaledto = 1;
 }
 Map.prototype.initialMap = function(mapData){
     this.mapData = mapData;
@@ -196,9 +196,15 @@ Map.prototype.createMapTiles = function(passedMap){
                     if(!objects[i].destroyed)//object has been destroyed
                     {
                         var isMoveSpecial = false;
+                        var isCombatSpecial = false;
                         for(var j=0;j<objects[i].triggers.length;j++)
                         {
-                            if(objects[i].triggers[j].type=="mover" || objects[i].triggers[j].type=="combatAttributes")
+                            if(objects[i].triggers[j].type=="combatAttributes")
+                            {
+                                isCombatSpecial = true;
+                                break;
+                            }
+                            if(objects[i].triggers[j].type=="mover")
                             {
                                 isMoveSpecial = true;
                                 break;
@@ -206,6 +212,10 @@ Map.prototype.createMapTiles = function(passedMap){
                         }
                         var interactiveobject;
                         if(isMoveSpecial)
+                        {
+                            interactiveobject = new CombatCharacter(this.gameRef, objects[i], this);
+                        }
+                        else if(isMoveSpecial)
                         {
                             interactiveobject = new MovingCharacter(this.gameRef, objects[i], this);
                         }
@@ -313,7 +323,23 @@ Map.prototype.update = function(elapsedTime)
     {
         this.playerCharacter.step(elapsedTime);
     }
+    for(var i=0;i<this.interactiveObjects.length;i++)
+    {
+        this.interactiveObjects[i].step(elapsedTime);
+    }
     this.objectGroup.customSort (Utilties.customSortHexOffsetIso);
+}
+Map.prototype.getCombatCharacters = function()
+{
+    var returnArray = [];
+    for(var i=0;i<this.interactiveObjects.length;i++)
+    {
+        if(this.interactiveObjects[i].hostile || this.interactiveObjects[i].IsPlayer)
+        {
+            returnArray.push(this.interactiveObjects[i]);
+        }
+    }
+    return returnArray;
 }
 Map.prototype.addLocationTextToTile = function(x,y,width,height,i,j){
     var hexagonText = this.gameRef.add.text(x+width/2-5,y+height/2+3,i+","+j);

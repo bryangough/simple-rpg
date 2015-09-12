@@ -13,6 +13,8 @@ GlobalEvents.LOOK = 1;
 GlobalEvents.TOUCH = 2;
 GlobalEvents.TALK = 3;
 GlobalEvents.ITEM = 4;
+GlobalEvents.COMBATSELECT = 5;
+
 GlobalEvents.lastAction = GlobalEvents.DISABLE;
 GlobalEvents._currentacion = GlobalEvents.WALK;
 

@@ -47,42 +47,51 @@ BasicGame.Game.prototype = {
         //actors, variables, quests, items
         this.globalHandler = new GlobalHandler(this.game, this, this.mapData.data.Actors, this.mapData.data.Variables, null, this.mapData.data.Items);
         //
-        this.gGameMode = new StateMachine();
-        this.gGameMode.add("battle", new BattleState(this.gGameMode));
+        //restrictions on states. Can't enter talk state while in combat.
+        //
         //
         if(this.map==null)
             this.map = new Map(this.game, this);
         this.map.initialMap(this.mapData);
         //
+        this.gGameMode = new StateMachine();
+        this.gGameMode.add("normal", new NormalState(this.gGameMode, this.game, this));
+        this.gGameMode.add("combat", new BattleState(this.gGameMode, this.game, this));
+        //do one for dialog!!
+        
+        
+        var inCombat = this.map.getCombatCharacters();
+        inCombat.unshift(this.map.playerCharacter);
+        
+        this.gGameMode.change("combat", {entities:inCombat});
+
+        //
         this.uiGroup.parent.bringToTop(this.uiGroup);//keeps ui group on top layer
         //
         this.textUIHandler.setup(this.mapData, this.uiGroup);
         
-        this.inventory = new InventoryGraphics(this.game,this,this.globalHandler);
-	    this.game.add.existing(this.inventory);
+        
+        this.inventory = new InventoryGraphics(this.game,this.gameref,this.globalHandler);
+        this.game.add.existing(this.inventory);
         this.uiGroup.add(this.inventory);
         this.inventory.x = 220;
         this.inventory.y = 400;
         this.inventory.visible = false;
 
-        this.activeButtons = new ActionButtons(this.game, this);
-        this.activeButtons.x = 20;
-        this.activeButtons.y = 490;
-        this.game.add.existing(this.activeButtons);
-        this.uiGroup.add(this.activeButtons);
+        this.normalUI = new NormalUI(this.game, this, this.globalHandler, this.uiGroup);
         
         this.graphics = this.game.add.graphics(0, 0);
         this.uiGroup.add(this.graphics);
         
-        this.combatButton = this.game.add.button(this.game.world.width - 58, this.game.world.centerY + 60, 'ui', this.zoomIn, this, "Close Button0001.png", "Close Button0001.png", "Close Button0001.png", "Close Button0001.png");
+        //this.combatButton = this.game.add.button(this.game.world.width - 58, this.game.world.centerY + 60, 'ui', this.zoomIn, this, "Close Button0001.png", "Close Button0001.png", "Close Button0001.png", "Close Button0001.png");
         
         
-        this.combatButton = this.game.add.button(this.game.world.width - 58, this.game.world.centerY - 60, 'ui', this.zoomOut, this, "button_darkblue_over.png", "button_darkblue_up.png", "button_darkblue_up.png", "button_darkblue_over.png");
+        //this.combatButton = this.game.add.button(this.game.world.width - 58, this.game.world.centerY - 60, 'ui', this.zoomOut, this, "button_darkblue_over.png", "button_darkblue_up.png", "button_darkblue_up.png", "button_darkblue_over.png");
         
         //
         this.combatButton = this.game.add.button(this.game.world.width - 190, this.game.world.height - 51, 'ui', this.toggleCombat, this, "button_blue_over.png", "button_blue_up.png", "button_blue_up.png", "button_blue_over.png");
         
-        this.inputHandler = new InputHandler(this.game, this, this.map);
+        
     },
     //
     update: function () {
@@ -120,10 +129,17 @@ BasicGame.Game.prototype = {
         this.map.doZoom();
     },
     toggleCombat:function(){
-    },
-    tryToEndCombat:function(){
-        //if in combat state
-        //ask combat state to end combat
+        if(this.gGameMode.currentState == "combat")
+        {
+            //test if enemies still in aggo list?
+            this.gGameMode.change("normal");
+        }
+        else
+        {
+            var inCombat = this.map.getCombatCharacters();
+            inCombat.push(this.map.playerCharacter);
+            this.gGameMode.change("combat", {entities:inCombat});
+        }
     },
     //
     pauseGame:function(){
@@ -144,6 +160,14 @@ BasicGame.Game.prototype = {
     },
     quitGame: function (pointer) {
         this.state.start('MainMenu');
+    },
+    render: function()
+    {
+        //this.game.debug.text(this.game.time.fps || '--', 2, 40, "#00ff00");   
+        this.game.debug.text(this.gGameMode.currentState, 2, 10, "#00ff00");
+        //game.debug.text("Tween running: " + !this.idleBallTween.pendingDelete, 2, 110);
+        
+        //this.game.debug.inputInfo(16, 16);
     }
 };
 
