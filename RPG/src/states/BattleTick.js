@@ -10,6 +10,7 @@ BattleTick.prototype.update = function(elapsedTime)
     for(var i=0;i<this.mActions.length;i++)
     {
         var a = this.mActions[i];
+        //console.log(a);
         a.Update(elapsedTime);
     }
     if(this.mActions.length<=0)

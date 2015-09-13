@@ -10,13 +10,13 @@ var InputHandler = function (game, gameref)
     
 };
 //
-InputHandler.prototype.turnOn = function(pointer, x, y)
+InputHandler.prototype.turnOn = function()
 {
     this.movecallbackindex = this.gameref.input.addMoveCallback(this.onMove, this); 
     this.gameref.input.onDown.add(this.doDragScreen, this);
     this.gameref.input.onUp.add(this.clickedHex, this);
 }
-InputHandler.prototype.turnOff = function(pointer, x, y)
+InputHandler.prototype.turnOff = function()
 {
     this.gameref.input.deleteMoveCallback(this.movecallbackindex); 
     this.gameref.input.onDown.remove(this.doDragScreen, this);

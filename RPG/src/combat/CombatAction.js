@@ -3,6 +3,7 @@ var CombatAction = function (game, gameref, combater, target, action, state, par
     this.game = game;
     this.gameref = gameref;
     this.combater = combater;
+    this.action = action;
     this.state = state;
     this.params = params;
     this.isReady = true;  
@@ -11,14 +12,21 @@ var CombatAction = function (game, gameref, combater, target, action, state, par
 }
 CombatAction.prototype.execute = function()
 {
-    //console.log("Combat Action execute");
+    console.log("Combat Action execute");
     //this.doFinish();
     
     //console.log(this.params);
-    //if(action=="move")
-    
-    this.combater.moveToSpot(this.target,[{func:this.doFinish, para:[], removeself:false, callee:this, con:null, walkto:false}]);
-    
+    if(this.action=="move")
+    {
+        this.combater.moveToSpot(this.target,[{func:this.doFinish, para:[], removeself:false, callee:this, con:null, walkto:false}]);
+    }
+    else if(this.action=="shoot")//shoot
+    {
+        this.combater.shootGun(this.target, this.params[0], {func:this.doFinish, callee:this});
+    }
+    else if(this.action=="useitem")//use item
+    {
+    }   
 }
 CombatAction.prototype.Update = function(elapse)
 {
@@ -37,8 +45,16 @@ CombatAction.prototype.doFinish = function()
     }
     else
     {*/
+    if(this.combater.IsPlayer)
+    {
+        var action = new PlayerDecide(this.game, this.gameref, this.combater, this.combater.Speed(), this.state);
+        this.state.addToActionsRear(action);
+    }
+    else
+    {
         var action = new AIDecide(this.game, this.gameref, this.combater, this.combater.Speed(), this.state);
         this.state.addToActionsRear(action);
+    }
     //}
     
     this.state.mBattleStates.change("tick");

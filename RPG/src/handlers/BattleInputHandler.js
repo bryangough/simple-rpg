@@ -2,10 +2,12 @@ var BatttleInputHandler = function (game, gameref)
 {
     InputHandler.call(this, game, gameref);
     
+    
+    this.playerDecide = null;
+    this.frindges = null;
 };
 BatttleInputHandler.prototype = Object.create(InputHandler.prototype);
 BatttleInputHandler.constructor = BatttleInputHandler;
-
 
 //
 BatttleInputHandler.prototype.onMove = function(pointer, x, y)
@@ -31,6 +33,8 @@ BatttleInputHandler.prototype.onMove = function(pointer, x, y)
         //move around
         return;
     }
+    if(this.playerDecide==null)
+        return;
     if(GlobalEvents.currentacion != GlobalEvents.WALK)
     {
         return;
@@ -43,41 +47,30 @@ BatttleInputHandler.prototype.onMove = function(pointer, x, y)
     var pointery = (this.gameref.input.worldY-this.gameref.map.mapGroup.y)/this.gameref.map.scaledto;
 
     var moveIndex =  this.gameref.map.hexHandler.checkHex(pointerx, pointery);
-    var playertile = this.gameref.map.hexHandler.checkHex(this.gameref.map.playerCharacter.x, this.gameref.map.playerCharacter.y);
-    if(moveIndex)
-    {
-        //this.tiletest.x = moveIndex.x;
-        //this.tiletest.y = moveIndex.y;
-    }
-    //console.log(playertile);
-    //console.log(playertile.posx,playertile.posy,this.playerCharacter.x,this.playerCharacter.y);
-   // if(moveIndex)
-    //    console.log(moveIndex.posx,moveIndex.posy);
 
-    //console.log(this.input.worldX,this.gameref.map.mapGroup.x,this.input.worldX-this.gameref.map.mapGroup.x);
-
-    //this.highlightHex.doShowPath(this.pathfinder,this.playerCharacter.currentTile,moveIndex);
-    //this.hexHandler.dolines(playertile,moveIndex,true,this.highlightHex);
-    //var fridges = this.gameref.map.hexHandler.doFloodFill(moveIndex,6);
-    //this.gameref.map.highlightHex.drawFringes(fridges);
-    //this.gameref.map.highlightHex.highlighttilebytile(0,moveIndex);
-    //this.highlightHex.highilightneighbors(moveIndex);
+    //console.log(moveIndex);
+    if(this.withinFringes(moveIndex))
+        this.gameref.map.highlightHex.highlighttilebytile(0,moveIndex);
 },
-BatttleInputHandler.prototype.doDragScreen = function(pointer)
+BatttleInputHandler.prototype.withinFringes = function(moveIndex) 
 {
-    //console.log("drag",pointer.active);
-    if(!pointer.active)
-        return;
-    
-    this.dragScreen = true;
-    this.dragPoint.x = pointer.x;
-    this.dragPoint.y = pointer.y;
+    for(var i=0;i<this.frindges.length;i++)
+    {
+        for(var j=0;j<this.frindges[i].length;j++)
+        {
+            if(moveIndex==this.frindges[i][j])
+                return true;
+        }
+    }
+    return false;
+}
+BatttleInputHandler.prototype.showAreaForMove = function(combater) 
+{
+    this.frindges = combater.findWalkableFromCurrent();
+    this.gameref.map.highlightHex.drawFringes(this.frindges);
 }
 BatttleInputHandler.prototype.clickedHex = function(pointer,b)
 {
-    //console.log("hex",pointer.active);
-    
-    //this needs to be blocked if clicking ui
     this.dragScreen = false;
     if(this.didDrag)        //test distance did it actually drag. or do I make a drag screen button?
     {
@@ -87,7 +80,8 @@ BatttleInputHandler.prototype.clickedHex = function(pointer,b)
     //pointers will be false by other input ui methods so the character isn't randomly walking around
     if(!pointer.active)
         return;
-
+    if(this.playerDecide==null)
+        return;
     if(GlobalEvents.currentacion != GlobalEvents.WALK)
         return;
     if(this.game.global.pause)
@@ -99,11 +93,16 @@ BatttleInputHandler.prototype.clickedHex = function(pointer,b)
     var pointery = (this.gameref.input.worldY-this.gameref.map.mapGroup.y)/this.gameref.map.scaledto;
     var moveIndex =  this.gameref.map.hexHandler.checkHex(pointerx,pointery);
     
+    console.log(moveIndex,this.withinFringes(moveIndex));
     if(moveIndex!=null)
     {
         if(this.game.currentacion==this.game.WALK)
         {
-            //this.gameref.map.playerCharacter.moveto(moveIndex);
+            if(this.withinFringes(moveIndex))
+            {
+                this.playerDecide.domove(moveIndex);
+                this.gameref.map.highlightHex.cleanuptiles();
+            }
         }
     }
 } 

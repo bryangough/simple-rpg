@@ -59,22 +59,7 @@ var CombatCharacter = function (maingame, jsondata, map)
 CombatCharacter.prototype = Object.create(MovingCharacter.prototype);
 CombatCharacter.constructor = CombatCharacter;
 
-// handle 1 step of combat
-// if has 2 then ca
-CombatCharacter.prototype.handleCombat = function()     
-{
-    if(this.IsPlayer)
-    {
-        //activate ui   
-    }
-    else
-    {
-        
-      
-        
-    }
-    //return 
-}
+
 CombatCharacter.prototype.finalSetup = function()     
 {
     this.setLocationByTile(this.currentTile);
@@ -205,10 +190,6 @@ CombatCharacter.prototype.doRemoveTint = function()
     this.tint = 0xffffff;
 }
 //
-MovingCharacter.prototype.fireGun = function()
-{
-    this.changeState("use");
-}
 //
 //roller tints different if hostile
 CombatCharacter.prototype.handleOver = function() 
@@ -246,4 +227,21 @@ CombatCharacter.prototype.findWalkableFromCurrent = function()
 CombatCharacter.prototype.Speed = function()     
 {
     return 1;
+}
+MovingCharacter.prototype.shootGun = function(target, weapon, afterAction)
+{
+    this.changeState("use");
+    this.actionsaftermove = [{func:this.afterShoot, para:[{weapon:weapon, target:target, afterAction:afterAction}], removeself:false, callee:this, con:null, walkto:false}];
+}
+MovingCharacter.prototype.afterShoot = function(params)
+{
+    console.log(params);
+    var target = params.target;
+    var weapon = params.weapon;
+    var afterAction = params.afterAction;
+    
+    target.takeDmg(weapon.dmg);
+    //this will eventually move to the weapon shot class, so that it applys after the shot is done
+        
+    afterAction.func.apply(afterAction.callee,[]);
 }

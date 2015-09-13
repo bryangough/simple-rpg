@@ -261,7 +261,7 @@ MovingCharacter.prototype.step = function(elapseTime)
                 else//find next tile
                 {
                     this.nextTile = this.path[this.pathlocation]; 
-                    console.log(this.nextTile);
+                    //console.log(this.nextTile);
                     this.setDirection();
                 }
                 this.updateLocation(this.currentTile);
