@@ -20,8 +20,9 @@ BasicGame.Game = function (game) {
     this.gGameMode = null;
     
     this.map = null;
-    this.inputHandler = null;
+    //this.inputHandler = null;
     this.textUIHandler = null;
+    this.dialoghandler;
 };
 
 //
@@ -49,6 +50,9 @@ BasicGame.Game.prototype = {
         //
         //restrictions on states. Can't enter talk state while in combat.
         //
+        this.dialoghandler = new DialogHandler(this.game, this, this.mapData.data.Conversations,    this.mapData.data.Actors);
+        
+        this.textUIHandler.setup(this.mapData, this.uiGroup, this.dialoghandler);
         //
         if(this.map==null)
             this.map = new Map(this.game, this);
@@ -57,18 +61,23 @@ BasicGame.Game.prototype = {
         this.gGameMode = new StateMachine();
         this.gGameMode.add("normal", new NormalState(this.gGameMode, this.game, this));
         this.gGameMode.add("combat", new BattleState(this.gGameMode, this.game, this));
-        //do one for dialog!!
+        this.gGameMode.add("dialog", new DiaglogState(this.gGameMode, this.game, this, this.dialoghandler, this.uiGroup));
+        
+        
+        /**/
+        
         
         
         var inCombat = this.map.getCombatCharacters();
         inCombat.unshift(this.map.playerCharacter);
         
-        this.gGameMode.change("combat", {entities:inCombat});
+        //this.gGameMode.change("combat", {entities:inCombat});
+        this.gGameMode.change("normal");
 
         //
         this.uiGroup.parent.bringToTop(this.uiGroup);//keeps ui group on top layer
         //
-        this.textUIHandler.setup(this.mapData, this.uiGroup);
+        
         
         
         this.inventory = new InventoryGraphics(this.game,this.gameref,this.globalHandler);
@@ -91,7 +100,7 @@ BasicGame.Game.prototype = {
         //
         this.combatButton = this.game.add.button(this.game.world.width - 190, this.game.world.height - 51, 'ui', this.toggleCombat, this, "button_blue_over.png", "button_blue_up.png", "button_blue_up.png", "button_blue_over.png");
         
-        
+        this.updatewalkable = true;
     },
     //
     update: function () {
@@ -128,17 +137,32 @@ BasicGame.Game.prototype = {
         this.map.scaledto += 0.05;
         this.map.doZoom();
     },
-    toggleCombat:function(){
-        if(this.gGameMode.currentState == "combat")
+    toggleCombat:function()
+    {   
+        if(this.gGameMode.currentState == "combat" && this.gGameMode.mCurrentState.leaveThisState())
         {
             //test if enemies still in aggo list?
             this.gGameMode.change("normal");
         }
-        else
+        else if(this.gGameMode.currentState == "normal")
         {
             var inCombat = this.map.getCombatCharacters();
             inCombat.push(this.map.playerCharacter);
             this.gGameMode.change("combat", {entities:inCombat});
+        }
+        else
+        {
+            console.log("toggleCombat no");
+            //error beep
+        }
+    },
+    showDialog:function(convid){
+        if(this.gGameMode.currentState != "combat")//for now don't let dialog work in combat
+        {
+            this.gGameMode.change("dialog");
+            this.gGameMode.mCurrentState.startDialog(convid);
+            //this should be needed
+            GlobalEvents.tempDisableEvents();
         }
     },
     //

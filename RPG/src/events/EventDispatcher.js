@@ -23,7 +23,7 @@ EventDispatcher.prototype.testAction = function()
 {
     if(this.object)
     {
-        this.object.inputEnabled = this.shouldBeActive();
+        this.object.allowInput(this.shouldBeActive());
     }
 }
 EventDispatcher.prototype.shouldBeActive = function() 
@@ -38,6 +38,11 @@ EventDispatcher.prototype.shouldBeActive = function()
         return true;
     else if(GlobalEvents.currentacion == GlobalEvents.ITEM && this.actionArray["OnUseItem"])
         return true;
+    else if(GlobalEvents.currentacion == GlobalEvents.COMBATSELECT && this.object.isCombatCharacter)
+    {
+        if(this.object.isAlive())
+            return true;
+    }
     return false;
 }//if all action is null. clear out array?
 //this.onEnterSignal.dispatch([this])
@@ -74,18 +79,6 @@ EventDispatcher.prototype.init = function(triggers)
                 this.setActions(eventAction, action, trigger.once, con, trigger.walkto||false);
             }
         }
-       /* else if(trigger.type=="actiontext")
-        {//need touch and talk actives
-            var con = null;
-            if(trigger.conditions)
-            {
-                //var con = this.applyConditions(trigger.conditions);
-            } 
-            if(trigger.lookatactive)
-            {
-                this.getEventType("OnLook").push({func:this.maingame.textUIHandler.showJustText, para:[trigger.lookat], removeself:false, callee:this.maingame, con:con});
-            }
-        }*/
     }
 };
 
@@ -101,7 +94,7 @@ EventDispatcher.prototype.helpSetActions = function(eventAction, actions, once, 
         }
     }
 }
-EventDispatcher.prototype.setActions = function(eventAction,action, once, con, walkto)
+EventDispatcher.prototype.setActions = function(eventAction, action, once, con, walkto)
 {
     if(action.type=="ChangeMap")
         {
@@ -110,7 +103,7 @@ EventDispatcher.prototype.setActions = function(eventAction,action, once, con, w
         //
         else if(action.type=="CONVERSATION")
         {
-            eventAction.push({func:this.maingame.textUIHandler.showDialog, para:[action.id], removeself:once, callee:this.maingame.textUIHandler, con:con, walkto:walkto});
+            eventAction.push({func:this.maingame.showDialog, para:[action.id], removeself:once, callee:this.maingame, con:con, walkto:walkto});
         }
         else if(action.type=="SIMPLE")
         {
@@ -222,9 +215,7 @@ EventDispatcher.prototype.testConditions = function(conditions)
 //this should pass in who
 EventDispatcher.prototype.doAction = function(activation, activator) 
 {
-
     var actionEvent = this.getEventType(activation); 
-        
     this.completeAction(actionEvent, false, activator);
 }
 //
@@ -296,7 +287,6 @@ EventDispatcher.prototype.dogivenactions = function(actionstoactivate)
 //
 EventDispatcher.prototype.getEventType = function(activation) 
 {
-    //console.log(this.actionArray);
     this.actionArray[activation] = this.actionArray[activation] || [];
     return this.actionArray[activation];
 };

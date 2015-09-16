@@ -3,9 +3,10 @@
 //text font
 
 //***** DialogPanel ********
-var DialogPanel = function(game, maingame, dialogEngine, parent){
-	Phaser.Group.call(this, game, parent);
+var DialogPanel = function(game, maingame, dialogEngine, parent, state){
+	Phaser.Group.call(this, game);
 
+    this.state = state;
     this.overTint = 0xff5500;
     this.maingame = maingame;
     this.dialogEngine = dialogEngine;
@@ -49,13 +50,14 @@ DialogPanel.prototype.setupBG = function(spritesheet,sprite)
     this.add(bg);
 }
 //
-DialogPanel.prototype.setupButton = function(x,y,spritesheet,callback,overFrame, outFrame, downFrame, upFrame)
+DialogPanel.prototype.setupButton = function(x,y,spritesheet, callback, overFrame, outFrame, downFrame, upFrame)
 {    
-    var newBtn = this.game.make.button(x,y,spritesheet,callback, this,overFrame, outFrame, downFrame, upFrame);
+    var newBtn = this.game.make.button(x,y,spritesheet, callback, this, overFrame, outFrame, downFrame, upFrame);
     this.add(newBtn);
     //
     newBtn.events.onInputOver.add(this.buttonOver, this);
     newBtn.events.onInputOut.add(this.buttonOut, this);
+    newBtn.forceOut = true;
     //
     //this.btnPlay2.input.pixelPerfectOver = true;
     newBtn.input.useHandCursor = true;
@@ -73,9 +75,11 @@ DialogPanel.prototype.setupText = function(x, y, font, text, size)
 Button events
 */
 DialogPanel.prototype.buttonOver = function(button){
+    console.log("over");
     button.textRef.tint = this.overTint;
 };
 DialogPanel.prototype.buttonOut = function(button){
+    console.log("out");
     button.textRef.tint = 0xffffff;
 };
 
@@ -174,6 +178,10 @@ DialogPanel.prototype.startDialog = function(id){
         this.y = 250;
         this.setupDialog();
     }
+    else
+    {
+        console.log("dialog data not found");
+    }
 };
 DialogPanel.prototype.endDialog = function(){
     //this.btnPlay1.changeStateFrame.apply(this.btnPlay1,['Up']);
@@ -181,7 +189,7 @@ DialogPanel.prototype.endDialog = function(){
     //this.btnPlay3.frame = 0;
     //this.game.state.getCurrentState().playGame()}
     //unpause game!
-    this.maingame.unpauseGame();
+    this.state.exitDialog();
     this.visible = false;
     this.y = -1000;
 };

@@ -2,6 +2,12 @@
 //DiamondHexHandler - Squished hex. Width x2 Height.
 //IsoHandler - Flat iso. Width x2 Height.
 //
+
+
+
+// fix flood fills! Iso is right.
+
+
 var HexHandler = function (maingame, game, hexagonWidth, hexagonHeight, tiletype) 
 {
     this.maingame = maingame;
@@ -155,7 +161,7 @@ HexHandler.prototype.dolines = function(tilestart, tileend, ignoreWalkable, high
     var cut = this.hexagonWidth;
     if(this.hexagonWidth>this.hexagonHeight)
         cut = this.hexagonHeight;
-    N = this.game.math.ceil(N/cut)+1;
+    N = Math.ceil(N/cut)+1;
     var points = [];
     for (var step = 0; step <= N; step++) {
             var t = N == 0? 0.0 : step / N;
@@ -176,11 +182,11 @@ HexHandler.prototype.dolines = function(tilestart, tileend, ignoreWalkable, high
         var overtile = this.checkHex(points[i].x,points[i].y);
         if(this.debug)
         {
-            this.maingame.graphics.drawCircle(points[i].x+this.maingame.mapGroup.x,points[i].y+this.maingame.mapGroup.y, 10);
+            this.maingame.graphics.drawCircle(points[i].x+this.maingame.map.mapGroup.x, points[i].y+this.maingame.map.mapGroup.y, 10);
         }
         if(overtile!=null)
         {
-            if(!overtile.walkable&&!ignoreWalkable)
+            if(!overtile.walkable && !ignoreWalkable && overtile!=tilestart && overtile!=tileend)
             {
                 break;
             }
@@ -240,14 +246,18 @@ HexHandler.prototype.lerp_point = function(p0, p1, t) {
                      this.lerp(p0.y, p1.y, t));
 };     
 //
-HexHandler.prototype.doFloodFill = function(tile,range)
+HexHandler.prototype.doFloodFill = function(tile,range,ignorefirst)
 {
     if(tile==null)
         return;
     this.visited = [];
     this.visited.push(tile);
     this.fringes = [];
-    this.fringes.push([tile]);
+    //if(!ignorefirst)
+        this.fringes.push([tile]);
+    //else
+    //    this.fringes.push([]);
+
     for(var k=1;k<=range;k++)
     {
         this.fringes.push([]);
@@ -547,14 +557,17 @@ DiamondHexHandler.prototype.areTilesNeighbors=function(starttile,testtile)
     }
     return false;
 }
-DiamondHexHandler.prototype.doFloodFill = function(tile,range)
+DiamondHexHandler.prototype.doFloodFill = function(tile,range,ignorefirst)
 {
     if(tile==null)
         return;
     this.visited = [];
     this.visited.push(tile);
     this.fringes = [];
-    this.fringes.push([tile]);
+    //if(!ignorefirst)
+        this.fringes.push([tile]);
+    //else
+    //    this.fringes.push([]);
     for(var k=1;k<=range;k++)
     {
         this.fringes.push([]);
@@ -676,39 +689,51 @@ IsoHandler.prototype.areTilesNeighbors=function(starttile,testtile)
     }
     return false;
 }
-IsoHandler.prototype.doFloodFill = function(tile,range)
+IsoHandler.prototype.doFloodFill = function(tile,range,ignorefirst)
 {
     if(tile==null)
         return;
     this.visited = [];
     this.visited.push(tile);
     this.fringes = [];
-    this.fringes.push([tile]);
+    if(!ignorefirst)
+    {
+        this.fringes.push([tile]);
+    }
+    else
+    {
+        this.fringes.push([]);
+        this.findNieghbors(tile,0);
+    }
+
     for(var k=1;k<=range;k++)
     {
         this.fringes.push([]);
         for(var i=0;i<this.fringes[k-1].length;i++)
         { 
             var n = this.fringes[k-1][i];
-            if(n.posy % 2 == 1)
-            {
-                this.addNeighbor(n, 1,    -1,k);
-                this.addNeighbor(n, 1,     1,k);
-                this.addNeighbor(n, 0,    1,k);
-                this.addNeighbor(n, 0,   -1,k);
-            }
-            else
-            {
-                this.addNeighbor(n, 0,   -1,k);
-                this.addNeighbor(n, 0,   1, k);
-                this.addNeighbor(n, -1,    +1,k);
-                this.addNeighbor(n, -1,   -1, k);
-            }
+            this.findNieghbors(n,k);
         }
     }
     return this.fringes;
 };
-
+IsoHandler.prototype.findNieghbors = function(n, k)
+{
+    if(n.posy % 2 == 1)
+    {
+        this.addNeighbor(n, 1,    -1,k);
+        this.addNeighbor(n, 1,     1,k);
+        this.addNeighbor(n, 0,    1,k);
+        this.addNeighbor(n, 0,   -1,k);
+    }
+    else
+    {
+        this.addNeighbor(n, 0,   -1,k);
+        this.addNeighbor(n, 0,   1, k);
+        this.addNeighbor(n, -1,    +1,k);
+        this.addNeighbor(n, -1,   -1, k);
+    }
+}
 /*
 for grid:
 http://fifengine.net/fifesvnrepo/tags/2007.1/src/engine/map/gridgeometry.cpp

@@ -47,12 +47,14 @@ CombatButtons.prototype.setButton = function(x,y,imageup,imageactive,ref, clicke
 CombatButtons.prototype.dowalk = function(touchedSprite, pointer){
     //console.log(touchedSprite, pointer);
     if(pointer!=undefined)
-        pointer.active = false;    
+        pointer.active = false;  
+    
+    
     this.disableButton(this.currentActive);
     this.currentActive = this.buttons[touchedSprite];
     this.enableButton(this.currentActive);
     
-    //GlobalEvents.currentacion = GlobalEvents.WALK;
+    GlobalEvents.currentacion = GlobalEvents.COMBATSELECT;
 }
 
 

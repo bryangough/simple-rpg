@@ -50,19 +50,8 @@ BattleState.prototype.SortByTime = function(a,b)
 }
 BattleState.prototype.update = function(elapsedTime) 
 {
-    this.mBattleStates.update(elapsedTime);
+    this.mBattleStates.update(elapsedTime);    
 }
-/*BattleState.prototype.nextCombater = function(){
-    this.iteractor++;
-    this.activeGuy = this.mEntities[this.iteractor];
-    
-    if(this.activeGuy!=null)
-        this.activeGuy.handleCombat();
-    if(this.iteractor>this.mEntities.length)
-    {
-       this.iteractor = -1; 
-    }
-}*/
 BattleState.prototype.render = function() 
 {
     this.mBattleStates.render();
@@ -74,13 +63,8 @@ BattleState.prototype.getActiveCombater = function()
 BattleState.prototype.onEnter = function(params) 
 {
     this.activeButtons.visible = true;
-    //console.log("battle enter");
     this.inputHandler.turnOn();
-    
-    //var frindges = this.gameref.map.playerCharacter.findWalkableFromCurrent();
-    //this.gameref.map.highlightHex.drawFringes(frindges);
-    
-    
+ 
     this.mEntities = params.entities;
     
     for(var i=0;i<this.mEntities.length;i++)
@@ -91,7 +75,6 @@ BattleState.prototype.onEnter = function(params)
     this.mBattleStates.change("tick");
  
     this.mEntities = params.entities;
-
     for(var i=0;i<this.mEntities.length;i++)
     {
         var e = this.mEntities[i];
@@ -127,6 +110,11 @@ BattleState.prototype.addToActionsFront = function(val)
     this.mActions.push(val);
     this.mBattleStates.change("tick");
 }
+BattleState.prototype.moveOn = function()
+{
+    GlobalEvents.currentacion = GlobalEvents.COMBATSELECT;
+    this.mBattleStates.change("tick");
+}
 BattleState.prototype.onExit = function() 
 {
     //console.log("battle exit");
@@ -137,4 +125,36 @@ BattleState.prototype.onExit = function()
     {
         this.mEntities[i].endCombat();
     }
+    if(GlobalEvents.currentacion == GlobalEvents.COMBATSELECT)
+        GlobalEvents.WALK;
+}
+BattleState.prototype.leaveThisState = function() 
+{
+    
+    //are their active enemies?
+    for(var i=0;i<this.mEntities.length;i++)
+    {
+        //console.log(this.mEntities[i].isAlive(), this.mEntities[i].hostile, !this.mEntities[i].IsPlayer);
+        if(this.mEntities[i].isAlive() && this.mEntities[i].hostile && !this.mEntities[i].IsPlayer)
+        {
+            //console.log("alive",this.mEntities[i]);
+            return false;
+        }
+    }
+    return true;
+}
+BattleState.prototype.toggleCombat = function() 
+{
+    
+    //are their active enemies?
+    for(var i=0;i<this.mEntities.length;i++)
+    {
+        //console.log(this.mEntities[i].isAlive(), this.mEntities[i].hostile, !this.mEntities[i].IsPlayer);
+        if(this.mEntities[i].isAlive() && this.mEntities[i].hostile && !this.mEntities[i].IsPlayer)
+        {
+            //console.log("alive",this.mEntities[i]);
+            return false;
+        }
+    }
+    return true;
 }

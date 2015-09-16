@@ -13,17 +13,40 @@ PlayerDecide.prototype.Update = function(elapse)
 }
 PlayerDecide.prototype.execute = function()
 {
-    console.log("Player decide execute.");
+    //console.log("Player decide execute.");
     
     this.state.inputHandler.playerDecide = this;
     this.state.inputHandler.showAreaForMove(this.combater);
     
     //activate player can control
     
-    
+    //if not look,
 }
+PlayerDecide.prototype.cleanup = function()
+{
+    this.state.inputHandler.playerDecide = null;
+    this.state.inputHandler.hideInputAreas();
+}
+
 PlayerDecide.prototype.domove = function(spot)
 {
     action = new CombatAction(this.game, this.gameref, this.combater, spot, "move", this.state);
     this.state.addToActionsFront(action);
 }
+PlayerDecide.prototype.dotouched = function(clickedObject)
+{
+    var action;
+    var weapon;
+    if(this.combater.weapons.length>0)
+    {
+        weapon = this.combater.weapons[0];
+        //this should be selectable by ui
+    }
+    if(weapon!=null)
+    {
+        
+        action = new CombatAction(this.game, this.gameref, this.combater, clickedObject, "shoot", this.state,[weapon]);
+        this.state.addToActionsFront(action);
+    }
+}
+

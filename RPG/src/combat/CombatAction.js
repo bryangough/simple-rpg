@@ -12,10 +12,8 @@ var CombatAction = function (game, gameref, combater, target, action, state, par
 }
 CombatAction.prototype.execute = function()
 {
-    console.log("Combat Action execute");
-    //this.doFinish();
-    
-    //console.log(this.params);
+    //console.log("Combat Action execute");
+    //
     if(this.action=="move")
     {
         this.combater.moveToSpot(this.target,[{func:this.doFinish, para:[], removeself:false, callee:this, con:null, walkto:false}]);
@@ -28,16 +26,15 @@ CombatAction.prototype.execute = function()
     {
     }   
 }
+CombatAction.prototype.cleanup = function()
+{
+}
 CombatAction.prototype.Update = function(elapse)
 {
 }
 
 CombatAction.prototype.doFinish = function()
 {
-    console.log("Combat Action do finish");
-    
-    //this.state.removeTopAction();
-    
     /*if(this.combater.numberOfActions)
     {    
         //var action = new AIDecide(this.game, this.gameref, this.combater, this.combater.Speed(), this.state);

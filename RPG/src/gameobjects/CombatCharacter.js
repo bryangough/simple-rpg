@@ -8,7 +8,7 @@ var CombatCharacter = function (maingame, jsondata, map)
     var actions = this.jsondata.triggers;
     this.weapons = [];
     this.numberOfActions = 2;
-    
+    this.isCombatCharacter = true;
     for(var i=0;i<actions.length;i++)
     {
         var action = actions[i];
@@ -123,15 +123,27 @@ CombatCharacter.prototype.takeDmg = function(dmg)
         this.selfhp += this.shieldhp;
         this.shieldhp = 0;
     }
-    if(this.selfhp<0)
+    if(this.selfhp<=0)
     {
-        console.log(this,"die");
+        //console.log(this,"die");
+        this.changeState("die");
+        this.eventDispatcher.testAction();
+    }
+    else
+    {
+        this.changeState("hurt");
     }
     this.updateBars();
 }
+
+CombatCharacter.prototype.doDead = function()
+{
+    this.currentTile.changeWalkable(false);
+    this.eventDispatcher.doAction("OnDeath",this);
+}
 CombatCharacter.prototype.isAlive = function()
 {
-    if(this.selfhp<0)
+    if(this.selfhp<=0)
         return false;
     return true;
 }
@@ -218,24 +230,38 @@ CombatCharacter.prototype.handleOut = function()
 //get movement range
 CombatCharacter.prototype.findWalkable = function(moveIndex) 
 {
-    return this.map.hexHandler.doFloodFill(moveIndex,this.movementspeed);
+    return this.map.hexHandler.doFloodFill(moveIndex, this.movementspeed, true);
 }
 CombatCharacter.prototype.findWalkableFromCurrent = function() 
 {
-    return this.map.hexHandler.doFloodFill(this.currentTile,this.movementspeed);
+    return this.map.hexHandler.doFloodFill(this.currentTile, this.movementspeed, true);
+}
+CombatCharacter.prototype.removeCurrentTile = function(path)
+{
+    for(var k=0;k<path.length;k++)
+    {
+        for(var i=0;i<path[k].length;i++)
+        {
+            if(path[k][i] == this.currentTile)
+            {
+                //remove it
+            }
+        }
+    }
 }
 CombatCharacter.prototype.Speed = function()     
 {
     return 1;
 }
-MovingCharacter.prototype.shootGun = function(target, weapon, afterAction)
+CombatCharacter.prototype.shootGun = function(target, weapon, afterAction)
 {
-    this.changeState("use");
+    this.faceTarget(target);
+    this.changeState("shoot");
     this.actionsaftermove = [{func:this.afterShoot, para:[{weapon:weapon, target:target, afterAction:afterAction}], removeself:false, callee:this, con:null, walkto:false}];
 }
-MovingCharacter.prototype.afterShoot = function(params)
+CombatCharacter.prototype.afterShoot = function(params)
 {
-    console.log(params);
+    //console.log(params);
     var target = params.target;
     var weapon = params.weapon;
     var afterAction = params.afterAction;
@@ -244,4 +270,17 @@ MovingCharacter.prototype.afterShoot = function(params)
     //this will eventually move to the weapon shot class, so that it applys after the shot is done
         
     afterAction.func.apply(afterAction.callee,[]);
+}
+//
+CombatCharacter.prototype.doShoot = function()
+{
+    //animate shot
+    
+    
+    if(this.actionsaftermove)
+    {
+        this.eventDispatcher.completeAction(this.actionsaftermove, true);
+    }
+    this.clearTargetTile();
+    this.changeState("idle");
 }

@@ -19,7 +19,7 @@ HighlightHex.constructor = HighlightHex;
 HighlightHex.prototype.setup = function() 
 {
     this.neighborLights = [];
-    for(var i=0;i<45;i++)
+    for(var i=0;i<210;i++)
     {
         var light = this.add(new Phaser.Group(this.game,null));
         var high;

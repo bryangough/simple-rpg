@@ -7,16 +7,16 @@ BattleTick.constructor = BattleTick;
 
 BattleTick.prototype.update = function(elapsedTime) 
 {
+    if(this.mActions.length<=0)
+    {
+        //this should never happen
+        console.log("BattleTick no actions");
+        return;
+    }
     for(var i=0;i<this.mActions.length;i++)
     {
         var a = this.mActions[i];
-        //console.log(a);
         a.Update(elapsedTime);
-    }
-    if(this.mActions.length<=0)
-    {
-        //console.log("end combat");
-        return;
     }
     if(this.mActions[this.mActions.length-1].isReady)
     {

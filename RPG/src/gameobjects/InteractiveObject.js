@@ -26,19 +26,30 @@ var InteractiveObject = function (maingame, jsondata, map)
     this.currentTile=null;//moveable location
     this.hasstates = false;
     this.eventDispatcher = new EventDispatcher(this.game,this.maingame,this);
+    
+    this.inputtest;
 }
 InteractiveObject.prototype = Object.create(Phaser.Sprite.prototype);
 InteractiveObject.constructor = InteractiveObject;
-
+InteractiveObject.prototype.allowInput = function(val) 
+{
+    this.inputEnabled = val;
+    if(this.input!=null)
+        this.input.priorityID = 100;
+}
 InteractiveObject.prototype.dosetup = function() 
 {
+    
     this.eventDispatcher.init(this.jsondata.triggers);
    
     this.setupArt(this.jsondata);
     this.footprint;//
     //this.events.onInputDown.add(this.handleClick, this);    
+    this.allowInput(true);
+    
     this.setupReactToAction();
-    this.inputEnabled = true;
+    //
+    
     //
     var actions = this.jsondata.triggers;
     for(var i=0;i<actions.length;i++)
@@ -97,7 +108,7 @@ InteractiveObject.prototype.dosetup = function()
 }
 InteractiveObject.prototype.finalSetup = function()     
 {
-    
+    this.inputtest = this.input;
 }
 //
 //  
@@ -250,6 +261,7 @@ InteractiveObject.prototype.setupReactToAction = function()
 }
 InteractiveObject.prototype.handleClick = function(touchedSprite, pointer) 
 {
+    console.log("handle click",this.input, this.inputtest, this);
     if(GlobalEvents.currentacion == GlobalEvents.WALK)
         return;
     else if(GlobalEvents.currentacion == GlobalEvents.TOUCH)
@@ -260,9 +272,11 @@ InteractiveObject.prototype.handleClick = function(touchedSprite, pointer)
         this.eventDispatcher.doAction("OnTalk", this.map.playerCharacter);
     else if(GlobalEvents.currentacion == GlobalEvents.ITEM)
         this.eventDispatcher.doAction("OnUseItem", this.map.playerCharacter);
-    //else if(GlobalEvents.currentacion == GlobalEvents.COMBATSELECT)
-        //this.eventDispatcher.doAction("OnUseItem", this.map.playerCharacter);
-    
+    else if(GlobalEvents.currentacion == GlobalEvents.COMBATSELECT)
+    {
+        this.maingame.gGameMode.mCurrentState.inputHandler.clickedObject(this);
+    }
+    pointer.active = false;
     this.handleOut();
 }
 InteractiveObject.prototype.setupArt = function(json) 

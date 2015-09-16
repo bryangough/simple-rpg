@@ -21,11 +21,9 @@ NormalState.prototype.render = function()
 }
 NormalState.prototype.onEnter = function(params) 
 {
-    //console.log("normal enter");
     this.inputHandler.turnOn();
 }
 NormalState.prototype.onExit = function() 
 {
-    //console.log("normal exit");
     this.inputHandler.turnOff();
 }

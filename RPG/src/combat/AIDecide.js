@@ -15,7 +15,7 @@ AIDecide.prototype.execute = function()
 {
    // this.state.removeTopAction();
     
-    console.log("AI execute");
+    //console.log("AI execute");
     if(this.combater.isAlive())
     {
         //move to random location -
@@ -29,6 +29,15 @@ AIDecide.prototype.execute = function()
         
         this.state.addToActionsFront(action);
     }
+    else
+    {
+        this.gameref.toggleCombat();//I don't like this
+        //this.state.leaveThisState();//test if no more enemies
+        this.state.moveOn();
+    }
+}
+AIDecide.prototype.cleanup = function()
+{
 }
 AIDecide.prototype.randomMove = function()
 {

@@ -71,6 +71,8 @@ Grid.prototype.GetMapCoords = function(i,j)
 }
 Grid.prototype.PosToMap = function(x,y)
 {
+    if(this.coords==undefined)
+        this.coords = new Point();
     if(this.type=="HexIsoFallout")
     {
         x -= 16;//offset
@@ -93,6 +95,7 @@ Grid.prototype.PosToMap = function(x,y)
     else if(this.type=="Iso")
     {
         var tile = this.maingame.hexHandler.checkHex(x,y);
+        //console.log(tile);
         this.coords.x = tile.posx;
         this.coords.y = tile.posy;
         //this.coords.x = x * (this.width) + ((y % 2) * ((this.width / 2)));          
@@ -125,13 +128,16 @@ SimpleTile.prototype.callFunction = function(fnstring,fnparams)
 }
 SimpleTile.prototype.changeWalkable = function(walkableto) 
 {
+    console.log("updatewalkable",this.maingame.updatewalkable);
+    
     if(walkableto==true||walkableto=="true")
         this.maingame.walkableArray[this.posx][this.posy] = 1;
     else
         this.maingame.walkableArray[this.posx][this.posy] = 0;
-    //console.log("changeWalkable",walkableto,(walkableto=="true"),this.maingame.walkableArray[this.posx][this.posy]);
+
     this.walkable = walkableto;
     this.maingame.updatewalkable = true;
+    
 }
 SimpleTile.prototype.enterTile = function(enterer)
 {
@@ -177,10 +183,12 @@ BaseTile.prototype.callFunction = function(fnstring,fnparams)
 }
 BaseTile.prototype.changeWalkable = function(walkableto) 
 {
+    //console.log("asdf",this.maingame);
+    
     if(walkableto)
-        this.maingame.walkableArray[this.posx][this.posy] = 1;
+        this.maingame.map.walkableArray[this.posx][this.posy] = 1;
     else
-        this.maingame.walkableArray[this.posx][this.posy] = 0;
+        this.maingame.map.walkableArray[this.posx][this.posy] = 0;
     //
     this.walkable = walkableto;
     this.maingame.updatewalkable = true;

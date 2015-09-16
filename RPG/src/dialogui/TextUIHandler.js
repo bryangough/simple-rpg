@@ -4,7 +4,6 @@ var TextUIHandler = function (game, x, y, gameref, parent)
     this.gameref = gameref;
     this.game = game;
     
-    this.diagpanel;//Dialog UI;
     this.justTextPopup;//Single text display
     this.barkHandler;
     this.activeButtons;//Action Buttons ui
@@ -16,18 +15,12 @@ var TextUIHandler = function (game, x, y, gameref, parent)
 //TextUIHandler.prototype = Object.create(Phaser.Group.prototype);
 //TextUIHandler.constructor = TextUIHandler;
 
-TextUIHandler.prototype.setup = function(mapData, uiGroup)
+TextUIHandler.prototype.setup = function(mapData, uiGroup, dialoghandler)
 {
     this.mapData = mapData;
     this.uiGroup = uiGroup;
     
-    this.dialoghandler = new DialogHandler(this.game, this.gameref, this.mapData.data.Conversations,    this.mapData.data.Actors);
-        //
-    this.diagpanel = new DialogPanel(this.game,this.gameref,this.dialoghandler);
-    this.game.add.existing(this.diagpanel);
-    this.uiGroup.add(this.diagpanel);
-    this.diagpanel.setup();
-
+        //    
     this.justTextPopup = new JustTextPopup(this.game,this.gameref,this.dialoghandler);
     this.game.add.existing(this.justTextPopup);
     this.uiGroup.add(this.justTextPopup);
@@ -41,11 +34,7 @@ TextUIHandler.prototype.setup = function(mapData, uiGroup)
     this.game.add.existing(this.rollovertext);
     this.uiGroup.add(this.rollovertext);
 }
-TextUIHandler.prototype.showDialog = function(convid){
-    this.diagpanel.startDialog(convid);
-    GlobalEvents.tempDisableEvents();
-    this.gameref.pauseGame();
-}
+
 //this needs to be controlled by a queue?
 //if 2 are show at once, they are displayed 1 after the other
 TextUIHandler.prototype.showJustText = function(textDisplay)
@@ -71,14 +60,15 @@ TextUIHandler.prototype.showRollover = function(object)
         return;
     this.rollovertext.text = object.jsondata.displayName;
     this.rollovertext.anchor.x = 0.5;
-    this.rollovertext.x = (object.x + this.gameref.map.mapGroup.x) - object.x * this.gameref.map.scaledto;
-    
-    this.rollovertext.y = object.y + this.gameref.map.mapGroup.y - object.height/2;
     this.rollovertext.visible = true;
+
+    this.rollovertext.x = (object.x + this.gameref.map.mapGroup.x) * this.gameref.map.scaledto;
+    this.rollovertext.y = (object.y + this.gameref.map.mapGroup.y) * this.gameref.map.scaledto;// - object.height * this.gameref.map.scaledto * 2;
+    
 
     //if display is off the screen
     if(this.rollovertext.y<0){
-        this.rollovertext.y = object.y + this.map.mapGroup.y;// + object.height;// + object.height;
+        this.rollovertext.y = object.y + this.gameref.map.mapGroup.y;// + object.height;// + object.height;
     }
     this.rollovertext.tint = 0x9999ff;
 }

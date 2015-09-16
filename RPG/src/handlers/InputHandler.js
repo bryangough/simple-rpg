@@ -15,6 +15,7 @@ InputHandler.prototype.turnOn = function()
     this.movecallbackindex = this.gameref.input.addMoveCallback(this.onMove, this); 
     this.gameref.input.onDown.add(this.doDragScreen, this);
     this.gameref.input.onUp.add(this.clickedHex, this);
+    this.gameref.input.priorityID = -100;
 }
 InputHandler.prototype.turnOff = function()
 {
@@ -72,8 +73,8 @@ InputHandler.prototype.onMove = function(pointer, x, y)
     //console.log(this.input.worldX,this.gameref.map.mapGroup.x,this.input.worldX-this.gameref.map.mapGroup.x);
 
     //this.highlightHex.doShowPath(this.pathfinder,this.playerCharacter.currentTile,moveIndex);
-    //this.hexHandler.dolines(playertile,moveIndex,true,this.highlightHex);
-    //var fridges = this.gameref.map.hexHandler.doFloodFill(moveIndex,6);
+    this.gameref.map.hexHandler.dolines(playertile,moveIndex,false,this.gameref.map.highlightHex);
+    //var fridges = this.gameref.map.hexHandler.doFloodFill(moveIndex,6,true);
     //this.gameref.map.highlightHex.drawFringes(fridges);
     this.gameref.map.highlightHex.highlighttilebytile(0,moveIndex);
     //this.highlightHex.highilightneighbors(moveIndex);
@@ -88,8 +89,12 @@ InputHandler.prototype.doDragScreen = function(pointer)
     this.dragPoint.x = pointer.x;
     this.dragPoint.y = pointer.y;
 }
+InputHandler.prototype.clickedObject = function(clickedObject)
+{
+}
 InputHandler.prototype.clickedHex = function(pointer,b)
 {
+    
     //console.log("hex",pointer.active);
     
     //this needs to be blocked if clicking ui

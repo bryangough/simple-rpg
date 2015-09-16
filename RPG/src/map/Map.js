@@ -84,8 +84,8 @@ Map.prototype.createMapTiles = function(passedMap){
         var hexagonWidth = layer1.hexWidth;
         var hexagonHeight = layer1.hexHeight;
 
-        var gridSizeY = layer1.height;
-        var gridSizeX = layer1.width;
+        this.gridSizeY = layer1.height;
+        this.gridSizeX = layer1.width;
         var tiles = layer1.data;
         var tilesetid = layer1.tilesetid;
         var offsetx = layer1.offsetx || 0;
@@ -110,25 +110,25 @@ Map.prototype.createMapTiles = function(passedMap){
         //
         if(layer1.handleSprite)
         {
-            for(var i = 0; i < gridSizeX; i ++)
+            for(var i = 0; i < this.gridSizeX; i ++)
             {
 
                 if(layer1.handleMovement)
                     hexagonArray[i] = [];
-                for(var j = 0; j < gridSizeY; j ++)
+                for(var j = 0; j < this.gridSizeY; j ++)
                 {
-                    objectName = tiles[j*gridSizeX+i];
+                    objectName = tiles[j*this.gridSizeX+i];
                     tilereference = this.getTile(objectName,tilesetid);
                     tempPoint = this.spritegrid.GetMapCoords(i,j);
 
                     if(layer1.handleMovement)//make tile
                     {
-                        temptile = new WalkableTile(this.game, tilereference.tile+".png", tilereference.spritesheet, i, j, tempPoint.x, tempPoint.y, this);
+                        temptile = new WalkableTile(this.game, tilereference.tile+".png", tilereference.spritesheet, i, j, tempPoint.x, tempPoint.y, this.gameRef);
                         hexagonArray[i][j]=temptile;//only if same
                     }
                     else
                     {
-                        temptile = new GraphicTile(this.game, tilereference.tile+".png", tilereference.spritesheet, i, j, tempPoint.x, tempPoint.y, this);
+                        temptile = new GraphicTile(this.game, tilereference.tile+".png", tilereference.spritesheet, i, j, tempPoint.x, tempPoint.y, this.gameRef);
                     }
                     this.hexagonGroup.add(temptile);
                     this.addLocationTextToTile(tempPoint.x,tempPoint.y,hexagonWidth,hexagonHeight,i,j);
@@ -142,7 +142,7 @@ Map.prototype.createMapTiles = function(passedMap){
            // this.objectoffset.x = hexagonWidth/2;
             //this.objectoffset.y = hexagonHeight;
             //console.log(this.objectoffset);
-            for(var i = 0; i < gridSizeX; i ++)
+            for(var i = 0; i < this.gridSizeX; i ++)
             {
                 if(!layer1.handleSprite)
                 {
@@ -150,9 +150,9 @@ Map.prototype.createMapTiles = function(passedMap){
                     this.highlightArray[i] = [];
                 }
                 this.walkableArray[i] = [];
-                for(var j = 0; j < gridSizeY; j ++)
+                for(var j = 0; j < this.gridSizeY; j ++)
                 {
-                    this.walkableArray[i][j] = layer1.walkable[j*gridSizeX+i];
+                    this.walkableArray[i][j] = layer1.walkable[j*this.gridSizeX+i];
                     //this.walkableArray[i][j] = 1;
                     if(!layer1.handleSprite)//no sprite - need to something to select (this might not need to be destroyed)
                     {
@@ -262,7 +262,7 @@ Map.prototype.createMapTiles = function(passedMap){
                 {
                     if(!selectedtile.eventDispatcher)
                     {
-                        selectedtile.eventDispatcher = new EventDispatcher(this.game,this,selectedtile);
+                        selectedtile.eventDispatcher = new EventDispatcher(this.game,this.gameRef,selectedtile);
                     }
                     selectedtile.eventDispatcher.receiveData(actionSpots[i].triggers);
                 }
@@ -273,17 +273,17 @@ Map.prototype.createMapTiles = function(passedMap){
     this.hexHandler.hexagonArray = hexagonArray;
     this.hexHandler.waterTilesArray = waterTilesArray;
     //these should be screen width and height
-    this.mapGroup.y = (440-hexagonHeight*Math.ceil(gridSizeY/2))/2;
+    this.mapGroup.y = (440-hexagonHeight*Math.ceil(this.gridSizeY/2))/2;
 
-    //if(gridSizeY%2==0){
+    //if(this.gridSizeY%2==0){
     //    this.mapGroup.y-=hexagonHeight/4;
     //}
-    this.mapGroup.x = 0;//(900-Math.ceil(gridSizeX)*hexagonWidth)/2;
-    //if(gridSizeX%2==0){
+    this.mapGroup.x = 0;//(900-Math.ceil(this.gridSizeX)*hexagonWidth)/2;
+    //if(this.gridSizeX%2==0){
     //    this.mapGroup.x-=hexagonWidth/8;
     //}
     //
-    this.highlightHex = new HighlightHex(this.game, this, this.hexHandler);
+    this.highlightHex = new HighlightHex(this.game, this.gameRef, this.hexHandler);
     //this.game.add.existing(this.highlightHex);
     this.highlightHex.setup();
     this.highlightGroup.add(this.highlightHex);
@@ -305,7 +305,7 @@ Map.prototype.createMapTiles = function(passedMap){
     this.objectGroup.add(this.playerCharacter);
     //
     this.gameRef.pathfinder.setGrid(this.walkableArray, [1]);
-    this.masker = new CheapMasker(this.game, this, this.maskableobjects);
+    this.masker = new CheapMasker(this.game, this.gameRef, this.maskableobjects);
     //
     this.doZoom();
     this.hexagonGroup.sort('y', Phaser.Group.SORT_ASCENDING);
@@ -334,7 +334,7 @@ Map.prototype.getCombatCharacters = function()
     var returnArray = [];
     for(var i=0;i<this.interactiveObjects.length;i++)
     {
-        if(this.interactiveObjects[i].hostile || this.interactiveObjects[i].IsPlayer)
+        if( (this.interactiveObjects[i].hostile || this.interactiveObjects[i].IsPlayer) && this.interactiveObjects[i].isAlive() )
         {
             returnArray.push(this.interactiveObjects[i]);
         }
@@ -378,6 +378,20 @@ Map.prototype.userExit = function(data) {
     this.createMapTiles(currentmap);        
 }
 Map.prototype.refreshWalkablView = function(){
+    for(var i = 0; i < this.gridSizeX; i ++)
+    { 
+        for(var j = 0; j < this.gridSizeY; j ++)
+        {
+            //console.log(this.hex
+            var tile = this.hexHandler.hexagonArray[i][j];
+            if(this.walkableArray[i][j]==0)
+                tile.tint = 0xff00ff;
+            else
+                tile.tint = 0xffffff;
+        }
+    }
+}
+/*Map.prototype.refreshWalkablView = function(){
     for(var i = 0; i < this.movementgrid.gridSizeX; i ++)
     { 
         for(var j = 0; j < this.movementgrid.gridSizeY; j ++)
@@ -390,4 +404,4 @@ Map.prototype.refreshWalkablView = function(){
                 tile.tint = 0xffffff;
         }
     }
-}
+}*/

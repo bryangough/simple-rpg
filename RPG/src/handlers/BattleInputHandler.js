@@ -35,10 +35,10 @@ BatttleInputHandler.prototype.onMove = function(pointer, x, y)
     }
     if(this.playerDecide==null)
         return;
-    if(GlobalEvents.currentacion != GlobalEvents.WALK)
-    {
+    if(GlobalEvents.currentacion != GlobalEvents.WALK && GlobalEvents.currentacion != GlobalEvents.COMBATSELECT)
         return;
-    }
+    if(!pointer.active)
+        return;
     if(this.game.global.pause)
     {
         return;
@@ -64,6 +64,11 @@ BatttleInputHandler.prototype.withinFringes = function(moveIndex)
     }
     return false;
 }
+BatttleInputHandler.prototype.hideInputAreas = function(combater) 
+{
+    this.gameref.map.highlightHex.cleanuptiles();
+}
+
 BatttleInputHandler.prototype.showAreaForMove = function(combater) 
 {
     this.frindges = combater.findWalkableFromCurrent();
@@ -71,6 +76,7 @@ BatttleInputHandler.prototype.showAreaForMove = function(combater)
 }
 BatttleInputHandler.prototype.clickedHex = function(pointer,b)
 {
+    console.log("click",pointer,pointer.active,this.gameref.input.priorityID);
     this.dragScreen = false;
     if(this.didDrag)        //test distance did it actually drag. or do I make a drag screen button?
     {
@@ -78,11 +84,12 @@ BatttleInputHandler.prototype.clickedHex = function(pointer,b)
         return;
     }
     //pointers will be false by other input ui methods so the character isn't randomly walking around
+    
     if(!pointer.active)
         return;
     if(this.playerDecide==null)
         return;
-    if(GlobalEvents.currentacion != GlobalEvents.WALK)
+    if(GlobalEvents.currentacion != GlobalEvents.WALK && GlobalEvents.currentacion != GlobalEvents.COMBATSELECT)
         return;
     if(this.game.global.pause)
     {
@@ -93,7 +100,6 @@ BatttleInputHandler.prototype.clickedHex = function(pointer,b)
     var pointery = (this.gameref.input.worldY-this.gameref.map.mapGroup.y)/this.gameref.map.scaledto;
     var moveIndex =  this.gameref.map.hexHandler.checkHex(pointerx,pointery);
     
-    console.log(moveIndex,this.withinFringes(moveIndex));
     if(moveIndex!=null)
     {
         if(this.game.currentacion==this.game.WALK)
@@ -106,3 +112,10 @@ BatttleInputHandler.prototype.clickedHex = function(pointer,b)
         }
     }
 } 
+BatttleInputHandler.prototype.clickedObject = function(clickedObject)
+{
+    if(this.playerDecide==null)
+        return;
+    this.playerDecide.dotouched(clickedObject);
+}
+//if recieve both use the touched

@@ -4,7 +4,6 @@
 var MovingCharacter = function (maingame, jsondata, map)
 {
     InteractiveObject.call(this, maingame, jsondata, map);
-    //console.log("create mover");
     //
     this.oldTile=null;
     
@@ -149,6 +148,7 @@ MovingCharacter.prototype.movercallback = function(path){
     path = path || [];
     path = this.map.hexHandler.pathCoordsToTiles(path);
     this.setPath(path);
+    this.maingame.map.highlightHex.showPathCallback(path);
 }
 MovingCharacter.prototype.atTargetTile = function()
 {
@@ -180,12 +180,9 @@ MovingCharacter.prototype.clearTargetTile = function()
 MovingCharacter.prototype.findtile = function()
 {
     var onmap = this.map.spritegrid.PosToMap(this.x,this.y);
-    //console.log("--",onmap.x,onmap.y);
    // onmap = this.map.spritegrid.GetMapCoords(onmap.x,onmap.y);
     this.posx = onmap.x;
     this.posy = onmap.y;
-    //console.log(this.posx,this.posy);
-  //  console.log("find tile",this.posx,this.posy);
 }
 //
 MovingCharacter.prototype.doUse = function()
@@ -197,9 +194,21 @@ MovingCharacter.prototype.doUse = function()
     this.clearTargetTile();
     this.changeState("idle");
 }
+MovingCharacter.prototype.faceTarget = function(target)
+{
+    if(this.x<target.x)
+        this.scale.x = 1;
+    else
+        this.scale.x = -1;
+}
 //
 MovingCharacter.prototype.step = function(elapseTime) 
 {
+    if(this.inputtest != this.input)
+    {
+        this.inputtest = this.input;
+        console.log("change",this.inputtest,this.input);
+    }
     if(this.currentTile==null)
     {
         this.currentTile = this.map.hexHandler.checkHex(this.x,this.y);
@@ -213,18 +222,18 @@ MovingCharacter.prototype.step = function(elapseTime)
         {
             //need to test if next spot is now not walkable
             this.currentTile = this.map.hexHandler.checkHex(this.x,this.y);
+            //console.log(this.oldTile, this.currentTile);
             if(this.oldTile != this.currentTile)
             {
-                //this.oldTile.changeWalkable(true);
-                //this.oldTile = this.currentTile;
-                //this.currentTile.changeWalkable(false);
+                this.oldTile.changeWalkable(true);
+                this.oldTile = this.currentTile;
+                this.currentTile.changeWalkable(false);
             }
 
             if(this.currentTile==null)
             {
                 //center old then try again
             }
-            //console.log(this.currentTile.posx,this.currentTile.posy,this.nextTile.posx,this.nextTile.posy);
             if(this.currentTile.posx==this.nextTile.posx && this.currentTile.posy==this.nextTile.posy)
             {
                 this.pathlocation++;
@@ -246,7 +255,6 @@ MovingCharacter.prototype.step = function(elapseTime)
                         this.animations.play("idle");
                         //
                         if(this.objectmovingto!=null && this.currentTile!=null){
-                            //console.log(this.objectmovingto,this.currentTile,this.objectmovingto.areWeNeighbours(this.currentTile));
                             if(this.objectmovingto.areWeNeighbours(this.currentTile)){
                                 this.atTargetTile();
                             }
