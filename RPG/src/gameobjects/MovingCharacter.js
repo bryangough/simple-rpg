@@ -204,11 +204,6 @@ MovingCharacter.prototype.faceTarget = function(target)
 //
 MovingCharacter.prototype.step = function(elapseTime) 
 {
-    if(this.inputtest != this.input)
-    {
-        this.inputtest = this.input;
-        console.log("change",this.inputtest,this.input);
-    }
     if(this.currentTile==null)
     {
         this.currentTile = this.map.hexHandler.checkHex(this.x,this.y);

@@ -138,7 +138,7 @@ CombatCharacter.prototype.takeDmg = function(dmg)
 
 CombatCharacter.prototype.doDead = function()
 {
-    this.currentTile.changeWalkable(false);
+    this.currentTile.changeWalkable(true);
     this.eventDispatcher.doAction("OnDeath",this);
 }
 CombatCharacter.prototype.isAlive = function()

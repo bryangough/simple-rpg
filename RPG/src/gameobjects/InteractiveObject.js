@@ -27,7 +27,7 @@ var InteractiveObject = function (maingame, jsondata, map)
     this.hasstates = false;
     this.eventDispatcher = new EventDispatcher(this.game,this.maingame,this);
     
-    this.inputtest;
+    
 }
 InteractiveObject.prototype = Object.create(Phaser.Sprite.prototype);
 InteractiveObject.constructor = InteractiveObject;
@@ -103,12 +103,11 @@ InteractiveObject.prototype.dosetup = function()
         this.eventDispatcher.doAction("OnActivate", null);
     //
     this.currentTile = this.map.hexHandler.checkHex(this.x,this.y);
-    //get tile? these tiles don't exists
     this.finalSetup();
 }
 InteractiveObject.prototype.finalSetup = function()     
 {
-    this.inputtest = this.input;
+    
 }
 //
 //  
@@ -261,7 +260,7 @@ InteractiveObject.prototype.setupReactToAction = function()
 }
 InteractiveObject.prototype.handleClick = function(touchedSprite, pointer) 
 {
-    console.log("handle click",this.input, this.inputtest, this);
+    //console.log("handle click",this.input, this.inputtest, this);
     if(GlobalEvents.currentacion == GlobalEvents.WALK)
         return;
     else if(GlobalEvents.currentacion == GlobalEvents.TOUCH)

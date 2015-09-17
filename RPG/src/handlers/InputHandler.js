@@ -7,19 +7,18 @@ var InputHandler = function (game, gameref)
     this.dragScreen = false;
     this.didDrag = false;
     this.dragPoint = new Point(0,0);
-    
 };
 //
 InputHandler.prototype.turnOn = function()
 {
-    this.movecallbackindex = this.gameref.input.addMoveCallback(this.onMove, this); 
+    this.gameref.input.addMoveCallback(this.onMove, this); 
     this.gameref.input.onDown.add(this.doDragScreen, this);
     this.gameref.input.onUp.add(this.clickedHex, this);
-    this.gameref.input.priorityID = -100;
+    this.gameref.input.priorityID = 0;
 }
 InputHandler.prototype.turnOff = function()
 {
-    this.gameref.input.deleteMoveCallback(this.movecallbackindex); 
+    this.gameref.input.deleteMoveCallback(this.onMove, this); 
     this.gameref.input.onDown.remove(this.doDragScreen, this);
     this.gameref.input.onUp.remove(this.clickedHex, this);
 }
@@ -73,7 +72,7 @@ InputHandler.prototype.onMove = function(pointer, x, y)
     //console.log(this.input.worldX,this.gameref.map.mapGroup.x,this.input.worldX-this.gameref.map.mapGroup.x);
 
     //this.highlightHex.doShowPath(this.pathfinder,this.playerCharacter.currentTile,moveIndex);
-    this.gameref.map.hexHandler.dolines(playertile,moveIndex,false,this.gameref.map.highlightHex);
+    //this.gameref.map.hexHandler.dolines(playertile,moveIndex,false,this.gameref.map.highlightHex);
     //var fridges = this.gameref.map.hexHandler.doFloodFill(moveIndex,6,true);
     //this.gameref.map.highlightHex.drawFringes(fridges);
     this.gameref.map.highlightHex.highlighttilebytile(0,moveIndex);

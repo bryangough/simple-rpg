@@ -8,8 +8,6 @@
 //
 //
 //
-
-
 BattleState = function (statemachine, game, gameref) {
     this.statemachine = statemachine;
     this.game = game;
@@ -21,8 +19,8 @@ BattleState = function (statemachine, game, gameref) {
     this.mEntities = [];//entitys
     this.mBattleStates = new StateMachine();
     
-    this.mBattleStates.add("tick", new BattleTick(this.mBattleStates, this.mActions));
-    this.mBattleStates.add("execute", new BattleExecute(this.mBattleStates, this.mActions));
+    this.mBattleStates.add("tick", new BattleTick(this.mBattleStates, this));
+    this.mBattleStates.add("execute", new BattleExecute(this.mBattleStates));
     
     
     this.activeButtons = new CombatButtons(this.game, this.gameref);
@@ -126,35 +124,20 @@ BattleState.prototype.onExit = function()
         this.mEntities[i].endCombat();
     }
     if(GlobalEvents.currentacion == GlobalEvents.COMBATSELECT)
-        GlobalEvents.WALK;
+        GlobalEvents.currentacion = GlobalEvents.WALK;
 }
 BattleState.prototype.leaveThisState = function() 
 {
-    
-    //are their active enemies?
     for(var i=0;i<this.mEntities.length;i++)
     {
-        //console.log(this.mEntities[i].isAlive(), this.mEntities[i].hostile, !this.mEntities[i].IsPlayer);
         if(this.mEntities[i].isAlive() && this.mEntities[i].hostile && !this.mEntities[i].IsPlayer)
         {
-            //console.log("alive",this.mEntities[i]);
             return false;
         }
     }
     return true;
 }
-BattleState.prototype.toggleCombat = function() 
+BattleState.prototype.getActions = function()
 {
-    
-    //are their active enemies?
-    for(var i=0;i<this.mEntities.length;i++)
-    {
-        //console.log(this.mEntities[i].isAlive(), this.mEntities[i].hostile, !this.mEntities[i].IsPlayer);
-        if(this.mEntities[i].isAlive() && this.mEntities[i].hostile && !this.mEntities[i].IsPlayer)
-        {
-            //console.log("alive",this.mEntities[i]);
-            return false;
-        }
-    }
-    return true;
+    return this.mActions;
 }

@@ -1,26 +1,29 @@
-BattleTick = function (mStateMachine, mActions) {
+BattleTick = function (mStateMachine, state) {
     this.mStateMachine = mStateMachine;
-    this.mActions = mActions;
+    this.state = state;
+   // this.mActions = mActions;
 }
 BattleTick.prototype = Object.create(EmptyState.prototype);
 BattleTick.constructor = BattleTick;
 
 BattleTick.prototype.update = function(elapsedTime) 
 {
-    if(this.mActions.length<=0)
+    var mActions = this.state.getActions();
+    
+    if(mActions.length<=0)
     {
         //this should never happen
         console.log("BattleTick no actions");
         return;
     }
-    for(var i=0;i<this.mActions.length;i++)
+    for(var i=0;i<mActions.length;i++)
     {
-        var a = this.mActions[i];
+        var a = mActions[i];
         a.Update(elapsedTime);
     }
-    if(this.mActions[this.mActions.length-1].isReady)
+    if(mActions[mActions.length-1].isReady)
     {
-        var top = this.mActions.pop();
+        var top = mActions.pop();
         this.mStateMachine.change("execute", top);
     }
 }

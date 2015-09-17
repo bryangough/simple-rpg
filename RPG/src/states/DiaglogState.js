@@ -28,10 +28,12 @@ DiaglogState.prototype.render = function()
 }
 DiaglogState.prototype.onEnter = function(params) 
 {
+    this.gameref.normalUI.hide();
 
 }
 DiaglogState.prototype.onExit = function() 
 {
+    this.gameref.normalUI.show();
 }
 DiaglogState.prototype.startDialog = function(dialogid)
 {

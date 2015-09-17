@@ -1,4 +1,4 @@
-BattleExecute = function (mStateMachine, mActions) {
+BattleExecute = function (mStateMachine) {
     this.topAction = null;
 }
 BattleExecute.prototype = Object.create(EmptyState.prototype);

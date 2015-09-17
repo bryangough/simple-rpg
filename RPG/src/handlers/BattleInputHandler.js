@@ -76,7 +76,7 @@ BatttleInputHandler.prototype.showAreaForMove = function(combater)
 }
 BatttleInputHandler.prototype.clickedHex = function(pointer,b)
 {
-    console.log("click",pointer,pointer.active,this.gameref.input.priorityID);
+    //console.log("click",pointer,pointer.active,this.gameref.input.priorityID);
     this.dragScreen = false;
     if(this.didDrag)        //test distance did it actually drag. or do I make a drag screen button?
     {

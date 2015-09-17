@@ -92,13 +92,7 @@ BasicGame.Game.prototype = {
         this.graphics = this.game.add.graphics(0, 0);
         this.uiGroup.add(this.graphics);
         
-        //this.combatButton = this.game.add.button(this.game.world.width - 58, this.game.world.centerY + 60, 'ui', this.zoomIn, this, "Close Button0001.png", "Close Button0001.png", "Close Button0001.png", "Close Button0001.png");
-        
-        
-        //this.combatButton = this.game.add.button(this.game.world.width - 58, this.game.world.centerY - 60, 'ui', this.zoomOut, this, "button_darkblue_over.png", "button_darkblue_up.png", "button_darkblue_up.png", "button_darkblue_over.png");
-        
-        //
-        this.combatButton = this.game.add.button(this.game.world.width - 190, this.game.world.height - 51, 'ui', this.toggleCombat, this, "button_blue_over.png", "button_blue_up.png", "button_blue_up.png", "button_blue_over.png");
+
         
         this.updatewalkable = true;
     },
