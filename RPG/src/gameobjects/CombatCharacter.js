@@ -9,6 +9,16 @@ var CombatCharacter = function (maingame, jsondata, map)
     this.weapons = [];
     this.numberOfActions = 2;
     this.isCombatCharacter = true;
+    this.applyCombatActions(actions);
+};
+
+CombatCharacter.prototype = Object.create(MovingCharacter.prototype);
+CombatCharacter.constructor = CombatCharacter;
+
+CombatCharacter.prototype.applyCombatActions = function(actions)
+{
+    //console.log("applyCombatActions",this);
+    
     for(var i=0;i<actions.length;i++)
     {
         var action = actions[i];
@@ -26,10 +36,20 @@ var CombatCharacter = function (maingame, jsondata, map)
         {
             for(var j=0;j<action.weapons.length;j++)
             {
-                var weapon = new Weapon(action.weapons[j]);
-                this.weapons.push(weapon);
+                var weaponData = this.maingame.getGameData("Weapons",action.weapons[j]);
+                if(weaponData!=null && weaponData.triggers!=null)
+                {
+                    var weapon = new Weapon(weaponData.triggers);
+                    this.weapons.push(weapon);
+                }
             }
         }  
+        else if(action.type=="CharacterSpawn")
+        {
+            var enemy = this.maingame.getGameData("Enemy",actions[i].EnemyType);//this should be saved with here somehow
+            if(enemy!=null && enemy.triggers!=null)
+                this.applyCombatActions(enemy.triggers)
+        }
         else if(action.type=="powerBoosts")
         {
             //attacks / actions
@@ -54,15 +74,11 @@ var CombatCharacter = function (maingame, jsondata, map)
             */
         }   
     }
-};
-
-CombatCharacter.prototype = Object.create(MovingCharacter.prototype);
-CombatCharacter.constructor = CombatCharacter;
-
-
+}
 CombatCharacter.prototype.finalSetup = function()     
 {
-    this.setLocationByTile(this.currentTile);
+    if(this.currentTile!=null)
+        this.setLocationByTile(this.currentTile);
     this.setupHealthBar();
 }
 

@@ -20,8 +20,10 @@ var Map = function (game, gameRef)
     this.mapGroup;
     this.scaledto = 1;
 }
-Map.prototype.initialMap = function(mapData){
+Map.prototype.initialMap = function(mapData, gameData, playerData){
     this.mapData = mapData;
+    this.gameData = gameData;
+    this.playerData = playerData;
     this.startpos = this.mapData.startPos;//.split("_");
     var currentmap = this.mapData.maps[this.startpos.map];
     this.createMapTiles(currentmap);
@@ -118,7 +120,12 @@ Map.prototype.createMapTiles = function(passedMap){
                 for(var j = 0; j < this.gridSizeY; j ++)
                 {
                     objectName = tiles[j*this.gridSizeX+i];
+                    //console.log(i,j);
+                    //if(tilesetid==-1)
+                    //    continue;
+                    //if(
                     tilereference = this.getTile(objectName,tilesetid);
+                    
                     tempPoint = this.spritegrid.GetMapCoords(i,j);
 
                     if(layer1.handleMovement)//make tile
@@ -199,7 +206,10 @@ Map.prototype.createMapTiles = function(passedMap){
                         var isCombatSpecial = false;
                         for(var j=0;j<objects[i].triggers.length;j++)
                         {
-                            if(objects[i].triggers[j].type=="combatAttributes")
+                            //console.log(objects[i].triggers[j].type);
+                            //if(objects[i].triggers[j].type==null)
+                            //    console.log(this,"");
+                            if(objects[i].triggers[j].type=="combatAttributes" || objects[i].triggers[j].type=="CharacterSpawn")
                             {
                                 isCombatSpecial = true;
                                 break;
@@ -211,7 +221,7 @@ Map.prototype.createMapTiles = function(passedMap){
                             }
                         }
                         var interactiveobject;
-                        if(isMoveSpecial)
+                        if(isCombatSpecial)
                         {
                             interactiveobject = new CombatCharacter(this.gameRef, objects[i], this);
                         }
@@ -232,6 +242,7 @@ Map.prototype.createMapTiles = function(passedMap){
                 else//this might not be complete true? //without any triggers the object is just a picture
                 {
                     //
+                    //console.log(objects[i],objects[i].name,objects[i].tilesetid);
                     var objectreference = this.getTile(objects[i].name,objects[i].tilesetid);
                     spotx = objects[i].x;
                     spoty = objects[i].y * -1;
@@ -298,7 +309,7 @@ Map.prototype.createMapTiles = function(passedMap){
     //create player
     if(!this.playerCharacter)
     {
-        this.playerCharacter = new PlayerCharacter(this.gameRef, this.mapData.Player, this);
+        this.playerCharacter = new PlayerCharacter(this.gameRef, this.playerData.Player, this);
         this.game.add.existing(this.playerCharacter);
         this.playerCharacter.setLocationByTile(hexagonArray[this.startpos.x][this.startpos.y]);
     }

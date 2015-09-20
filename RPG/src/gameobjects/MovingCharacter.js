@@ -25,11 +25,7 @@ var MovingCharacter = function (maingame, jsondata, map)
     this.objectmovingto;
     this.movingtotile=null;
     //
-    for(var i=0;i<actions.length;i++)
-    {
-        if(actions[i].type=="mover")
-            this.walkspeed = actions[i].walkSpeed;
-    }
+    this.applyMoverActions(actions);
     this.movetoCenterEvery = true;
     this.douse = true;
     //
@@ -38,6 +34,39 @@ var MovingCharacter = function (maingame, jsondata, map)
 };
 MovingCharacter.prototype = Object.create(InteractiveObject.prototype);
 MovingCharacter.constructor = MovingCharacter;
+//
+MovingCharacter.prototype.applyMoverActions = function(actions)
+{
+    //console.log("applyMoverActions",this);
+    
+    for(var i=0;i<actions.length;i++)
+    {
+        if(actions[i].type=="mover")
+        {
+            //console.log(this);
+            this.walkspeed = actions[i].walkSpeed;
+        }
+        else if(actions[i].type=="CharacterSpawn")
+        {
+            var enemy = this.maingame.getGameData("Enemy",actions[i].EnemyType);
+            if(enemy!=null && enemy.triggers!=null)
+                this.applyMoverActions(enemy.triggers)
+        }
+        else if(actions[i].type=="AnimatedBody")
+        {
+            var body = this.maingame.getGameData("AnimatedBodies",actions[i].body);
+            //console.log(body,actions[i].body);
+            if(body!=null && body.triggers!=null)
+            {
+                this.applyMoverActions(body.triggers);
+                this.applyInteractActions(body.triggers);
+            }
+        }
+        
+        
+    }
+}
+
 //
 MovingCharacter.prototype.isMoving = function() 
 {

@@ -1,1 +1,1167 @@
-{"mapData":{},"Player":{"name":5,"displayName":"Player","state":"idle","maskable":true,"tilesetid":"interactiveactors","triggers":[{"type":"actorset","id":1},{"type":"animations","animations":[{"id":"idle","name":"movingPerson2_idle","start":1,"stop":2,"loop":true,"fps":-1,"createAtStart":true},{"id":"walk","name":"movingPerson2_walk","start":1,"stop":4,"loop":true,"fps":-1,"createAtStart":true},{"id":"use","name":"movingPerson2_use","start":1,"stop":7,"loop":false,"fps":-1,"createAtStart":true,"onComplete":"doUse","onCompleteParams":""},{"id":"shoot","name":"movingPerson2_shoot","start":1,"stop":7,"loop":false,"fps":-1,"createAtStart":true,"onComplete":"doShoot","onCompleteParams":""},{"id":"hurt","name":"movingPerson2_hurt","start":1,"stop":7,"loop":false,"nextState":"idle","fps":-1,"createAtStart":true},{"id":"die","name":"movingPerson2_die","start":1,"stop":7,"loop":false,"fps":-1,"createAtStart":true,"onComplete":"doDead","onCompleteParams":""}]},{"type":"mover","walkSpeed":0.1875},{"type":"combatAttributes","movementspeed":4,"shieldhp":30,"selfhp":2,"attackable":false,"hostile":false,"meleeDmg":1},{"type":"weaponsInventory","weapons":[{"weaponname":"fire","AIpower":1,"dmg":6,"range":40,"clipsize":-1,"inventoryImg":"fire_burning_0003","buttonImg":"fire_burning_0003"}]}]},"maps":{"Map":[{"height":14,"width":10,"hexWidth":100,"hexHeight":50,"tilesetid":"isotiles","tiletype":"Iso","handleSprite":true,"handleMovement":true,"data":[8,8,8,8,8,7,7,7,7,7,8,8,8,8,8,3,3,3,7,7,7,7,4,7,3,3,7,3,3,7,7,4,4,3,7,7,4,4,3,7,7,7,4,3,7,7,4,0,4,3,7,3,3,4,7,4,0,0,0,3,7,3,5,4,4,7,0,4,7,0,3,2,5,4,4,0,4,7,0,7,3,7,5,7,4,4,0,7,6,0,3,3,5,4,7,0,4,4,6,7,3,7,5,4,7,7,4,7,1,6,3,7,5,7,7,0,0,2,4,6,7,3,4,7,7,4,0,0,2,3,7,4,7,7,7,7,7,7,3,7],"walkable":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],"actionSpots":[],"objects":[{"name":6,"displayName":"Enemy","state":"idle","tilebase":false,"x":150,"y":-225,"posx":1,"posy":9,"offsetx":0,"offsety":0,"maskable":true,"tilesetid":"interactiveactors","triggers":[{"type":"actorset","id":5},{"type":"mover","walkSpeed":0.1875},{"type":"combatAttributes","movementspeed":4,"shieldhp":0,"selfhp":2,"attackable":true,"hostile":true,"meleeDmg":1},{"type":"weaponsInventory","weapons":[{"weaponname":"gun","AIpower":1,"dmg":2,"range":40,"clipsize":6,"inventoryImg":"log.png","buttonImg":"log.png"}]},{"type":"interacttrigger","trigger":"OnDeath","once":false,"walkto":false,"actions":[{"type":"Variable","name":3,"mode":"Add","variable":"","value":1}],"conditions":{"logic":"All","conditions":[]}},{"type":"animations","animations":[{"id":"idle","name":"movingPerson1_idle","start":1,"stop":2,"loop":true,"fps":-1,"createAtStart":true},{"id":"walk","name":"movingPerson1_walk","start":1,"stop":4,"loop":true,"fps":-1,"createAtStart":true},{"id":"use","name":"movingPerson1_use","start":1,"stop":7,"loop":false,"fps":-1,"createAtStart":true,"onComplete":"doUse","onCompleteParams":""},{"id":"shoot","name":"movingPerson1_shoot","start":1,"stop":7,"loop":false,"fps":-1,"createAtStart":true,"onComplete":"doShoot","onCompleteParams":""},{"id":"hurt","name":"movingPerson1_hurt","start":1,"stop":7,"loop":false,"nextState":"idle","fps":-1,"createAtStart":true},{"id":"die","name":"movingPerson1_die","start":1,"stop":7,"loop":false,"fps":-1,"createAtStart":true,"onComplete":"doDead","onCompleteParams":""}]}]},{"name":6,"displayName":"Enemy","state":"idle","tilebase":false,"x":100,"y":-50,"posx":1,"posy":2,"offsetx":0,"offsety":0,"maskable":true,"tilesetid":"interactiveactors","triggers":[{"type":"actorset","id":5},{"type":"mover","walkSpeed":0.1875},{"type":"combatAttributes","movementspeed":4,"shieldhp":0,"selfhp":2,"attackable":true,"hostile":true,"meleeDmg":1},{"type":"weaponsInventory","weapons":[{"weaponname":"gun","AIpower":1,"dmg":2,"range":40,"clipsize":6,"inventoryImg":"log.png","buttonImg":"log.png"}]},{"type":"interacttrigger","trigger":"OnDeath","once":false,"walkto":false,"actions":[{"type":"Variable","name":3,"mode":"Add","variable":"","value":1}],"conditions":{"logic":"All","conditions":[]}},{"type":"animations","animations":[{"id":"idle","name":"movingPerson1_idle","start":1,"stop":2,"loop":true,"fps":-1,"createAtStart":true},{"id":"walk","name":"movingPerson1_walk","start":1,"stop":4,"loop":true,"fps":-1,"createAtStart":true},{"id":"use","name":"movingPerson1_use","start":1,"stop":7,"loop":false,"fps":-1,"createAtStart":true,"onComplete":"doUse","onCompleteParams":""},{"id":"shoot","name":"movingPerson1_shoot","start":1,"stop":7,"loop":false,"fps":-1,"createAtStart":true,"onComplete":"doShoot","onCompleteParams":""},{"id":"hurt","name":"movingPerson1_hurt","start":1,"stop":7,"loop":false,"nextState":"idle","fps":-1,"createAtStart":true},{"id":"die","name":"movingPerson1_die","start":1,"stop":7,"loop":false,"fps":-1,"createAtStart":true,"onComplete":"doDead","onCompleteParams":""}]}]},{"name":6,"displayName":"Enemy","state":"idle","tilebase":false,"x":400,"y":0,"posx":4,"posy":0,"offsetx":0,"offsety":0,"maskable":true,"tilesetid":"interactiveactors","triggers":[{"type":"actorset","id":5},{"type":"mover","walkSpeed":0.1875},{"type":"combatAttributes","movementspeed":4,"shieldhp":0,"selfhp":2,"attackable":true,"hostile":true,"meleeDmg":1},{"type":"weaponsInventory","weapons":[{"weaponname":"gun","AIpower":1,"dmg":2,"range":40,"clipsize":6,"inventoryImg":"log.png","buttonImg":"log.png"}]},{"type":"interacttrigger","trigger":"OnDeath","once":false,"walkto":false,"actions":[{"type":"Variable","name":3,"mode":"Add","variable":"","value":1}],"conditions":{"logic":"All","conditions":[]}},{"type":"animations","animations":[{"id":"idle","name":"movingPerson1_idle","start":1,"stop":2,"loop":true,"fps":-1,"createAtStart":true},{"id":"walk","name":"movingPerson1_walk","start":1,"stop":4,"loop":true,"fps":-1,"createAtStart":true},{"id":"use","name":"movingPerson1_use","start":1,"stop":7,"loop":false,"fps":-1,"createAtStart":true,"onComplete":"doUse","onCompleteParams":""},{"id":"shoot","name":"movingPerson1_shoot","start":1,"stop":7,"loop":false,"fps":-1,"createAtStart":true,"onComplete":"doShoot","onCompleteParams":""},{"id":"hurt","name":"movingPerson1_hurt","start":1,"stop":7,"loop":false,"nextState":"idle","fps":-1,"createAtStart":true},{"id":"die","name":"movingPerson1_die","start":1,"stop":7,"loop":false,"fps":-1,"createAtStart":true,"onComplete":"doDead","onCompleteParams":""}]}]},{"name":3,"displayName":"","state":"idle","tilebase":false,"x":900,"y":-50,"posx":9,"posy":2,"offsetx":0,"offsety":0,"maskable":false,"tilesetid":"isoObjects"},{"name":0,"displayName":"","state":"idle","tilebase":false,"x":0,"y":-50,"posx":0,"posy":2,"offsetx":0,"offsety":0,"maskable":false,"tilesetid":"isoObjects","triggers":[{"type":"interacttrigger","trigger":"OnTouch","once":false,"walkto":false,"actions":[{"type":"Quest","name":4,"mode":"To","variable":"","value":"Active"}],"conditions":{"logic":"All","conditions":[]}}]},{"name":2,"displayName":"Pillar","state":"idle","tilebase":false,"x":500,"y":-50,"posx":5,"posy":2,"offsetx":0,"offsety":0,"maskable":false,"tilesetid":"isoObjects","triggers":[{"type":"actiontext","walkto":false,"trigger":"OnLook","actions":[{"type":"SIMPLE","text":"A pillar"}],"conditions":{"logic":"All","conditions":[]}},{"type":"actiontext","walkto":false,"trigger":"OnTouch","actions":[{"type":"SIMPLE","text":"Feels like stone."}],"conditions":{"logic":"All","conditions":[]}}]},{"name":1,"displayName":"Other pillar","state":"idle","tilebase":false,"x":100,"y":-250,"posx":1,"posy":10,"offsetx":0,"offsety":0,"maskable":false,"tilesetid":"isoObjects","triggers":[{"trigger":"OnTalk","once":false,"actions":[{"type":"CONVERSATION","id":"1","skipIfNoValidEntries":false}],"conditions":{"logic":"All","conditions":[]}}]}]}]},"startPos":{"map":"Map","x":6,"y":10},"tileSets":{"isotiles":{"tileset":"tiles2","0":"halfiso/tileisohalf0001","1":"halfiso/tileisohalf0002","2":"halfiso/tileisohalf0003","3":"halfiso/tileisohalf0004","4":"halfiso/tileisohalf0005","5":"halfiso/tileisohalf0006","6":"halfiso/tileisohalf0007","7":"halfiso/tileisohalf0008","8":"halfiso/tileisohalf0009"},"isoObjects":{"tileset":"tiles2","0":"halfiso/halfiso_block_1","1":"halfiso/halfiso_block_2","2":"halfiso/halfiso_block_3","3":"halfiso/halfiso_block_4","4":"halfiso/isowall_1_b","5":"halfiso/isowall_1_l","6":"halfiso/isowall_1_r","7":"halfiso/isowall_1_t"},"interactiveactors":{"tileset":"actors","0":"crab","1":"fire_pit_","2":"fire_wood_","3":"flintsteel","4":"log","5":"movingPerson2_idle0001","6":"movingPerson1_idle0001"}},"data":{"Name":"IsoTest1","Version":"0.0.3","Author":"Bryan Gough","Description":"Iso test\n","GlobalUserScript":"","Actors":[{"id":1,"Name":"Player","Description":"","IsPlayer":true,"state":"","Pictures":"portrait0003"},{"id":3,"Name":"Glowing Block","Description":"","IsPlayer":false,"state":"","Pictures":"portrait0005"},{"id":4,"Name":"Block","Description":"","IsPlayer":false,"state":"","Pictures":"portrait0004"},{"id":5,"Name":"Enemies","Description":"","IsPlayer":false,"state":"","Pictures":""}],"Items":[{"id":3,"Name":"Acorn","onLookat":"","Is Item":true,"Inventory":false,"onEnterInventoryText":"","Description":"","onTalk":"","VisibleInventory":true,"Count":0,"InventoryGraphicName":"inv_crab","InvetoryGraphicSheet":"dialogui","Combine Count":5}],"Locations":[{"id":1,"Name":"New Location 1","Pictures":"[]","Description":""}],"Variables":[{"id":1,"Name":"Alert","Initial Value":0,"Description":"Num to kill."},{"id":2,"Name":"Did Conv","Initial Value":false,"Description":""},{"id":3,"Name":"Enemy Defeated","Initial Value":0,"Description":""}],"Conversations":[{"id":1,"Title":"New Conversation 1","Description":"","Actor":"1","Conversant":"3","Pictures":"","DialogueEntries":[{"entrytag":"Glowing_Block_1_0","ConvID":1,"ID":0,"Actor":3,"Title":"START","MenuText":"","DialogueText":"I will start talking.","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":[{"OriginConvID":1,"OriginID":0,"DestConvID":1,"DestID":1}],"conditions":{"logic":"All","conditions":[]},"actions":[]},{"entrytag":"Glowing_Block_1_1","ConvID":1,"ID":1,"Actor":3,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"I am talking.","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":[{"OriginConvID":1,"OriginID":1,"DestConvID":1,"DestID":2}],"conditions":{"logic":"All","conditions":[]},"actions":[]},{"entrytag":"Glowing_Block_1_2","ConvID":1,"ID":2,"Actor":3,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"Now you make choices.","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":[{"OriginConvID":1,"OriginID":2,"DestConvID":1,"DestID":3},{"OriginConvID":1,"OriginID":2,"DestConvID":1,"DestID":4},{"OriginConvID":1,"OriginID":2,"DestConvID":1,"DestID":5}],"conditions":{"logic":"All","conditions":[]},"actions":[]},{"entrytag":"Player_1_3","ConvID":1,"ID":3,"Actor":1,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"Another End Conv","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":{},"conditions":{"logic":"All","conditions":[{"type":"Variable","name":2,"variable":"","compare":"Is","value":true}]},"actions":[]},{"entrytag":"Player_1_4","ConvID":1,"ID":4,"Actor":1,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"Continue Text\n","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":[{"OriginConvID":1,"OriginID":4,"DestConvID":1,"DestID":6}],"conditions":{"logic":"All","conditions":[]},"actions":[]},{"entrytag":"Player_1_5","ConvID":1,"ID":5,"Actor":1,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"End Conv","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":{},"conditions":{"logic":"All","conditions":[]},"actions":[{"type":"Quest","name":-1,"mode":"To","variable":"UNDEFINED","value":"Unassigned"}]},{"entrytag":"Glowing_Block_1_6","ConvID":1,"ID":6,"Actor":3,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"No","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":[{"OriginConvID":1,"OriginID":6,"DestConvID":1,"DestID":7},{"OriginConvID":1,"OriginID":6,"DestConvID":1,"DestID":8}],"conditions":{"logic":"All","conditions":[]},"actions":[]},{"entrytag":"Player_1_7","ConvID":1,"ID":7,"Actor":1,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"End Conv Here.","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":{},"conditions":{"logic":"All","conditions":[]},"actions":[]},{"entrytag":"Player_1_8","ConvID":1,"ID":8,"Actor":1,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"Start Over!","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":[{"OriginConvID":1,"OriginID":8,"DestConvID":1,"DestID":1}],"conditions":{"logic":"All","conditions":[]},"actions":[]}]},{"id":2,"Title":"New Conversation 2","Description":"","Actor":"1","Conversant":"3","Pictures":"","DialogueEntries":[{"entrytag":"Block_2_0","ConvID":2,"ID":0,"Actor":4,"Title":"START","MenuText":"","DialogueText":"I'm a block","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":[{"OriginConvID":2,"OriginID":0,"DestConvID":2,"DestID":1}],"conditions":{"logic":"All","conditions":[]},"actions":[]},{"entrytag":"Block_2_1","ConvID":2,"ID":1,"Actor":4,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"Block block block","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":[{"OriginConvID":2,"OriginID":1,"DestConvID":2,"DestID":2}],"conditions":{"logic":"All","conditions":[]},"actions":[]},{"entrytag":"Glowing_Block_2_2","ConvID":2,"ID":2,"Actor":3,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"Me too!\n","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":[{"OriginConvID":2,"OriginID":2,"DestConvID":2,"DestID":3}],"conditions":{"logic":"All","conditions":[]},"actions":[]},{"entrytag":"Player_2_3","ConvID":2,"ID":3,"Actor":1,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"A block?","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":[{"OriginConvID":2,"OriginID":3,"DestConvID":2,"DestID":4}],"conditions":{"logic":"All","conditions":[]},"actions":[]},{"entrytag":"Block_2_4","ConvID":2,"ID":4,"Actor":4,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"Yes a block.","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":{},"conditions":{"logic":"All","conditions":[]},"actions":[]}]},{"id":3,"Title":"New Conversation 3","Description":"","Actor":"1","Conversant":"3","Pictures":"[]","DialogueEntries":[{"entrytag":"Player_3_0","ConvID":3,"ID":0,"Actor":1,"Title":"START","MenuText":"","DialogueText":"","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":[{"OriginConvID":3,"OriginID":0,"DestConvID":3,"DestID":1},{"OriginConvID":3,"OriginID":0,"DestConvID":3,"DestID":2},{"OriginConvID":3,"OriginID":0,"DestConvID":3,"DestID":3}],"conditions":{"logic":"All","conditions":[]},"actions":[]},{"entrytag":"Glowing_Block_3_1","ConvID":3,"ID":1,"Actor":3,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":{},"conditions":{"logic":"All","conditions":[]},"actions":[]},{"entrytag":"Glowing_Block_3_2","ConvID":3,"ID":2,"Actor":3,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":{},"conditions":{"logic":"All","conditions":[]},"actions":[]},{"entrytag":"Glowing_Block_3_3","ConvID":3,"ID":3,"Actor":3,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":{},"conditions":{"logic":"All","conditions":[]},"actions":[]}]}]}}
+{
+    "mapData": {},
+    "maps": {
+        "Map": [
+            {
+                "height": 14,
+                "width": 10,
+                "hexWidth": 100,
+                "hexHeight": 50,
+                "tilesetid": "isotiles",
+                "tiletype": "Iso",
+                "handleSprite": true,
+                "handleMovement": true,
+                "data": [
+                    8,
+                    8,
+                    8,
+                    8,
+                    8,
+                    7,
+                    7,
+                    7,
+                    7,
+                    7,
+                    8,
+                    8,
+                    8,
+                    8,
+                    8,
+                    3,
+                    3,
+                    3,
+                    7,
+                    7,
+                    7,
+                    7,
+                    4,
+                    7,
+                    3,
+                    3,
+                    7,
+                    3,
+                    3,
+                    7,
+                    7,
+                    4,
+                    4,
+                    3,
+                    7,
+                    7,
+                    4,
+                    4,
+                    3,
+                    7,
+                    7,
+                    7,
+                    4,
+                    3,
+                    7,
+                    7,
+                    4,
+                    0,
+                    4,
+                    3,
+                    7,
+                    3,
+                    3,
+                    4,
+                    7,
+                    4,
+                    0,
+                    0,
+                    0,
+                    3,
+                    7,
+                    3,
+                    5,
+                    4,
+                    4,
+                    7,
+                    0,
+                    4,
+                    7,
+                    0,
+                    3,
+                    2,
+                    5,
+                    4,
+                    4,
+                    0,
+                    4,
+                    7,
+                    0,
+                    7,
+                    3,
+                    7,
+                    5,
+                    7,
+                    4,
+                    4,
+                    0,
+                    7,
+                    6,
+                    0,
+                    3,
+                    3,
+                    5,
+                    4,
+                    7,
+                    0,
+                    4,
+                    4,
+                    6,
+                    7,
+                    3,
+                    7,
+                    5,
+                    4,
+                    7,
+                    7,
+                    4,
+                    7,
+                    1,
+                    6,
+                    3,
+                    7,
+                    5,
+                    7,
+                    7,
+                    0,
+                    0,
+                    2,
+                    4,
+                    6,
+                    7,
+                    3,
+                    4,
+                    7,
+                    7,
+                    4,
+                    0,
+                    0,
+                    2,
+                    3,
+                    7,
+                    4,
+                    7,
+                    7,
+                    7,
+                    7,
+                    7,
+                    7,
+                    3,
+                    7
+                ],
+                "walkable": [
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1
+                ],
+                "actionSpots": [],
+                "objects": [
+                    {
+                        "name": 6,
+                        "displayName": "",
+                        "state": "idle",
+                        "tilebase": false,
+                        "x": 150,
+                        "y": -225,
+                        "posx": 1,
+                        "posy": 9,
+                        "offsetx": 0,
+                        "offsety": 0,
+                        "maskable": true,
+                        "tilesetid": "interactiveactors",
+                        "triggers": [
+                            {
+                                "type": "CharacterSpawn",
+                                "EnemyType": "BasicGoon"
+                            }
+                        ]
+                    },
+                    {
+                        "name": -1,
+                        "displayName": "",
+                        "state": "idle",
+                        "tilebase": false,
+                        "x": 100,
+                        "y": -50,
+                        "posx": 1,
+                        "posy": 4,
+                        "offsetx": 0,
+                        "offsety": 0,
+                        "maskable": true,
+                        "tilesetid": "interactiveactors",
+                        "triggers": [
+                            {
+                                "type": "CharacterSpawn",
+                                "EnemyType": "HeavyGoon"
+                            }
+                        ]
+                    },
+                    {
+                        "name": 3,
+                        "displayName": "",
+                        "state": "idle",
+                        "tilebase": false,
+                        "x": 900,
+                        "y": -50,
+                        "posx": 9,
+                        "posy": 2,
+                        "offsetx": 0,
+                        "offsety": 0,
+                        "maskable": false,
+                        "tilesetid": "isoObjects"
+                    },
+                    {
+                        "name": 6,
+                        "displayName": "",
+                        "state": "idle",
+                        "tilebase": false,
+                        "x": 400,
+                        "y": 0,
+                        "posx": 4,
+                        "posy": 2,
+                        "offsetx": 0,
+                        "offsety": 0,
+                        "maskable": true,
+                        "tilesetid": "interactiveactors",
+                        "triggers": [
+                            {
+                                "type": "CharacterSpawn",
+                                "EnemyType": "BasicGoon"
+                            }
+                        ]
+                    },
+                    {
+                        "name": 0,
+                        "displayName": "",
+                        "state": "idle",
+                        "tilebase": false,
+                        "x": 0,
+                        "y": -50,
+                        "posx": 0,
+                        "posy": 2,
+                        "offsetx": 0,
+                        "offsety": 0,
+                        "maskable": false,
+                        "tilesetid": "isoObjects",
+                        "triggers": [
+                            {
+                                "type": "interacttrigger",
+                                "trigger": "OnTouch",
+                                "once": false,
+                                "walkto": false,
+                                "actions": [
+                                    {
+                                        "type": "Quest",
+                                        "name": 1,
+                                        "mode": "To",
+                                        "variable": "",
+                                        "value": "Active"
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": []
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "name": 2,
+                        "displayName": "Pillar",
+                        "state": "idle",
+                        "tilebase": false,
+                        "x": 500,
+                        "y": -50,
+                        "posx": 5,
+                        "posy": 2,
+                        "offsetx": 0,
+                        "offsety": 0,
+                        "maskable": false,
+                        "tilesetid": "isoObjects",
+                        "triggers": [
+                            {
+                                "type": "actiontext",
+                                "walkto": false,
+                                "trigger": "OnLook",
+                                "actions": [
+                                    {
+                                        "type": "SIMPLE",
+                                        "text": "A pillar"
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": []
+                                }
+                            },
+                            {
+                                "type": "actiontext",
+                                "walkto": false,
+                                "trigger": "OnTouch",
+                                "actions": [
+                                    {
+                                        "type": "SIMPLE",
+                                        "text": "Feels like stone."
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": []
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "name": 1,
+                        "displayName": "Other pillar",
+                        "state": "idle",
+                        "tilebase": false,
+                        "x": 100,
+                        "y": -250,
+                        "posx": 1,
+                        "posy": 10,
+                        "offsetx": 0,
+                        "offsety": 0,
+                        "maskable": false,
+                        "tilesetid": "isoObjects",
+                        "triggers": [
+                            {
+                                "trigger": "OnTalk",
+                                "once": false,
+                                "actions": [
+                                    {
+                                        "type": "CONVERSATION",
+                                        "id": "1",
+                                        "skipIfNoValidEntries": false
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": []
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "startPos": {
+        "map": "Map",
+        "x": 6,
+        "y": 10
+    },
+    "tileSets": {
+        "isotiles": {
+            "0": "halfiso/tileisohalf0001",
+            "1": "halfiso/tileisohalf0002",
+            "2": "halfiso/tileisohalf0003",
+            "3": "halfiso/tileisohalf0004",
+            "4": "halfiso/tileisohalf0005",
+            "5": "halfiso/tileisohalf0006",
+            "6": "halfiso/tileisohalf0007",
+            "7": "halfiso/tileisohalf0008",
+            "8": "halfiso/tileisohalf0009",
+            "tileset": "tiles2"
+        },
+        "isoObjects": {
+            "0": "halfiso/halfiso_block_1",
+            "1": "halfiso/halfiso_block_2",
+            "2": "halfiso/halfiso_block_3",
+            "3": "halfiso/halfiso_block_4",
+            "4": "halfiso/isowall_1_b",
+            "5": "halfiso/isowall_1_l",
+            "6": "halfiso/isowall_1_r",
+            "7": "halfiso/isowall_1_t",
+            "tileset": "tiles2"
+        },
+        "interactiveactors": {
+            "0": "crab",
+            "1": "fire_pit_",
+            "2": "fire_wood_",
+            "3": "flintsteel",
+            "4": "log",
+            "5": "movingPerson2_idle0001",
+            "6": "movingPerson1_idle0001",
+            "tileset": "actors"
+        }
+    },
+    "data": {
+        "Name": "IsoTest1",
+        "Version": "0.0.3",
+        "Author": "Bryan Gough",
+        "Description": "Iso test\n",
+        "GlobalUserScript": "",
+        "Actors": [
+            {
+                "id": 1,
+                "Name": "Player",
+                "Description": "",
+                "IsPlayer": true,
+                "state": "",
+                "Pictures": "portrait0003"
+            },
+            {
+                "id": 3,
+                "Name": "Glowing Block",
+                "Description": "",
+                "IsPlayer": false,
+                "state": "",
+                "Pictures": "portrait0005"
+            },
+            {
+                "id": 4,
+                "Name": "Block",
+                "Description": "",
+                "IsPlayer": false,
+                "state": "",
+                "Pictures": "portrait0004"
+            },
+            {
+                "id": 5,
+                "Name": "Enemies",
+                "Description": "",
+                "IsPlayer": false,
+                "state": "",
+                "Pictures": ""
+            }
+        ],
+        "Items": [
+            {
+                "id": 3,
+                "Name": "Acorn",
+                "onLookat": "",
+                "Is Item": true,
+                "Inventory": false,
+                "onEnterInventoryText": "",
+                "Description": "",
+                "onTalk": "",
+                "VisibleInventory": true,
+                "Count": 0,
+                "InventoryGraphicName": "inv_crab",
+                "InvetoryGraphicSheet": "dialogui",
+                "Combine Count": 5
+            }
+        ],
+        "Locations": [
+            {
+                "id": 1,
+                "Name": "New Location 1",
+                "Pictures": "[]",
+                "Description": ""
+            }
+        ],
+        "Variables": [
+            {
+                "id": 1,
+                "Name": "Alert",
+                "Initial Value": 0,
+                "Description": "Num to kill."
+            },
+            {
+                "id": 2,
+                "Name": "Did Conv",
+                "Initial Value": false,
+                "Description": ""
+            },
+            {
+                "id": 3,
+                "Name": "Enemy Defeated",
+                "Initial Value": 0,
+                "Description": ""
+            }
+        ],
+        "Conversations": [
+            {
+                "id": 1,
+                "Title": "New Conversation 1",
+                "Description": "",
+                "Actor": "1",
+                "Conversant": "3",
+                "Pictures": "",
+                "DialogueEntries": [
+                    {
+                        "entrytag": "Glowing_Block_1_0",
+                        "ConvID": 1,
+                        "ID": 0,
+                        "Actor": 3,
+                        "Title": "START",
+                        "MenuText": "",
+                        "DialogueText": "I will start talking.",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": [
+                            {
+                                "OriginConvID": 1,
+                                "OriginID": 0,
+                                "DestConvID": 1,
+                                "DestID": 1
+                            }
+                        ],
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Glowing_Block_1_1",
+                        "ConvID": 1,
+                        "ID": 1,
+                        "Actor": 3,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "I am talking.",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": [
+                            {
+                                "OriginConvID": 1,
+                                "OriginID": 1,
+                                "DestConvID": 1,
+                                "DestID": 2
+                            }
+                        ],
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Glowing_Block_1_2",
+                        "ConvID": 1,
+                        "ID": 2,
+                        "Actor": 3,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "Now you make choices.",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": [
+                            {
+                                "OriginConvID": 1,
+                                "OriginID": 2,
+                                "DestConvID": 1,
+                                "DestID": 3
+                            },
+                            {
+                                "OriginConvID": 1,
+                                "OriginID": 2,
+                                "DestConvID": 1,
+                                "DestID": 4
+                            },
+                            {
+                                "OriginConvID": 1,
+                                "OriginID": 2,
+                                "DestConvID": 1,
+                                "DestID": 5
+                            }
+                        ],
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Player_1_3",
+                        "ConvID": 1,
+                        "ID": 3,
+                        "Actor": 1,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "Another End Conv",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": {},
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": [
+                                {
+                                    "type": "Variable",
+                                    "name": 2,
+                                    "variable": "",
+                                    "compare": "Is",
+                                    "value": true
+                                }
+                            ]
+                        },
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Player_1_4",
+                        "ConvID": 1,
+                        "ID": 4,
+                        "Actor": 1,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "Continue Text\n",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": [
+                            {
+                                "OriginConvID": 1,
+                                "OriginID": 4,
+                                "DestConvID": 1,
+                                "DestID": 6
+                            }
+                        ],
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Player_1_5",
+                        "ConvID": 1,
+                        "ID": 5,
+                        "Actor": 1,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "End Conv",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": {},
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": [
+                            {
+                                "type": "Quest",
+                                "name": -1,
+                                "mode": "To",
+                                "variable": "UNDEFINED",
+                                "value": "Unassigned"
+                            }
+                        ]
+                    },
+                    {
+                        "entrytag": "Glowing_Block_1_6",
+                        "ConvID": 1,
+                        "ID": 6,
+                        "Actor": 3,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "No",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": [
+                            {
+                                "OriginConvID": 1,
+                                "OriginID": 6,
+                                "DestConvID": 1,
+                                "DestID": 7
+                            },
+                            {
+                                "OriginConvID": 1,
+                                "OriginID": 6,
+                                "DestConvID": 1,
+                                "DestID": 8
+                            }
+                        ],
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Player_1_7",
+                        "ConvID": 1,
+                        "ID": 7,
+                        "Actor": 1,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "End Conv Here.",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": {},
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Player_1_8",
+                        "ConvID": 1,
+                        "ID": 8,
+                        "Actor": 1,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "Start Over!",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": [
+                            {
+                                "OriginConvID": 1,
+                                "OriginID": 8,
+                                "DestConvID": 1,
+                                "DestID": 1
+                            }
+                        ],
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "Title": "New Conversation 2",
+                "Description": "",
+                "Actor": "1",
+                "Conversant": "3",
+                "Pictures": "",
+                "DialogueEntries": [
+                    {
+                        "entrytag": "Block_2_0",
+                        "ConvID": 2,
+                        "ID": 0,
+                        "Actor": 4,
+                        "Title": "START",
+                        "MenuText": "",
+                        "DialogueText": "I'm a block",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": [
+                            {
+                                "OriginConvID": 2,
+                                "OriginID": 0,
+                                "DestConvID": 2,
+                                "DestID": 1
+                            }
+                        ],
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Block_2_1",
+                        "ConvID": 2,
+                        "ID": 1,
+                        "Actor": 4,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "Block block block",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": [
+                            {
+                                "OriginConvID": 2,
+                                "OriginID": 1,
+                                "DestConvID": 2,
+                                "DestID": 2
+                            }
+                        ],
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Glowing_Block_2_2",
+                        "ConvID": 2,
+                        "ID": 2,
+                        "Actor": 3,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "Me too!\n",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": [
+                            {
+                                "OriginConvID": 2,
+                                "OriginID": 2,
+                                "DestConvID": 2,
+                                "DestID": 3
+                            }
+                        ],
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Player_2_3",
+                        "ConvID": 2,
+                        "ID": 3,
+                        "Actor": 1,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "A block?",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": [
+                            {
+                                "OriginConvID": 2,
+                                "OriginID": 3,
+                                "DestConvID": 2,
+                                "DestID": 4
+                            }
+                        ],
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Block_2_4",
+                        "ConvID": 2,
+                        "ID": 4,
+                        "Actor": 4,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "Yes a block.",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": {},
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    }
+                ]
+            },
+            {
+                "id": 3,
+                "Title": "New Conversation 3",
+                "Description": "",
+                "Actor": "1",
+                "Conversant": "3",
+                "Pictures": "[]",
+                "DialogueEntries": [
+                    {
+                        "entrytag": "Player_3_0",
+                        "ConvID": 3,
+                        "ID": 0,
+                        "Actor": 1,
+                        "Title": "START",
+                        "MenuText": "",
+                        "DialogueText": "",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": [
+                            {
+                                "OriginConvID": 3,
+                                "OriginID": 0,
+                                "DestConvID": 3,
+                                "DestID": 1
+                            },
+                            {
+                                "OriginConvID": 3,
+                                "OriginID": 0,
+                                "DestConvID": 3,
+                                "DestID": 2
+                            },
+                            {
+                                "OriginConvID": 3,
+                                "OriginID": 0,
+                                "DestConvID": 3,
+                                "DestID": 3
+                            }
+                        ],
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Glowing_Block_3_1",
+                        "ConvID": 3,
+                        "ID": 1,
+                        "Actor": 3,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": {},
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Glowing_Block_3_2",
+                        "ConvID": 3,
+                        "ID": 2,
+                        "Actor": 3,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": {},
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    },
+                    {
+                        "entrytag": "Glowing_Block_3_3",
+                        "ConvID": 3,
+                        "ID": 3,
+                        "Actor": 3,
+                        "Title": "New Dialogue Entry",
+                        "MenuText": "",
+                        "DialogueText": "",
+                        "Pictures": "[]",
+                        "Description": "",
+                        "Parenthetical": "",
+                        "Audio Files": "[]",
+                        "Video File": "",
+                        "Response Menu Sequence": "",
+                        "Special Portrait": "",
+                        "links": {},
+                        "conditions": {
+                            "logic": "All",
+                            "conditions": []
+                        },
+                        "actions": []
+                    }
+                ]
+            }
+        ]
+    }
+}

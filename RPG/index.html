@@ -10,6 +10,7 @@
 	<script src="src/Screens/Preloader.js"></script>
 	<script src="src/Screens/MainMenu.js"></script>
     <script src="src/Screens/Instructions.js"></script>
+    <script src="src/Screens/LoadMap.js"></script>
     <script src="src/MainGame.js"></script>
 
     <script src="src/utility/BasicObjectPool.js"></script>
@@ -86,6 +87,7 @@ window.onload = function() {
 	game.state.add('MainMenu', BasicGame.MainMenu);
     game.state.add('Game', BasicGame.Game);
     game.state.add('Instructions', BasicGame.Instructions);
+    game.state.add('LoadMap', BasicGame.LoadMap);
     
     //game.canvas.oncontextmenu = function (e) { e.preventDefault(); destroyAnchor() };
     

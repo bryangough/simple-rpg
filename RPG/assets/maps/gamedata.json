@@ -1,0 +1,448 @@
+{
+    "AnimatedBodies": {
+        "Brown Hair Guy": {
+            "triggers": [
+                {
+                    "type": "animations",
+                    "animations": [
+                        {
+                            "id": "idle",
+                            "name": "movingPerson1_idle",
+                            "start": 1,
+                            "stop": 2,
+                            "loop": true,
+                            "fps": -1,
+                            "createAtStart": true
+                        },
+                        {
+                            "id": "walk",
+                            "name": "movingPerson1_walk",
+                            "start": 1,
+                            "stop": 4,
+                            "loop": true,
+                            "fps": -1,
+                            "createAtStart": true
+                        },
+                        {
+                            "id": "use",
+                            "name": "movingPerson1_use",
+                            "start": 1,
+                            "stop": 7,
+                            "loop": false,
+                            "fps": -1,
+                            "createAtStart": true,
+                            "onComplete": "doUse",
+                            "onCompleteParams": ""
+                        },
+                        {
+                            "id": "shoot",
+                            "name": "movingPerson1_shoot",
+                            "start": 1,
+                            "stop": 7,
+                            "loop": false,
+                            "fps": -1,
+                            "createAtStart": true,
+                            "onComplete": "doShoot",
+                            "onCompleteParams": ""
+                        },
+                        {
+                            "id": "hurt",
+                            "name": "movingPerson1_hurt",
+                            "start": 1,
+                            "stop": 7,
+                            "loop": false,
+                            "nextState": "idle",
+                            "fps": -1,
+                            "createAtStart": true
+                        },
+                        {
+                            "id": "die",
+                            "name": "movingPerson1_die",
+                            "start": 1,
+                            "stop": 7,
+                            "loop": false,
+                            "fps": -1,
+                            "createAtStart": true,
+                            "onComplete": "doDead",
+                            "onCompleteParams": ""
+                        }
+                    ],
+                    "startState": "idle",
+                    "spriteSheet": "actors"
+                }
+            ]
+        },
+        "Blond Guy": {
+            "triggers": [
+                {
+                    "type": "animations",
+                    "animations": [
+                        {
+                            "id": "idle",
+                            "name": "movingPerson2_idle",
+                            "start": 1,
+                            "stop": 2,
+                            "loop": true,
+                            "fps": -1,
+                            "createAtStart": true
+                        },
+                        {
+                            "id": "walk",
+                            "name": "movingPerson2_walk",
+                            "start": 1,
+                            "stop": 4,
+                            "loop": true,
+                            "fps": -1,
+                            "createAtStart": true
+                        },
+                        {
+                            "id": "use",
+                            "name": "movingPerson2_use",
+                            "start": 1,
+                            "stop": 7,
+                            "loop": false,
+                            "fps": -1,
+                            "createAtStart": true,
+                            "onComplete": "doUse",
+                            "onCompleteParams": ""
+                        },
+                        {
+                            "id": "shoot",
+                            "name": "movingPerson2_shoot",
+                            "start": 1,
+                            "stop": 7,
+                            "loop": false,
+                            "fps": -1,
+                            "createAtStart": true,
+                            "onComplete": "doShoot",
+                            "onCompleteParams": ""
+                        },
+                        {
+                            "id": "hurt",
+                            "name": "movingPerson2_hurt",
+                            "start": 1,
+                            "stop": 7,
+                            "loop": false,
+                            "nextState": "idle",
+                            "fps": -1,
+                            "createAtStart": true
+                        },
+                        {
+                            "id": "die",
+                            "name": "movingPerson2_die",
+                            "start": 1,
+                            "stop": 7,
+                            "loop": false,
+                            "fps": -1,
+                            "createAtStart": true,
+                            "onComplete": "doDead",
+                            "onCompleteParams": ""
+                        }
+                    ],
+                    "startState": "idle",
+                    "spriteSheet": "actors"
+                }
+            ]
+        },
+        "Bald Hair Guy": {
+            "triggers": [
+                {
+                    "type": "animations",
+                    "animations": [
+                        {
+                            "id": "idle",
+                            "name": "movingPerson3_idle",
+                            "start": 1,
+                            "stop": 2,
+                            "loop": true,
+                            "fps": -1,
+                            "createAtStart": true
+                        },
+                        {
+                            "id": "walk",
+                            "name": "movingPerson3_walk",
+                            "start": 1,
+                            "stop": 4,
+                            "loop": true,
+                            "fps": -1,
+                            "createAtStart": true
+                        },
+                        {
+                            "id": "use",
+                            "name": "movingPerson3_use",
+                            "start": 1,
+                            "stop": 7,
+                            "loop": false,
+                            "fps": -1,
+                            "createAtStart": true,
+                            "onComplete": "doUse",
+                            "onCompleteParams": ""
+                        },
+                        {
+                            "id": "shoot",
+                            "name": "movingPerson3_shoot",
+                            "start": 1,
+                            "stop": 7,
+                            "loop": false,
+                            "fps": -1,
+                            "createAtStart": true,
+                            "onComplete": "doShoot",
+                            "onCompleteParams": ""
+                        },
+                        {
+                            "id": "hurt",
+                            "name": "movingPerson3_hurt",
+                            "start": 1,
+                            "stop": 7,
+                            "loop": false,
+                            "nextState": "idle",
+                            "fps": -1,
+                            "createAtStart": true
+                        },
+                        {
+                            "id": "die",
+                            "name": "movingPerson3_die",
+                            "start": 1,
+                            "stop": 7,
+                            "loop": false,
+                            "fps": -1,
+                            "createAtStart": true,
+                            "onComplete": "doDead",
+                            "onCompleteParams": ""
+                        }
+                    ],
+                    "startState": "idle",
+                    "spriteSheet": "actors"
+                }
+            ]
+        }
+    },
+    "Weapons": {
+        "gun": {
+            "triggers": [
+                {
+                    "weaponname": "gun",
+                    "AIpower": 1,
+                    "dmg": 2,
+                    "range": 40,
+                    "clipsize": 6,
+                    "inventoryImg": "log.png",
+                    "buttonImg": "log.png"
+                }
+            ]
+        },
+        "fire": {
+            "triggers": [
+                {
+                    "weaponname": "fire",
+                    "AIpower": 1,
+                    "dmg": 6,
+                    "range": 40,
+                    "clipsize": -1,
+                    "inventoryImg": "fire_burning_0003",
+                    "buttonImg": "fire_burning_0003"
+                }
+            ]
+        }
+    },
+    "Enemy": {
+        "BasicGoon": {
+            "triggers": [
+                {
+                    "type": "actorset",
+                    "id": 5
+                },
+                {
+                    "type": "mover",
+                    "walkSpeed": 0.1875
+                },
+                {
+                    "type": "combatAttributes",
+                    "movementspeed": 4,
+                    "shieldhp": 0,
+                    "selfhp": 2,
+                    "attackable": true,
+                    "hostile": true,
+                    "meleeDmg": 1
+                },
+                {
+                    "type": "weaponsInventory",
+                    "weapons": [
+                        "gun"
+                    ]
+                },
+                {
+                    "type": "animations",
+                    "animations": [
+                        {
+                            "id": "idle",
+                            "name": "movingPerson1_idle",
+                            "start": 1,
+                            "stop": 2,
+                            "loop": true,
+                            "fps": -1,
+                            "createAtStart": true
+                        },
+                        {
+                            "id": "walk",
+                            "name": "movingPerson1_walk",
+                            "start": 1,
+                            "stop": 4,
+                            "loop": true,
+                            "fps": -1,
+                            "createAtStart": true
+                        },
+                        {
+                            "id": "use",
+                            "name": "movingPerson1_use",
+                            "start": 1,
+                            "stop": 7,
+                            "loop": false,
+                            "fps": -1,
+                            "createAtStart": true,
+                            "onComplete": "doUse",
+                            "onCompleteParams": ""
+                        },
+                        {
+                            "id": "shoot",
+                            "name": "movingPerson1_shoot",
+                            "start": 1,
+                            "stop": 7,
+                            "loop": false,
+                            "fps": -1,
+                            "createAtStart": true,
+                            "onComplete": "doShoot",
+                            "onCompleteParams": ""
+                        },
+                        {
+                            "id": "hurt",
+                            "name": "movingPerson1_hurt",
+                            "start": 1,
+                            "stop": 7,
+                            "loop": false,
+                            "nextState": "idle",
+                            "fps": -1,
+                            "createAtStart": true
+                        },
+                        {
+                            "id": "die",
+                            "name": "movingPerson1_die",
+                            "start": 1,
+                            "stop": 7,
+                            "loop": false,
+                            "fps": -1,
+                            "createAtStart": true,
+                            "onComplete": "doDead",
+                            "onCompleteParams": ""
+                        }
+                    ],
+                    "startState": "idle",
+                    "spriteSheet": "actors"
+                },
+                {
+                    "type": "Enemy",
+                    "name": "Basic Goon"
+                }
+            ]
+        },
+        "HeavyGoon": {
+            "triggers": [
+                {
+                    "type": "actorset",
+                    "id": 5
+                },
+                {
+                    "type": "mover",
+                    "walkSpeed": 0.1875
+                },
+                {
+                    "type": "combatAttributes",
+                    "movementspeed": 2,
+                    "shieldhp": 8,
+                    "selfhp": 4,
+                    "attackable": true,
+                    "hostile": true,
+                    "meleeDmg": 1
+                },
+                {
+                    "type": "weaponsInventory",
+                    "weapons": [
+                        "gun"
+                    ]
+                },
+                {
+                    "type": "animations",
+                    "animations": [
+                        {
+                            "id": "idle",
+                            "name": "movingPerson3_idle",
+                            "start": 1,
+                            "stop": 2,
+                            "loop": true,
+                            "fps": -1,
+                            "createAtStart": true
+                        },
+                        {
+                            "id": "walk",
+                            "name": "movingPerson3_walk",
+                            "start": 1,
+                            "stop": 4,
+                            "loop": true,
+                            "fps": -1,
+                            "createAtStart": true
+                        },
+                        {
+                            "id": "use",
+                            "name": "movingPerson3_use",
+                            "start": 1,
+                            "stop": 7,
+                            "loop": false,
+                            "fps": -1,
+                            "createAtStart": true,
+                            "onComplete": "doUse",
+                            "onCompleteParams": ""
+                        },
+                        {
+                            "id": "shoot",
+                            "name": "movingPerson3_shoot",
+                            "start": 1,
+                            "stop": 7,
+                            "loop": false,
+                            "fps": -1,
+                            "createAtStart": true,
+                            "onComplete": "doShoot",
+                            "onCompleteParams": ""
+                        },
+                        {
+                            "id": "hurt",
+                            "name": "movingPerson3_hurt",
+                            "start": 1,
+                            "stop": 7,
+                            "loop": false,
+                            "nextState": "idle",
+                            "fps": -1,
+                            "createAtStart": true
+                        },
+                        {
+                            "id": "die",
+                            "name": "movingPerson3_die",
+                            "start": 1,
+                            "stop": 7,
+                            "loop": false,
+                            "fps": -1,
+                            "createAtStart": true,
+                            "onComplete": "doDead",
+                            "onCompleteParams": ""
+                        }
+                    ],
+                    "startState": "idle",
+                    "spriteSheet": "actors"
+                },
+                {
+                    "type": "Enemy",
+                    "name": "Heavy Goon"
+                }
+            ]
+        }
+    }
+}

@@ -1,6 +1,5 @@
 BasicGame.Game = function (game) {
 
-    
     this.neighborLights = [];
 
     this.pathfinder;//a* searcher
@@ -31,7 +30,7 @@ BasicGame.Game = function (game) {
 BasicGame.Game.prototype = {
     preload: function () {
         //this.load.json('map', 'assets/desertIsland.json');//mission file - can I show a preloader? should I?        
-        this.load.json('map', 'assets/maps/forestmap.json');
+        
     },
     create: function () {
         this.game.time.advancedTiming = true;
@@ -41,6 +40,9 @@ BasicGame.Game.prototype = {
        
         this.uiGroup = this.add.group();
         this.textUIHandler = new TextUIHandler(this.game, 0, 0, this, null);
+        //
+        this.gameData = this.game.cache.getJSON('gameData');
+        this.playerData = this.game.cache.getJSON('player');
         //
         this.mapData = this.game.cache.getJSON('map');
         //
@@ -56,7 +58,7 @@ BasicGame.Game.prototype = {
         //
         if(this.map==null)
             this.map = new Map(this.game, this);
-        this.map.initialMap(this.mapData);
+        this.map.initialMap(this.mapData, this.gameData, this.playerData);
         //
         this.gGameMode = new StateMachine();
         this.gGameMode.add("normal", new NormalState(this.gGameMode, this.game, this));
@@ -117,6 +119,18 @@ BasicGame.Game.prototype = {
         this.map.masker.updateMasks(this.input.worldX-this.map.mapGroup.x,this.input.worldY-this.map.mapGroup.y);
         //this.masker.updateMasks(this.playerCharacter.x, this.playerCharacter.y, this.playerCharacter.posx, this.playerCharacter.posy);
         //fps.text = this.game.time.fps;
+    },
+    getGameData:function(type,name){
+        //console.log(type,name);
+        //console.log(this.gameData[type][name],type,name);
+        if(this.gameData[type])
+        {
+            if(this.gameData[type][name])
+            {
+                return this.gameData[type][name];
+            }
+        }
+        return null;
     },
     zoomIn:function(button, pointer){
         console.log(button,pointer);

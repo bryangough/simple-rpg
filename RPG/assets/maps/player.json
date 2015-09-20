@@ -1,0 +1,36 @@
+{
+    "Player": {
+        "displayName": "You",
+        "state": "",
+        "maskable": true,
+        "triggers": [
+            {
+                "type": "actorset",
+                "id": 1
+            },
+            {
+                "type": "mover",
+                "walkSpeed": 0.1875
+            },
+            {
+                "type": "AnimatedBody",
+                "body": "Blond Guy"
+            },
+            {
+                "type": "combatAttributes",
+                "movementspeed": 5,
+                "shieldhp": 30,
+                "selfhp": 2,
+                "attackable": false,
+                "hostile": false,
+                "meleeDmg": 1
+            },
+            {
+                "type": "weaponsInventory",
+                "weapons": [
+                    "fire"
+                ]
+            }
+        ]
+    }
+}
