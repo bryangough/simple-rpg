@@ -115,7 +115,8 @@ BattleState.prototype.moveOn = function()
 }
 BattleState.prototype.onExit = function() 
 {
-    //console.log("battle exit");
+    this.mActions = [];//flush actions
+    
     this.activeButtons.visible = false;
     this.inputHandler.turnOff();
     
@@ -123,8 +124,11 @@ BattleState.prototype.onExit = function()
     {
         this.mEntities[i].endCombat();
     }
+    
     if(GlobalEvents.currentacion == GlobalEvents.COMBATSELECT)
+    {
         GlobalEvents.currentacion = GlobalEvents.WALK;
+    }
 }
 BattleState.prototype.leaveThisState = function() 
 {

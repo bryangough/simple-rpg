@@ -10,6 +10,8 @@ var CombatCharacter = function (maingame, jsondata, map)
     this.numberOfActions = 2;
     this.isCombatCharacter = true;
     this.applyCombatActions(actions);
+    //this.attackable = false;
+    //this.hostile = false;
 };
 
 CombatCharacter.prototype = Object.create(MovingCharacter.prototype);
@@ -18,6 +20,7 @@ CombatCharacter.constructor = CombatCharacter;
 CombatCharacter.prototype.applyCombatActions = function(actions)
 {
     //console.log("applyCombatActions",this);
+    this.eventDispatcher.init(actions);
     
     for(var i=0;i<actions.length;i++)
     {
@@ -39,7 +42,7 @@ CombatCharacter.prototype.applyCombatActions = function(actions)
                 var weaponData = this.maingame.getGameData("Weapons",action.weapons[j]);
                 if(weaponData!=null && weaponData.triggers!=null)
                 {
-                    var weapon = new Weapon(weaponData.triggers);
+                    var weapon = new Weapon(weaponData.triggers[0]);
                     this.weapons.push(weapon);
                 }
             }
@@ -283,6 +286,8 @@ CombatCharacter.prototype.afterShoot = function(params)
     var afterAction = params.afterAction;
     
     target.takeDmg(weapon.dmg);
+    
+    //console.log(target,weapon.dmg);
     //this will eventually move to the weapon shot class, so that it applys after the shot is done
         
     afterAction.func.apply(afterAction.callee,[]);

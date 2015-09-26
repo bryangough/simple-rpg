@@ -31,9 +31,9 @@ AIDecide.prototype.execute = function()
     }
     else
     {
+        this.state.moveOn();
         this.gameref.toggleCombat();//I don't like this
         //this.state.leaveThisState();//test if no more enemies
-        this.state.moveOn();
     }
 }
 AIDecide.prototype.cleanup = function()

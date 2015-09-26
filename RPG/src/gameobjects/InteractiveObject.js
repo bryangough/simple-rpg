@@ -109,7 +109,9 @@ InteractiveObject.prototype.applyAnimations = function(actions)
     var complete;
     this.hasstates = true;
     if(!this.isCreated)
+    {
         this.createTempArt(actions.spriteSheet,"movingPerson1_idle0001");
+    }
     for(var j=0;j<animations.length;j++)
     {
         if(animations[j].start==0&&animations[j].stop==0){
@@ -323,7 +325,8 @@ InteractiveObject.prototype.handleClick = function(touchedSprite, pointer)
         this.eventDispatcher.doAction("OnUseItem", this.map.playerCharacter);
     else if(GlobalEvents.currentacion == GlobalEvents.COMBATSELECT)
     {
-        this.maingame.gGameMode.mCurrentState.inputHandler.clickedObject(this);
+        if(this.attackable)
+            this.maingame.gGameMode.mCurrentState.inputHandler.clickedObject(this);
     }
     pointer.active = false;
     this.handleOut();

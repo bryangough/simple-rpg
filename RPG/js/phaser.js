@@ -68298,7 +68298,7 @@ Object.defineProperty(Phaser.AnimationManager.prototype, 'frameName', {
         }
         else
         {
-            console.warn('Cannot set frameName: ' + value);
+            console.warn('Cannot set frameName: ' + value, this);
         }
     }
 

@@ -160,7 +160,7 @@ BasicGame.Game.prototype = {
         }
         else
         {
-            console.log("toggleCombat no");
+            //console.log("toggleCombat no");
             //error beep
         }
     },
@@ -197,6 +197,8 @@ BasicGame.Game.prototype = {
     {
         //this.game.debug.text(this.game.time.fps || '--', 2, 40, "#00ff00");   
         this.game.debug.text(this.gGameMode.currentState, 2, 10, "#00ff00");
+        this.game.debug.text("currentacion "+GlobalEvents.currentacion, 2, 25, "#00ff00");
+        
         //game.debug.text("Tween running: " + !this.idleBallTween.pendingDelete, 2, 110);
         
         //this.game.debug.inputInfo(16, 16);

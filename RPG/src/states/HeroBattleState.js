@@ -125,6 +125,7 @@ HeroBattleState.prototype.onExit = function()
     {
         this.mEntities[i].endCombat();
     }
+    //console.log(GlobalEvents.currentacion);
     if(GlobalEvents.currentacion == GlobalEvents.COMBATSELECT)
         GlobalEvents.currentacion = GlobalEvents.WALK;
 }

@@ -7,6 +7,7 @@ var Item = function(action)
 var Weapon = function (action)
 {
     Item.call(this, action);
+    
     this.weaponname = action.weaponname;
     this.dmg = action.dmg;
     this.range = action.range;
