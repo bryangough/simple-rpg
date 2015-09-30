@@ -18,28 +18,43 @@ DialogPanel.constructor = DialogPanel;
 //
 DialogPanel.prototype.setup = function(button){   
     
+    var shadow = this.game.make.sprite(0, 0,"gameplayinterface","dropshadow_btn.png");
+    this.add(shadow);
+    shadow.width = 900;
+    shadow.height = 600;
+    shadow.x = -200;
+    shadow.y = -100;
     //
-    this.setupBG("dialogui","dialog_main.png");
+    //this.setupBG("gameplayinterface","dialog_main.png");
     //
-    this.btnPlay1 = this.setupButton(36.95, -22.4, 'dialogui', this.play1,'dialog_10002.png', 'dialog_10001.png', 'dialog_10001.png','dialog_10002.png');
-    this.btnPlay2 = this.setupButton(37.4, 25.25, 'dialogui', this.play2,'dialog_20002.png', 'dialog_20001.png', 'dialog_20001.png','dialog_20002.png');    
-    this.btnPlay3 = this.setupButton(35.95, 45.8, 'dialogui', this.play3,'dialog_30002.png', 'dialog_30001.png', 'dialog_30001.png','dialog_30002.png');
+    var height = 69.6;
+    var offsetx = 150;
+    var offsety = 200;
+    this.btnPlay1 = this.setupButton(offsetx, offsety + height * 0, 'gameplayinterface', this.play1,'dialong_choice0002.png', 'dialong_choice0001.png', 'dialong_choice0001.png', 'dialong_choice0002.png');
+    this.btnPlay2 = this.setupButton(offsetx, offsety + height * 1, 'gameplayinterface', this.play2,'dialong_choice0002.png', 'dialong_choice0001.png', 'dialong_choice0001.png', 'dialog_20002.png');    
+    this.btnPlay3 = this.setupButton(offsetx, offsety + height * 2, 'gameplayinterface', this.play3, 'dialong_choice_end0002.png', 'dialong_choice_end0001.png', 'dialong_choice_end0001.png', 'dialong_choice_end0002.png');
     //
-    this.textMain = this.setupText(0, -60, "badabb", "Text goes here.", 25); 
-    this.btnPlay1.textRef = this.setupText(95, -10, "badabb", "1. ", 25);
-    this.btnPlay2.textRef = this.setupText(95, 35, "badabb", "2. ", 25);
-    this.btnPlay3.textRef = this.setupText(95, 82, "badabb", "3. ", 25);
+    this.textMain = this.setupText(offsetx, 0, "simplefont", "Text goes here.", 25); 
+    //var shadow = this.game.make.sprite(0, 0,"gameplayinterface","dropshadow_btn.png");
+    //this.add(shadow);
+    this.btnPlay1.textRef = this.setupText(10 + offsetx, offsety + height * 0, "simplefont", "1. ", 25);
+    this.btnPlay2.textRef = this.setupText(10 + offsetx, offsety + height * 1, "simplefont", "2. ", 25);
+    this.btnPlay3.textRef = this.setupText(10 + offsetx, offsety + height * 2, "simplefont", "3. ", 25);
     
     this.portrait1 = null;
     this.portrait2 = null;
+    
+    //this.btnPlay1
+    //this.btnPlay1
+    //this.btnPlay1
 	// Place it out of bounds (?)
-	this.x = 300;
+	//this.x = 300;
     this.y = -1000;
 };
 //
 DialogPanel.prototype.setupPortrait = function(x,y,spritesheet,sprite)
 {    
-    var portrait = this.game.make.sprite(0,0,spritesheet,sprite);
+    var portrait = this.game.make.sprite(x,y,spritesheet,sprite);
     this.add(portrait);
     return portrait;
 }
@@ -75,11 +90,11 @@ DialogPanel.prototype.setupText = function(x, y, font, text, size)
 Button events
 */
 DialogPanel.prototype.buttonOver = function(button){
-    console.log("over");
+    //console.log("over");
     button.textRef.tint = this.overTint;
 };
 DialogPanel.prototype.buttonOut = function(button){
-    console.log("out");
+    //console.log("out");
     button.textRef.tint = 0xffffff;
 };
 
@@ -133,8 +148,18 @@ DialogPanel.prototype.setupDialog = function(){
     
     //if links are players do normal
     //else can click anywhere?
-    if(this.dialogData.links.length>1 && this.dialogData.links[0].Actor==this.dialogEngine.playerActor.id)
+    if(this.dialogData.links.length>1 && this.dialogData.links[0].Actor == this.dialogEngine.playerActor.id)
     {
+        //if no pictures?
+        var thisactor = this.maingame.globalHandler.getActorByID(this.dialogData.links[0].Actor);
+        if(this.portrait2==null)
+            this.portrait2 = this.setupPortrait(0,200,"actors",thisactor.json.Pictures+".png");
+        else if(this.portrait2.frameName != thisactor.json.Pictures)
+        {
+            this.portrait2.visible = true;
+            this.portrait2.frameName = thisactor.json.Pictures+".png";
+        }
+        
         for(var i=0;i<3;i++)
         {
             if(this.dialogData.links[i]!=null && this.dialogData.links[i].Actor==this.dialogEngine.playerActor.id)
@@ -156,6 +181,8 @@ DialogPanel.prototype.setupDialog = function(){
     }
     else
     {
+        if(this.portrait2)
+            this.portrait2.visible = false;
         this.hideButtons();
         this.game.input.onDown.add(this.justDoNext, this); 
     }
@@ -175,7 +202,8 @@ DialogPanel.prototype.startDialog = function(id){
     console.log("start Dialog",id);
     if(this.dialogData){
         this.visible = true;
-        this.y = 250;
+        this.y = 100;
+        this.x = 200;
         this.setupDialog();
     }
     else

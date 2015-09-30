@@ -67,9 +67,6 @@ BasicGame.Game.prototype = {
         
         
         /**/
-        
-        
-        
         var inCombat = this.map.getCombatCharacters();
         inCombat.unshift(this.map.playerCharacter);
         
@@ -79,9 +76,6 @@ BasicGame.Game.prototype = {
         //
         this.uiGroup.parent.bringToTop(this.uiGroup);//keeps ui group on top layer
         //
-        
-        
-        
         this.inventory = new InventoryGraphics(this.game,this.gameref,this.globalHandler);
         this.game.add.existing(this.inventory);
         this.uiGroup.add(this.inventory);

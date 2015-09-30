@@ -28,9 +28,10 @@ EventDispatcher.prototype.testAction = function()
 }
 EventDispatcher.prototype.shouldBeActive = function() 
 {
+    //if has anything 
     if(GlobalEvents.currentacion == GlobalEvents.WALK)
         return false;
-    else if(GlobalEvents.currentacion == GlobalEvents.TOUCH && this.actionArray["OnTouch"])
+    if(GlobalEvents.currentacion == GlobalEvents.TOUCH && this.actionArray["OnTouch"])
         return true;
     else if(GlobalEvents.currentacion == GlobalEvents.LOOK && this.actionArray["OnLook"])
         return true;
@@ -45,6 +46,12 @@ EventDispatcher.prototype.shouldBeActive = function()
     }
     return false;
 }//if all action is null. clear out array?
+EventDispatcher.prototype.hasAction = function(action)
+{
+    if(this.actionArray[action])
+        return true;
+    return false;
+}
 //this.onEnterSignal.dispatch([this])
 EventDispatcher.prototype.init = function(triggers)    
 {
@@ -136,10 +143,6 @@ EventDispatcher.prototype.setActions = function(eventAction, action, once, con, 
         }
 }
 //
-
-
-
-
 EventDispatcher.prototype.applyConditions = function(con, conditions) 
 {
     var conditionlist = conditions.conditions;

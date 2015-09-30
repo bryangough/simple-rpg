@@ -10,6 +10,7 @@ var DialogHandler = function(game, maingame, conversations, actors){
     this.playerActor = this.maingame.globalHandler.getPlayerActor();
     
     this.eventDispatcher = new EventDispatcher(game,maingame,null);
+    this.displayPlayerText = false; //true will show the player text as a true text for audio. False just skips the player.
 }
 DialogHandler.prototype.startConvo = function(id){
     this.currentConvo = this.getConversationsByID(id);
@@ -46,9 +47,14 @@ DialogHandler.prototype.getNextDialog = function(currentDialog){
     if(currentDialog==null)
         return null;
     this.doActions(currentDialog);    
-    //if(currentDialog.links.length<=0||currentDialog.links[0]==null)
-    //    return null;
-    //return this.buildDialogByID(currentDialog);//.links[0].DestID);
+
+    if(currentDialog.Actor == this.playerActor.id && !this.displayPlayerText)
+    {
+        if(currentDialog.links.length>0)
+            return this.getNextDialog(this.getDialogByID(currentDialog.links[0].DestID));
+        else 
+            return null;
+    }
     return this.buildDialogWithDiag(currentDialog);
 }
 //

@@ -13,7 +13,9 @@ GlobalEvents.LOOK = 1;
 GlobalEvents.TOUCH = 2;
 GlobalEvents.TALK = 3;
 GlobalEvents.ITEM = 4;
-GlobalEvents.COMBATSELECT = 5;
+GlobalEvents.MAGIC = 5;
+GlobalEvents.COMBATSELECT = 6;
+
 
 GlobalEvents.lastAction = GlobalEvents.DISABLE;
 GlobalEvents._currentacion = GlobalEvents.WALK;
@@ -39,6 +41,10 @@ Object.defineProperty(GlobalEvents, "currentacion", {
         }
     }//throw on change
 });
+GlobalEvents.gotoLastAction = function()
+{
+    GlobalEvents.currentacion = GlobalEvents.lastAction;
+}
 GlobalEvents.tempDisableEvents = function()
 {
     //console.log("tempDisableEvents");

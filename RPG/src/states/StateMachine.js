@@ -2,6 +2,7 @@ StateMachine = function (game) {
     this.mStates = [];//associative
     this.mCurrentState = null;
     this.currentState = null;
+    this.changeState = new Phaser.Signal();
 }
 StateMachine.prototype.update = function(elapsedTime) 
 {
@@ -25,6 +26,7 @@ StateMachine.prototype.change = function(stateName, params)
     this.mCurrentState = newState;
     this.mCurrentState.onEnter(params);
     this.currentState = stateName;
+    this.changeState.dispatch(this, this.currentState, this.mCurrentState)
 }
 StateMachine.prototype.add = function(name, state) 
 {

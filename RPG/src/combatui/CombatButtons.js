@@ -7,7 +7,7 @@ CombatButtons = function(game, maingame, parent){
     this.currentActive;
     this.buttons = [];
     //
-    this.walk = {up:null,active:null};
+   /* this.walk = {up:null,active:null};
     this.setButton(0,0,"genericBtn0001.png","genericBtn0002.png",this.walk,this.dowalk);
     
     this.use = {up:null,active:null};
@@ -21,7 +21,7 @@ CombatButtons = function(game, maingame, parent){
     
     this.inv = {up:null,active:null};
     this.setButton(300,0,"genericBtn0001.png","genericBtn0002.png",this.inv,this.dowalk);
-    
+    */
     GlobalEvents.SendRefresh.add(this.checkRefresh,this);
     //this.dowalk();
     

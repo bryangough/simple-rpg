@@ -96,8 +96,8 @@ BatttleInputHandler.prototype.clickedHex = function(pointer,b)
         return;
     }
     
-    var pointerx = (this.gameref.input.worldX-this.gameref.map.mapGroup.x)/this.gameref.map.scaledto;
-    var pointery = (this.gameref.input.worldY-this.gameref.map.mapGroup.y)/this.gameref.map.scaledto;
+    var pointerx = (this.gameref.input.worldX-this.gameref.map.mapGroup.x) /this.gameref.map.scaledto;
+    var pointery = (this.gameref.input.worldY-this.gameref.map.mapGroup.y) /this.gameref.map.scaledto;
     var moveIndex =  this.gameref.map.hexHandler.checkHex(pointerx,pointery);
     
     if(moveIndex!=null)

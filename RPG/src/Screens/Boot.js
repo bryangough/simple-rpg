@@ -15,6 +15,7 @@ BasicGame.Boot.prototype = {
         this.stage.disableVisibilityChange = true;
 
         this.game.canvas.oncontextmenu = function (e) { e.preventDefault();  };//destroyAnchor();
+        this.game.scale.windowConstraints.bottom = "visual";//make the bottom border affect the game
         
         if (this.game.device.desktop)
         {
@@ -29,7 +30,7 @@ BasicGame.Boot.prototype = {
             this.scale.setMinMax(480, 260, 1024, 768);
             this.scale.pageAlignHorizontally = true;
             this.scale.pageAlignVertically = true;
-            this.scale.forceOrientation(true, false);
+            //this.scale.forceOrientation(true, false);
             this.scale.setResizeCallback(this.gameResized, this);
             //this.scale.enterIncorrectOrientation.add(this.enterIncorrectOrientation, this);
             //this.scale.leaveIncorrectOrientation.add(this.leaveIncorrectOrientation, this);

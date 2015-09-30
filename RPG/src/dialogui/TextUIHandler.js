@@ -29,7 +29,7 @@ TextUIHandler.prototype.setup = function(mapData, uiGroup, dialoghandler)
     this.game.add.existing(this.barkHandler);
     this.uiGroup.add(this.barkHandler);
 
-    this.rollovertext = this.game.make.bitmapText(0, 0, "badabb", "Text goes here.", 25);
+    this.rollovertext = this.game.make.bitmapText(0, 0, "simplefont", "Text goes here.", 25);
     this.rollovertext.visible = false;
     this.game.add.existing(this.rollovertext);
     this.uiGroup.add(this.rollovertext);

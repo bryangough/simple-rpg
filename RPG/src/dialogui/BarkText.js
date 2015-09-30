@@ -55,7 +55,7 @@ BarkTextHandler.prototype.step = function(elapseTime){
 //***** BarkText ********
 //
 BarkText = function(game, handler){
-    Phaser.BitmapText.call(this, game, 0, 0, "badabb", "Text goes here.", 25);
+    Phaser.BitmapText.call(this, game, 0, 0, "simplefont", "Text goes here.", 25);
     this.time;//
     this.over;//object over
     this.inUse = false;

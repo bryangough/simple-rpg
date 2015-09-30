@@ -28,7 +28,6 @@ InputHandler.prototype.onMove = function(pointer, x, y)
     //console.log("move ",pointer.active);
     //if(!pointer.active)
     //    return;
-    
     if(this.dragScreen)
     {
         var diffx = this.dragPoint.x-x;

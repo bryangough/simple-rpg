@@ -6,69 +6,167 @@ ActionButtons = function(game, maingame, parent){
     //
     this.currentActive;
     //
-    this.walk = {up:null,active:null};
-    this.setButton(0,0,"walkBtn0001.png","walkBtn0002.png",this.walk,this.dowalk);
     
-    this.use = {up:null,active:null};
-    this.setButton(71,0,"useBtn0001.png","useBtn0002.png",this.use,this.douse);
+    var width = 90
     
-    this.look = {up:null,active:null};
-    this.setButton(142,0,"lookBtn0001.png","lookBtn0002.png",this.look,this.dolook);
+    var shadow = this.game.make.sprite(0, 0,"gameplayinterface","dropshadow_btn.png");
+    //shadow.width = 90 * 4;
+    //shadow.height = 40;
+    shadow.x = -20;
+    shadow.y = 20;
+    
+    this.magic = {up:null,active:null};
+    this.setButton(width * 4, 0,"actionButton0001.png", "actionButton0003.png", this.magic, this.domagic, "actionbuttonIcons0008.png");
     
     this.talk = {up:null,active:null};
-    this.setButton(212,0,"talkBtn0001.png","talkBtn0002.png",this.talk,this.dotalk);
+    this.setButton(width * 3, 0,"actionButton0001.png", "actionButton0003.png", this.talk, this.dotalk, "actionbuttonIcons0005.png");
+    
+        
+    this.look = {up:null,active:null};
+    this.setButton(width * 2, 0,"actionButton0001.png", "actionButton0003.png", this.look, this.dolook, "actionbuttonIcons0007.png");
+    
+        
+    this.use = {up:null,active:null};
+    this.setButton(width * 1, 0,"actionButton0001.png", "actionButton0003.png", this.use, this.douse, "actionbuttonIcons0006.png");
+    
+    this.walk = {up:null,active:null};
+    this.setButton(width * 0, 0,"actionButton0001.png", "actionButton0003.png", this.walk, this.dowalk, "actionbuttonIcons0001.png");
+    
+    
+    var offset = 35;
+    width = 94.7;
+    this.settings = {up:null,active:null};
+    this.setButton(this.game.world.width - width * 1 - offset, 0,"actionButtonSqr_end0001.png", "actionButtonSqr_end0003.png", this.settings, this.doSettings, "actionbuttonIcons0003.png", true);
+    this.settings.up.tint = 0x00ffff
+    
+    this.combat = {up:null,active:null};
+    this.setButton(this.game.world.width - width * 2 - offset, 0,"actionButtonSqr0001.png", "actionButtonSqr0003.png", this.combat, this.doCombat, "actionbuttonIcons0002.png", true);
+    this.gameref.gGameMode.changeState.add(this.checkCombat, this);
+    
+    this.log = {up:null,active:null};
+    this.setButton(this.game.world.width - width * 3 - offset, 0,"actionButtonSqr0001.png", "actionButtonSqr0003.png", this.log, this.doLog, "actionbuttonIcons0009.png", true);
+    this.log.up.tint = 0x00ffff
     
     this.inv = {up:null,active:null};
-    this.setButton(300,0,"invBtn0001.png","invBtn0002.png",this.inv,this.doInv);
+    this.setButton(this.game.world.width - width * 4 - offset, 0,"actionButtonSqr0001.png", "actionButtonSqr0003.png", this.inv, this.doInv, "actionbuttonIcons0004.png", true);
+    this.gameref.inventory.changeState.add(this.checkInv, this);
+    this.gameref.inventory.invSelected.add(this.invSelected, this);
     
+
     GlobalEvents.SendRefresh.add(this.checkRefresh,this);
     this.dowalk();
 }
 ActionButtons.prototype = Object.create(Phaser.Group.prototype);
 ActionButtons.constructor = ActionButtons;
-ActionButtons.prototype.setButton = function(x,y,imageup,imageactive,ref, clickevent){
-    ref.up = this.game.make.sprite(x,y,"dialogui",imageup);
+ActionButtons.prototype.setButton = function(x,y,imageup,imageactive,ref, clickevent, icon, toggle){
+    
+    ref.up = this.game.make.sprite(x,y,"gameplayinterface",imageup);
     this.add(ref.up);
     ref.up.inputEnabled = true;
     ref.up.input.priorityID = 10; 
     ref.up.events.onInputDown.add(clickevent, this);
-    ref.active = this.game.make.sprite(x,y,"dialogui",imageactive);
+    ref.active = this.game.make.sprite(x,y,"gameplayinterface",imageactive);
     ref.active.visible = false;
     this.add(ref.active);
+    
+    if(toggle)
+    {
+        ref.active.events.onInputDown.add(clickevent, this);
+        ref.active.inputEnabled = true;
+        ref.active.input.priorityID = 10; 
+    }
+    if(icon!=undefined)
+    {
+        var iconImage = this.game.make.sprite(x+20,y+10,"gameplayinterface",icon);
+        this.add(iconImage);
+    }
+    
 }
 //these also should do something
 ActionButtons.prototype.doInv = function(touchedSprite, pointer){
     pointer.active = false;
-    if(this.gameref.inventory.visible==true)
+    this.gameref.inventory.toggle();
+}
+ActionButtons.prototype.checkInv = function(state){
+    if(state)
     {
-        this.gameref.inventory.visible = false;
-        //this.disableButton(this.inv);
+        this.enableButton(this.inv);
     }
     else
     {
-        this.gameref.inventory.visible = true;
-        //this.enableButton(this.inv);
+        this.disableButton(this.inv);
     }
 }
-ActionButtons.prototype.dowalk = function(){
+ActionButtons.prototype.invSelected = function(){
+    clearActive();
+}
+
+//open settings state
+ActionButtons.prototype.doSettings = function(touchedSprite, pointer){
+    pointer.active = false;
+}
+
+ActionButtons.prototype.doCombat = function(touchedSprite, pointer){
+    pointer.active = false;
+    this.gameref.toggleCombat();
+}
+ActionButtons.prototype.checkCombat = function(stateMachine,currentState){
+
+    if(currentState=="combat")
+    {
+        this.enableButton(this.combat);    
+        
+    }
+    else
+    {
+        this.disableButton(this.combat);
+    }
+}
+
+
+
+ActionButtons.prototype.doLog = function(touchedSprite, pointer){
+    pointer.active = false;
+}
+
+
+
+ActionButtons.prototype.clearActive = function()
+{
+    this.disableButton(this.currentActive);
+    this.currentActive = null;
+}
+ActionButtons.prototype.domagic = function(touchedSprite, pointer){
+    pointer.active = false;
+    this.disableButton(this.currentActive);
+    GlobalEvents.currentacion = GlobalEvents.MAGIC;
+    this.currentActive = this.magic;
+    this.enableButton(this.currentActive);
+}
+ActionButtons.prototype.dowalk = function(touchedSprite, pointer){
+    if(pointer)
+        pointer.active = false;
     this.disableButton(this.currentActive);
     GlobalEvents.currentacion = GlobalEvents.WALK;
     this.currentActive = this.walk;
     this.enableButton(this.currentActive);
 }
-ActionButtons.prototype.douse = function(){
+ActionButtons.prototype.douse = function(touchedSprite, pointer){
+    pointer.active = false;
     this.disableButton(this.currentActive);
     GlobalEvents.currentacion = GlobalEvents.TOUCH;
     this.currentActive = this.use;
     this.enableButton(this.currentActive);
 }
-ActionButtons.prototype.dolook = function(){
+ActionButtons.prototype.dolook = function(touchedSprite, pointer){
+    pointer.active = false;
     this.disableButton(this.currentActive);
     GlobalEvents.currentacion = GlobalEvents.LOOK;
     this.currentActive = this.look;
     this.enableButton(this.currentActive);
 }
-ActionButtons.prototype.dotalk = function(){
+ActionButtons.prototype.dotalk = function(touchedSprite, pointer){
+    pointer.active = false;
     this.disableButton(this.currentActive);
     GlobalEvents.currentacion = GlobalEvents.TALK;
     this.currentActive = this.talk;
