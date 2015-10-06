@@ -8,7 +8,9 @@ BattleTick.constructor = BattleTick;
 
 BattleTick.prototype.update = function(elapsedTime) 
 {
+    
     var mActions = this.state.getActions();
+    console.log(mActions);
     
     if(mActions.length<=0)
     {
@@ -19,7 +21,14 @@ BattleTick.prototype.update = function(elapsedTime)
     for(var i=0;i<mActions.length;i++)
     {
         var a = mActions[i];
-        a.Update(elapsedTime);
+        if(a!=null)
+        {
+            a.Update(elapsedTime);
+        }
+        else{
+            console.log(mActions);
+         //   console.log(this,a);
+        }
     }
     if(mActions[mActions.length-1].isReady)
     {

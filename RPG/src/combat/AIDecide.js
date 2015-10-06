@@ -64,6 +64,5 @@ AIDecide.prototype.doAttack = function()
     }
     if(weapon!=null)
         action = new CombatAction(this.game, this.gameref, this.combater, this.gameref.map.playerCharacter, "shoot", this.state,[weapon]);
-        
     return action;
 }

@@ -7,6 +7,15 @@ CombatButtons = function(game, maingame, parent){
     this.currentActive;
     this.buttons = [];
     //
+    // weapon swap ( 2 choices )
+    //
+    // 4 based on weapon (1 group invisible)
+    // 4 buff / actions
+    
+    //points number across top
+    //end turn
+    
+    
    /* this.walk = {up:null,active:null};
     this.setButton(0,0,"genericBtn0001.png","genericBtn0002.png",this.walk,this.dowalk);
     

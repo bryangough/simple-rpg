@@ -67926,7 +67926,6 @@ Phaser.AnimationManager.prototype = {
         }
 
         this._outputFrames = [];
-
         this._frameData.getFrameIndexes(frames, useNumericIndex, this._outputFrames);
 
         this._anims[name] = new Phaser.Animation(this.game, this.sprite, name, this._frameData, this._outputFrames, frameRate, loop);

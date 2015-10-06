@@ -7,6 +7,7 @@ var CombatCharacter = function (maingame, jsondata, map)
     
     var actions = this.jsondata.triggers;
     this.weapons = [];
+    this.weaponCatagories = [];
     this.numberOfActions = 2;
     this.isCombatCharacter = true;
     this.applyCombatActions(actions);
@@ -20,7 +21,7 @@ CombatCharacter.constructor = CombatCharacter;
 CombatCharacter.prototype.applyCombatActions = function(actions)
 {
     //console.log("applyCombatActions",this);
-    this.eventDispatcher.init(actions);
+    //this.eventDispatcher.init(actions);
     
     for(var i=0;i<actions.length;i++)
     {
@@ -37,6 +38,14 @@ CombatCharacter.prototype.applyCombatActions = function(actions)
         }
         else if(action.type=="weaponsInventory")
         {
+            var category = null;
+            if(action.name!=null)
+            {
+                if(this.weaponCatagories[action.name]==null)
+                    this.weaponCatagories[action.name] = [];
+                category = this.weaponCatagories[action.name];
+            }
+            //
             for(var j=0;j<action.weapons.length;j++)
             {
                 var weaponData = this.maingame.getGameData("Weapons",action.weapons[j]);
@@ -44,9 +53,18 @@ CombatCharacter.prototype.applyCombatActions = function(actions)
                 {
                     var weapon = new Weapon(weaponData.triggers[0]);
                     this.weapons.push(weapon);
+                    if(category!=null)
+                    {
+                        category.push(weapon);
+                    }
                 }
             }
         }  
+        else if(action.type=="weapon")
+        {
+            var weapon = new Weapon(action);
+            this.weapons.push(weapon);
+        }
         else if(action.type=="CharacterSpawn")
         {
             var enemy = this.maingame.getGameData("Enemy",actions[i].EnemyType);//this should be saved with here somehow
@@ -275,6 +293,10 @@ CombatCharacter.prototype.Speed = function()
 CombatCharacter.prototype.shootGun = function(target, weapon, afterAction)
 {
     this.faceTarget(target);
+    
+    //do hit chance calculation so can show different shoot
+    
+    
     this.changeState("shoot");
     this.actionsaftermove = [{func:this.afterShoot, para:[{weapon:weapon, target:target, afterAction:afterAction}], removeself:false, callee:this, con:null, walkto:false}];
 }

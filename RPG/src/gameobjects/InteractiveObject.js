@@ -65,6 +65,7 @@ InteractiveObject.prototype.dosetup = function()
     //
     this.currentTile = this.map.hexHandler.checkHex(this.x,this.y);
     this.finalSetup();
+    //
 }
 InteractiveObject.prototype.finalSetup = function()     
 {
@@ -72,8 +73,6 @@ InteractiveObject.prototype.finalSetup = function()
 }
 InteractiveObject.prototype.applyInteractActions = function(actions)
 {
-    //console.log("applyInteractActions",this);
-    
     this.eventDispatcher.init(actions);
     for(var i=0;i<actions.length;i++)
     {
@@ -87,7 +86,7 @@ InteractiveObject.prototype.applyInteractActions = function(actions)
             this.footprint = [];
             for(var j=0;j<actions[i].tiles.length;j++)
             {
-                this.footprint.push(this.map.hexHandler.getTileByCords(actions[i].tiles[j].posx,actions[i].tiles[j].posy));
+                this.footprint.push(this.map.hexHandler.getTileByCords( actions[i].tiles[j].posx, actions[i].tiles[j].posy));
             }
         }
         else if(actions[i].type=="CharacterSpawn")
@@ -108,8 +107,10 @@ InteractiveObject.prototype.applyAnimations = function(actions)
     var tempanimation;
     var complete;
     this.hasstates = true;
+    
     if(!this.isCreated)
     {
+        actions.spriteSheet = actions.spriteSheet || "actors";
         this.createTempArt(actions.spriteSheet,"movingPerson1_idle0001");
     }
     for(var j=0;j<animations.length;j++)
@@ -216,6 +217,11 @@ InteractiveObject.prototype.callFunction = function(fnstring,fnparams)
         fn.apply(this, fnparams);
     }
 }
+
+InteractiveObject.prototype.deSpawn = function() 
+{
+    this.destroySelf();
+}
 InteractiveObject.prototype.moveto = function(tox,toy) 
 {
     if(tox!=null)
@@ -312,7 +318,6 @@ InteractiveObject.prototype.setupReactToAction = function()
 }
 InteractiveObject.prototype.handleClick = function(touchedSprite, pointer) 
 {
-    //console.log("handle click",this.input, this.inputtest, this);
     if(GlobalEvents.currentacion == GlobalEvents.WALK)
         return;
     else if(GlobalEvents.currentacion == GlobalEvents.TOUCH)

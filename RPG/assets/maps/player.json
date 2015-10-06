@@ -23,12 +23,30 @@
                 "selfhp": 2,
                 "attackable": false,
                 "hostile": false,
-                "meleeDmg": 1
+                "meleeDmg": 1,
+                "accuracy": 1
             },
             {
                 "type": "weaponsInventory",
+                "name": "Range",
                 "weapons": [
-                    "fire"
+                    "pierce shot",
+                    "disable shot"
+                ]
+            },
+            {
+                "type": "weaponsInventory",
+                "name": "Buffs",
+                "weapons": [
+                    "turn back time",
+                    "reinforce  shield"
+                ]
+            },
+            {
+                "type": "weaponsInventory",
+                "name": "Melee",
+                "weapons": [
+                    "hay maker"
                 ]
             }
         ]

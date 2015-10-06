@@ -312,6 +312,7 @@ Map.prototype.createMapTiles = function(passedMap){
         this.playerCharacter = new PlayerCharacter(this.gameRef, this.playerData.Player, this);
         this.game.add.existing(this.playerCharacter);
         this.playerCharacter.setLocationByTile(hexagonArray[this.startpos.x][this.startpos.y]);
+        this.playerCharacter.dosetup();
     }
     this.objectGroup.add(this.playerCharacter);
     //
@@ -320,7 +321,13 @@ Map.prototype.createMapTiles = function(passedMap){
     //
     this.doZoom();
     this.hexagonGroup.sort('y', Phaser.Group.SORT_ASCENDING);
-    //
+    
+    
+    for(var i=0;i<this.interactiveObjects.length;i++)
+    {
+        if(this.interactiveObjects[i].eventDispatcher)
+            this.interactiveObjects[i].eventDispatcher.doAction("OnStart", null);
+    }
 };
 Map.prototype.doZoom = function()
 {
@@ -375,8 +382,11 @@ Map.prototype.getTile = function(name, tilesetid){
    // console.log(tilesetid,name);
     return {tile:this.mapData.tileSets[tilesetid][name], spritesheet:this.mapData.tileSets[tilesetid].tileset};
 }
-Map.prototype.userExit = function(data) {
-    //
+Map.prototype.userExit = function(object, data) {
+    //object is only the tile
+    //on do this if player
+    //if(this.playerCharacter.currentTile
+    
     this.startpos.map = data.tmap;
     this.startpos.x = data.tx;
     this.startpos.y = data.ty;

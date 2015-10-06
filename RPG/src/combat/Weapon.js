@@ -12,6 +12,14 @@ var Weapon = function (action)
     this.dmg = action.dmg;
     this.range = action.range;
     this.clipsize = action.clipsize;
+    
+    this.AIPower = action.AIPower;//weight for AI attack, not in yet
+    
+    this.attackType = action.attackType;
+    this.type = action.type;
+    this.cost = action.cost;
+    this.cooldown = action.cooldown;
+    this.description = action.description;
 };
 Weapon.prototype = Object.create(Item.prototype);
 Weapon.constructor = Weapon;

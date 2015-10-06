@@ -44,7 +44,6 @@ PlayerDecide.prototype.dotouched = function(clickedObject)
     }
     if(weapon!=null)
     {
-        
         action = new CombatAction(this.game, this.gameref, this.combater, clickedObject, "shoot", this.state,[weapon]);
         this.state.addToActionsFront(action);
     }

@@ -174,7 +174,7 @@
                     1,
                     1,
                     1,
-                    1,
+                    0,
                     1,
                     1,
                     1,
@@ -318,7 +318,7 @@
                         ]
                     },
                     {
-                        "name": -1,
+                        "name": 6,
                         "displayName": "",
                         "state": "idle",
                         "tilebase": false,
@@ -368,6 +368,29 @@
                             {
                                 "type": "CharacterSpawn",
                                 "EnemyType": "BasicGoon"
+                            },
+                            {
+                                "type": "interacttrigger",
+                                "trigger": "OnStart",
+                                "once": false,
+                                "walkto": false,
+                                "actions": [
+                                    {
+                                        "type": "THIS",
+                                        "function": "moveTo",
+                                        "parameters": "",
+                                        "gototype": "tile",
+                                        "location": {
+                                            "map": "Map",
+                                            "x": 5,
+                                            "y": 5
+                                        }
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": []
+                                }
                             }
                         ]
                     },
@@ -383,28 +406,7 @@
                         "offsetx": 0,
                         "offsety": 0,
                         "maskable": false,
-                        "tilesetid": "isoObjects",
-                        "triggers": [
-                            {
-                                "type": "interacttrigger",
-                                "trigger": "OnTouch",
-                                "once": false,
-                                "walkto": false,
-                                "actions": [
-                                    {
-                                        "type": "Quest",
-                                        "name": 1,
-                                        "mode": "To",
-                                        "variable": "",
-                                        "value": "Active"
-                                    }
-                                ],
-                                "conditions": {
-                                    "logic": "All",
-                                    "conditions": []
-                                }
-                            }
-                        ]
+                        "tilesetid": "isoObjects"
                     },
                     {
                         "name": 2,

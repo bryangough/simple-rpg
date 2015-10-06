@@ -68,7 +68,7 @@
                         }
                     ],
                     "startState": "idle",
-                    "spriteSheet": "actors"
+                    "spriteSheet": ""
                 }
             ]
         },
@@ -140,7 +140,7 @@
                         }
                     ],
                     "startState": "idle",
-                    "spriteSheet": "actors"
+                    "spriteSheet": ""
                 }
             ]
         },
@@ -212,7 +212,7 @@
                         }
                     ],
                     "startState": "idle",
-                    "spriteSheet": "actors"
+                    "spriteSheet": ""
                 }
             ]
         }
@@ -221,26 +221,126 @@
         "gun": {
             "triggers": [
                 {
-                    "weaponname": "gun",
-                    "AIpower": 1,
+                    "type": "weapon",
+                    "AIPower": 1,
                     "dmg": 2,
                     "range": 40,
                     "clipsize": 6,
                     "inventoryImg": "log.png",
-                    "buttonImg": "log.png"
+                    "buttonImg": "log.png",
+                    "attackType": "",
+                    "powerType": "",
+                    "cost": 4,
+                    "cooldown": 0,
+                    "description": ""
                 }
             ]
         },
         "fire": {
             "triggers": [
                 {
-                    "weaponname": "fire",
-                    "AIpower": 1,
+                    "type": "weapon",
+                    "AIPower": 1,
                     "dmg": 6,
                     "range": 40,
                     "clipsize": -1,
                     "inventoryImg": "fire_burning_0003",
-                    "buttonImg": "fire_burning_0003"
+                    "buttonImg": "fire_burning_0003",
+                    "attackType": "",
+                    "powerType": "",
+                    "cost": 4,
+                    "cooldown": 0,
+                    "description": ""
+                }
+            ]
+        },
+        "pierce shot": {
+            "triggers": [
+                {
+                    "type": "weapon",
+                    "AIPower": 1,
+                    "dmg": 6,
+                    "range": 40,
+                    "clipsize": -1,
+                    "inventoryImg": "",
+                    "buttonImg": "",
+                    "attackType": "attack",
+                    "powerType": "pierce",
+                    "cost": 4,
+                    "cooldown": 0,
+                    "description": ""
+                }
+            ]
+        },
+        "disable shot": {
+            "triggers": [
+                {
+                    "type": "weapon",
+                    "AIPower": 1,
+                    "dmg": 6,
+                    "range": 40,
+                    "clipsize": -1,
+                    "inventoryImg": "",
+                    "buttonImg": "",
+                    "attackType": "attack",
+                    "powerType": "stun",
+                    "cost": 4,
+                    "cooldown": 0,
+                    "description": ""
+                }
+            ]
+        },
+        "hay maker": {
+            "triggers": [
+                {
+                    "type": "weapon",
+                    "AIPower": 1,
+                    "dmg": 6,
+                    "range": 40,
+                    "clipsize": -1,
+                    "inventoryImg": "",
+                    "buttonImg": "",
+                    "attackType": "attack",
+                    "powerType": "aoe, melee",
+                    "cost": 4,
+                    "cooldown": 0,
+                    "description": ""
+                }
+            ]
+        },
+        "turn back time": {
+            "triggers": [
+                {
+                    "type": "weapon",
+                    "AIPower": 1,
+                    "dmg": 6,
+                    "range": 40,
+                    "clipsize": -1,
+                    "inventoryImg": "",
+                    "buttonImg": "",
+                    "attackType": "buff",
+                    "powerType": "personal",
+                    "cost": 4,
+                    "cooldown": 6,
+                    "description": ""
+                }
+            ]
+        },
+        "reinforce  shield": {
+            "triggers": [
+                {
+                    "type": "weapon",
+                    "AIPower": 1,
+                    "dmg": 6,
+                    "range": 40,
+                    "clipsize": -1,
+                    "inventoryImg": "",
+                    "buttonImg": "",
+                    "attackType": "heal",
+                    "powerType": "personal",
+                    "cost": 4,
+                    "cooldown": 0,
+                    "description": ""
                 }
             ]
         }
@@ -263,13 +363,8 @@
                     "selfhp": 2,
                     "attackable": true,
                     "hostile": true,
-                    "meleeDmg": 1
-                },
-                {
-                    "type": "weaponsInventory",
-                    "weapons": [
-                        "gun"
-                    ]
+                    "meleeDmg": 1,
+                    "accuracy": 1
                 },
                 {
                     "type": "animations",
@@ -337,11 +432,25 @@
                         }
                     ],
                     "startState": "idle",
-                    "spriteSheet": "actors"
+                    "spriteSheet": ""
                 },
                 {
                     "type": "Enemy",
                     "name": "Basic Goon"
+                },
+                {
+                    "type": "weapon",
+                    "AIPower": 1,
+                    "dmg": 2,
+                    "range": 40,
+                    "clipsize": 6,
+                    "inventoryImg": "log.png",
+                    "buttonImg": "log.png",
+                    "attackType": "",
+                    "powerType": "",
+                    "cost": 4,
+                    "cooldown": 0,
+                    "description": ""
                 }
             ]
         },
@@ -362,20 +471,15 @@
                     "selfhp": 4,
                     "attackable": true,
                     "hostile": true,
-                    "meleeDmg": 1
-                },
-                {
-                    "type": "weaponsInventory",
-                    "weapons": [
-                        "gun"
-                    ]
+                    "meleeDmg": 1,
+                    "accuracy": 1
                 },
                 {
                     "type": "animations",
                     "animations": [
                         {
                             "id": "idle",
-                            "name": "movingPerson3_idle",
+                            "name": "movingPerson1_idle",
                             "start": 1,
                             "stop": 2,
                             "loop": true,
@@ -384,7 +488,7 @@
                         },
                         {
                             "id": "walk",
-                            "name": "movingPerson3_walk",
+                            "name": "movingPerson1_walk",
                             "start": 1,
                             "stop": 4,
                             "loop": true,
@@ -393,7 +497,7 @@
                         },
                         {
                             "id": "use",
-                            "name": "movingPerson3_use",
+                            "name": "movingPerson1_use",
                             "start": 1,
                             "stop": 7,
                             "loop": false,
@@ -404,7 +508,7 @@
                         },
                         {
                             "id": "shoot",
-                            "name": "movingPerson3_shoot",
+                            "name": "movingPerson1_shoot",
                             "start": 1,
                             "stop": 7,
                             "loop": false,
@@ -415,7 +519,7 @@
                         },
                         {
                             "id": "hurt",
-                            "name": "movingPerson3_hurt",
+                            "name": "movingPerson1_hurt",
                             "start": 1,
                             "stop": 7,
                             "loop": false,
@@ -425,7 +529,7 @@
                         },
                         {
                             "id": "die",
-                            "name": "movingPerson3_die",
+                            "name": "movingPerson1_die",
                             "start": 1,
                             "stop": 7,
                             "loop": false,
@@ -436,11 +540,25 @@
                         }
                     ],
                     "startState": "idle",
-                    "spriteSheet": "actors"
+                    "spriteSheet": ""
                 },
                 {
                     "type": "Enemy",
                     "name": "Heavy Goon"
+                },
+                {
+                    "type": "weapon",
+                    "AIPower": 1,
+                    "dmg": 5,
+                    "range": 40,
+                    "clipsize": 6,
+                    "inventoryImg": "log.png",
+                    "buttonImg": "log.png",
+                    "attackType": "",
+                    "powerType": "",
+                    "cost": 4,
+                    "cooldown": 0,
+                    "description": ""
                 }
             ]
         }

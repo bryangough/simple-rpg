@@ -103,9 +103,10 @@ EventDispatcher.prototype.helpSetActions = function(eventAction, actions, once, 
 }
 EventDispatcher.prototype.setActions = function(eventAction, action, once, con, walkto)
 {
+    //console.log(action.type,action);
     if(action.type=="ChangeMap")
         {
-            eventAction.push({func:this.maingame.map.userExit, para:[action], removeself:once, callee:this.maingame.map, con:con, walkto:walkto});
+            eventAction.push({func:this.maingame.map.userExit, para:[this.object, action], removeself:once, callee:this.maingame.map, con:con, walkto:walkto});
         }
         //
         else if(action.type=="CONVERSATION")
@@ -123,7 +124,14 @@ EventDispatcher.prototype.setActions = function(eventAction, action, once, con, 
         //
         else if(action.type=="THIS")//call function on this
         {
-            eventAction.push({func:this.object.callFunction, para:[action.function, action.parameters], removeself:false, callee:this.object, con:con, walkto:walkto});
+            if(action.gototype!=undefined&&action.location)
+            {
+                eventAction.push({func:this.object.callFunction, para:["moveToSpotByCoords", action.location.x+","+ action.location.y], removeself:false, callee:this.object, con:con, walkto:walkto});
+            }
+            else
+            {
+                eventAction.push({func:this.object.callFunction, para:[action.function, action.parameters], removeself:false, callee:this.object, con:con, walkto:walkto});
+            }
         }
         else if(action.type=="Item")
         {

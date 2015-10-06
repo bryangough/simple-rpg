@@ -127,7 +127,7 @@ BasicGame.Game.prototype = {
         return null;
     },
     zoomIn:function(button, pointer){
-        console.log(button,pointer);
+        //console.log(button,pointer);
         pointer.active = false;
         this.map.scaledto -= 0.05;
         if(this.map.scaledto<0)
@@ -192,7 +192,7 @@ BasicGame.Game.prototype = {
         //this.game.debug.text(this.game.time.fps || '--', 2, 40, "#00ff00");   
         this.game.debug.text(this.gGameMode.currentState, 2, 10, "#00ff00");
         this.game.debug.text("currentacion "+GlobalEvents.currentacion, 2, 25, "#00ff00");
-        
+        //this.game.debug.text(this.game.time.fps || '--', 2, 40, "#00ff00");  
         //game.debug.text("Tween running: " + !this.idleBallTween.pendingDelete, 2, 110);
         
         //this.game.debug.inputInfo(16, 16);

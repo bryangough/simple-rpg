@@ -62,8 +62,6 @@ MovingCharacter.prototype.applyMoverActions = function(actions)
                 this.applyInteractActions(body.triggers);
             }
         }
-        
-        
     }
 }
 
@@ -134,7 +132,7 @@ MovingCharacter.prototype.setPath = function(path)
     this.setDirection();
     this.animations.play("walk");
 }
-MovingCharacter.prototype.moveToObject = function(object,tile,actions)
+MovingCharacter.prototype.moveToObject = function(object, tile, actions)
 {
     this.actionsaftermove = actions;
     this.objectmovingto = object;
@@ -145,7 +143,13 @@ MovingCharacter.prototype.moveToObject = function(object,tile,actions)
     this.objectmovingto = object;
     this.douse = true;
 }
-MovingCharacter.prototype.moveToSpot = function(tile,actions)
+MovingCharacter.prototype.moveToSpotByCoords = function(x, y, actions)
+{
+    var tile = this.maingame.map.hexHandler.getTileByCords(x, y);
+    if(tile!=null)
+        this.moveToSpot(tile, actions);
+}
+MovingCharacter.prototype.moveToSpot = function(tile, actions)
 {
     this.actionsaftermove = actions;
     this.moveto(tile);
