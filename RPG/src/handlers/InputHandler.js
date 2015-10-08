@@ -45,7 +45,7 @@ InputHandler.prototype.onMove = function(pointer, x, y)
         //move around
         return;
     }
-    if(GlobalEvents.currentacion != GlobalEvents.WALK)
+    if(GlobalEvents.currentAction != GlobalEvents.WALK)
     {
         return;
     }
@@ -106,7 +106,7 @@ InputHandler.prototype.clickedHex = function(pointer,b)
     if(!pointer.active)
         return;
 
-    if(GlobalEvents.currentacion != GlobalEvents.WALK)
+    if(GlobalEvents.currentAction != GlobalEvents.WALK)
         return;
     if(this.game.global.pause)
     {
@@ -119,7 +119,7 @@ InputHandler.prototype.clickedHex = function(pointer,b)
     
     if(moveIndex!=null)
     {
-        if(this.game.currentacion==this.game.WALK)
+        if(this.game.currentAction==this.game.WALK)
         {
             this.gameref.map.playerCharacter.moveto(moveIndex);
         }

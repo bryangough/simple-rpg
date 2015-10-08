@@ -18,6 +18,7 @@ var GlobalHandler = function (game, maingame, actors, variables, quests, items)
     this.variables = [];
     for(var i=0;i<variables.length;i++)
     {
+        
         this.variables[variables[i].id.toString()] = new VariableObject(variables[i]);
     }
     //
@@ -34,7 +35,6 @@ var GlobalHandler = function (game, maingame, actors, variables, quests, items)
             this.quests[items[i].id.toString()] = new QuestObject(items[i]);
         }
     }
-    //
     this.maps = [];
 }
 //
@@ -76,22 +76,22 @@ GlobalHandler.prototype.compareVariableValue = function(id,compare,value)
 {
     if(!this.variables[id])
         return false;
-    return this.doCompare(compare,this.variables[id].value, value);
+    return this.doCompare(compare,this.variables[id].getValue(), value);
 }
 GlobalHandler.prototype.getVariableValue = function(id)
 {
     if(!this.variables[id])
         return null;
-    return this.variables[id].value;
+    return this.variables[id].getValue();
 }
 GlobalHandler.prototype.updateVariableByID = function(id,mode,value)
 {
     if(!this.variables[id])
         return false;
     if(mode=="Add")
-        this.variables[id].value += parseFloat(value);
+        this.variables[id].updateValue(null, this.variables[id].getValue() + parseFloat(value));
     else
-        this.variables[id].value = value;
+        this.variables[id].updateValue(null,value);
     
     return true;
 }
@@ -269,10 +269,20 @@ var VariableObject = function (json)
 VariableObject.prototype = Object.create(BaseObject.prototype);
 VariableObject.constructor = VariableObject;
 
-Object.defineProperty(VariableObject, "value", {
-    get: function() {return this._value },
+VariableObject.prototype.updateValue = function(notneeded, value){
+    this._value = value;
+    this.json["Initial Value"] = value;
+    this.OnChangeSignal.dispatch([this]); 
+}
+VariableObject.prototype.getValue = function()
+{
+    return this._value;
+}
+
+/*Object.defineProperty(VariableObject, "value", {
+    get: function() {return console.log("variable",this,this._value); this._value },
     set: function(v) { this._value = v; this.OnChangeSignal.dispatch([this]); }//throw on change
-});
+});*/
 
 /*
     this.OnChangeEvent;

@@ -15,8 +15,8 @@ ActionButtons = function(game, maingame, parent){
     shadow.x = -20;
     shadow.y = 20;
     
-    this.magic = {up:null,active:null};
-    this.setButton(width * 4, 0,"actionButton0001.png", "actionButton0003.png", this.magic, this.domagic, "actionbuttonIcons0008.png");
+    /*this.magic = {up:null,active:null};
+    this.setButton(width * 4, 0,"actionButton0001.png", "actionButton0003.png", this.magic, this.domagic, "actionbuttonIcons0008.png");*/
     
     this.talk = {up:null,active:null};
     this.setButton(width * 3, 0,"actionButton0001.png", "actionButton0003.png", this.talk, this.dotalk, "actionbuttonIcons0005.png");
@@ -98,7 +98,7 @@ ActionButtons.prototype.checkInv = function(state){
     }
 }
 ActionButtons.prototype.invSelected = function(){
-    clearActive();
+    this.clearActive();
 }
 
 //open settings state
@@ -136,49 +136,68 @@ ActionButtons.prototype.clearActive = function()
     this.disableButton(this.currentActive);
     this.currentActive = null;
 }
-ActionButtons.prototype.domagic = function(touchedSprite, pointer){
+/*ActionButtons.prototype.domagic = function(touchedSprite, pointer){
     pointer.active = false;
     this.disableButton(this.currentActive);
-    GlobalEvents.currentacion = GlobalEvents.MAGIC;
+    GlobalEvents.currentAction = GlobalEvents.MAGIC;
     this.currentActive = this.magic;
     this.enableButton(this.currentActive);
-}
+}*/
 ActionButtons.prototype.dowalk = function(touchedSprite, pointer){
     if(pointer)
         pointer.active = false;
     this.disableButton(this.currentActive);
-    GlobalEvents.currentacion = GlobalEvents.WALK;
-    this.currentActive = this.walk;
-    this.enableButton(this.currentActive);
+    GlobalEvents.currentAction = GlobalEvents.WALK;
 }
 ActionButtons.prototype.douse = function(touchedSprite, pointer){
     pointer.active = false;
     this.disableButton(this.currentActive);
-    GlobalEvents.currentacion = GlobalEvents.TOUCH;
-    this.currentActive = this.use;
-    this.enableButton(this.currentActive);
+    GlobalEvents.currentAction = GlobalEvents.TOUCH;
 }
 ActionButtons.prototype.dolook = function(touchedSprite, pointer){
     pointer.active = false;
     this.disableButton(this.currentActive);
-    GlobalEvents.currentacion = GlobalEvents.LOOK;
-    this.currentActive = this.look;
-    this.enableButton(this.currentActive);
+    GlobalEvents.currentAction = GlobalEvents.LOOK;
 }
 ActionButtons.prototype.dotalk = function(touchedSprite, pointer){
     pointer.active = false;
     this.disableButton(this.currentActive);
-    GlobalEvents.currentacion = GlobalEvents.TALK;
-    this.currentActive = this.talk;
-    this.enableButton(this.currentActive);
+    GlobalEvents.currentAction = GlobalEvents.TALK;    
 }
 ActionButtons.prototype.disableAll = function(){
     this.disableButton(this.currentActive);
     this.currentActive = null;
 }
 ActionButtons.prototype.checkRefresh = function(){
-    if(GlobalEvents.currentacion == GlobalEvents.ITEM)
+    
+    
+    
+    if(GlobalEvents.currentAction == GlobalEvents.ITEM)
+    {
         this.disableAll();
+    }
+    if(this.currentActive)
+        this.disableButton(this.currentActive);
+    if(GlobalEvents.currentAction == GlobalEvents.TALK)
+    {
+        this.currentActive = this.talk;
+        this.enableButton(this.currentActive);
+    }
+    else if(GlobalEvents.currentAction == GlobalEvents.LOOK)
+    {
+        this.currentActive = this.look;
+        this.enableButton(this.currentActive);
+    }
+    else if(GlobalEvents.currentAction == GlobalEvents.WALK)
+    {
+        this.currentActive = this.walk;
+        this.enableButton(this.currentActive);
+    }
+    else if(GlobalEvents.currentAction == GlobalEvents.TOUCH)
+    {
+        this.currentActive = this.use;
+        this.enableButton(this.currentActive);
+    }
 }
 //
 ActionButtons.prototype.enableButton = function(ref){

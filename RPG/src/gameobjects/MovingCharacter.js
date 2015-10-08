@@ -198,9 +198,9 @@ MovingCharacter.prototype.atTargetTile = function()
         }   
         else
         {
+            this.changeState("idle");
             this.eventDispatcher.completeAction(this.actionsaftermove, true);
             this.clearTargetTile();
-            this.changeState("idle");
         }
     }   
 }
@@ -220,12 +220,12 @@ MovingCharacter.prototype.findtile = function()
 //
 MovingCharacter.prototype.doUse = function()
 {
+    this.changeState("idle");
     if(this.actionsaftermove)
     {
         this.eventDispatcher.completeAction(this.actionsaftermove, true);
     }
     this.clearTargetTile();
-    this.changeState("idle");
 }
 MovingCharacter.prototype.faceTarget = function(target)
 {

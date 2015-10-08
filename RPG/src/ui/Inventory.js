@@ -39,11 +39,28 @@ var InventoryGraphics = function(game,maingame,globalhandler)
             }
         }
     }
+    var iwidth = 60;
+    var num = 10;
+    for(var j=0;j<num;j++)
+    {
+        var img = this.game.make.sprite(iwidth * j,0,"gameplayinterface","inventoryItem0001.png");
+        img.scale.setTo(0.5,0.5);
+        img.anchor.setTo(0.5,0.5);
+        this.addChild(img);
+    }
+    this.selectedBG = this.game.make.sprite(0,-50,"gameplayinterface","inventoryItem0002.png");
+    this.selectedBG.scale.setTo(0.5,0.5);
+    this.selectedBG.anchor.setTo(0.5,0.5);
+    this.selectedBG.visible = false;
+    
+    this.addChild(this.selectedBG);
+    
+    this.x = this.game.world.centerX - (iwidth * num)/2;
     
     this.changeState = new Phaser.Signal();
     this.invSelected = new Phaser.Signal();
-   // this.closeButton = this.game.add.button(bg.width, 0, 'ui', this.closeThis, this, "Close Button0002.png", "Close Button0001.png", "Close Button0001.png", "Close Button0002.png");
- //   this.addChild(this.closeButton);
+    
+    GlobalEvents.SendRefresh.add(this.checkRefresh,this);
 }
 InventoryGraphics.prototype = Object.create(Phaser.Group.prototype);
 InventoryGraphics.constructor = InventoryGraphics;
@@ -67,7 +84,8 @@ InventoryGraphics.prototype.toggle = function(){
 InventoryGraphics.prototype.closeThis = function(){
     this.visible = false;
     this.changeState.dispatch(false, this);
-    if(GlobalEvents.currentacion == GlobalEvents.ITEM)
+    console.log("close", GlobalEvents.currentAction);
+    if(GlobalEvents.currentAction == GlobalEvents.ITEM)
     {
         GlobalEvents.gotoLastAction();
     }
@@ -88,6 +106,7 @@ InventoryGraphics.prototype.itemChanged = function(changeditem)
         this.destroyGraphicItem(this.currentitems[indexof]);
         this.currentitems.splice(indexof,1);
         this.resuffle();
+        this.selectedBG.visible = false;
     }
 }
 InventoryGraphics.prototype.findItem = function(item)
@@ -113,20 +132,19 @@ InventoryGraphics.prototype.destroyGraphicItem = function(item)
 }
 InventoryGraphics.prototype.addInventoryGraphic = function(item)
 {
-    /*var newitem = new InventoryObject(this.game, this, "dialogui", item.getValue("InventoryGraphicName")+".png", item);
+    var newitem = new InventoryObject(this.game, this, "dialogui", item.getValue("InventoryGraphicName")+".png", item);
+    newitem.scale.setTo(0.5,0.5);
+    newitem.anchor.setTo(0.5,0.5);
     this.add(newitem);
-    this.currentitems.push(newitem);*/
+    this.currentitems.push(newitem);
     this.resuffle();
 }
-/*
-    var startx = 15;
-    var starty = 15;
-    var iwidth = 250;
-    var iheight = 40;
-    //
-    var numrows = 1;
-    var numcolumns = 5;
-*/
+InventoryGraphics.prototype.highlight = function(item)
+{
+    this.selectedBG.visible = true;
+    this.selectedBG.x = item.x;
+    this.selectedBG.y = item.y;
+}
 InventoryGraphics.prototype.resuffle = function()
 {
     var numwidth = (this.iwidth-this.startx)/this.numcolumns;
@@ -137,6 +155,14 @@ InventoryGraphics.prototype.resuffle = function()
         this.currentitems[i].y = this.starty;
     }
 }
+InventoryGraphics.prototype.checkRefresh = function(){
+    if(GlobalEvents.currentAction != GlobalEvents.ITEM)
+    {
+        this.selectedBG.visible = false;
+        //this.disableAll();
+    }
+}
+
 //
 var InventoryObject = function(game, inventory, spritesheet, sprite, item)
 {
@@ -150,8 +176,9 @@ InventoryObject.prototype = Object.create(Phaser.Image.prototype);
 InventoryObject.constructor = InventoryObject;
 
 InventoryObject.prototype.handleClick = function(){
-    GlobalEvents.currentacion = GlobalEvents.ITEM;
+    GlobalEvents.currentAction = GlobalEvents.ITEM;
     GlobalEvents.selectedItem = this.item;
+    this.inventory.highlight(this);
     this.inventory.invSelected.dispatch(this.item, this, this.inventory);
 }
 

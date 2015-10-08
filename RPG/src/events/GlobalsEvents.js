@@ -18,48 +18,48 @@ GlobalEvents.COMBATSELECT = 6;
 
 
 GlobalEvents.lastAction = GlobalEvents.DISABLE;
-GlobalEvents._currentacion = GlobalEvents.WALK;
+GlobalEvents._currentAction = GlobalEvents.WALK;
 
 GlobalEvents.selectedItem = null;
 
-Object.defineProperty(GlobalEvents, "currentacion", {
-    get: function() {return GlobalEvents._currentacion },
+Object.defineProperty(GlobalEvents, "currentAction", {
+    get: function() {return GlobalEvents._currentAction },
     set: function(v) { 
         //if disabled, set any changes to what it will be set at when undisabled
         //don't do double disabled
-        if(GlobalEvents._currentacion==GlobalEvents.DISABLE && v!=GlobalEvents.DISABLE)
+        if(GlobalEvents._currentAction==GlobalEvents.DISABLE && v!=GlobalEvents.DISABLE)
         {
             GlobalEvents.lastAction = v;
-            //console.log("s",GlobalEvents._currentacion,GlobalEvents.lastAction);
+            //console.log("s",GlobalEvents._currentAction,GlobalEvents.lastAction);
         }
         else
         {   
-            GlobalEvents.lastAction = GlobalEvents._currentacion;
-            GlobalEvents._currentacion = v; 
+            GlobalEvents.lastAction = GlobalEvents._currentAction;
+            GlobalEvents._currentAction = v; 
             GlobalEvents.refreshEvents(); 
-            //console.log("d",GlobalEvents._currentacion,GlobalEvents.lastAction);
+            //console.log("d",GlobalEvents._currentAction,GlobalEvents.lastAction);
         }
     }//throw on change
 });
 GlobalEvents.gotoLastAction = function()
 {
-    GlobalEvents.currentacion = GlobalEvents.lastAction;
+    GlobalEvents.currentAction = GlobalEvents.lastAction;
 }
 GlobalEvents.tempDisableEvents = function()
 {
     //console.log("tempDisableEvents");
-    GlobalEvents.currentacion = GlobalEvents.DISABLE;
+    GlobalEvents.currentAction = GlobalEvents.DISABLE;
     
-    //GlobalEvents.lastAction = GlobalEvents._currentacion;
-    //GlobalEvents._currentacion = GlobalEvents.DISABLE;
+    //GlobalEvents.lastAction = GlobalEvents._currentAction;
+    //GlobalEvents._currentAction = GlobalEvents.DISABLE;
     //GlobalEvents.refreshEvents(); 
 }
 GlobalEvents.reEnableEvents = function()
 {
-    if(GlobalEvents._currentacion==GlobalEvents.DISABLE)
+    if(GlobalEvents._currentAction==GlobalEvents.DISABLE)
     {
-        //console.log("reenable",GlobalEvents._currentacion,GlobalEvents.lastAction);
-        GlobalEvents._currentacion = GlobalEvents.lastAction;
+        //console.log("reenable",GlobalEvents._currentAction,GlobalEvents.lastAction);
+        GlobalEvents._currentAction = GlobalEvents.lastAction;
         GlobalEvents.refreshEvents();
     }
     //else ignore
@@ -85,6 +85,5 @@ GlobalEvents.refreshEvents = function()
     {
         events[i].testAction();
     }
-    
     GlobalEvents.SendRefresh.dispatch([this])
 }

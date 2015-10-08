@@ -37,7 +37,7 @@ BasicGame.Preloader.prototype = {
         //this.load.bitmapFont("simplefont", "assets/fonts/calibri_white.png", "assets/fonts/calibri_white.fnt");
         this.load.bitmapFont("simplefont", "assets/fonts/badabb.png", "assets/fonts/badabb.fnt");
         
-      //  this.load.atlasJSONHash('dialogui', 'assets/dialogui.png', 'assets/dialogui.json');//dialogui
+        this.load.atlasJSONHash('dialogui', 'assets/dialogui.png', 'assets/dialogui.json');//dialogui
         
 		//this.load.atlas('playButton', 'images/play_button.png', 'images/play_button.json');
 		//this.load.audio('titleMusic', ['audio/main_menu.mp3']);

@@ -34070,7 +34070,8 @@ Phaser.Group.prototype.preUpdate = function () {
 
     while (i--)
     {
-        this.children[i].preUpdate();
+        if(this.children[i]!=undefined)
+            this.children[i].preUpdate();
     }
 
     return true;

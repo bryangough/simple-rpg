@@ -29,17 +29,17 @@ EventDispatcher.prototype.testAction = function()
 EventDispatcher.prototype.shouldBeActive = function() 
 {
     //if has anything 
-    if(GlobalEvents.currentacion == GlobalEvents.WALK)
+    if(GlobalEvents.currentAction == GlobalEvents.WALK)
         return false;
-    if(GlobalEvents.currentacion == GlobalEvents.TOUCH && this.actionArray["OnTouch"])
+    if(GlobalEvents.currentAction == GlobalEvents.TOUCH && this.actionArray["OnTouch"])
         return true;
-    else if(GlobalEvents.currentacion == GlobalEvents.LOOK && this.actionArray["OnLook"])
+    else if(GlobalEvents.currentAction == GlobalEvents.LOOK && this.actionArray["OnLook"])
         return true;
-    else if(GlobalEvents.currentacion == GlobalEvents.TALK && this.actionArray["OnTalk"])
+    else if(GlobalEvents.currentAction == GlobalEvents.TALK && this.actionArray["OnTalk"])
         return true;
-    else if(GlobalEvents.currentacion == GlobalEvents.ITEM && this.actionArray["OnUseItem"])
+    else if(GlobalEvents.currentAction == GlobalEvents.ITEM && this.actionArray["OnUseItem"])
         return true;
-    else if(GlobalEvents.currentacion == GlobalEvents.COMBATSELECT && this.object.isCombatCharacter)
+    else if(GlobalEvents.currentAction == GlobalEvents.COMBATSELECT && this.object.isCombatCharacter)
     {
         if(this.object.isAlive())
             return true;
@@ -194,8 +194,6 @@ EventDispatcher.prototype.applyConditions = function(con, conditions)
 //
 EventDispatcher.prototype.testConditions = function(conditions) 
 {
-    
-    
     if(!conditions.list)
         return true;
     if(conditions.list.length<=0)
@@ -207,7 +205,7 @@ EventDispatcher.prototype.testConditions = function(conditions)
     for(var j=0;j<conditionlist.length;j++){
         
         eachreturn = conditionlist[j].func.apply(conditionlist[j].callee, conditionlist[j].para);
-                
+        
         if(conditionlist[j].special && eachreturn==false)
             return false;
         if(logic=="All"){
@@ -226,7 +224,10 @@ EventDispatcher.prototype.testConditions = function(conditions)
 //this should pass in who
 EventDispatcher.prototype.doAction = function(activation, activator) 
 {
+    
+    
     var actionEvent = this.getEventType(activation); 
+    //console.log("doAction",activation, activator, actionEvent);
     this.completeAction(actionEvent, false, activator);
 }
 //
@@ -242,8 +243,10 @@ EventDispatcher.prototype.completeAction = function(actionEvent, atPoint, activa
         //test all conditions
         for(var i=0;i<actionEvent.length;i++)
         {
+            //console.log(actionEvent[i]);
             if(actionEvent[i]!=null)
             {
+              //  console.log(actionEvent[i].con);
                 if(actionEvent[i].con)//check condition. If false skip. If con is null then just go.
                 {
                     //if similar cons just use same value
@@ -251,17 +254,19 @@ EventDispatcher.prototype.completeAction = function(actionEvent, atPoint, activa
                     {
                         lastconreturn = this.testConditions(actionEvent[i].con);
                         lastcon = actionEvent[i].con;
-                        
-                        
-                    }
+                    } 
+                    //console.log("con ",lastconreturn);
                     if(!lastconreturn)
                         continue;
                 }
                 //push activated events into array and fire them later
+               // console.log(actionEvent[i].walkto, activator);
                 if(actionEvent[i].walkto && activator!=null)
                 {
                     //this should be called only once
+                    //console.log(this.object.currentTile, activator.currentTile);
                     var neighbours = this.maingame.map.hexHandler.areTilesNeighbors( this.object.currentTile, activator.currentTile);
+                    //console.log(neighbours, atPoint);
                     if(!neighbours || !atPoint)
                     {
                         walktoactions.push(actionEvent[i]);

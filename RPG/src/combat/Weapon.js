@@ -17,7 +17,7 @@ var Weapon = function (action)
     
     this.attackType = action.attackType;
     this.type = action.type;
-    this.cost = action.cost;
+    this.cost = action.cost;//points cost to use
     this.cooldown = action.cooldown;
     this.description = action.description;
 };

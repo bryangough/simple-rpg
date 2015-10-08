@@ -1,7 +1,7 @@
 {
     "mapData": {},
     "maps": {
-        "Map": [
+        "FirstArea": [
             {
                 "height": 14,
                 "width": 10,
@@ -314,11 +314,15 @@
                             {
                                 "type": "CharacterSpawn",
                                 "EnemyType": "BasicGoon"
+                            },
+                            {
+                                "type": "actorset",
+                                "id": 5
                             }
                         ]
                     },
                     {
-                        "name": 6,
+                        "name": 7,
                         "displayName": "",
                         "state": "idle",
                         "tilebase": false,
@@ -334,6 +338,10 @@
                             {
                                 "type": "CharacterSpawn",
                                 "EnemyType": "HeavyGoon"
+                            },
+                            {
+                                "type": "actorset",
+                                "id": 5
                             }
                         ]
                     },
@@ -356,9 +364,9 @@
                         "displayName": "",
                         "state": "idle",
                         "tilebase": false,
-                        "x": 400,
+                        "x": 300,
                         "y": 0,
-                        "posx": 4,
+                        "posx": 3,
                         "posy": 2,
                         "offsetx": 0,
                         "offsety": 0,
@@ -381,16 +389,25 @@
                                         "parameters": "",
                                         "gototype": "tile",
                                         "location": {
-                                            "map": "Map",
-                                            "x": 5,
-                                            "y": 5
+                                            "map": "FirstArea",
+                                            "x": 9,
+                                            "y": 6
                                         }
+                                    },
+                                    {
+                                        "type": "THIS",
+                                        "function": "moveTo",
+                                        "parameters": ""
                                     }
                                 ],
                                 "conditions": {
                                     "logic": "All",
                                     "conditions": []
                                 }
+                            },
+                            {
+                                "type": "actorset",
+                                "id": 5
                             }
                         ]
                     },
@@ -402,7 +419,7 @@
                         "x": 0,
                         "y": -50,
                         "posx": 0,
-                        "posy": 2,
+                        "posy": 4,
                         "offsetx": 0,
                         "offsety": 0,
                         "maskable": false,
@@ -487,12 +504,496 @@
                     }
                 ]
             }
+        ],
+        "House": [
+            {
+                "height": 10,
+                "width": 5,
+                "hexWidth": 100,
+                "hexHeight": 50,
+                "tilesetid": "isotiles",
+                "tiletype": "Iso",
+                "handleSprite": true,
+                "handleMovement": true,
+                "data": [
+                    1,
+                    1,
+                    7,
+                    1,
+                    1,
+                    1,
+                    7,
+                    7,
+                    1,
+                    1,
+                    1,
+                    7,
+                    4,
+                    7,
+                    1,
+                    7,
+                    4,
+                    4,
+                    7,
+                    1,
+                    7,
+                    4,
+                    4,
+                    4,
+                    7,
+                    4,
+                    4,
+                    4,
+                    4,
+                    7,
+                    1,
+                    4,
+                    4,
+                    4,
+                    4,
+                    1,
+                    4,
+                    4,
+                    4,
+                    1,
+                    1,
+                    1,
+                    4,
+                    4,
+                    1,
+                    1,
+                    1,
+                    4,
+                    1,
+                    1
+                ],
+                "walkable": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    1,
+                    1,
+                    1,
+                    0,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0
+                ],
+                "actionSpots": [],
+                "objects": [
+                    {
+                        "name": 5,
+                        "displayName": "",
+                        "state": "",
+                        "tilebase": false,
+                        "x": 253,
+                        "y": -25,
+                        "posx": 2,
+                        "posy": 1,
+                        "offsetx": 0,
+                        "offsety": 0,
+                        "maskable": false,
+                        "tilesetid": "isoObjects"
+                    },
+                    {
+                        "name": 5,
+                        "displayName": "",
+                        "state": "",
+                        "tilebase": false,
+                        "x": 453,
+                        "y": -125,
+                        "posx": 4,
+                        "posy": 5,
+                        "offsetx": 0,
+                        "offsety": 0,
+                        "maskable": false,
+                        "tilesetid": "isoObjects"
+                    },
+                    {
+                        "name": 5,
+                        "displayName": "",
+                        "state": "",
+                        "tilebase": false,
+                        "x": 403,
+                        "y": -100,
+                        "posx": 4,
+                        "posy": 4,
+                        "offsetx": 0,
+                        "offsety": 0,
+                        "maskable": false,
+                        "tilesetid": "isoObjects"
+                    },
+                    {
+                        "name": 5,
+                        "displayName": "",
+                        "state": "",
+                        "tilebase": false,
+                        "x": 353,
+                        "y": -75,
+                        "posx": 3,
+                        "posy": 3,
+                        "offsetx": 0,
+                        "offsety": 0,
+                        "maskable": false,
+                        "tilesetid": "isoObjects"
+                    },
+                    {
+                        "name": 5,
+                        "displayName": "",
+                        "state": "",
+                        "tilebase": false,
+                        "x": 303,
+                        "y": -50,
+                        "posx": 3,
+                        "posy": 2,
+                        "offsetx": 0,
+                        "offsety": 0,
+                        "maskable": false,
+                        "tilesetid": "isoObjects"
+                    },
+                    {
+                        "name": 4,
+                        "displayName": "",
+                        "state": "",
+                        "tilebase": false,
+                        "x": 203,
+                        "y": 0,
+                        "posx": 2,
+                        "posy": 0,
+                        "offsetx": 0,
+                        "offsety": 0,
+                        "maskable": false,
+                        "tilesetid": "isoObjects"
+                    },
+                    {
+                        "name": 4,
+                        "displayName": "",
+                        "state": "",
+                        "tilebase": false,
+                        "x": 153,
+                        "y": -25,
+                        "posx": 1,
+                        "posy": 1,
+                        "offsetx": 0,
+                        "offsety": 0,
+                        "maskable": false,
+                        "tilesetid": "isoObjects"
+                    },
+                    {
+                        "name": 4,
+                        "displayName": "",
+                        "state": "",
+                        "tilebase": false,
+                        "x": 103,
+                        "y": -50,
+                        "posx": 1,
+                        "posy": 2,
+                        "offsetx": 0,
+                        "offsety": 0,
+                        "maskable": false,
+                        "tilesetid": "isoObjects"
+                    },
+                    {
+                        "name": 4,
+                        "displayName": "",
+                        "state": "",
+                        "tilebase": false,
+                        "x": 53,
+                        "y": -75,
+                        "posx": 0,
+                        "posy": 3,
+                        "offsetx": 0,
+                        "offsety": 0,
+                        "maskable": false,
+                        "tilesetid": "isoObjects"
+                    },
+                    {
+                        "name": 4,
+                        "displayName": "",
+                        "state": "",
+                        "tilebase": false,
+                        "x": 4,
+                        "y": -100,
+                        "posx": 0,
+                        "posy": 4,
+                        "offsetx": 0,
+                        "offsety": 0,
+                        "maskable": false,
+                        "tilesetid": "isoObjects"
+                    },
+                    {
+                        "name": 1,
+                        "displayName": "",
+                        "state": "",
+                        "tilebase": false,
+                        "x": 203,
+                        "y": -50,
+                        "posx": 2,
+                        "posy": 2,
+                        "offsetx": 0,
+                        "offsety": 0,
+                        "maskable": false,
+                        "tilesetid": "isoObjects"
+                    },
+                    {
+                        "name": 1,
+                        "displayName": "",
+                        "state": "",
+                        "tilebase": false,
+                        "x": 53,
+                        "y": -125,
+                        "posx": 0,
+                        "posy": 5,
+                        "offsetx": 0,
+                        "offsety": 0,
+                        "maskable": false,
+                        "tilesetid": "isoObjects"
+                    },
+                    {
+                        "name": 0,
+                        "displayName": "",
+                        "state": "",
+                        "tilebase": false,
+                        "x": 303,
+                        "y": -100,
+                        "posx": 3,
+                        "posy": 4,
+                        "offsetx": 0,
+                        "offsety": 0,
+                        "maskable": false,
+                        "tilesetid": "isoObjects",
+                        "triggers": [
+                            {
+                                "type": "interacttrigger",
+                                "trigger": "OnTouch",
+                                "once": false,
+                                "walkto": true,
+                                "actions": [
+                                    {
+                                        "type": "SIMPLE",
+                                        "text": "The door is locked."
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": [
+                                        {
+                                            "type": "Variable",
+                                            "name": 4,
+                                            "variable": "",
+                                            "compare": "Is",
+                                            "value": false
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "type": "actiontext",
+                                "walkto": false,
+                                "trigger": "OnLook",
+                                "actions": [
+                                    {
+                                        "type": "SIMPLE",
+                                        "text": "A door."
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": []
+                                }
+                            },
+                            {
+                                "type": "interacttrigger",
+                                "itemid": "4",
+                                "trigger": "OnUseItem",
+                                "once": false,
+                                "walkto": true,
+                                "actions": [
+                                    {
+                                        "type": "Item",
+                                        "name": 4,
+                                        "mode": "To",
+                                        "variable": "Inventory",
+                                        "value": false
+                                    },
+                                    {
+                                        "type": "Variable",
+                                        "name": 4,
+                                        "mode": "To",
+                                        "variable": "",
+                                        "value": true
+                                    },
+                                    {
+                                        "type": "SIMPLE",
+                                        "text": "You have unlocked the door with the key."
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": []
+                                }
+                            },
+                            {
+                                "trigger": "OnTouch",
+                                "walkto": true,
+                                "actions": [
+                                    {
+                                        "type": "ChangeMap",
+                                        "tmap": "FirstArea",
+                                        "tx": 6,
+                                        "ty": 11
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": [
+                                        
+                                    ]
+                                }
+                            },
+                            {
+                                "type": "actiontext",
+                                "walkto": false,
+                                "trigger": "OnTalk",
+                                "actions": [
+                                    {
+                                        "type": "SIMPLE",
+                                        "text": "The door does not find your argument satisfying."
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": [
+                                        {
+                                            "type": "Variable",
+                                            "name": 4,
+                                            "variable": "",
+                                            "compare": "Is",
+                                            "value": false
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "name": 0,
+                        "displayName": "",
+                        "state": "",
+                        "tilebase": false,
+                        "x": 147.1,
+                        "y": -44.3,
+                        "posx": 1,
+                        "posy": 3,
+                        "offsetx": 0,
+                        "offsety": 0,
+                        "maskable": false,
+                        "tilesetid": "interactiveactors",
+                        "triggers": [
+                            {
+                                "type": "interacttrigger",
+                                "trigger": "OnTouch",
+                                "once": false,
+                                "walkto": true,
+                                "actions": [
+                                    {
+                                        "type": "THIS",
+                                        "function": "destroySelf",
+                                        "parameters": ""
+                                    },
+                                    {
+                                        "type": "Item",
+                                        "name": 4,
+                                        "mode": "To",
+                                        "variable": "Inventory",
+                                        "value": true
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": []
+                                }
+                            },
+                            {
+                                "type": "actiontext",
+                                "walkto": false,
+                                "trigger": "OnLook",
+                                "actions": [
+                                    {
+                                        "type": "SIMPLE",
+                                        "text": "A small simple key."
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": []
+                                }
+                            },
+                            {
+                                "type": "actiontext",
+                                "walkto": false,
+                                "trigger": "OnTalk",
+                                "actions": [
+                                    {
+                                        "type": "SIMPLE",
+                                        "text": "The key isn't very talkative."
+                                    }
+                                ],
+                                "conditions": {
+                                    "logic": "All",
+                                    "conditions": []
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
         ]
     },
     "startPos": {
-        "map": "Map",
-        "x": 6,
-        "y": 10
+        "map": "House",
+        "x": 2,
+        "y": 6
     },
     "tileSets": {
         "isotiles": {
@@ -526,6 +1027,7 @@
             "4": "log",
             "5": "movingPerson2_idle0001",
             "6": "movingPerson1_idle0001",
+            "7": "movingPerson3_idle0001",
             "tileset": "actors"
         }
     },
@@ -583,7 +1085,26 @@
                 "Count": 0,
                 "InventoryGraphicName": "inv_crab",
                 "InvetoryGraphicSheet": "dialogui",
-                "Combine Count": 5
+                "Combine Count": 5,
+                "Pictures": "",
+                "State": ""
+            },
+            {
+                "id": 4,
+                "Name": "Simple Key",
+                "onLookat": "",
+                "Is Item": true,
+                "Inventory": false,
+                "onEnterInventoryText": "",
+                "Description": "",
+                "onTalk": "",
+                "VisibleInventory": true,
+                "Count": 0,
+                "InventoryGraphicName": "inv_crab",
+                "InvetoryGraphicSheet": "dialogui",
+                "Combine Count": 0,
+                "Pictures": "[]",
+                "State": ""
             }
         ],
         "Locations": [
@@ -611,6 +1132,12 @@
                 "id": 3,
                 "Name": "Enemy Defeated",
                 "Initial Value": 0,
+                "Description": ""
+            },
+            {
+                "id": 4,
+                "Name": "First Door",
+                "Initial Value": false,
                 "Description": ""
             }
         ],

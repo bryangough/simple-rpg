@@ -124,6 +124,7 @@ InteractiveObject.prototype.applyAnimations = function(actions)
         if(animations[j].onComplete)
         {
             tempanimation.onComplete.add(function () {
+                console.log("onComplete");
                 this.caller.callFunction(animations[this.stateNum].onComplete, animations[this.stateNum].onCompleteParams);
             }, {stateNum:j,caller:this});
         }
@@ -167,7 +168,7 @@ InteractiveObject.prototype.setupArt = function(json)
 InteractiveObject.prototype.changeState = function(newstate) 
 {
     //need to test if state exists
-    
+    //console.log("caller is " + arguments.callee.caller.toString());
     if(this.hasstates)
     {
         var nextAnimation = this.animations.getAnimation(newstate);
@@ -267,11 +268,18 @@ InteractiveObject.prototype.updateLocation = function(tile)
 InteractiveObject.prototype.destroySelf = function(elapseTime) 
 {
     this.jsondata.destroyed = true;
+    this.flushAll();
+}
+InteractiveObject.prototype.flushAll = function() 
+{
+    this.animations.stop();
+    this.animations.destroy();
     this.eventDispatcher.destroy();
     this.events.onInputUp.remove(this.handleClick, this);  
     this.events.onInputOver.remove(this.handleOver, this);//for rollover
     this.events.onInputOut.remove(this.handleOut, this);
     this.destroy();
+    console.log(this,"- destroy -");
 }
 InteractiveObject.prototype.handleOver = function() 
 {
@@ -318,17 +326,17 @@ InteractiveObject.prototype.setupReactToAction = function()
 }
 InteractiveObject.prototype.handleClick = function(touchedSprite, pointer) 
 {
-    if(GlobalEvents.currentacion == GlobalEvents.WALK)
+    if(GlobalEvents.currentAction == GlobalEvents.WALK)
         return;
-    else if(GlobalEvents.currentacion == GlobalEvents.TOUCH)
+    else if(GlobalEvents.currentAction == GlobalEvents.TOUCH)
         this.eventDispatcher.doAction("OnTouch", this.map.playerCharacter);
-    else if(GlobalEvents.currentacion == GlobalEvents.LOOK)
+    else if(GlobalEvents.currentAction == GlobalEvents.LOOK)
         this.eventDispatcher.doAction("OnLook", this.map.playerCharacter);
-    else if(GlobalEvents.currentacion == GlobalEvents.TALK)
+    else if(GlobalEvents.currentAction == GlobalEvents.TALK)
         this.eventDispatcher.doAction("OnTalk", this.map.playerCharacter);
-    else if(GlobalEvents.currentacion == GlobalEvents.ITEM)
+    else if(GlobalEvents.currentAction == GlobalEvents.ITEM)
         this.eventDispatcher.doAction("OnUseItem", this.map.playerCharacter);
-    else if(GlobalEvents.currentacion == GlobalEvents.COMBATSELECT)
+    else if(GlobalEvents.currentAction == GlobalEvents.COMBATSELECT)
     {
         if(this.attackable)
             this.maingame.gGameMode.mCurrentState.inputHandler.clickedObject(this);

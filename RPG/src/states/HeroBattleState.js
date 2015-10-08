@@ -110,7 +110,7 @@ HeroBattleState.prototype.addToActionsFront = function(val)
 //
 HeroBattleState.prototype.moveOn = function()
 {
-    GlobalEvents.currentacion = GlobalEvents.COMBATSELECT;
+    GlobalEvents.currentAction = GlobalEvents.COMBATSELECT;
     this.addToActionsFront();
     //this.mBattleStates.change("tick");
     //this.addToActionsRear();
@@ -125,9 +125,9 @@ HeroBattleState.prototype.onExit = function()
     {
         this.mEntities[i].endCombat();
     }
-    //console.log(GlobalEvents.currentacion);
-    if(GlobalEvents.currentacion == GlobalEvents.COMBATSELECT)
-        GlobalEvents.currentacion = GlobalEvents.WALK;
+    //console.log(GlobalEvents.currentAction);
+    if(GlobalEvents.currentAction == GlobalEvents.COMBATSELECT)
+        GlobalEvents.currentAction = GlobalEvents.WALK;
 }
 HeroBattleState.prototype.leaveThisState = function() 
 {

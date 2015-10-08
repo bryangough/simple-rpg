@@ -37,10 +37,13 @@ PlayerDecide.prototype.dotouched = function(clickedObject)
 {
     var action;
     var weapon;
-    if(this.combater.weapons.length>0)
+    if(this.combater.currentSelectedWeapon)
+    {
+        weapon = this.combater.currentSelectedWeapon;
+    }
+    else if(this.combater.weapons.length>0)
     {
         weapon = this.combater.weapons[0];
-        //this should be selectable by ui
     }
     if(weapon!=null)
     {

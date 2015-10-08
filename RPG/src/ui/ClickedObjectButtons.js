@@ -50,25 +50,25 @@ ClickedObjectButtons.prototype.doInv = function(touchedSprite, pointer){
 }
 ClickedObjectButtons.prototype.dowalk = function(){
     this.disableButton(this.currentActive);
-    GlobalEvents.currentacion = GlobalEvents.WALK;
+    GlobalEvents.currentAction = GlobalEvents.WALK;
     this.currentActive = this.walk;
     this.enableButton(this.currentActive);
 }
 ClickedObjectButtons.prototype.douse = function(){
     this.disableButton(this.currentActive);
-    GlobalEvents.currentacion = GlobalEvents.TOUCH;
+    GlobalEvents.currentAction = GlobalEvents.TOUCH;
     this.currentActive = this.use;
     this.enableButton(this.currentActive);
 }
 ClickedObjectButtons.prototype.dolook = function(){
     this.disableButton(this.currentActive);
-    GlobalEvents.currentacion = GlobalEvents.LOOK;
+    GlobalEvents.currentAction = GlobalEvents.LOOK;
     this.currentActive = this.look;
     this.enableButton(this.currentActive);
 }
 ClickedObjectButtons.prototype.dotalk = function(){
     this.disableButton(this.currentActive);
-    GlobalEvents.currentacion = GlobalEvents.TALK;
+    GlobalEvents.currentAction = GlobalEvents.TALK;
     this.currentActive = this.talk;
     this.enableButton(this.currentActive);
 }
@@ -77,7 +77,7 @@ ClickedObjectButtons.prototype.disableAll = function(){
     this.currentActive = null;
 }
 ClickedObjectButtons.prototype.checkRefresh = function(){
-    if(GlobalEvents.currentacion == GlobalEvents.ITEM)
+    if(GlobalEvents.currentAction == GlobalEvents.ITEM)
         this.disableAll();
 }
 //

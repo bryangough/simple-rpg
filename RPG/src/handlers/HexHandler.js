@@ -666,13 +666,18 @@ IsoHandler.prototype.areTilesNeighbors=function(starttile,testtile)
 {
     if(starttile==null||testtile==null)
         return false;
+    
+    
     var posx = starttile.posx-testtile.posx;
     var posy = starttile.posy-testtile.posy;
+    
+    //console.log(posx,posy);
     //
     //console.log("IsoHandler",posx,posy);
     //
     if(starttile==testtile)
         return true;
+    //console.log(starttile, starttile.y);
     if(starttile.y % 2 == 1)
     {
         if(posx==1&&posy==-1)return true;

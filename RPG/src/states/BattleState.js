@@ -110,7 +110,7 @@ BattleState.prototype.addToActionsFront = function(val)
 }
 BattleState.prototype.moveOn = function()
 {
-    GlobalEvents.currentacion = GlobalEvents.COMBATSELECT;
+    GlobalEvents.currentAction = GlobalEvents.COMBATSELECT;
     this.mBattleStates.change("tick");
 }
 BattleState.prototype.onExit = function() 
@@ -125,9 +125,9 @@ BattleState.prototype.onExit = function()
         this.mEntities[i].endCombat();
     }
     
-    if(GlobalEvents.currentacion == GlobalEvents.COMBATSELECT)
+    if(GlobalEvents.currentAction == GlobalEvents.COMBATSELECT)
     {
-        GlobalEvents.currentacion = GlobalEvents.WALK;
+        GlobalEvents.currentAction = GlobalEvents.WALK;
     }
 }
 BattleState.prototype.leaveThisState = function() 

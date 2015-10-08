@@ -79,8 +79,8 @@ BasicGame.Game.prototype = {
         this.inventory = new InventoryGraphics(this.game,this.gameref,this.globalHandler);
         this.game.add.existing(this.inventory);
         this.uiGroup.add(this.inventory);
-        this.inventory.x = 220;
-        this.inventory.y = 400;
+        //this.inventory.x = 0;
+        this.inventory.y = 490;
         this.inventory.visible = false;
 
         this.normalUI = new NormalUI(this.game, this, this.globalHandler, this.uiGroup);
@@ -191,7 +191,7 @@ BasicGame.Game.prototype = {
     {
         //this.game.debug.text(this.game.time.fps || '--', 2, 40, "#00ff00");   
         this.game.debug.text(this.gGameMode.currentState, 2, 10, "#00ff00");
-        this.game.debug.text("currentacion "+GlobalEvents.currentacion, 2, 25, "#00ff00");
+        this.game.debug.text("currentAction "+GlobalEvents.currentAction, 2, 25, "#00ff00");
         //this.game.debug.text(this.game.time.fps || '--', 2, 40, "#00ff00");  
         //game.debug.text("Tween running: " + !this.idleBallTween.pendingDelete, 2, 110);
         

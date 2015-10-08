@@ -11,6 +11,8 @@ var CombatCharacter = function (maingame, jsondata, map)
     this.numberOfActions = 2;
     this.isCombatCharacter = true;
     this.applyCombatActions(actions);
+    
+    this.currentSelectedWeapon = null;
     //this.attackable = false;
     //this.hostile = false;
 };
@@ -151,6 +153,7 @@ CombatCharacter.prototype.setupHealthBar = function()
     
     this.healthuigroup.x = -this.width;
     this.healthuigroup.y = -this.height-this.healthuigroup.height;
+    this.healthuigroup.visible = false;
 }
 CombatCharacter.prototype.takeDmg = function(dmg)
 {
@@ -319,11 +322,11 @@ CombatCharacter.prototype.doShoot = function()
 {
     //animate shot
     
-    
+    this.changeState("idle");
     if(this.actionsaftermove)
     {
         this.eventDispatcher.completeAction(this.actionsaftermove, true);
     }
     this.clearTargetTile();
-    this.changeState("idle");
+    
 }

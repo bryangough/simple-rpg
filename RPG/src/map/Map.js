@@ -19,6 +19,8 @@ var Map = function (game, gameRef)
     
     this.mapGroup;
     this.scaledto = 1;
+    
+    this.redoMap = false;
 }
 Map.prototype.initialMap = function(mapData, gameData, playerData){
     this.mapData = mapData;
@@ -26,13 +28,7 @@ Map.prototype.initialMap = function(mapData, gameData, playerData){
     this.playerData = playerData;
     this.startpos = this.mapData.startPos;//.split("_");
     var currentmap = this.mapData.maps[this.startpos.map];
-    this.createMapTiles(currentmap);
-}
-Map.prototype.createMapTiles = function(passedMap){
-    var hexagonArray = [];
-    var waterTilesArray = [];
-    //
-    this.interactiveObjects = [];
+    //console.log(this.mapData, this.startpos.map);
     //
     this.objectGroup = this.gameRef.add.group();
     this.highlightGroup = this.gameRef.add.group();
@@ -42,6 +38,16 @@ Map.prototype.createMapTiles = function(passedMap){
     this.mapGroup.add(this.hexagonGroup);
     this.mapGroup.add(this.highlightGroup);
     this.mapGroup.add(this.objectGroup);
+    //
+    this.createMapTiles(currentmap);
+}
+Map.prototype.createMapTiles = function(passedMap){
+    var hexagonArray = [];
+    var waterTilesArray = [];
+    //
+    this.interactiveObjects = [];
+    //
+
     //
     
     this.maskableobjects = [];
@@ -282,14 +288,15 @@ Map.prototype.createMapTiles = function(passedMap){
     }
     //
     this.hexHandler.hexagonArray = hexagonArray;
-    this.hexHandler.waterTilesArray = waterTilesArray;
+    //this.hexHandler.waterTilesArray = waterTilesArray;
     //these should be screen width and height
     this.mapGroup.y = (440-hexagonHeight*Math.ceil(this.gridSizeY/2))/2;
 
     //if(this.gridSizeY%2==0){
     //    this.mapGroup.y-=hexagonHeight/4;
     //}
-    this.mapGroup.x = 0;//(900-Math.ceil(this.gridSizeX)*hexagonWidth)/2;
+    //this.mapGroup.x = 0;//(900-Math.ceil(this.gridSizeX)*hexagonWidth)/2;
+    this.mapGroup.x = (900-Math.ceil(this.gridSizeX)*hexagonWidth)/2;
     //if(this.gridSizeX%2==0){
     //    this.mapGroup.x-=hexagonWidth/8;
     //}
@@ -328,6 +335,8 @@ Map.prototype.createMapTiles = function(passedMap){
         if(this.interactiveObjects[i].eventDispatcher)
             this.interactiveObjects[i].eventDispatcher.doAction("OnStart", null);
     }
+    //console.log("create new map");
+    this.redoMap = false;
 };
 Map.prototype.doZoom = function()
 {
@@ -335,6 +344,10 @@ Map.prototype.doZoom = function()
 }
 Map.prototype.update = function(elapsedTime)
 {
+    if(this.redoMap)
+    {
+        return;
+    }
     this.hexHandler.update(elapsedTime);
     //
     if(!this.game.global.pause)
@@ -346,6 +359,7 @@ Map.prototype.update = function(elapsedTime)
         this.interactiveObjects[i].step(elapsedTime);
     }
     this.objectGroup.customSort (Utilties.customSortHexOffsetIso);
+
 }
 Map.prototype.getCombatCharacters = function()
 {
@@ -370,11 +384,18 @@ Map.prototype.addLocationTextToTile = function(x,y,width,height,i,j){
 
 Map.prototype.flushEntireMap = function(){
     this.interactiveObjects = [];
-
+    for(var i=0;i<this.interactiveObjects.length;i++)
+    {
+        if(this.interactiveObjects[i])
+            this.interactiveObjects[i].flushAll();
+    }
+    this.playerCharacter.flushAll();
+    //
     this.hexagonGroup.removeAll(true);
     this.highlightGroup.removeAll(true);
     this.objectGroup.removeAll(true);
-    //
+    //this.mapGroup.removeAll(true);
+
     this.playerCharacter = null;
     this.hexHandler.flush();
 }
@@ -386,16 +407,19 @@ Map.prototype.userExit = function(object, data) {
     //object is only the tile
     //on do this if player
     //if(this.playerCharacter.currentTile
-    
+    this.redoMap = true;
     this.startpos.map = data.tmap;
     this.startpos.x = data.tx;
     this.startpos.y = data.ty;
     //
+    console.log("flush");
+    GlobalEvents.flushEvents();
     this.flushEntireMap();
+    
     //
     var currentmap = this.mapData.maps[this.startpos.map];
     //
-    GlobalEvents.flushEvents();
+    console.log("build new-- ");
     this.createMapTiles(currentmap);        
 }
 Map.prototype.refreshWalkablView = function(){

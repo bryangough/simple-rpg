@@ -35,7 +35,7 @@ BatttleInputHandler.prototype.onMove = function(pointer, x, y)
     }
     if(this.playerDecide==null)
         return;
-    if(GlobalEvents.currentacion != GlobalEvents.WALK && GlobalEvents.currentacion != GlobalEvents.COMBATSELECT)
+    if(GlobalEvents.currentAction != GlobalEvents.WALK && GlobalEvents.currentAction != GlobalEvents.COMBATSELECT)
         return;
     if(!pointer.active)
         return;
@@ -89,7 +89,7 @@ BatttleInputHandler.prototype.clickedHex = function(pointer,b)
         return;
     if(this.playerDecide==null)
         return;
-    if(GlobalEvents.currentacion != GlobalEvents.WALK && GlobalEvents.currentacion != GlobalEvents.COMBATSELECT)
+    if(GlobalEvents.currentAction != GlobalEvents.WALK && GlobalEvents.currentAction != GlobalEvents.COMBATSELECT)
         return;
     if(this.game.global.pause)
     {
@@ -102,7 +102,7 @@ BatttleInputHandler.prototype.clickedHex = function(pointer,b)
     
     if(moveIndex!=null)
     {
-        if(this.game.currentacion==this.game.WALK)
+        if(this.game.currentAction==this.game.WALK)
         {
             if(this.withinFringes(moveIndex))
             {
