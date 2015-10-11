@@ -27,6 +27,7 @@ var InteractiveObject = function (maingame, jsondata, map)
     this.hasstates = false;
     this.isCreated = false;
     this.eventDispatcher = new EventDispatcher(this.game,this.maingame,this);
+    this.otherAnimations = [];
 }
 InteractiveObject.prototype = Object.create(Phaser.Sprite.prototype);
 InteractiveObject.constructor = InteractiveObject;
@@ -107,19 +108,20 @@ InteractiveObject.prototype.applyAnimations = function(actions)
     var tempanimation;
     var complete;
     this.hasstates = true;
-    
     if(!this.isCreated)
     {
-        actions.spriteSheet = actions.spriteSheet || "actors";
-        this.createTempArt(actions.spriteSheet,"movingPerson1_idle0001");
+        //console.log("create");
+        actions.spriteSheet = actions.spriteSheet || "actors2";
+        this.createTempArt(actions.spriteSheet,"body1_human_idle_0001");
     }
+    //
     for(var j=0;j<animations.length;j++)
     {
-        if(animations[j].start==0&&animations[j].stop==0){
-            tempanimation = this.animations.add(animations[j].id,[animations[j].name+".png"], 1, animations[j].loop, false);
+        if(animations[j].start==0 && animations[j].stop==0){
+            tempanimation = this.animations.add(animations[j].id, [animations[j].name+".png"], 1, animations[j].loop, false);
         }
         else{
-            tempanimation =  this.animations.add(animations[j].id, Phaser.Animation.generateFrameNames(animations[j].name, animations[j].start, animations[j].stop, ".png", 4), 12, animations[j].loop, false);
+            tempanimation =  this.animations.add(animations[j].id, Phaser.Animation.generateFrameNames(animations[j].name+"_", animations[j].start, animations[j].stop, ".png", 4), 12, animations[j].loop, false);
         }
         if(animations[j].onComplete)
         {
@@ -129,17 +131,61 @@ InteractiveObject.prototype.applyAnimations = function(actions)
             }, {stateNum:j,caller:this});
         }
     }   
+    if(actions.otherName != null)
+    {
+         var head = this.game.make.sprite(0, 0, "actors2", "head1_human_idle_0000.png");
+        head.anchor.x = 0.5;
+        head.anchor.y = 1.0;
+        this.addChild(head);
+        this.otherAnimations.push(head);
+        
+        this.addOtherAnimation(animations, head, false, actions.otherName);
+    }  
+    if(actions.weapon != null)
+    {
+         var head = this.game.make.sprite(0, 0, "actors2", "head1_human_idle_0000.png");
+        head.anchor.x = 0.5;
+        head.anchor.y = 1.0;
+        this.addChild(head);
+        this.otherAnimations.push(head);
+        
+        this.addOtherAnimation(animations, head, false, actions.weapon);
+    }  
+    this.savedAnimations = animations;
+}
+InteractiveObject.prototype.addOtherAnimation = function(animations, addTo, doOnComplete, otherName)
+{
+    for(var j=0;j<animations.length;j++)
+    {
+        if(animations[j].start==0 && animations[j].stop==0){
+            tempanimation = addTo.animations.add(animations[j].id, [otherName + animations[j].justName+".png"], 1, animations[j].loop, false);
+        }
+        else{
+            tempanimation =  addTo.animations.add(animations[j].id, Phaser.Animation.generateFrameNames(otherName + animations[j].justName+"_", animations[j].start, animations[j].stop, ".png", 4), 12, animations[j].loop, false);
+        }
+        if(animations[j].onComplete && doOnComplete)
+        {
+            tempanimation.onComplete.add(function () {
+                addTo.caller.callFunction(animations[this.stateNum].onComplete, animations[this.stateNum].onCompleteParams);
+            }, {stateNum:j,caller:this});
+        }
+    }  
 }
 InteractiveObject.prototype.createTempArt = function(spritesheet,image) //character art or guy not yet spawned
 {
+    //console.log(this,spritesheet,image);
     Phaser.Sprite.call(this, this.game, 
                         0,
                         0,
                        spritesheet, image+".png");
+    
     this.map.objectGroup.add(this);
     this.anchor.x = 0.5;
     this.anchor.y = 1.0;
     this.isCreated = true;
+    
+    if(this.posx != undefined && this.posy != undefined)
+        this.setLocationByTile(this.map.hexHandler.getTileByCords(this.posx, this.posy));
 }
 InteractiveObject.prototype.setupArt = function(json) 
 {
@@ -158,6 +204,8 @@ InteractiveObject.prototype.setupArt = function(json)
                            spotx + this.map.objectoffset.x,
                             spoty*-1 + this.map.objectoffset.y,
                            objectreference.spritesheet, objectreference.tile+".png");
+        
+        //console.log(this, objectreference.spritesheet, objectreference.tile);
         this.map.objectGroup.add(this);
         this.anchor.x = 0.5;
         this.anchor.y = 1.0;
@@ -168,13 +216,21 @@ InteractiveObject.prototype.setupArt = function(json)
 InteractiveObject.prototype.changeState = function(newstate) 
 {
     //need to test if state exists
-    //console.log("caller is " + arguments.callee.caller.toString());
+    //console.log("caller is " + arguments.callee.caller.toString(), newstate);
+    //console.log(this,newstate);
     if(this.hasstates)
     {
         var nextAnimation = this.animations.getAnimation(newstate);
         if(nextAnimation)
         {
             this.animations.play(newstate);
+            
+            for(var i=0;i<this.otherAnimations.length;i++)
+            {
+                if(this.otherAnimations[i] != undefined && this.otherAnimations[i].animations.getAnimation(newstate) != undefined)
+                   this.otherAnimations[i].animations.play(newstate);
+            }
+            
             if(this.actor)
                 this.actor.updateValue("state",newstate);
             this.jsondata.state = newstate;

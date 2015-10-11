@@ -298,7 +298,6 @@
                 "actionSpots": [],
                 "objects": [
                     {
-                        "name": 6,
                         "displayName": "",
                         "state": "idle",
                         "tilebase": false,
@@ -322,7 +321,6 @@
                         ]
                     },
                     {
-                        "name": 7,
                         "displayName": "",
                         "state": "idle",
                         "tilebase": false,
@@ -360,7 +358,6 @@
                         "tilesetid": "isoObjects"
                     },
                     {
-                        "name": 6,
                         "displayName": "",
                         "state": "idle",
                         "tilebase": false,
@@ -375,35 +372,7 @@
                         "triggers": [
                             {
                                 "type": "CharacterSpawn",
-                                "EnemyType": "BasicGoon"
-                            },
-                            {
-                                "type": "interacttrigger",
-                                "trigger": "OnStart",
-                                "once": false,
-                                "walkto": false,
-                                "actions": [
-                                    {
-                                        "type": "THIS",
-                                        "function": "moveTo",
-                                        "parameters": "",
-                                        "gototype": "tile",
-                                        "location": {
-                                            "map": "FirstArea",
-                                            "x": 9,
-                                            "y": 6
-                                        }
-                                    },
-                                    {
-                                        "type": "THIS",
-                                        "function": "moveTo",
-                                        "parameters": ""
-                                    }
-                                ],
-                                "conditions": {
-                                    "logic": "All",
-                                    "conditions": []
-                                }
+                                "EnemyType": "RoxGoon"
                             },
                             {
                                 "type": "actorset",
@@ -499,6 +468,29 @@
                                     "logic": "All",
                                     "conditions": []
                                 }
+                            }
+                        ]
+                    },
+                    {
+                        "displayName": "",
+                        "state": "idle",
+                        "tilebase": false,
+                        "x": 350,
+                        "y": -125,
+                        "posx": 3,
+                        "posy": 5,
+                        "offsetx": 0,
+                        "offsety": 0,
+                        "maskable": true,
+                        "tilesetid": "interactiveactors",
+                        "triggers": [
+                            {
+                                "type": "CharacterSpawn",
+                                "EnemyType": "Gob"
+                            },
+                            {
+                                "type": "actorset",
+                                "id": 5
                             }
                         ]
                     }
@@ -887,7 +879,13 @@
                                 "conditions": {
                                     "logic": "All",
                                     "conditions": [
-                                        
+                                        {
+                                            "type": "Variable",
+                                            "name": 4,
+                                            "variable": "",
+                                            "compare": "Is",
+                                            "value": true
+                                        }
                                     ]
                                 }
                             },
@@ -991,8 +989,8 @@
         ]
     },
     "startPos": {
-        "map": "House",
-        "x": 2,
+        "map": "FirstArea",
+        "x": 6,
         "y": 6
     },
     "tileSets": {

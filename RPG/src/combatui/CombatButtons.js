@@ -111,7 +111,7 @@ CombatButtons.constructor = CombatButtons;
 CombatButtons.prototype.setButton = function(x, y, imageup,imageactive, ref, clickevent, group){
     
     ref.up = this.game.make.sprite(x,y,"gameplayinterface",imageup);
-    console.log(imageup, group);
+    //console.log(imageup, group);
     group.add(ref.up);
     ref.up.inputEnabled = true;
     ref.up.input.priorityID = 10; 

@@ -60,6 +60,16 @@ MovingCharacter.prototype.applyMoverActions = function(actions)
             {
                 this.applyMoverActions(body.triggers);
                 this.applyInteractActions(body.triggers);
+                if(this.savedAnimations != undefined && actions[i].playerHead != "")
+                {
+                     var head = this.game.make.sprite(0, 0, "actors2", "head1_human_idle_0000.png");
+                    head.anchor.x = 0.5;
+                    head.anchor.y = 1.0;
+                    this.addChild(head);
+                    this.otherAnimations.push(head);
+
+                    this.addOtherAnimation(this.savedAnimations, head, false, actions[i].playerHead);
+                }  
             }
         }
     }
@@ -91,6 +101,7 @@ MovingCharacter.prototype.setLocation = function(inx,iny)
 }
 MovingCharacter.prototype.setLocationByTile = function(tile) 
 {
+    //console.log(this,tile);
     this.x = tile.x+this.map.hexHandler.halfHex;
     this.y = tile.y+this.map.hexHandler.halfHexHeight;
     this.oldTile = tile;
@@ -159,6 +170,12 @@ MovingCharacter.prototype.moveToSpot = function(tile, actions)
 MovingCharacter.prototype.moveto = function(moveIndex){
     if(moveIndex!=null)
     {
+        if(this.currentTile==null)
+        {
+            this.currentTile = this.map.hexHandler.checkHex(this.x,this.y);
+            //console.log(this,this.currentTile, this.x, this.y);
+            this.setLocationByTile(this.currentTile);
+        }
         if(this.objectmovingto!=null && this.objectmovingto.areWeNeighbours(this.currentTile)){
             this.atTargetTile();
         }

@@ -14,7 +14,8 @@
             },
             {
                 "type": "AnimatedBody",
-                "body": "Blond Guy"
+                "playerHead": "head3_human_",
+                "body": "GreenShirt"
             },
             {
                 "type": "combatAttributes",
