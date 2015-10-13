@@ -39,7 +39,7 @@ var HexHandler = function (maingame, game, hexagonWidth, hexagonHeight, tiletype
     if(this.tiletype=="HexIso")
         this.sprite = new Phaser.Image(game,0,0,"tiles2","hexmousemap1.png");//mousemap
     else
-        this.sprite = new Phaser.Image(game,0,0,"tiles2","halfiso/mousemapiso.png");
+        this.sprite = new Phaser.Image(game,0,0,"tiles2","mousemapiso.png");
     
     this.touchmap = new Phaser.BitmapData (game,"touchmap",100, 50);
 	this.touchmap.draw(this.sprite, 0, 0);

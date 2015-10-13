@@ -10,10 +10,10 @@ BasicGame.LoadMap.prototype = {
         //
         //load set data. This will eventually be from the server
         //should test if this is already done
-        this.load.json('gameData', 'assets/maps/gamedata.json');
-        this.load.json('player', 'assets/maps/player.json');
+        this.load.json('gameData', 'assets/maps/level1Data.json');
+        
         //load actual map
-        this.load.json('map', 'assets/maps/forestmap.json');
+        this.load.json('map', 'assets/maps/level1Map.json');
     },
 	create: function () {
         this.state.start('Game');

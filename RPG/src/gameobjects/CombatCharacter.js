@@ -15,6 +15,7 @@ var CombatCharacter = function (maingame, jsondata, map)
     this.currentSelectedWeapon = null;
     //this.attackable = false;
     //this.hostile = false;
+    this.displayNameText = "";
 };
 
 CombatCharacter.prototype = Object.create(MovingCharacter.prototype);
@@ -69,6 +70,9 @@ CombatCharacter.prototype.applyCombatActions = function(actions)
         }
         else if(action.type=="CharacterSpawn")
         {
+            this.displayNameText = actions[i].EnemyType;
+            
+            //console.log(this, this.displayNameText);
             var enemy = this.maingame.getGameData("Enemy",actions[i].EnemyType);//this should be saved with here somehow
             if(enemy!=null && enemy.triggers!=null)
                 this.applyCombatActions(enemy.triggers)
@@ -121,7 +125,7 @@ CombatCharacter.prototype.setupHealthBar = function()
     var count = 0;
     for(var i=0;i<this.shieldhp;i++)
     {
-        hpbar = this.game.make.image(0,0,"tiles2","flowerBlue.png");
+        hpbar = this.game.make.image(0,0,"tiles2","bushGrass.png");
 
         if(i%8==0)
         {
@@ -138,7 +142,7 @@ CombatCharacter.prototype.setupHealthBar = function()
     
     for(var i=0;i<this.selfhp;i++)
     {
-        hpbar = this.game.make.image(0,0,"tiles2","flowerRed.png");
+        hpbar = this.game.make.image(0,0,"tiles2","bushSand.png");
         if(i%8==0)
         {
             rowcount++;
@@ -154,6 +158,13 @@ CombatCharacter.prototype.setupHealthBar = function()
     this.healthuigroup.x = -this.width;
     this.healthuigroup.y = -this.height-this.healthuigroup.height;
     this.healthuigroup.visible = false;
+}
+CombatCharacter.prototype.boostShield = function(heal)
+{
+    this.shieldhp += heal;
+    if(this.shieldhp>this.shieldhpmax)
+        this.shieldhp = this.shieldhpmax;
+    this.updateBars();
 }
 CombatCharacter.prototype.takeDmg = function(dmg)
 {
@@ -227,19 +238,29 @@ CombatCharacter.prototype.endCombat = function()
 //this.removetint
 CombatCharacter.prototype.tintRed = function()
 {
-    this.tint = 0xff0000;
+    this.doTint(0xff0000);   
 }
 CombatCharacter.prototype.tintYellow = function()
 {
-    this.tint = 0xff0000;
+    this.doTint(0xff0000);
 }
 CombatCharacter.prototype.tintGreen = function()
 {
-    this.tint = 0x00ff00;
+    this.doTint(0x00ff00);
 }
 CombatCharacter.prototype.doRemoveTint = function()
 {
-    this.tint = 0xffffff;
+    this.doTint(0xffffff);
+}
+CombatCharacter.prototype.doTint = function(myTint)
+{
+    this.baseImage.tint = myTint;
+    
+    for(var i=0;i<this.otherAnimations.length;i++)
+    {
+        if(this.otherAnimations[i] != undefined)
+            this.otherAnimations[i].tint = myTint;
+    }
 }
 //
 //
@@ -248,20 +269,40 @@ CombatCharacter.prototype.handleOver = function()
 {
     if(this.hostile)
     {
-        this.tint = 0xff0000;
+        this.tintRed();
     }
     else
     {
-        this.tint = 0x00ff00;
+        this.tintGreen();
     }
-    if(this.jsondata.displayName!="")
+    /*
+    if selected weapon
+    
+    - determin range
+    - determin acc
+    - show acc
+    
+    if()
     {
-        this.maingame.textUIHandler.showRollover(this);
+    this.combater.currentSelectedWeapon
+    
+    
+        //
+        
+    }*/
+    //console.log(this.jsondata,this.parent.jsondata);
+    if(this.jsondata.displayName && this.jsondata.displayName!="")
+    {
+        this.maingame.textUIHandler.showRollover(this.jsondata.displayName,this.x,this.y);
     }
+    //console.log(this,this.parent,this.displayNameText);
+    
+    if(this.displayNameText!="")
+        this.maingame.textUIHandler.showRollover("TEST",this.x,this.y);
 }
 CombatCharacter.prototype.handleOut = function() 
 {
-    this.tint = 0xffffff;
+    this.doRemoveTint();
     if(this.maingame.textUIHandler)
     {
         this.maingame.textUIHandler.hideRollover();

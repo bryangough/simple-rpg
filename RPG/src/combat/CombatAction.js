@@ -24,6 +24,10 @@ CombatAction.prototype.execute = function()
     }
     else if(this.action=="useitem")//use item
     {
+        console.log(this.targe, this.params);
+        //
+        this.combater.douse();
+        //this.combater.appl
     }   
 }
 CombatAction.prototype.cleanup = function()

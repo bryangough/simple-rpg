@@ -91,6 +91,7 @@ MovingCharacter.prototype.isMoving = function()
 MovingCharacter.prototype.finalSetup = function()     
 {
     //this.currentTile = null;
+    
     this.setLocationByTile(this.currentTile);
 }
 
@@ -101,7 +102,9 @@ MovingCharacter.prototype.setLocation = function(inx,iny)
 }
 MovingCharacter.prototype.setLocationByTile = function(tile) 
 {
-    //console.log(this,tile);
+    //console.log(this);
+    if(tile==null)
+        tile  = this.map.hexHandler.getTileByCords(this.posx, this.posy);
     this.x = tile.x+this.map.hexHandler.halfHex;
     this.y = tile.y+this.map.hexHandler.halfHexHeight;
     this.oldTile = tile;
@@ -141,7 +144,7 @@ MovingCharacter.prototype.setPath = function(path)
     this.pathlocation = 0;
     this.nextTile = path[this.pathlocation];//this.map.hexHandler.getTileByCords( path[this.pathlocation].x, path[this.pathlocation].y);
     this.setDirection();
-    this.animations.play("walk");
+    this.changeState("walk");
 }
 MovingCharacter.prototype.moveToObject = function(object, tile, actions)
 {
@@ -257,6 +260,7 @@ MovingCharacter.prototype.step = function(elapseTime)
     if(this.currentTile==null)
     {
         this.currentTile = this.map.hexHandler.checkHex(this.x,this.y);
+        //console.log(this.x, this.y, this);
         this.setLocationByTile(this.currentTile);
     }
     if(this.oldTile==null)
@@ -297,7 +301,7 @@ MovingCharacter.prototype.step = function(elapseTime)
                         this.dir.x = 0;
                         this.dir.y = 0;
                         this.currentTile.enterTile(this);
-                        this.animations.play("idle");
+                        this.changeState("idle");
                         //
                         if(this.objectmovingto!=null && this.currentTile!=null){
                             if(this.objectmovingto.areWeNeighbours(this.currentTile)){
@@ -343,8 +347,8 @@ MovingCharacter.prototype.step = function(elapseTime)
         this.scale.x = 1;
 }
 
-    //this.animations.play("idle");
+    //this.changeState("idle");
     
     /*this.animations.currentAnim.onComplete.add(function () {
-       this.animations.play('idle', 30, true);
+       this.changeState('idle', 30, true);
     }, this);*/

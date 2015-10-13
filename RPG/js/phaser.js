@@ -68760,6 +68760,7 @@ Phaser.Animation.prototype = {
         }
             
         //  Previous index
+        //console.log(this);
         var idx = this.currentFrame.index;
 
         this.currentFrame = this._frameData.getFrame(this._frames[this._frameIndex]);

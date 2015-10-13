@@ -42,7 +42,8 @@ BasicGame.Game.prototype = {
         this.textUIHandler = new TextUIHandler(this.game, 0, 0, this, null);
         //
         this.gameData = this.game.cache.getJSON('gameData');
-        this.playerData = this.game.cache.getJSON('player');
+        this.gameDataPlayer = this.game.cache.getJSON('playergamedata');
+        //this.playerData = this.game.cache.getJSON('player');
         //
         this.mapData = this.game.cache.getJSON('map');
         //
@@ -58,7 +59,7 @@ BasicGame.Game.prototype = {
         //
         if(this.map==null)
             this.map = new Map(this.game, this);
-        this.map.initialMap(this.mapData, this.gameData, this.playerData);
+        this.map.initialMap(this.mapData, this.gameData, this.game.cache.getJSON('player'), this.gameDataPlayer);
         //
         this.gGameMode = new StateMachine();
         this.gGameMode.add("normal", new NormalState(this.gGameMode, this.game, this));
@@ -114,14 +115,22 @@ BasicGame.Game.prototype = {
         //this.masker.updateMasks(this.playerCharacter.x, this.playerCharacter.y, this.playerCharacter.posx, this.playerCharacter.posy);
         //fps.text = this.game.time.fps;
     },
-    getGameData:function(type,name){
+    getGameData:function(type,name,forcePlayer){
         //console.log(type,name);
         //console.log(this.gameData[type][name],type,name);
-        if(this.gameData[type])
+        
+        if(this.gameData[type])// && !forcePlayer)
         {
             if(this.gameData[type][name])
             {
                 return this.gameData[type][name];
+            }
+        }
+        if(this.gameDataPlayer[type])// && forcePlayer)
+        {
+            if(this.gameDataPlayer[type][name])
+            {
+                return this.gameDataPlayer[type][name];
             }
         }
         return null;
@@ -192,6 +201,7 @@ BasicGame.Game.prototype = {
         //this.game.debug.text(this.game.time.fps || '--', 2, 40, "#00ff00");   
         this.game.debug.text(this.gGameMode.currentState, 2, 10, "#00ff00");
         this.game.debug.text("currentAction "+GlobalEvents.currentAction, 2, 25, "#00ff00");
+        //this.game.debug.text("currentAction "+GlobalEvents.currentAction, 2, 50, "#00ff00");
         //this.game.debug.text(this.game.time.fps || '--', 2, 40, "#00ff00");  
         //game.debug.text("Tween running: " + !this.idleBallTween.pendingDelete, 2, 110);
         

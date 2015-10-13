@@ -29,7 +29,7 @@ BasicGame.Preloader.prototype = {
         this.load.atlasJSONHash('tiles2', 'assets/tiles2.png', 'assets/tiles2.json');
         this.load.atlasJSONHash('actors', 'assets/actors.png', 'assets/actors.json');
         this.load.atlasJSONHash('actors2', 'assets/actors2.png', 'assets/actors2.json');
-        this.load.atlasJSONHash('gameplayinterface', 'assets/paradoxinterface.png', 'assets/paradoxinterface.json');//dialogui
+        this.load.atlasJSONHash('gameplayinterface', 'assets/paradoxinterface.png', 'assets/paradoxinterface.json');
 		this.load.image('loading', 'assets/loading.png');
         this.load.image('mainmenu', 'assets/mainmenu.png');
         this.load.image('mapselect', 'assets/mapselect.png');
@@ -38,13 +38,14 @@ BasicGame.Preloader.prototype = {
         //this.load.bitmapFont("simplefont", "assets/fonts/calibri_white.png", "assets/fonts/calibri_white.fnt");
         this.load.bitmapFont("simplefont", "assets/fonts/badabb.png", "assets/fonts/badabb.fnt");
         
-        this.load.atlasJSONHash('dialogui', 'assets/dialogui.png', 'assets/dialogui.json');//dialogui
+        //this.load.atlasJSONHash('dialogui', 'assets/dialogui.png', 'assets/dialogui.json');//dialogui
         
 		//this.load.atlas('playButton', 'images/play_button.png', 'images/play_button.json');
 		//this.load.audio('titleMusic', ['audio/main_menu.mp3']);
 	   //this.load.bitmapFont('caslon', 'fonts/caslon.png', 'fonts/caslon.xml');
 		//	+ lots of other required assets here
-
+        this.load.json('player', 'assets/maps/playerdata.json');
+        this.load.json('playergamedata', 'assets/maps/playergamedata.json');
 	},
 
 	create: function () {

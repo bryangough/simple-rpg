@@ -180,7 +180,7 @@ Map.prototype.createMapTiles = function(passedMap){
                             if(tiletype=="HexIso")
                                 tile = new GraphicTile(this.game, "tile_highlight0001.png", "tiles2", i, j, tempPoint.x, tempPoint.y, this);
                             else
-                                tile = new GraphicTile(this.game, "halfiso/halfiso_highlight.png", "tiles2", i, j, tempPoint.x, tempPoint.y, this);
+                                tile = new GraphicTile(this.game, "halfiso_highlight.png", "tiles2", i, j, tempPoint.x, tempPoint.y, this);
                             if(this.walkableArray[i][j]==0)
                                 tile.tint = 0xff0000;
 
@@ -252,6 +252,8 @@ Map.prototype.createMapTiles = function(passedMap){
                     var objectreference = this.getTile(objects[i].name,objects[i].tilesetid);
                     spotx = objects[i].x;
                     spoty = objects[i].y * -1;
+                    //console.log(objects[i],objects[i].name,objects[i].tilesetid);
+                    //console.log(objectreference);
                     var tileobject = new SimpleObject(this.game,
                                                             spotx + this.objectoffset.x,
                                                             spoty + this.objectoffset.y,

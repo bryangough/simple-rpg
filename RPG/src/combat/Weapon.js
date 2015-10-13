@@ -16,6 +16,7 @@ var Weapon = function (action)
     this.AIPower = action.AIPower;//weight for AI attack, not in yet
     
     this.attackType = action.attackType;
+    this.powerType = action.powerType;
     this.type = action.type;
     this.cost = action.cost;//points cost to use
     this.cooldown = action.cooldown;

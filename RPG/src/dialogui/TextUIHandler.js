@@ -54,21 +54,21 @@ TextUIHandler.prototype.showBark = function(object,text)
     GlobalEvents.tempDisableEvents();
     this.pauseGame();
 },*/
-TextUIHandler.prototype.showRollover = function(object)
+TextUIHandler.prototype.showRollover = function(text, x, y)
 {
     if(!this.rollovertext)
         return;
-    this.rollovertext.text = object.jsondata.displayName;
+    this.rollovertext.text = text;
     this.rollovertext.anchor.x = 0.5;
     this.rollovertext.visible = true;
 
-    this.rollovertext.x = (object.x + this.gameref.map.mapGroup.x) * this.gameref.map.scaledto;
-    this.rollovertext.y = (object.y + this.gameref.map.mapGroup.y) * this.gameref.map.scaledto;// - object.height * this.gameref.map.scaledto * 2;
+    console.log(text,x,y);
+    this.rollovertext.x = (x + this.gameref.map.mapGroup.x) * this.gameref.map.scaledto;
+    this.rollovertext.y = (y + this.gameref.map.mapGroup.y) * this.gameref.map.scaledto;
     
-
     //if display is off the screen
     if(this.rollovertext.y<0){
-        this.rollovertext.y = object.y + this.gameref.map.mapGroup.y;// + object.height;// + object.height;
+        this.rollovertext.y = y + this.gameref.map.mapGroup.y;// + object.height;// + object.height;
     }
     this.rollovertext.tint = 0x9999ff;
 }

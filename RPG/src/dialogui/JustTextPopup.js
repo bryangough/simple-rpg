@@ -2,12 +2,18 @@
 JustTextPopup = function(game, maingame, dialogEngine, parent){
     Phaser.Group.call(this, game, parent);
 //
-    this.bg = this.game.make.image(0,0,"actors","textBox.png");
-    this.add(this.bg);
+    //this.bg = this.game.make.image(0,0,"actors","textBox.png");
+    //this.add(this.bg);
+    var shadow = this.game.make.sprite(0, 0,"gameplayinterface","dropshadow_btn.png");
+    this.add(shadow);
+    shadow.width = 900;
+    shadow.height = 600;
+    //shadow.x = -200;
+    //shadow.y = -100;
 //
     this.maingame = maingame;
-    this.textMain = this.game.make.bitmapText(10, 10, "simplefont", "Text goes here.", 25);
-    this.textMain.tint = 0x00ffff;
+    this.textMain = this.game.make.bitmapText(10, 10, "simplefont", "Text goes here.", 35);
+    //this.textMain.tint = 0x00ffff;
     this.textMain.wordWrap = true;
     this.textMain.wordWrapWidth = 300;
     this.add(this.textMain);
@@ -19,11 +25,11 @@ JustTextPopup.constructor = JustTextPopup;
 //
 JustTextPopup.prototype.showText = function(texttodisplay){
     
-    this.x = this.game.width/2-this.width/2;
-    this.y = this.game.height/2-this.height/2;
-
-    
     this.textMain.text = texttodisplay;
+    
+    this.textMain.x = this.game.width/2-this.textMain.width/2;
+    this.textMain.y = this.game.height/2-this.textMain.height/2;
+
     //this.dialogData = null;
     this.visible = true;
     this.game.input.onDown.add(this.closePopup, this);

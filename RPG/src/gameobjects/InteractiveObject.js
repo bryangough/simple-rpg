@@ -28,14 +28,18 @@ var InteractiveObject = function (maingame, jsondata, map)
     this.isCreated = false;
     this.eventDispatcher = new EventDispatcher(this.game,this.maingame,this);
     this.otherAnimations = [];
+    
+    this.baseImage;
 }
-InteractiveObject.prototype = Object.create(Phaser.Sprite.prototype);
+InteractiveObject.prototype = Object.create(Phaser.Group.prototype);
+//InteractiveObject.prototype = Object.create(Phaser.Sprite.prototype);
 InteractiveObject.constructor = InteractiveObject;
+
 InteractiveObject.prototype.allowInput = function(val) 
 {
-    this.inputEnabled = val;
-    if(this.input!=null)
-        this.input.priorityID = 100;
+    this.baseImage.inputEnabled = val;
+    if(this.baseImage.input!=null)
+        this.baseImage.input.priorityID = 100;
 }
 InteractiveObject.prototype.dosetup = function() 
 {
@@ -108,9 +112,9 @@ InteractiveObject.prototype.applyAnimations = function(actions)
     var tempanimation;
     var complete;
     this.hasstates = true;
+    //console.log("created",this.isCreated, this);
     if(!this.isCreated)
     {
-        //console.log("create");
         actions.spriteSheet = actions.spriteSheet || "actors2";
         this.createTempArt(actions.spriteSheet,"body1_human_idle_0001");
     }
@@ -118,21 +122,23 @@ InteractiveObject.prototype.applyAnimations = function(actions)
     for(var j=0;j<animations.length;j++)
     {
         if(animations[j].start==0 && animations[j].stop==0){
-            tempanimation = this.animations.add(animations[j].id, [animations[j].name+".png"], 1, animations[j].loop, false);
+            tempanimation = this.baseImage.animations.add(animations[j].id, [animations[j].name+".png"], 1, animations[j].loop, false);
         }
         else{
-            tempanimation =  this.animations.add(animations[j].id, Phaser.Animation.generateFrameNames(animations[j].name+"_", animations[j].start, animations[j].stop, ".png", 4), 12, animations[j].loop, false);
+            tempanimation =  this.baseImage.animations.add(animations[j].id, Phaser.Animation.generateFrameNames(animations[j].name+"_", animations[j].start, animations[j].stop, ".png", 4), 12, animations[j].loop, false);
         }
         if(animations[j].onComplete)
         {
             tempanimation.onComplete.add(function () {
-                console.log("onComplete");
+                //console.log("onComplete");
                 this.caller.callFunction(animations[this.stateNum].onComplete, animations[this.stateNum].onCompleteParams);
             }, {stateNum:j,caller:this});
         }
-    }   
+    } 
+    //console.log(this.baseImage.animations);
     if(actions.otherName != null)
     {
+        console.log(actions.head);
          var head = this.game.make.sprite(0, 0, "actors2", "head1_human_idle_0000.png");
         head.anchor.x = 0.5;
         head.anchor.y = 1.0;
@@ -143,12 +149,13 @@ InteractiveObject.prototype.applyAnimations = function(actions)
     }  
     if(actions.weapon != null)
     {
-         var head = this.game.make.sprite(0, 0, "actors2", "head1_human_idle_0000.png");
+        console.log(actions.weapon);
+        var head = this.game.make.sprite(0, 0, "actors2", "head1_human_idle_0000.png");
         head.anchor.x = 0.5;
         head.anchor.y = 1.0;
         this.addChild(head);
         this.otherAnimations.push(head);
-        
+        this.setChildIndex(head,0);
         this.addOtherAnimation(animations, head, false, actions.weapon);
     }  
     this.savedAnimations = animations;
@@ -173,17 +180,20 @@ InteractiveObject.prototype.addOtherAnimation = function(animations, addTo, doOn
 }
 InteractiveObject.prototype.createTempArt = function(spritesheet,image) //character art or guy not yet spawned
 {
-    //console.log(this,spritesheet,image);
-    Phaser.Sprite.call(this, this.game, 
+    //console.log("createTempArt ", spritesheet,image);
+    Phaser.Group.call(this, this.game, null);
+    this.baseImage = this.game.make.sprite(
                         0,
                         0,
                        spritesheet, image+".png");
-    
+    this.addChild(this.baseImage);
     this.map.objectGroup.add(this);
-    this.anchor.x = 0.5;
-    this.anchor.y = 1.0;
+    this.baseImage.anchor.x = 0.5;
+    this.baseImage.anchor.y = 1.0;
     this.isCreated = true;
+    this.otherAnimations.push(this.baseImage);
     
+    //console.log(this.posx, this.posy);
     if(this.posx != undefined && this.posy != undefined)
         this.setLocationByTile(this.map.hexHandler.getTileByCords(this.posx, this.posy));
 }
@@ -191,6 +201,7 @@ InteractiveObject.prototype.setupArt = function(json)
 {
     if(json.name!=undefined && json.tilesetid!=undefined)
     {
+        //console.log("setupart", this, json.name);
         this.isCreated = true;
         var objectreference = this.map.getTile(json.name,json.tilesetid);
         var spotx = json.x || 0;
@@ -200,15 +211,24 @@ InteractiveObject.prototype.setupArt = function(json)
         this.posy = json.posy || 0;
         var tile = this.map.hexHandler.getTileByCords(spotx,spoty);
 
-        Phaser.Sprite.call(this, this.game, 
+        Phaser.Group.call(this, this.game, null);
+        
+        /*Phaser.Sprite.call(this, this.game, 
                            spotx + this.map.objectoffset.x,
                             spoty*-1 + this.map.objectoffset.y,
                            objectreference.spritesheet, objectreference.tile+".png");
+        */
         
         //console.log(this, objectreference.spritesheet, objectreference.tile);
+        
+        this.baseImage = this.game.make.sprite(spotx + this.map.objectoffset.x,
+                            spoty*-1 + this.map.objectoffset.y,
+                           objectreference.spritesheet, objectreference.tile+".png");
+        this.addChild(this.baseImage);
+        this.baseImage.anchor.x = 0.5;
+        this.baseImage.anchor.y = 1.0;
+        this.otherAnimations.push(this.baseImage);
         this.map.objectGroup.add(this);
-        this.anchor.x = 0.5;
-        this.anchor.y = 1.0;
     }
 }
 //
@@ -217,27 +237,33 @@ InteractiveObject.prototype.changeState = function(newstate)
 {
     //need to test if state exists
     //console.log("caller is " + arguments.callee.caller.toString(), newstate);
-    //console.log(this,newstate);
+    
     if(this.hasstates)
     {
-        var nextAnimation = this.animations.getAnimation(newstate);
-        if(nextAnimation)
+        if(this.baseImage)
         {
-            this.animations.play(newstate);
+            var nextAnimation = this.baseImage.animations.getAnimation(newstate);
             
-            for(var i=0;i<this.otherAnimations.length;i++)
+            //console.log(this,nextAnimation);
+            if(nextAnimation)
             {
-                if(this.otherAnimations[i] != undefined && this.otherAnimations[i].animations.getAnimation(newstate) != undefined)
-                   this.otherAnimations[i].animations.play(newstate);
+                //console.log(this, this.baseImage);
+                this.baseImage.play(newstate);
+
+                for(var i=0;i<this.otherAnimations.length;i++)
+                {
+                    if(this.otherAnimations[i] != undefined && this.otherAnimations[i].animations.getAnimation(newstate) != undefined)
+                       this.otherAnimations[i].animations.play(newstate);
+                }
+
+                if(this.actor)
+                    this.actor.updateValue("state",newstate);
+                this.jsondata.state = newstate;
             }
-            
-            if(this.actor)
-                this.actor.updateValue("state",newstate);
-            this.jsondata.state = newstate;
-        }
-        else
-        {
-            console.log(this,newstate,"state doesn't exist.");
+            else
+            {
+                console.log(this,newstate,"state doesn't exist.");
+            }
         }
     }
     else
@@ -339,15 +365,29 @@ InteractiveObject.prototype.flushAll = function()
 }
 InteractiveObject.prototype.handleOver = function() 
 {
-    this.tint = 0x00ffff;
+    this.baseImage.tint = 0x00ffff;
+    
+    for(var i=0;i<this.otherAnimations.length;i++)
+    {
+        if(this.otherAnimations[i] != undefined)
+            this.otherAnimations[i].tint = 0x00ffff;
+    }
+    
     if(this.jsondata.displayName!="")
     {
-        this.maingame.textUIHandler.showRollover(this);
+        this.maingame.textUIHandler.showRollover(this.jsondata.displayName, this.x, this.y);
     }
 }
 InteractiveObject.prototype.handleOut = function() 
 {
-    this.tint = 0xffffff;
+    this.baseImage.tint = 0xffffff;
+    
+    for(var i=0;i<this.otherAnimations.length;i++)
+    {
+        if(this.otherAnimations[i] != undefined)
+            this.otherAnimations[i].tint = 0xffffff;
+    }
+    
     if(this.maingame.textUIHandler)
     {
         this.maingame.textUIHandler.hideRollover();
@@ -376,9 +416,9 @@ InteractiveObject.prototype.step = function(elapseTime)
 }
 InteractiveObject.prototype.setupReactToAction = function() 
 {
-    this.events.onInputUp.add(this.handleClick, this);
-    this.events.onInputOver.add(this.handleOver, this);//for rollover
-    this.events.onInputOut.add(this.handleOut, this);
+    this.baseImage.events.onInputUp.add(this.handleClick, this);
+    this.baseImage.events.onInputOver.add(this.handleOver, this);//for rollover
+    this.baseImage.events.onInputOut.add(this.handleOut, this);
 }
 InteractiveObject.prototype.handleClick = function(touchedSprite, pointer) 
 {

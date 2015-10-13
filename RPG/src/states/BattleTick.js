@@ -10,7 +10,7 @@ BattleTick.prototype.update = function(elapsedTime)
 {
     
     var mActions = this.state.getActions();
-    console.log(mActions);
+    //console.log(mActions);
     
     if(mActions.length<=0)
     {

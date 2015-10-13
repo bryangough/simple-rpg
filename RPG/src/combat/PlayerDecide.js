@@ -37,17 +37,30 @@ PlayerDecide.prototype.dotouched = function(clickedObject)
 {
     var action;
     var weapon;
+    //console.log(this.combater.currentSelectedWeapon);
     if(this.combater.currentSelectedWeapon)
     {
         weapon = this.combater.currentSelectedWeapon;
     }
-    else if(this.combater.weapons.length>0)
+    /*else if(this.combater.weapons.length>0)
     {
         weapon = this.combater.weapons[0];
-    }
+    }*/
     if(weapon!=null)
     {
         action = new CombatAction(this.game, this.gameref, this.combater, clickedObject, "shoot", this.state,[weapon]);
+        this.state.addToActionsFront(action);
+    }
+}
+PlayerDecide.prototype.usePower = function(spot)
+{
+    if(this.combater.currentSelectedWeapon)
+    {
+        weapon = this.combater.currentSelectedWeapon;
+    }
+    if(weapon!=null)
+    {
+        action = new CombatAction(this.game, this.gameref, this.combater, this.combater, "useitem", this.state,[weapon]);
         this.state.addToActionsFront(action);
     }
 }

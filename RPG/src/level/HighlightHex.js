@@ -28,7 +28,7 @@ HighlightHex.prototype.setup = function()
         if(this.hexhandler.tiletype=="HexIso")
             high = this.add(new Phaser.Sprite(this.game, 0,0, "tiles2", "tile_highlight0002.png"));
         else
-            high = this.add(new Phaser.Sprite(this.game, 0,0, "tiles2", "halfiso/halfiso_highlight.png"));
+            high = this.add(new Phaser.Sprite(this.game, 0,0, "tiles2", "halfiso_highlight.png"));
         //
         this.neighborLights.push(light);
         light.add(high);

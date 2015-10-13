@@ -6,7 +6,7 @@
         "triggers": [
             {
                 "type": "actorset",
-                "id": 1
+                "id": -1
             },
             {
                 "type": "mover",
@@ -32,22 +32,15 @@
                 "name": "Range",
                 "weapons": [
                     "pierce shot",
-                    "disable shot"
+                    "disable shot",
+                    "hay maker"
                 ]
             },
             {
                 "type": "weaponsInventory",
                 "name": "Buffs",
                 "weapons": [
-                    "turn back time",
                     "reinforce  shield"
-                ]
-            },
-            {
-                "type": "weaponsInventory",
-                "name": "Melee",
-                "weapons": [
-                    "hay maker"
                 ]
             }
         ]
