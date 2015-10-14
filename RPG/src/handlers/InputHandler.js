@@ -15,6 +15,9 @@ InputHandler.prototype.turnOn = function()
     this.gameref.input.onDown.add(this.doDragScreen, this);
     this.gameref.input.onUp.add(this.clickedHex, this);
     this.gameref.input.priorityID = 0;
+    //
+    this.dragScreen = false;
+    this.didDrag = false;
 }
 InputHandler.prototype.turnOff = function()
 {

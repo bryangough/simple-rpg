@@ -30,6 +30,7 @@ var MovingCharacter = function (maingame, jsondata, map)
     this.douse = true;
     //
     //this.inventory = [];
+    this.limit = -1;
     
 };
 MovingCharacter.prototype = Object.create(InteractiveObject.prototype);
@@ -47,10 +48,23 @@ MovingCharacter.prototype.applyMoverActions = function(actions)
             this.walkspeed = actions[i].walkSpeed;
         }
         else if(actions[i].type=="CharacterSpawn")
-        {
-            var enemy = this.maingame.getGameData("Enemy",actions[i].EnemyType);
-            if(enemy!=null && enemy.triggers!=null)
-                this.applyMoverActions(enemy.triggers)
+        {   
+            var con = {logic:"Any",list:[]};
+            this.eventDispatcher.applyConditions(con, actions[i].conditions);
+            if( this.eventDispatcher.testConditions(con) )
+            {
+                var enemy = this.maingame.getGameData("Enemy",actions[i].EnemyType);
+                if(enemy!=null && enemy.triggers!=null)
+                {
+                    this.applyMoverActions(enemy.triggers);
+                }
+            }
+            else
+            {
+                this.notcreated = true;
+                //this.flushAll();   
+                //flush all or keep away in case looking for data (flag?)    
+            }
         }
         else if(actions[i].type=="AnimatedBody")
         {
@@ -162,6 +176,7 @@ MovingCharacter.prototype.moveToSpotByCoords = function(x, y, actions)
     var tile = this.maingame.map.hexHandler.getTileByCords(x, y);
     if(tile!=null)
         this.moveToSpot(tile, actions);
+    this.limit = -1;
 }
 MovingCharacter.prototype.moveToSpot = function(tile, actions)
 {
@@ -169,6 +184,16 @@ MovingCharacter.prototype.moveToSpot = function(tile, actions)
     this.moveto(tile);
     this.actionsaftermove = actions;
     this.douse = false;
+    this.limit = -1;
+}
+MovingCharacter.prototype.moveToSpotCombat = function(tile, actions, limit)
+{
+    this.actionsaftermove = actions;
+    this.moveto(tile);
+    this.actionsaftermove = actions;
+    this.douse = false;
+    this.limit = limit;
+    //console.log("moveToSpotCombat ", this.limit);
 }
 MovingCharacter.prototype.moveto = function(moveIndex){
     if(moveIndex!=null)
@@ -176,7 +201,6 @@ MovingCharacter.prototype.moveto = function(moveIndex){
         if(this.currentTile==null)
         {
             this.currentTile = this.map.hexHandler.checkHex(this.x,this.y);
-            //console.log(this,this.currentTile, this.x, this.y);
             this.setLocationByTile(this.currentTile);
         }
         if(this.objectmovingto!=null && this.objectmovingto.areWeNeighbours(this.currentTile)){
@@ -188,12 +212,19 @@ MovingCharacter.prototype.moveto = function(moveIndex){
             //var path = this.hexHandler.getlinepath(playertile,moveIndex);
             //this.playerCharacter.setPath(path);
             //
-            this.maingame.pathfinder.setCallbackFunction(this.movercallback, this);
-            this.maingame.pathfinder.preparePathCalculation( [this.currentTile.posx,this.currentTile.posy], [moveIndex.posx, moveIndex.posy] );
-            this.maingame.pathfinder.calculatePath();
+            if(this.currentTile.posx == moveIndex.posx && this.currentTile.posy == moveIndex.posy)
+            {
+                path = this.map.hexHandler.checkHex(moveIndex.posx,moveIndex.posy);
+            }
+            else
+            {
+                this.maingame.pathfinder.setCallbackFunction(this.movercallback, this);
+                this.maingame.pathfinder.preparePathCalculation( [this.currentTile.posx,this.currentTile.posy], [moveIndex.posx, moveIndex.posy] );
+                this.maingame.pathfinder.calculatePath();
 
-            this.clearTargetTile();
-            this.movingtotile = moveIndex;
+                this.clearTargetTile();
+                this.movingtotile = moveIndex;
+            }
         }
     }
 }
@@ -257,6 +288,9 @@ MovingCharacter.prototype.faceTarget = function(target)
 //
 MovingCharacter.prototype.step = function(elapseTime) 
 {
+    if(this.notcreated)
+        return;
+    
     if(this.currentTile==null)
     {
         this.currentTile = this.map.hexHandler.checkHex(this.x,this.y);
@@ -265,6 +299,7 @@ MovingCharacter.prototype.step = function(elapseTime)
     }
     if(this.oldTile==null)
         this.finalSetup();
+
     if(this.path!=null)
     {
         if(this.path.length>0)
@@ -286,7 +321,13 @@ MovingCharacter.prototype.step = function(elapseTime)
             if(this.currentTile.posx==this.nextTile.posx && this.currentTile.posy==this.nextTile.posy)
             {
                 this.pathlocation++;
-                if(this.pathlocation>=this.path.length)// at last tile, now walk to the center
+                if(this.limit>0 && !this.IsPlayer)
+                {
+                    this.limit--;
+                    //console.log("step",this.limit);
+                }
+                //
+                if(this.pathlocation>=this.path.length || this.limit==0)// at last tile, now walk to the center
                 {
                     this.pathlocation=this.path.length;
                     var testx = this.currentTile.x+this.map.hexHandler.halfHex;

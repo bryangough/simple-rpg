@@ -21,7 +21,7 @@ BasicGame.MainMenu.prototype = {
 
 		this.playButton = this.add.button(376, 425, 'ui', this.startGame, this, 'Play Button0001.png', 'Play Button0002.png', 'Play Button0002.png','Play Button0001.png');
         
-        this.playButton = this.add.button(376, 487, 'ui', this.gotoInstructions, this, 'Instructions Button0001.png', 'Instructions Button0002.png', 'Instructions Button0002.png','Instructions Button0001.png');
+        //this.playButton = this.add.button(376, 487, 'ui', this.gotoInstructions, this, 'Instructions Button0001.png', 'Instructions Button0002.png', 'Instructions Button0002.png','Instructions Button0001.png');
 
         
 	},
@@ -38,7 +38,7 @@ BasicGame.MainMenu.prototype = {
 		//this.music.stop();
 
 		//	And start the actual game
-		this.state.start('Game');
+		this.state.start('MapSelect');
 
 	},
     gotoInstructions: function (pointer) {

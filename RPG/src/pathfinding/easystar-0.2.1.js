@@ -438,16 +438,18 @@ EasyStar.js = function() {
 		var endTile = collisionGrid[endX][endY];
 		var isAcceptable = false;
 		for (var i = 0; i < acceptableTiles.length; i++) {
+            
 			if (endTile === acceptableTiles[i]) {
 				isAcceptable = true;
 				break;
 			}
 		}
 
+        /*console.log(endTile, isAcceptable);
 		if (isAcceptable === false) {
 			callbackWrapper(null);
 			return;
-		}
+		}*/
 
 		//Create the instance
 		var instance = new EasyStar.instance();

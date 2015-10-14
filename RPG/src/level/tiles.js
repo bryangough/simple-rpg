@@ -94,6 +94,7 @@ Grid.prototype.PosToMap = function(x,y)
     }
     else if(this.type=="Iso")
     {
+        
         var tile = this.maingame.hexHandler.checkHex(x,y);
         //console.log(tile);
         this.coords.x = tile.posx;

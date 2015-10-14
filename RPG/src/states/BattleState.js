@@ -13,7 +13,7 @@ BattleState = function (statemachine, game, gameref) {
     this.game = game;
     this.gameref = gameref;
     this.inputHandler = new BatttleInputHandler(this.game, this.gameref);
-
+    this.enemyRollover = new EnemyTargetRollOver(this.game, this.gameref, this);
     
     this.mActions = [];//actions
     this.mEntities = [];//entitys
@@ -33,14 +33,52 @@ BattleState = function (statemachine, game, gameref) {
     this.iteractor = -1;
     //
 }
-
 BattleState.prototype = Object.create(EmptyState.prototype);
 BattleState.constructor = BattleState;
-
+//
 BattleState.prototype.init = function(map) 
 {
 }
-
+//
+BattleState.prototype.handleOver = function(combat) 
+{
+    if(!this.gameref.map.playerCharacter.currentSelectedWeapon)
+    {
+        handleOut();
+        return;
+    }
+    if(combat.hostile)
+    {
+        //check line of site
+        //do acc check
+        var hasLineOfSite = this.gameref.map.hexHandler.lineOfSite(combat.currentTile, this.gameref.map.playerCharacter.currentTile)
+        if(!hasLineOfSite)
+        {
+            this.enemyRollover.showText(combat.x, combat.y, "NO LOS");    
+            return;
+        }
+        
+        var distanceTo = this.gameref.map.hexHandler.testRange(combat.currentTile, this.gameref.map.playerCharacter.currentTile, false)
+        var range = this.gameref.map.playerCharacter.currentSelectedWeapon.range;
+        if(distanceTo > range * 60)
+        {
+            this.enemyRollover.showText(combat.x, combat.y, "Out of range");    
+            return;
+        }
+        var acc = this.gameref.map.playerCharacter.currentSelectedWeapon.acc - (distanceTo/(range * 60))/3;
+        acc *= 100;
+        this.enemyRollover.showText(combat.x, combat.y, "Chance to hit: " + acc.toFixed(0) + "%");    
+    }
+    else
+    {
+        this.enemyRollover.showText(combat.x, combat.y, "Civilian.");
+    }
+    
+}
+BattleState.prototype.handleOut = function() 
+{
+    this.enemyRollover.visible = false;
+}
 //
 BattleState.prototype.SortByTime = function(a,b)
 {
@@ -119,6 +157,8 @@ BattleState.prototype.onExit = function()
     
     this.activeButtons.visible = false;
     this.inputHandler.turnOff();
+    
+    this.inputHandler.hideInputAreas();
     
     for(var i=0;i<this.mEntities.length;i++)
     {

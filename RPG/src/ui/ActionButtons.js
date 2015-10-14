@@ -36,19 +36,19 @@ ActionButtons = function(game, maingame, parent){
     var offset = 35;
     width = 94.7;
     this.settings = {up:null,active:null};
-    this.setButton(this.game.world.width - width * 1 - offset, 0,"actionButtonSqr_end0001.png", "actionButtonSqr_end0003.png", this.settings, this.doSettings, "actionbuttonIcons0003.png", true);
-    this.settings.up.tint = 0x00ffff
+    this.setButton(this.game.world.width - width * 1 - offset, 0,"actionButtonSqr_end0001.png", "actionButtonSqr_end0003.png", this.settings, this.returnToMenu, "actionbuttonIcons0003.png", true);
+    //this.settings.up.tint = 0x00ffff
     
     this.combat = {up:null,active:null};
     this.setButton(this.game.world.width - width * 2 - offset, 0,"actionButtonSqr0001.png", "actionButtonSqr0003.png", this.combat, this.doCombat, "actionbuttonIcons0002.png", true);
     this.gameref.gGameMode.changeState.add(this.checkCombat, this);
     
-    this.log = {up:null,active:null};
+    /*this.log = {up:null,active:null};
     this.setButton(this.game.world.width - width * 3 - offset, 0,"actionButtonSqr0001.png", "actionButtonSqr0003.png", this.log, this.doLog, "actionbuttonIcons0009.png", true);
-    this.log.up.tint = 0x00ffff
+    this.log.up.tint = 0x00ffff*/
     
     this.inv = {up:null,active:null};
-    this.setButton(this.game.world.width - width * 4 - offset, 0,"actionButtonSqr0001.png", "actionButtonSqr0003.png", this.inv, this.doInv, "actionbuttonIcons0004.png", true);
+    this.setButton(this.game.world.width - width * 3 - offset, 0,"actionButtonSqr0001.png", "actionButtonSqr0003.png", this.inv, this.doInv, "actionbuttonIcons0004.png", true);
     this.gameref.inventory.changeState.add(this.checkInv, this);
     this.gameref.inventory.invSelected.add(this.invSelected, this);
     
@@ -58,6 +58,10 @@ ActionButtons = function(game, maingame, parent){
 }
 ActionButtons.prototype = Object.create(Phaser.Group.prototype);
 ActionButtons.constructor = ActionButtons;
+ActionButtons.prototype.returnToMenu = function() 
+{
+    this.game.state.start('MainMenu');
+}
 ActionButtons.prototype.setButton = function(x,y,imageup,imageactive,ref, clickevent, icon, toggle){
     
     ref.up = this.game.make.sprite(x,y,"gameplayinterface",imageup);

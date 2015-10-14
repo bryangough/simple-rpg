@@ -106,14 +106,10 @@ CombatButtons = function(game, maingame, parent){
     this.toggleRange = {up:null,active:null};
     this.setButton(5, 60, "combat_toggle_range.png","combat_toggle_range.png", this.toggleRange, this.doRange, this);
     */
-    this.endTurn = {up:null, active:null};
-    this.setButton(900-iwidth*3, attacksy,"actionButtonSqr0001.png", "actionButtonSqr0003.png", this.endTurn, this.endTurnPress, this);
+    //this.endTurn = {up:null, active:null};
+    var btn = this.game.add.button(900-iwidth*3, attacksy, 'gameplayinterface', this.endTurnPress, this, 'actionButtonSqr0001.png', 'actionButtonSqr0003.png', 'actionButtonSqr0003.png','actionButtonSqr0001.png');
+    this.addChild(btn);
     this.setupText(900-iwidth*3+15, attacksy+10, "simplefont", "End Turn", 20);
-    //this.doRange();
-    
-    
-    
-    
 }
 CombatButtons.prototype = Object.create(Phaser.Group.prototype);
 CombatButtons.constructor = CombatButtons;
@@ -148,7 +144,10 @@ CombatButtons.prototype.setButton = function(x, y, imageup, imageactive, ref, cl
     
 }
 CombatButtons.prototype.endTurnPress = function(touchedSprite, pointer){
+    //endTurn
     
+    if(this.gameref.gGameMode.mCurrentState.inputHandler.playerDecide)
+        this.gameref.gGameMode.mCurrentState.inputHandler.playerDecide.endTurn();
 }
 CombatButtons.prototype.handleOver = function(touchedSprite, pointer)
 {

@@ -23,12 +23,12 @@ var Map = function (game, gameRef)
     this.redoMap = false;
 }
 Map.prototype.initialMap = function(mapData, gameData, playerData){
+    
     this.mapData = mapData;
     this.gameData = gameData;
     this.playerData = playerData;
     this.startpos = this.mapData.startPos;//.split("_");
     var currentmap = this.mapData.maps[this.startpos.map];
-    //console.log(this.mapData, this.startpos.map);
     //
     this.objectGroup = this.gameRef.add.group();
     this.highlightGroup = this.gameRef.add.group();
@@ -39,6 +39,7 @@ Map.prototype.initialMap = function(mapData, gameData, playerData){
     this.mapGroup.add(this.highlightGroup);
     this.mapGroup.add(this.objectGroup);
     //
+    this.clonedCurrent = JSON.parse(JSON.stringify(currentmap));
     this.createMapTiles(currentmap);
 }
 Map.prototype.createMapTiles = function(passedMap){
@@ -385,12 +386,13 @@ Map.prototype.addLocationTextToTile = function(x,y,width,height,i,j){
 };
 
 Map.prototype.flushEntireMap = function(){
-    this.interactiveObjects = [];
+    
     for(var i=0;i<this.interactiveObjects.length;i++)
     {
         if(this.interactiveObjects[i])
             this.interactiveObjects[i].flushAll();
     }
+    this.interactiveObjects = [];
     this.playerCharacter.flushAll();
     //
     this.hexagonGroup.removeAll(true);
@@ -414,15 +416,24 @@ Map.prototype.userExit = function(object, data) {
     this.startpos.x = data.tx;
     this.startpos.y = data.ty;
     //
-    console.log("flush");
     GlobalEvents.flushEvents();
     this.flushEntireMap();
-    
     //
     var currentmap = this.mapData.maps[this.startpos.map];
+    //    
+    this.clonedCurrent = JSON.parse(JSON.stringify(currentmap));
+    //JSON.stringify(currentmap) to save in database
     //
     console.log("build new-- ");
     this.createMapTiles(currentmap);        
+}
+//for use after death
+Map.prototype.tryMapAgain = function() {
+    this.redoMap = true;
+    this.mapData.maps[this.startpos.map] = this.clonedCurrent;
+    GlobalEvents.flushEvents();
+    this.flushEntireMap();
+    this.createMapTiles(this.clonedCurrent);
 }
 Map.prototype.refreshWalkablView = function(){
     for(var i = 0; i < this.gridSizeX; i ++)

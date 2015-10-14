@@ -35,22 +35,30 @@ PlayerDecide.prototype.domove = function(spot)
 }
 PlayerDecide.prototype.dotouched = function(clickedObject)
 {
-    var action;
-    var weapon;
-    //console.log(this.combater.currentSelectedWeapon);
-    if(this.combater.currentSelectedWeapon)
+    if(clickedObject.hostile)
     {
-        weapon = this.combater.currentSelectedWeapon;
+        var action;
+        var weapon;
+        //console.log(this.combater.currentSelectedWeapon);
+        if(this.combater.currentSelectedWeapon)
+        {
+            weapon = this.combater.currentSelectedWeapon;
+        }
+        /*else if(this.combater.weapons.length>0)
+        {
+            weapon = this.combater.weapons[0];
+        }*/
+        if(weapon!=null)
+        {
+            action = new CombatAction(this.game, this.gameref, this.combater, clickedObject, "shoot", this.state,[weapon]);
+            this.state.addToActionsFront(action);
+        }
     }
-    /*else if(this.combater.weapons.length>0)
-    {
-        weapon = this.combater.weapons[0];
-    }*/
-    if(weapon!=null)
-    {
-        action = new CombatAction(this.game, this.gameref, this.combater, clickedObject, "shoot", this.state,[weapon]);
-        this.state.addToActionsFront(action);
-    }
+}
+PlayerDecide.prototype.endTurn = function()
+{
+    action = new CombatAction(this.game, this.gameref, this.combater, this.combater, "nothing", this.state,[]);
+    this.state.addToActionsFront(action);
 }
 PlayerDecide.prototype.usePower = function(spot)
 {

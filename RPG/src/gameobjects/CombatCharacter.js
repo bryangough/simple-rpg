@@ -1,6 +1,3 @@
-//
-//show hp
-//
 var CombatCharacter = function (maingame, jsondata, map)
 {
     MovingCharacter.call(this, maingame, jsondata, map);
@@ -10,12 +7,13 @@ var CombatCharacter = function (maingame, jsondata, map)
     this.weaponCatagories = [];
     this.numberOfActions = 2;
     this.isCombatCharacter = true;
-    this.applyCombatActions(actions);
     
     this.currentSelectedWeapon = null;
-    //this.attackable = false;
-    //this.hostile = false;
+    this.hostile = false;
     this.displayNameText = "";
+    this.dead = false;
+    
+    this.applyCombatActions(actions);
 };
 
 CombatCharacter.prototype = Object.create(MovingCharacter.prototype);
@@ -23,7 +21,6 @@ CombatCharacter.constructor = CombatCharacter;
 
 CombatCharacter.prototype.applyCombatActions = function(actions)
 {
-    //console.log("applyCombatActions",this);
     //this.eventDispatcher.init(actions);
     
     for(var i=0;i<actions.length;i++)
@@ -37,7 +34,6 @@ CombatCharacter.prototype.applyCombatActions = function(actions)
             this.selfhpmax = this.selfhp = action.selfhp;
             this.attackable = action.attackable;
             this.hostile = action.hostile;
-            //start hostile
         }
         else if(action.type=="weaponsInventory")
         {
@@ -68,7 +64,7 @@ CombatCharacter.prototype.applyCombatActions = function(actions)
             var weapon = new Weapon(action);
             this.weapons.push(weapon);
         }
-        else if(action.type=="CharacterSpawn")
+        /*else if(action.type=="CharacterSpawn")
         {
             this.displayNameText = actions[i].EnemyType;
             
@@ -76,6 +72,28 @@ CombatCharacter.prototype.applyCombatActions = function(actions)
             var enemy = this.maingame.getGameData("Enemy",actions[i].EnemyType);//this should be saved with here somehow
             if(enemy!=null && enemy.triggers!=null)
                 this.applyCombatActions(enemy.triggers)
+        }*/
+        else if(actions[i].type=="CharacterSpawn")
+        {   
+            this.displayNameText = actions[i].EnemyType;
+            this.name = actions[i].EnemyType;
+            //
+            var con = {logic:"Any",list:[]};
+            this.eventDispatcher.applyConditions(con, actions[i].conditions);
+            if( this.eventDispatcher.testConditions(con))
+            {
+                var enemy = this.maingame.getGameData("Enemy",actions[i].EnemyType);
+                if(enemy!=null && enemy.triggers!=null)
+                {
+                    this.applyCombatActions(enemy.triggers);
+                }
+            }
+            else
+            {
+                this.notcreated = true;
+                //this.flushAll();   
+                //flush all or keep away in case looking for data (flag?)    
+            }
         }
         else if(action.type=="powerBoosts")
         {
@@ -106,7 +124,8 @@ CombatCharacter.prototype.finalSetup = function()
 {
     if(this.currentTile!=null)
         this.setLocationByTile(this.currentTile);
-    this.setupHealthBar();
+    if(!this.notcreated)
+        this.setupHealthBar();
 }
 
 //
@@ -117,8 +136,6 @@ CombatCharacter.prototype.setupHealthBar = function()
     this.healthbar = [];
     
     this.addChild(this.healthuigroup);
-    
-    
     
     var hpbar;
     var rowcount = 0;
@@ -155,8 +172,9 @@ CombatCharacter.prototype.setupHealthBar = function()
         this.healthuigroup.add(hpbar);
     }
     
-    this.healthuigroup.x = -this.width;
-    this.healthuigroup.y = -this.height-this.healthuigroup.height;
+    console.log(this.maingame.map.scaledto);
+    this.healthuigroup.x = -this.width/2;
+    this.healthuigroup.y = -this.height;//*this.maingame.map.scaledto;//-this.healthuigroup.height;
     this.healthuigroup.visible = false;
 }
 CombatCharacter.prototype.boostShield = function(heal)
@@ -179,6 +197,9 @@ CombatCharacter.prototype.takeDmg = function(dmg)
         //console.log(this,"die");
         this.changeState("die");
         this.eventDispatcher.testAction();
+        this.dead = true;
+        this.jsondata.destroyed = true;
+        this.jsondata.dead = true;
     }
     else
     {
@@ -190,6 +211,7 @@ CombatCharacter.prototype.takeDmg = function(dmg)
 CombatCharacter.prototype.doDead = function()
 {
     this.currentTile.changeWalkable(true);
+    
     this.eventDispatcher.doAction("OnDeath",this);
 }
 CombatCharacter.prototype.isAlive = function()
@@ -291,6 +313,11 @@ CombatCharacter.prototype.handleOver = function()
         
     }*/
     //console.log(this.jsondata,this.parent.jsondata);
+    if(this.maingame.gGameMode.currentState=="combat")
+    {
+        this.maingame.gGameMode.mCurrentState.handleOver(this);
+    }
+       //if(this.maingame.gGameMode.mCurrentState.inputHandler.clickedObject(this);
     if(this.jsondata.displayName && this.jsondata.displayName!="")
     {
         this.maingame.textUIHandler.showRollover(this.jsondata.displayName,this.x,this.y);
@@ -298,7 +325,7 @@ CombatCharacter.prototype.handleOver = function()
     //console.log(this,this.parent,this.displayNameText);
     
     if(this.displayNameText!="")
-        this.maingame.textUIHandler.showRollover("TEST",this.x,this.y);
+        this.maingame.textUIHandler.showRollover(this.displayNameText,this.x,this.y);
 }
 CombatCharacter.prototype.handleOut = function() 
 {
@@ -306,6 +333,10 @@ CombatCharacter.prototype.handleOut = function()
     if(this.maingame.textUIHandler)
     {
         this.maingame.textUIHandler.hideRollover();
+    }
+    if(this.maingame.gGameMode.currentState=="combat")
+    {
+        this.maingame.gGameMode.mCurrentState.handleOut();
     }
 }
 //get movement range
@@ -351,10 +382,25 @@ CombatCharacter.prototype.afterShoot = function(params)
     var weapon = params.weapon;
     var afterAction = params.afterAction;
     
-    target.takeDmg(weapon.dmg);
+    var distanceTo = this.maingame.map.hexHandler.testRange(target.currentTile, this.currentTile, false)
+    var range = weapon.range;
     
-    //console.log(target,weapon.dmg);
-    //this will eventually move to the weapon shot class, so that it applys after the shot is done
+    var acc = weapon.acc - (distanceTo/(range * 60))/3;
+    //
+    if(distanceTo > range * 60)
+    {
+        acc = 0;
+    }
+        
+    if(Math.random()<acc)
+    {
+        target.takeDmg(weapon.dmg);
+    }
+    else
+    {
+        //miss
+        console.log("miss");
+    }
         
     afterAction.func.apply(afterAction.callee,[]);
 }

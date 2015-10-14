@@ -11,6 +11,7 @@ var Weapon = function (action)
     this.weaponname = action.weaponname;
     this.dmg = action.dmg;
     this.range = action.range;
+    this.acc = action.acc;
     this.clipsize = action.clipsize;
     
     this.AIPower = action.AIPower;//weight for AI attack, not in yet

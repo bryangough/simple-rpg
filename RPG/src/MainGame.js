@@ -53,7 +53,7 @@ BasicGame.Game.prototype = {
         //
         //restrictions on states. Can't enter talk state while in combat.
         //
-        this.dialoghandler = new DialogHandler(this.game, this, this.mapData.data.Conversations,    this.mapData.data.Actors);
+        this.dialoghandler = new DialogHandler(this.game, this, this.mapData.data.Conversations, this.mapData.data.Actors);
         
         this.textUIHandler.setup(this.mapData, this.uiGroup, this.dialoghandler);
         //
@@ -65,7 +65,7 @@ BasicGame.Game.prototype = {
         this.gGameMode.add("normal", new NormalState(this.gGameMode, this.game, this));
         this.gGameMode.add("combat", new BattleState(this.gGameMode, this.game, this));
         this.gGameMode.add("dialog", new DiaglogState(this.gGameMode, this.game, this, this.dialoghandler, this.uiGroup));
-        
+        this.gGameMode.add("playerDead", new DeathState(this.gGameMode, this.game, this));
         
         /**/
         var inCombat = this.map.getCombatCharacters();
@@ -206,6 +206,11 @@ BasicGame.Game.prototype = {
         //game.debug.text("Tween running: " + !this.idleBallTween.pendingDelete, 2, 110);
         
         //this.game.debug.inputInfo(16, 16);
+    },
+    shutdown: function () {
+        console.log("flush");
+        this.map.flushEntireMap();
+        
     }
 };
 

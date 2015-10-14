@@ -30,13 +30,17 @@ var InteractiveObject = function (maingame, jsondata, map)
     this.otherAnimations = [];
     
     this.baseImage;
+    
+    this.notcreated = false;
 }
 InteractiveObject.prototype = Object.create(Phaser.Group.prototype);
 //InteractiveObject.prototype = Object.create(Phaser.Sprite.prototype);
 InteractiveObject.constructor = InteractiveObject;
 
-InteractiveObject.prototype.allowInput = function(val) 
+InteractiveObject.prototype.allowInputNow = function(val) 
 {
+    if(this.baseImage==null)
+        return;
     this.baseImage.inputEnabled = val;
     if(this.baseImage.input!=null)
         this.baseImage.input.priorityID = 100;
@@ -63,12 +67,13 @@ InteractiveObject.prototype.dosetup = function()
     //
     //
     //this will move
-    this.allowInput(true);
+    this.allowInputNow(true);
     this.setupReactToAction();
     if(this.eventDispatcher)
         this.eventDispatcher.doAction("OnActivate", null);
     //
-    this.currentTile = this.map.hexHandler.checkHex(this.x,this.y);
+    if(!this.notcreated)
+        this.currentTile = this.map.hexHandler.checkHex(this.x,this.y);
     this.finalSetup();
     //
 }
@@ -91,14 +96,27 @@ InteractiveObject.prototype.applyInteractActions = function(actions)
             this.footprint = [];
             for(var j=0;j<actions[i].tiles.length;j++)
             {
-                this.footprint.push(this.map.hexHandler.getTileByCords( actions[i].tiles[j].posx, actions[i].tiles[j].posy));
+                this.footprint.push(this.map.hexHandler.getTileByCords( actions[i].tiles[j].posx, actions[i].tiles[j].posy) );
             }
         }
         else if(actions[i].type=="CharacterSpawn")
-        {
-            var enemy = this.maingame.getGameData("Enemy",actions[i].EnemyType);
-            if(enemy!=null && enemy.triggers!=null)
-                this.applyInteractActions(enemy.triggers)
+        {   
+            var con = {logic:"Any",list:[]};
+            this.eventDispatcher.applyConditions(con, actions[i].conditions);
+            if( this.eventDispatcher.testConditions(con) )
+            {
+                var enemy = this.maingame.getGameData("Enemy",actions[i].EnemyType);
+                if(enemy!=null && enemy.triggers!=null)
+                {
+                    this.applyInteractActions(enemy.triggers);
+                }
+            }
+            else
+            {
+                this.notcreated = true;
+                //this.flushAll();   
+                //flush all or keep away in case looking for data (flag?)    
+            }
         }
         else if(actions[i].type=="animations")
         {
@@ -138,8 +156,7 @@ InteractiveObject.prototype.applyAnimations = function(actions)
     //console.log(this.baseImage.animations);
     if(actions.otherName != null)
     {
-        console.log(actions.head);
-         var head = this.game.make.sprite(0, 0, "actors2", "head1_human_idle_0000.png");
+        var head = this.game.make.sprite(0, 0, "actors2", "head1_human_idle_0000.png");
         head.anchor.x = 0.5;
         head.anchor.y = 1.0;
         this.addChild(head);
@@ -149,7 +166,6 @@ InteractiveObject.prototype.applyAnimations = function(actions)
     }  
     if(actions.weapon != null)
     {
-        console.log(actions.weapon);
         var head = this.game.make.sprite(0, 0, "actors2", "head1_human_idle_0000.png");
         head.anchor.x = 0.5;
         head.anchor.y = 1.0;
@@ -245,9 +261,9 @@ InteractiveObject.prototype.changeState = function(newstate)
             var nextAnimation = this.baseImage.animations.getAnimation(newstate);
             
             //console.log(this,nextAnimation);
+            
             if(nextAnimation)
             {
-                //console.log(this, this.baseImage);
                 this.baseImage.play(newstate);
 
                 for(var i=0;i<this.otherAnimations.length;i++)
@@ -259,6 +275,7 @@ InteractiveObject.prototype.changeState = function(newstate)
                 if(this.actor)
                     this.actor.updateValue("state",newstate);
                 this.jsondata.state = newstate;
+                //console.log(this.jsondata, newstate);
             }
             else
             {
@@ -354,12 +371,18 @@ InteractiveObject.prototype.destroySelf = function(elapseTime)
 }
 InteractiveObject.prototype.flushAll = function() 
 {
-    this.animations.stop();
-    this.animations.destroy();
+    if(this.animations!=null)
+    {
+        this.animations.stop();
+        this.animations.destroy();
+    }
     this.eventDispatcher.destroy();
-    this.events.onInputUp.remove(this.handleClick, this);  
-    this.events.onInputOver.remove(this.handleOver, this);//for rollover
-    this.events.onInputOut.remove(this.handleOut, this);
+    if(this.baseImage)
+    {
+        this.baseImage.events.onInputUp.remove(this.handleClick, this);  
+        this.baseImage.events.onInputOver.remove(this.handleOver, this);//for rollover
+        this.baseImage.events.onInputOut.remove(this.handleOut, this);
+    }
     this.destroy();
     console.log(this,"- destroy -");
 }
@@ -416,6 +439,8 @@ InteractiveObject.prototype.step = function(elapseTime)
 }
 InteractiveObject.prototype.setupReactToAction = function() 
 {
+    if(this.baseImage==null)
+        return;
     this.baseImage.events.onInputUp.add(this.handleClick, this);
     this.baseImage.events.onInputOver.add(this.handleOver, this);//for rollover
     this.baseImage.events.onInputOut.add(this.handleOut, this);

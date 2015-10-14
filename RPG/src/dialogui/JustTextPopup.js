@@ -23,9 +23,14 @@ JustTextPopup = function(game, maingame, dialogEngine, parent){
 JustTextPopup.prototype = Object.create(Phaser.Group.prototype);
 JustTextPopup.constructor = JustTextPopup;
 //
-JustTextPopup.prototype.showText = function(texttodisplay){
+JustTextPopup.prototype.showText = function(texttodisplay, tint){
     
     this.textMain.text = texttodisplay;
+    
+    if(tint)
+        this.textMain.tint = tint;
+    else
+        this.textMain.tint = 0xffffff;
     
     this.textMain.x = this.game.width/2-this.textMain.width/2;
     this.textMain.y = this.game.height/2-this.textMain.height/2;

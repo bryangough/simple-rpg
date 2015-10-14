@@ -16,7 +16,7 @@ CombatAction.prototype.execute = function()
     //
     if(this.action=="move")
     {
-        this.combater.moveToSpot(this.target,[{func:this.doFinish, para:[], removeself:false, callee:this, con:null, walkto:false}]);
+        this.combater.moveToSpotCombat(this.target,[{func:this.doFinish, para:[], removeself:false, callee:this, con:null, walkto:false}], this.combater.movementspeed);
     }
     else if(this.action=="shoot")//shoot
     {
@@ -29,6 +29,8 @@ CombatAction.prototype.execute = function()
         this.combater.douse();
         //this.combater.appl
     }   
+    else
+        this.doFinish();
 }
 CombatAction.prototype.cleanup = function()
 {

@@ -37,6 +37,10 @@ TextUIHandler.prototype.setup = function(mapData, uiGroup, dialoghandler)
 
 //this needs to be controlled by a queue?
 //if 2 are show at once, they are displayed 1 after the other
+TextUIHandler.prototype.showDeadText = function(textDisplay)
+{
+    this.justTextPopup.showText(textDisplay,0xff0000);
+},
 TextUIHandler.prototype.showJustText = function(textDisplay)
 {
     this.justTextPopup.showText(textDisplay);

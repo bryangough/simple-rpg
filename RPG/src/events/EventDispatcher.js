@@ -23,7 +23,14 @@ EventDispatcher.prototype.testAction = function()
 {
     if(this.object)
     {
-        this.object.allowInput(this.shouldBeActive());
+        if(this.object.allowInputNow)
+        {
+            this.object.allowInputNow(this.shouldBeActive());
+        }
+        else
+        {
+            this.object.allowInput = this.shouldBeActive();
+        }
     }
 }
 EventDispatcher.prototype.shouldBeActive = function() 

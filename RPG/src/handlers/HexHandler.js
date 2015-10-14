@@ -66,6 +66,7 @@ HexHandler.prototype.checkHex=function(checkx, checky){
     var deltaX = (checkx)%this.sectorWidth;
     var deltaY = (checky)%this.sectorHeight; 
 
+    
     var candidateX = Math.floor((checkx)/this.sectorWidth);
     var candidateY = Math.floor((checky)/this.sectorHeight);
     
@@ -140,6 +141,74 @@ HexHandler.prototype.lineTest = function(tilestart, tileend)
     return tileend;
 };
 //
+HexHandler.prototype.testRange = function(tilestart, tileend, ignoreWalkable)
+{
+    var p0 = new Point(tilestart.x+this.halfHex,
+                       tilestart.y+this.halfHexHeight);
+    var p1 = new Point(tileend.x+this.halfHex, 
+                       tileend.y+this.halfHexHeight);
+
+    var N = this.game.math.distance(p0.x,p0.y,p1.x,p1.y);
+    /*var cut = this.hexagonWidth;
+    if(this.hexagonWidth>this.hexagonHeight)
+        cut = this.hexagonHeight;
+    N = Math.ceil(N/cut);
+    
+    /*
+    this.maingame.graphics.clear();
+    this.maingame.graphics.lineStyle(10, 0xffd900, 1);
+    this.maingame.graphics.moveTo(tilestart.x+ this.maingame.map.mapGroup.x+ this.halfHex, tilestart.y+ this.maingame.map.mapGroup.y+ this.halfHexHeight);
+    this.maingame.graphics.lineTo(tileend.x+ this.maingame.map.mapGroup.x+ this.halfHex, tileend.y+ this.maingame.map.mapGroup.y+ this.halfHexHeight);
+    
+    var points = [];
+    for (var step = 0; step <= N; step++) {
+            var t = N == 0? 0.0 : step / N;
+            points.push(this.lerp_point(p0, p1, t));
+    }*/
+    
+    return N;
+    
+}
+HexHandler.prototype.lineOfSite = function(tilestart, tileend)
+{
+    if(tilestart==null||tileend==null)
+        return;
+    var p0 = new Point(tilestart.x+this.halfHex,
+                       tilestart.y+this.halfHexHeight);
+    var p1 = new Point(tileend.x+this.halfHex, 
+                       tileend.y+this.halfHexHeight);
+    
+    var N = this.game.math.distance(p0.x,p0.y,p1.x,p1.y);
+    var cut = this.hexagonWidth;
+    if(this.hexagonWidth>this.hexagonHeight)
+        cut = this.hexagonHeight;
+    N = Math.ceil(N/cut)+1;
+    
+    var points = [];
+    for (var step = 0; step <= N; step++) {
+            var t = N == 0? 0.0 : step / N;
+            points.push(this.lerp_point(p0, p1, t));
+    }
+    //console.log("start");
+    for(var i=0;i<points.length;i++)
+    {
+        var overtile = this.checkHex(points[i].x,points[i].y);
+        if(overtile!=null)
+        {
+            //console.log("step ",overtile);
+            if(overtile==tileend)
+            {
+                return true;
+            }
+            if(!overtile.walkable && overtile!=tilestart)
+            {
+                return false;
+            }
+            
+        }
+    }
+    return true;
+};
 HexHandler.prototype.dolines = function(tilestart, tileend, ignoreWalkable, highlight)
 {
     if(tilestart==null||tileend==null)
@@ -162,6 +231,7 @@ HexHandler.prototype.dolines = function(tilestart, tileend, ignoreWalkable, high
     if(this.hexagonWidth>this.hexagonHeight)
         cut = this.hexagonHeight;
     N = Math.ceil(N/cut)+1;
+    
     var points = [];
     for (var step = 0; step <= N; step++) {
             var t = N == 0? 0.0 : step / N;
@@ -368,7 +438,7 @@ HexHandler.prototype.pathCoordsToTiles = function(path)
     for(var i=0;i<path.length;i++)
     {
         var overtile = this.getTileByCords(path[i].x,path[i].y);
-        if(overtile!=null)
+        if(overtile!=null && overtile.walkable)
         {
             newpath.push(overtile);
         }
@@ -614,17 +684,29 @@ IsoHandler.prototype.checkHex=function(checkx, checky){
     var xQuadrant = Math.floor(checkx % (this.hexagonWidth - 2));
     var yQuadrant = Math.floor( checky % (this.hexagonHeight - 1));
 
-    
-    if(i<0 || j<0 || j>=this.maingame.map.movementgrid.gridSizeY || i>=this.maingame.map.movementgrid.gridSizeX)
+    /*if(i<0)
     {
-        return;
+        i = 0;
     }
-    tile = this.hexagonArray[i][j]; 
+    if(j<0)
+    {
+        j = 0;
+    }
+    if(i>=this.maingame.map.movementgrid.gridSizeX)
+    {
+       i = this.maingame.map.movementgrid.gridSizeX;
+    }
+    if(j>=this.maingame.map.movementgrid.gridSizeY)
+    {
+       j = this.maingame.map.movementgrid.gridSizeY;
+    }
+    */
+    /*tile = this.hexagonArray[i][j]; 
     if(tile!=null)
     {
         //this.sprite.x = tile.x;
         //this.sprite.y = tile.y;
-    }
+    }*/
     //
     this.touchmap.update();
     this.touchmap.getPixelRGB (xQuadrant, yQuadrant, this.tempcolour);
@@ -654,11 +736,51 @@ IsoHandler.prototype.checkHex=function(checkx, checky){
         //case 0x0000FF: // blue bottom right
         j++;
     }
-    //  
+    //
+    //console.log(j, this.maingame.map.movementgrid.gridSizeY);
+    if(i==-1)
+    {
+        i=0;
+        j++;
+    }
+    if(j==-1)
+    {
+        j=0;
+        i++;
+    }
+    if(i==this.maingame.map.movementgrid.gridSizeX)
+    {
+        i=this.maingame.map.movementgrid.gridSizeX-1;
+        j--;
+    }
+    if(j==this.maingame.map.movementgrid.gridSizeY)
+    {
+        j=this.maingame.map.movementgrid.gridSizeY-1;
+        i--;
+    }
+    //re max
+    /*if(i<0)
+    {
+        i=0;
+    }
+    if(j<0)
+    {
+        j=0;
+    }
+    if(i>=this.maingame.map.movementgrid.gridSizeX)
+    {
+        i=this.maingame.map.movementgrid.gridSizeX-1;
+    }
+    if(j>=this.maingame.map.movementgrid.gridSizeY)
+    {
+        j=this.maingame.map.movementgrid.gridSizeY-1;
+    }*/
+       
     if(i<0 || j<0 || j>=this.maingame.map.movementgrid.gridSizeY || i>=this.maingame.map.movementgrid.gridSizeX)
     {
         return;
     }
+        
     tile = this.hexagonArray[i][j]; 
     return tile;
  }
