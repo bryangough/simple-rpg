@@ -172,7 +172,7 @@ CombatCharacter.prototype.setupHealthBar = function()
         this.healthuigroup.add(hpbar);
     }
     
-    console.log(this.maingame.map.scaledto);
+    //console.log(this.maingame.map.scaledto);
     this.healthuigroup.x = -this.width/2;
     this.healthuigroup.y = -this.height;//*this.maingame.map.scaledto;//-this.healthuigroup.height;
     this.healthuigroup.visible = false;
@@ -385,7 +385,7 @@ CombatCharacter.prototype.afterShoot = function(params)
     var distanceTo = this.maingame.map.hexHandler.testRange(target.currentTile, this.currentTile, false)
     var range = weapon.range;
     
-    var acc = weapon.acc - (distanceTo/(range * 60))/3;
+    var acc = weapon.acc - (distanceTo/(range * 60))/5;
     //
     if(distanceTo > range * 60)
     {

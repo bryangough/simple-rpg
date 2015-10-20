@@ -4,6 +4,7 @@
 	<meta charset="UTF-8" />
 	<title>Simple RPG</title>
     <script src="js/phaser.js"></script>
+    <script src="src/Base.js"></script>
     <!--script src="src/easystar-0.1.13-hex.js"></script-->
     <script src="src/pathfinding/easystar-0.2.1.js"></script>
     <script src="src/Screens/Boot.js"></script>
@@ -34,8 +35,8 @@
     <script src="src/handlers/Globalhandler.js"></script>
     <script src="src/gameobjects/InteractiveObject.js"></script>
     <script src="src/gameobjects/MovingCharacter.js"></script>
-    <script src="src/gameobjects/CombatCharacter.js"></script>
-    <script src="src/gameobjects/PlayerCharacter.js"></script>
+    <script src="src/gameobjectsAfter/CombatCharacter.js"></script>
+    <script src="src/gameobjectsAfter/PlayerCharacter.js"></script>
     
     <script src="src/level/OtherMap.js"></script>
     
@@ -48,7 +49,7 @@
     <script src="src/utility/CheapMasker.js"></script>
     
 
-    <script src="src/states/EmptyState.js"></script>
+    <script src="src/basestates/EmptyState.js"></script>
     <script src="src/combatui/CombatButtons.js"></script>
     <script src="src/states/BattleState.js"></script>
     <script src="src/states/HeroBattleState.js"></script>
@@ -64,7 +65,7 @@
     
     
     <script src="src/combat/Weapon.js"></script>
-    <script src="src/handlers/BattleInputHandler.js"></script>
+    <script src="src/handlers/InputHandlerBattle.js"></script>
     
     <script src="src/ui/NormalUI.js"></script>
     <script src="src/combat/AIDecide.js"></script>
@@ -82,29 +83,9 @@
 <script type="text/javascript">
 
 window.onload = function() {
-
-	var game = new Phaser.Game(900, 600, Phaser.AUTO, 'gameContainer');
-
-	game.state.add('Boot', BasicGame.Boot);
-	game.state.add('Preloader', BasicGame.Preloader);
-	game.state.add('MainMenu', BasicGame.MainMenu);
-    game.state.add('Game', BasicGame.Game);
-    game.state.add('Instructions', BasicGame.Instructions);
-    game.state.add('MapSelect', BasicGame.MapSelect);
-    game.state.add('LoadMap', BasicGame.LoadMap);
-    
-    //game.canvas.oncontextmenu = function (e) { e.preventDefault(); destroyAnchor() };
-    
-    game.global = {
-        mute: false,
-        pause: false,
-        //movetotouch:true,
-        showmovetile:false,
-        loadMap:0
-    };
-    
-    game.state.start('Boot');
+    gameInit.init("en","gameContainer");
 };
+
 
 </script>
 

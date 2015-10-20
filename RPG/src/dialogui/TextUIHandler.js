@@ -66,7 +66,7 @@ TextUIHandler.prototype.showRollover = function(text, x, y)
     this.rollovertext.anchor.x = 0.5;
     this.rollovertext.visible = true;
 
-    console.log(text,x,y);
+    //console.log(text,x,y);
     this.rollovertext.x = (x + this.gameref.map.mapGroup.x) * this.gameref.map.scaledto;
     this.rollovertext.y = (y + this.gameref.map.mapGroup.y) * this.gameref.map.scaledto;
     

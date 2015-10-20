@@ -27,8 +27,13 @@ BasicGame.Preloader.prototype = {
         
         this.load.atlasJSONHash('ui', 'assets/simpleui.png', 'assets/simpleui.json');
         this.load.atlasJSONHash('tiles2', 'assets/tiles2.png', 'assets/tiles2.json');
-        this.load.atlasJSONHash('actors', 'assets/actors.png', 'assets/actors.json');
+        //this.load.atlasJSONHash('actors', 'assets/actors.png', 'assets/actors.json');
         this.load.atlasJSONHash('actors2', 'assets/actors2.png', 'assets/actors2.json');
+        
+        this.load.atlasJSONHash('tileobjects1', 'assets/tileobjects1.png', 'assets/tileobjects1.json');
+        this.load.atlasJSONHash('inventory', 'assets/inventory.png', 'assets/inventory.json');
+        
+        
         this.load.atlasJSONHash('gameplayinterface', 'assets/paradoxinterface.png', 'assets/paradoxinterface.json');
 		this.load.image('loading', 'assets/loading.png');
         this.load.image('mainmenu', 'assets/mainmenu.png');
@@ -54,8 +59,8 @@ BasicGame.Preloader.prototype = {
 		this.preloadBar.cropEnabled = false;
         
         //this.state.start('LoadMap');
-        //this.state.start('MainMenu');
-        this.state.start('MapSelect');
+        this.state.start('MainMenu');
+        //this.state.start('MapSelect');
 	},
 
 	/*update: function () {

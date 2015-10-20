@@ -40,7 +40,7 @@ ActionButtons = function(game, maingame, parent){
     //this.settings.up.tint = 0x00ffff
     
     this.combat = {up:null,active:null};
-    this.setButton(this.game.world.width - width * 2 - offset, 0,"actionButtonSqr0001.png", "actionButtonSqr0003.png", this.combat, this.doCombat, "actionbuttonIcons0002.png", true);
+    this.setButton(this.game.world.width - width * 2 - offset, 0,"actionButtonSqr0001.png", "actionButtonSqr0003.png", this.combat, this.pressedCombat, "actionbuttonIcons0002.png", true);
     this.gameref.gGameMode.changeState.add(this.checkCombat, this);
     
     /*this.log = {up:null,active:null};
@@ -116,17 +116,23 @@ ActionButtons.prototype.doCombat = function(touchedSprite, pointer){
 }
 ActionButtons.prototype.checkCombat = function(stateMachine,currentState){
 
+    
     if(currentState=="combat")
     {
         this.enableButton(this.combat);    
         
     }
-    else
+    /*else
     {
         this.disableButton(this.combat);
-    }
+    }*/
+    
 }
 
+ActionButtons.prototype.pressedCombat = function()
+{
+    this.gameref.textUIHandler.showJustText("Your not up for a fight.\nBetter to use your wits.");
+}
 
 
 ActionButtons.prototype.doLog = function(touchedSprite, pointer){

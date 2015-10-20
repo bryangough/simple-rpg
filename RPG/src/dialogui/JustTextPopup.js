@@ -2,8 +2,6 @@
 JustTextPopup = function(game, maingame, dialogEngine, parent){
     Phaser.Group.call(this, game, parent);
 //
-    //this.bg = this.game.make.image(0,0,"actors","textBox.png");
-    //this.add(this.bg);
     var shadow = this.game.make.sprite(0, 0,"gameplayinterface","dropshadow_btn.png");
     this.add(shadow);
     shadow.width = 900;

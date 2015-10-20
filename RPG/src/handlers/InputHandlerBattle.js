@@ -1,4 +1,4 @@
-var BatttleInputHandler = function (game, gameref)
+var InputHandlerBattle = function (game, gameref)
 {
     InputHandler.call(this, game, gameref);
     
@@ -6,11 +6,11 @@ var BatttleInputHandler = function (game, gameref)
     this.playerDecide = null;
     this.frindges = null;
 };
-BatttleInputHandler.prototype = Object.create(InputHandler.prototype);
-BatttleInputHandler.constructor = BatttleInputHandler;
+InputHandlerBattle.prototype = Object.create(InputHandler.prototype);
+InputHandlerBattle.constructor = InputHandlerBattle;
 
 //
-BatttleInputHandler.prototype.onMove = function(pointer, x, y)
+InputHandlerBattle.prototype.onMove = function(pointer, x, y)
 {
     //console.log("move2 ",pointer.active);
     //if(!pointer.active)
@@ -52,7 +52,7 @@ BatttleInputHandler.prototype.onMove = function(pointer, x, y)
     if(this.withinFringes(moveIndex))
         this.gameref.map.highlightHex.highlighttilebytile(0,moveIndex);
 },
-BatttleInputHandler.prototype.withinFringes = function(moveIndex) 
+InputHandlerBattle.prototype.withinFringes = function(moveIndex) 
 {
     for(var i=0;i<this.frindges.length;i++)
     {
@@ -64,17 +64,17 @@ BatttleInputHandler.prototype.withinFringes = function(moveIndex)
     }
     return false;
 }
-BatttleInputHandler.prototype.hideInputAreas = function(combater) 
+InputHandlerBattle.prototype.hideInputAreas = function(combater) 
 {
     this.gameref.map.highlightHex.cleanuptiles();
 }
 
-BatttleInputHandler.prototype.showAreaForMove = function(combater) 
+InputHandlerBattle.prototype.showAreaForMove = function(combater) 
 {
     this.frindges = combater.findWalkableFromCurrent();
     this.gameref.map.highlightHex.drawFringes(this.frindges);
 }
-BatttleInputHandler.prototype.clickedHex = function(pointer,b)
+InputHandlerBattle.prototype.clickedHex = function(pointer,b)
 {
     //console.log("click",pointer,pointer.active,this.gameref.input.priorityID);
     this.dragScreen = false;
@@ -112,7 +112,7 @@ BatttleInputHandler.prototype.clickedHex = function(pointer,b)
         }
     }
 } 
-BatttleInputHandler.prototype.clickedObject = function(clickedObject)
+InputHandlerBattle.prototype.clickedObject = function(clickedObject)
 {
     if(this.playerDecide==null)
         return;

@@ -145,7 +145,7 @@ Map.prototype.createMapTiles = function(passedMap){
                         temptile = new GraphicTile(this.game, tilereference.tile+".png", tilereference.spritesheet, i, j, tempPoint.x, tempPoint.y, this.gameRef);
                     }
                     this.hexagonGroup.add(temptile);
-                    this.addLocationTextToTile(tempPoint.x,tempPoint.y,hexagonWidth,hexagonHeight,i,j);
+                   // this.addLocationTextToTile(tempPoint.x,tempPoint.y,hexagonWidth,hexagonHeight,i,j);
                 }
             }
         }
@@ -187,7 +187,7 @@ Map.prototype.createMapTiles = function(passedMap){
 
                             this.highlightArray[i][j] = tile;
                             this.highlightGroup.add(tile);
-                            this.addLocationTextToTile(tempPoint.x,tempPoint.y,hexagonWidth,hexagonHeight,i,j);
+                            //this.addLocationTextToTile(tempPoint.x,tempPoint.y,hexagonWidth,hexagonHeight,i,j);
                         }
                         //
                     }
@@ -317,6 +317,7 @@ Map.prototype.createMapTiles = function(passedMap){
             this.interactiveObjects[i].dosetup();
     }
     //create player
+    console.log("play: ",this.playerCharacter);
     if(!this.playerCharacter)
     {
         this.playerCharacter = new PlayerCharacter(this.gameRef, this.playerData.Player, this);
@@ -386,14 +387,14 @@ Map.prototype.addLocationTextToTile = function(x,y,width,height,i,j){
 };
 
 Map.prototype.flushEntireMap = function(){
-    
+    this.playerCharacter.flushAll();
     for(var i=0;i<this.interactiveObjects.length;i++)
     {
         if(this.interactiveObjects[i])
             this.interactiveObjects[i].flushAll();
     }
     this.interactiveObjects = [];
-    this.playerCharacter.flushAll();
+    
     //
     this.hexagonGroup.removeAll(true);
     this.highlightGroup.removeAll(true);
@@ -408,6 +409,7 @@ Map.prototype.getTile = function(name, tilesetid){
     return {tile:this.mapData.tileSets[tilesetid][name], spritesheet:this.mapData.tileSets[tilesetid].tileset};
 }
 Map.prototype.userExit = function(object, data) {
+    this.gameRef.gGameMode.change("normal");
     //object is only the tile
     //on do this if player
     //if(this.playerCharacter.currentTile

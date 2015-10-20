@@ -86,6 +86,7 @@ GlobalHandler.prototype.getVariableValue = function(id)
 }
 GlobalHandler.prototype.updateVariableByID = function(id,mode,value)
 {
+    console.log(this.variables[id],mode,value)
     if(!this.variables[id])
         return false;
     if(mode=="Add")

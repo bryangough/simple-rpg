@@ -97,8 +97,16 @@ Grid.prototype.PosToMap = function(x,y)
         
         var tile = this.maingame.hexHandler.checkHex(x,y);
         //console.log(tile);
-        this.coords.x = tile.posx;
-        this.coords.y = tile.posy;
+        if(tile!=undefined)
+        {
+            this.coords.x = tile.posx;
+            this.coords.y = tile.posy;
+        }
+        else
+        {
+            this.coords.x = -1;
+            this.coords.y = -1;  
+        }
         //this.coords.x = x * (this.width) + ((y % 2) * ((this.width / 2)));          
         //this.coords.y = y * ((this.height) / 2);
     }

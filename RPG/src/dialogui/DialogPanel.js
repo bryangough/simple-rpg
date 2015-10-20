@@ -28,7 +28,7 @@ DialogPanel.prototype.setup = function(button){
     //this.setupBG("gameplayinterface","dialog_main.png");
     //
     var height = 69.6;
-    var offsetx = 150;
+    var offsetx = 50;
     var offsety = 200;
     this.btnPlay1 = this.setupButton(offsetx, offsety + height * 0, 'gameplayinterface', this.play1,'dialong_choice0002.png', 'dialong_choice0001.png', 'dialong_choice0001.png', 'dialong_choice0002.png');
     this.btnPlay2 = this.setupButton(offsetx, offsety + height * 1, 'gameplayinterface', this.play2,'dialong_choice0002.png', 'dialong_choice0001.png', 'dialong_choice0001.png', 'dialog_20002.png');    
@@ -55,6 +55,7 @@ DialogPanel.prototype.setup = function(button){
 DialogPanel.prototype.setupPortrait = function(x,y,spritesheet,sprite)
 {    
     var portrait = this.game.make.sprite(x,y,spritesheet,sprite);
+    portrait.scale.setTo(2,2);
     this.add(portrait);
     return portrait;
 }
@@ -142,9 +143,10 @@ DialogPanel.prototype.setupDialog = function(){
     this.textMain.text = this.dialogData.actor.json.Name +": " + this.dialogData.current.DialogueText;
     
     if(this.portrait1==null)
-        this.portrait1 = this.setupPortrait(0,0,"actors",this.dialogData.actor.json.Pictures+".png");
+        this.portrait1 = this.setupPortrait(-100,0,"actors2",this.dialogData.actor.json.Pictures+".png");
     else if(this.portrait1.frameName != this.dialogData.actor.json.Pictures)
         this.portrait1.frameName = this.dialogData.actor.json.Pictures+".png";
+    //this.portrait2.scale.setTo(2,2);
     
     //if links are players do normal
     //else can click anywhere?
@@ -153,11 +155,12 @@ DialogPanel.prototype.setupDialog = function(){
         //if no pictures?
         var thisactor = this.maingame.globalHandler.getActorByID(this.dialogData.links[0].Actor);
         if(this.portrait2==null)
-            this.portrait2 = this.setupPortrait(0,200,"actors",thisactor.json.Pictures+".png");
+            this.portrait2 = this.setupPortrait(-100,200,"actors2",thisactor.json.Pictures+".png");
         else if(this.portrait2.frameName != thisactor.json.Pictures)
         {
             this.portrait2.visible = true;
             this.portrait2.frameName = thisactor.json.Pictures+".png";
+            //this.portrait2.scale.setTo(2,2);
         }
         
         for(var i=0;i<3;i++)

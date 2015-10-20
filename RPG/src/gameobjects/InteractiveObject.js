@@ -55,7 +55,7 @@ InteractiveObject.prototype.dosetup = function()
     var actions = this.jsondata.triggers;
     this.applyInteractActions(actions);
     
-    if(this.actor&&this.actor.getValue("state")!=""){
+    if(this.actor && this.actor.getValue("state")!=""){
         this.changeState(this.actor.getValue("state"));
     }
     else{
@@ -79,7 +79,8 @@ InteractiveObject.prototype.dosetup = function()
 }
 InteractiveObject.prototype.finalSetup = function()     
 {
-    
+    if(this.IsPlayer==true)
+        this.changeState("idle");
 }
 InteractiveObject.prototype.applyInteractActions = function(actions)
 {
@@ -202,6 +203,7 @@ InteractiveObject.prototype.createTempArt = function(spritesheet,image) //charac
                         0,
                         0,
                        spritesheet, image+".png");
+    //console.log("CREATE TEMP",spritesheet, image+".png");
     this.addChild(this.baseImage);
     this.map.objectGroup.add(this);
     this.baseImage.anchor.x = 0.5;
@@ -220,6 +222,7 @@ InteractiveObject.prototype.setupArt = function(json)
         //console.log("setupart", this, json.name);
         this.isCreated = true;
         var objectreference = this.map.getTile(json.name,json.tilesetid);
+        //console.log(objectreference.spritesheet, objectreference.tile);
         var spotx = json.x || 0;
         var spoty = json.y || 0;
 
@@ -253,7 +256,6 @@ InteractiveObject.prototype.changeState = function(newstate)
 {
     //need to test if state exists
     //console.log("caller is " + arguments.callee.caller.toString(), newstate);
-    
     if(this.hasstates)
     {
         if(this.baseImage)
@@ -264,6 +266,7 @@ InteractiveObject.prototype.changeState = function(newstate)
             
             if(nextAnimation)
             {
+                //console.log("",this,this.baseImage);
                 this.baseImage.play(newstate);
 
                 for(var i=0;i<this.otherAnimations.length;i++)
@@ -317,7 +320,17 @@ InteractiveObject.prototype.callFunction = function(fnstring,fnparams)
         fn.apply(this, fnparams);
     }
 }
-
+//no events
+//can't see
+//no interactions
+InteractiveObject.prototype.hideSelf = function() 
+{
+    this.baseImage.visible = false;  
+}
+InteractiveObject.prototype.showSelf = function() 
+{
+    this.baseImage.visible = true;
+}
 InteractiveObject.prototype.deSpawn = function() 
 {
     this.destroySelf();
@@ -384,7 +397,7 @@ InteractiveObject.prototype.flushAll = function()
         this.baseImage.events.onInputOut.remove(this.handleOut, this);
     }
     this.destroy();
-    console.log(this,"- destroy -");
+   // console.log(this,"- destroy -");
 }
 InteractiveObject.prototype.handleOver = function() 
 {

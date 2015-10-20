@@ -4,7 +4,7 @@ DiaglogState = function (statemachine, game, gameref, dialogHandler, uigroup) {
     this.gameref = gameref;
     this.dialogHandler = dialogHandler;
     this.uiGroup = uigroup;
-    //this.inputHandler = new BatttleInputHandler(this.game, this.gameref);
+    //this.inputHandler = new InputHandlerBattle(this.game, this.gameref);
     //
     this.diagpanel = new DialogPanel(this.game, this.gameref, dialogHandler, null, this);
     this.game.add.existing(this.diagpanel);

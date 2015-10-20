@@ -24,16 +24,16 @@ DeathState.prototype.onEnter = function(params)
     this.deathGroup = this.game.add.group();
     
     this.gameref.normalUI.hide();
-    this.gameref.textUIHandler.showDeadText("Defeated");
+    this.gameref.textUIHandler.showDeadText("Your mortal shell was destroyed.");
     
     var btn = this.game.add.button(200, 400, 'ui', this.tryAgain, this, 'button_blue_up.png', 'button_blue_over.png', 'button_blue_over.png','button_blue_up.png');
-    var newtext = this.game.add.bitmapText(230, 410, "simplefont", "Try Again", 20); 
+    var newtext = this.game.add.bitmapText(230, 410, "simplefont", "Turn Back Time", 20); 
     
     this.deathGroup.addChild(btn);
     this.deathGroup.addChild(newtext);
         
     var btn = this.game.add.button(500, 400, 'ui', this.returnToMenu, this, 'button_blue_up.png', 'button_blue_over.png', 'button_blue_over.png','button_blue_up.png');
-    var newtext = this.game.add.bitmapText(530, 410, "simplefont", "Return to menu", 20); 
+    var newtext = this.game.add.bitmapText(530, 410, "simplefont", "Return To Menu", 20); 
     
     this.deathGroup.addChild(btn);
     this.deathGroup.addChild(newtext);

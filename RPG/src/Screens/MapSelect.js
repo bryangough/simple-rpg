@@ -13,8 +13,8 @@ BasicGame.MapSelect.prototype = {
 
 		this.back = this.add.button(10, 530, 'ui', this.returnToMain, this, 'menu0001.png', 'menu0002.png', 'menu0002.png','menu0001.png');
         
-        this.displayLevel("Level 1",0);
-        this.displayLevel("Level 2",1);
+        this.displayLevel("Level 1",1);
+        //this.displayLevel("Level 2",1);
 	},
     displayLevel:function(name, level){
         

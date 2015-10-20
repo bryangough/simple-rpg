@@ -22,23 +22,6 @@ var InventoryGraphics = function(game,maingame,globalhandler)
     //
     this.currentitems = []
     //
-    var items = this.globalhandler.items;
-    if(items)
-    {
-        //for (var val of items)
-        for(var i=0;i<items.length;i++)
-        {
-            var val = items[i];
-            if(val!=null)
-            {//might be moved to inventory item
-                val.OnChangeSignal.add(this.makeReturn(val), this);
-                if(val.getValue("Inventory"))
-                {
-                    this.addInventoryGraphic(val);
-                }
-            }
-        }
-    }
     var iwidth = 60;
     var num = 10;
     for(var j=0;j<num;j++)
@@ -54,6 +37,26 @@ var InventoryGraphics = function(game,maingame,globalhandler)
     this.selectedBG.visible = false;
     
     this.addChild(this.selectedBG);
+    //
+    var items = this.globalhandler.items;
+    if(items)
+    {
+        //for (var val of items)
+        for(var i=0;i<items.length;i++)
+        {
+            var val = items[i];
+            if(val!=null)
+            {//might be moved to inventory item
+                val.OnChangeSignal.add(this.makeReturn(val), this);
+            //    console.log(val,val.getValue("Inventory"))
+                if(val.getValue("Inventory"))
+                {
+                    this.addInventoryGraphic(val);
+                }
+            }
+        }
+    }
+    
     
     this.x = this.game.world.centerX - (iwidth * num)/2;
     
@@ -132,8 +135,9 @@ InventoryGraphics.prototype.destroyGraphicItem = function(item)
 }
 InventoryGraphics.prototype.addInventoryGraphic = function(item)
 {
-    var newitem = new InventoryObject(this.game, this, "dialogui", item.getValue("InventoryGraphicName")+".png", item);
-    newitem.scale.setTo(0.5,0.5);
+    var newitem = new InventoryObject(this.game, this, "inventory", item.getValue("InventoryGraphicName")+".png", item);
+    console.log(item.getValue("InventoryGraphicName"))
+    //newitem.scale.setTo(0.5,0.5);
     newitem.anchor.setTo(0.5,0.5);
     this.add(newitem);
     this.currentitems.push(newitem);

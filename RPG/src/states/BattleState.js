@@ -12,7 +12,7 @@ BattleState = function (statemachine, game, gameref) {
     this.statemachine = statemachine;
     this.game = game;
     this.gameref = gameref;
-    this.inputHandler = new BatttleInputHandler(this.game, this.gameref);
+    this.inputHandler = new InputHandlerBattle(this.game, this.gameref);
     this.enemyRollover = new EnemyTargetRollOver(this.game, this.gameref, this);
     
     this.mActions = [];//actions
@@ -65,7 +65,7 @@ BattleState.prototype.handleOver = function(combat)
             this.enemyRollover.showText(combat.x, combat.y, "Out of range");    
             return;
         }
-        var acc = this.gameref.map.playerCharacter.currentSelectedWeapon.acc - (distanceTo/(range * 60))/3;
+        var acc = this.gameref.map.playerCharacter.currentSelectedWeapon.acc - (distanceTo/(range * 60))/5;
         acc *= 100;
         this.enemyRollover.showText(combat.x, combat.y, "Chance to hit: " + acc.toFixed(0) + "%");    
     }

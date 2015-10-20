@@ -265,8 +265,11 @@ MovingCharacter.prototype.findtile = function()
 {
     var onmap = this.map.spritegrid.PosToMap(this.x,this.y);
    // onmap = this.map.spritegrid.GetMapCoords(onmap.x,onmap.y);
-    this.posx = onmap.x;
-    this.posy = onmap.y;
+    if(onmap.x!=-1)
+    {
+        this.posx = onmap.x;
+        this.posy = onmap.y;
+    }
 }
 //
 MovingCharacter.prototype.doUse = function()

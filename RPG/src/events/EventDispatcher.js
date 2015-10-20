@@ -153,8 +153,9 @@ EventDispatcher.prototype.setActions = function(eventAction, action, once, con, 
         {
             eventAction.push({func:this.maingame.globalHandler.updateVariableByID, para:[action.name,action.mode, action.value],  removeself:false, callee:this.maingame.globalHandler, con:con, walkto:walkto});
         }
-        else if(action.type=="Quest")
+        else if(action.type=="GLOBAL")
         {
+            eventAction.push({func:this.maingame.callFunction, para:[action.variable, ""], removeself:false, callee:this.maingame, con:con, walkto:walkto});
         }
 }
 //
@@ -260,6 +261,7 @@ EventDispatcher.prototype.completeAction = function(actionEvent, atPoint, activa
                     if(actionEvent[i].con!=lastcon)
                     {
                         lastconreturn = this.testConditions(actionEvent[i].con);
+                        //console.log(lastconreturn,actionEvent[i].con);
                         lastcon = actionEvent[i].con;
                     } 
                     //console.log("con ",lastconreturn);

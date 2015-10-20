@@ -199,8 +199,8 @@ BasicGame.Game.prototype = {
     render: function()
     {
         //this.game.debug.text(this.game.time.fps || '--', 2, 40, "#00ff00");   
-        this.game.debug.text(this.gGameMode.currentState, 2, 10, "#00ff00");
-        this.game.debug.text("currentAction "+GlobalEvents.currentAction, 2, 25, "#00ff00");
+        //this.game.debug.text(this.gGameMode.currentState, 2, 10, "#00ff00");
+        //this.game.debug.text("currentAction "+GlobalEvents.currentAction, 2, 25, "#00ff00");
         //this.game.debug.text("currentAction "+GlobalEvents.currentAction, 2, 50, "#00ff00");
         //this.game.debug.text(this.game.time.fps || '--', 2, 40, "#00ff00");  
         //game.debug.text("Tween running: " + !this.idleBallTween.pendingDelete, 2, 110);
@@ -208,9 +208,18 @@ BasicGame.Game.prototype = {
         //this.game.debug.inputInfo(16, 16);
     },
     shutdown: function () {
-        console.log("flush");
+        //console.log("flush");
         this.map.flushEntireMap();
         
+    },
+    callFunction: function(fnstring,fnparams) 
+    {
+        var fn = this[fnstring];
+        fnparams = fnparams.split(',');
+        if (typeof fn === "function") {
+            //console.log(fn,this);
+            fn.apply(this, fnparams);
+        }
     }
 };
 

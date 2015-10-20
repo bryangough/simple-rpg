@@ -4,7 +4,7 @@ var PlayerCharacter = function (maingame, jsondata, map)
 {
     //MovingCharacter.call(this, maingame, jsondata, map);
     CombatCharacter.call(this, maingame, jsondata, map);
-    
+    this.jsondata.state = "idle";
     this.IsPlayer = true;
 };
 //PlayerCharacter.prototype = Object.create(MovingCharacter.prototype);
