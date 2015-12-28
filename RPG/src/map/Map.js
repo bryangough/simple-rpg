@@ -18,7 +18,7 @@ var Map = function (game, gameRef)
     this.highlightArray;
     
     this.mapGroup;
-    this.scaledto = 1;
+    this.scaledto = 0.8;
     
     this.redoMap = false;
 }

@@ -6,12 +6,12 @@ module.exports = function(grunt){
                 src:[
                     'src/**/*.js'
                 ],
-                dest: 'src/build/RPGSimple_concat.js'
+                dest: 'js/build/RPGSimple_concat.js'
             }
         },
         uglify:{
           build:{
-              src: 'src/build/RPGSimple_concat.js',
+              src: 'js/build/RPGSimple_concat.js',
               dest: 'js/RPGSimple.min.js'
           }
         }

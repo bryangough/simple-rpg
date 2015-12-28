@@ -131,7 +131,8 @@ ActionButtons.prototype.checkCombat = function(stateMachine,currentState){
 
 ActionButtons.prototype.pressedCombat = function()
 {
-    this.gameref.textUIHandler.showJustText("Your not up for a fight.\nBetter to use your wits.");
+    this.gameref.toggleCombat();
+    //this.gameref.textUIHandler.showJustText("Your not up for a fight.\nBetter to use your wits.");
 }
 
 
