@@ -5,6 +5,8 @@ var InputHandlerBattle = function (game, gameref)
     
     this.playerDecide = null;
     this.frindges = null;
+    
+    this.overEnemy = null;
 };
 InputHandlerBattle.prototype = Object.create(InputHandler.prototype);
 InputHandlerBattle.constructor = InputHandlerBattle;
@@ -48,9 +50,28 @@ InputHandlerBattle.prototype.onMove = function(pointer, x, y)
 
     var moveIndex =  this.gameref.map.hexHandler.checkHex(pointerx, pointery);
 
-    //console.log(moveIndex);
     if(this.withinFringes(moveIndex))
         this.gameref.map.highlightHex.highlighttilebytile(0,moveIndex);
+    
+    //attempting to make the tile select the player
+    //select works, unselect doesn't
+    /*if(moveIndex!=undefined)
+    {
+       //console.log(moveIndex.moverontile);
+        if(moveIndex.moverontile!=null)
+        {
+            this.gameref.map.highlightHex.highlighttilebytile(0,moveIndex);
+            moveIndex.moverontile.handleOver();
+        }
+    }*/
+   /* else
+    {
+        if(this.overEnemy!=null)
+        {
+            this.overEnemy.handleOut();
+            this.overEnemy = null;
+        }
+    }*/
 },
 InputHandlerBattle.prototype.withinFringes = function(moveIndex) 
 {

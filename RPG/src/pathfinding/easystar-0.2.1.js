@@ -653,7 +653,7 @@ EasyStar.js = function() {
 
 	//Helpers
 	var isTileWalkable = function(collisionGrid, acceptableTiles, x, y, changex, changey) {
-        console.log(x, y, changex, changey );
+        //console.log(x, y, changex, changey );
         //if no 0 or 1 use changex and changey to determine if walking in correct direction
         //console.log(x,y,collisionGrid.length,collisionGrid[0].length);
         

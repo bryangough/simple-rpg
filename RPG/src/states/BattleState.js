@@ -44,7 +44,7 @@ BattleState.prototype.handleOver = function(combat)
 {
     if(!this.gameref.map.playerCharacter.currentSelectedWeapon)
     {
-        handleOut();
+        this.handleOut();
         return;
     }
     if(combat.hostile)

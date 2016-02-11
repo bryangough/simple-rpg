@@ -216,6 +216,7 @@ Map.prototype.createMapTiles = function(passedMap){
                             //console.log(objects[i].triggers[j].type);
                             //if(objects[i].triggers[j].type==null)
                             //    console.log(this,"");
+                            
                             if(objects[i].triggers[j].type=="combatAttributes" || objects[i].triggers[j].type=="CharacterSpawn")
                             {
                                 isCombatSpecial = true;
@@ -228,6 +229,7 @@ Map.prototype.createMapTiles = function(passedMap){
                             }
                         }
                         var interactiveobject;
+                        
                         if(isCombatSpecial)
                         {
                             interactiveobject = new CombatCharacter(this.gameRef, objects[i], this);
@@ -317,7 +319,7 @@ Map.prototype.createMapTiles = function(passedMap){
             this.interactiveObjects[i].dosetup();
     }
     //create player
-    console.log("play: ",this.playerCharacter);
+    //console.log("play: ",this.playerCharacter);
     if(!this.playerCharacter)
     {
         this.playerCharacter = new PlayerCharacter(this.gameRef, this.playerData.Player, this);
@@ -370,7 +372,7 @@ Map.prototype.getCombatCharacters = function()
     var returnArray = [];
     for(var i=0;i<this.interactiveObjects.length;i++)
     {
-        if( (this.interactiveObjects[i].hostile || this.interactiveObjects[i].IsPlayer) && this.interactiveObjects[i].isAlive() )
+        if( (this.interactiveObjects[i].attackable || this.interactiveObjects[i].hostile || this.interactiveObjects[i].IsPlayer) && this.interactiveObjects[i].isAlive() )
         {
             returnArray.push(this.interactiveObjects[i]);
         }

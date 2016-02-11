@@ -107,6 +107,7 @@ MovingCharacter.prototype.finalSetup = function()
     //this.currentTile = null;
     
     this.setLocationByTile(this.currentTile);
+    this.currentTile.enterTile(this);
 }
 
 MovingCharacter.prototype.setLocation = function(inx,iny) 

@@ -1,5 +1,8 @@
 var SimpleObject = function (game, x,y, spritesheet, imagename) 
 {
+    //console.log(imagename);
+    if(imagename=="undefined.png")
+        imagename = "bushSand.png";
     Phaser.Image.call(this, game, x, y, spritesheet, imagename);
     this.posx;
     this.posy;
@@ -129,6 +132,7 @@ var SimpleTile = function(maingame, posx, posy, x, y)
     this.y = y;
     this.posx = posx;
     this.posy = posy;
+    this.moverontile = null;
 }
 SimpleTile.prototype.callFunction = function(fnstring,fnparams) 
 {
@@ -146,12 +150,18 @@ SimpleTile.prototype.changeWalkable = function(walkableto)
 
     this.walkable = walkableto;
     this.maingame.updatewalkable = true;
-    
 }
 SimpleTile.prototype.enterTile = function(enterer)
 {
     if(this.eventDispatcher)
         this.eventDispatcher.doAction("OnEnter",enterer);
+    this.moverontile = enterer;
+};
+SimpleTile.prototype.leaveTile = function(enterer)
+{
+    if(this.eventDispatcher)
+        this.eventDispatcher.doAction("OnLeave",enterer);
+    this.moverontile = null;
 };
 
 //none moveable ground tiles will use new Image(game, x, y, key, frame)
@@ -224,9 +234,15 @@ WalkableTile.constructor = WalkableTile;
 WalkableTile.prototype.enterTile = function(enterer)
 {
     if(this.eventDispatcher)
-        this.eventDispatcher.doAction("OnEnter", enterer);
+        this.eventDispatcher.doAction("OnEnter",enterer);
+    this.moverontile = enterer;
 };
-
+WalkableTile.prototype.leaveTile = function(enterer)
+{
+    if(this.eventDispatcher)
+        this.eventDispatcher.doAction("OnLeave",enterer);
+    this.moverontile = null;
+};
 //
 //WaterTile
 //

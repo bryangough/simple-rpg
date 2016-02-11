@@ -26,7 +26,6 @@ CombatCharacter.prototype.applyCombatActions = function(actions)
     for(var i=0;i<actions.length;i++)
     {
         var action = actions[i];
-        
         if(action.type=="combatAttributes")
         {
             this.movementspeed = action.movementspeed;
