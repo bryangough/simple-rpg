@@ -12,6 +12,7 @@ var MovingCharacter = function (maingame, jsondata, map)
     this.pathlocation = 0;
     this.nextTile;
     
+    this.moveState = "none";
     //
     this.prevx;
     this.prevy;
@@ -24,6 +25,17 @@ var MovingCharacter = function (maingame, jsondata, map)
     this.actionsaftermove;
     this.objectmovingto;
     this.movingtotile=null;
+    //
+    this.movementState = new StateMachine();
+    this.movementState.add("idle", new IdleState(this.movementState, maingame.game, maingame, this));
+    this.movementState.add("wander", new WanderState(this.movementState, maingame.game, maingame, this));
+    this.movementState.add("path", new PathState(this.movementState, maingame.game, maingame, this));
+    this.movementState.change("idle");
+    //
+    //if(!this.IsPlayer)
+    //    console.log("not player")
+    //    this.movementState.change("wander");
+    //this.gGameMode.add("path", new NormalState(this.gGameMode, this.game, this));
     //
     this.applyMoverActions(actions);
     this.movetoCenterEvery = true;
@@ -139,6 +151,7 @@ MovingCharacter.prototype.gotoAnotherMap = function(map, tile)
 MovingCharacter.prototype.setDirection = function() 
 {
     //console.log(this.nextTile.x,this.map.hexHandler.halfHex,this.nextTile.x+this.map.hexHandler.halfHex, this.nextTile.x-this.map.hexHandler.halfHex);
+    //if(this.nextTile==null || this.map==null)
     this.dir.x =  this.nextTile.x+this.map.hexHandler.halfHex-this.x;
     this.dir.y =  this.nextTile.y+this.map.hexHandler.halfHexHeight-this.y;
     this.dir.normalize();
@@ -187,6 +200,7 @@ MovingCharacter.prototype.moveToSpot = function(tile, actions)
     this.douse = false;
     this.limit = -1;
 }
+
 MovingCharacter.prototype.moveToSpotCombat = function(tile, actions, limit)
 {
     this.actionsaftermove = actions;
@@ -195,6 +209,19 @@ MovingCharacter.prototype.moveToSpotCombat = function(tile, actions, limit)
     this.douse = false;
     this.limit = limit;
     //console.log("moveToSpotCombat ", this.limit);
+}
+MovingCharacter.prototype.jumpTo = function(jumpToTile)
+{
+    //console.log("do jump to ", jumpToTile);
+    /*var testx = jumpToTile.x+this.map.hexHandler.halfHex;
+    var testy = jumpToTile.y+this.map.hexHandler.halfHexHeight;
+    this.finishMove();
+    this.setDirection();*/
+    
+    //old tile
+    this.currentTile.changeWalkable(false);
+    this.setLocationByTile(jumpToTile);
+    this.finishMove();
 }
 MovingCharacter.prototype.moveto = function(moveIndex){
     if(moveIndex!=null)
@@ -254,7 +281,8 @@ MovingCharacter.prototype.atTargetTile = function()
             this.eventDispatcher.completeAction(this.actionsaftermove, true);
             this.clearTargetTile();
         }
-    }   
+    }  
+    this.movementState.mCurrentState.atTargetTile();
 }
 MovingCharacter.prototype.clearTargetTile = function()
 {
@@ -270,6 +298,25 @@ MovingCharacter.prototype.findtile = function()
     {
         this.posx = onmap.x;
         this.posy = onmap.y;
+    }
+}
+//None, Wander, Path?
+//should this be done with states?
+MovingCharacter.prototype.changeMoveState = function(newstate, b, c, d) 
+{
+    //do this better
+    var params = [];
+    if(b)
+        params.push(b);
+    if(c)
+        params.push(c);
+    if(d)
+        params.push(d);
+    //
+    if(newstate=="idle" || newstate=="wander" || newstate == "path")
+    {
+        this.moveState = newstate;
+        this.movementState.change(newstate, params);        
     }
 }
 //
@@ -289,12 +336,37 @@ MovingCharacter.prototype.faceTarget = function(target)
     else
         this.scale.x = -1;
 }
+MovingCharacter.prototype.moveToCenter = function() 
+{
+    this.path = [this.currentTile];
+    this.pathlocation = 0;
+    this.nextTile = this.currentTile;
+    this.setDirection();
+}
+MovingCharacter.prototype.finishMove = function()
+{
+    this.path = null;
+    this.dir.x = 0;
+    this.dir.y = 0;
+    this.currentTile.enterTile(this);
+    this.changeState("idle");
+    //
+    if(this.objectmovingto!=null && this.currentTile!=null){
+        if(this.objectmovingto.areWeNeighbours(this.currentTile)){
+            this.atTargetTile();
+        }
+    }
+    else
+    {
+        this.atTargetTile();
+    }
+}
 //
 MovingCharacter.prototype.step = function(elapseTime) 
 {
     if(this.notcreated)
         return;
-    
+    //
     if(this.currentTile==null)
     {
         this.currentTile = this.map.hexHandler.checkHex(this.x,this.y);
@@ -303,7 +375,13 @@ MovingCharacter.prototype.step = function(elapseTime)
     }
     if(this.oldTile==null)
         this.finalSetup();
-
+    //
+    if(this.movementState!=null)
+    {
+        this.movementState.update(elapseTime);
+        this.movementState.render();
+    }
+    //      
     if(this.path!=null)
     {
         if(this.path.length>0)
@@ -317,7 +395,6 @@ MovingCharacter.prototype.step = function(elapseTime)
                 this.oldTile = this.currentTile;
                 this.currentTile.changeWalkable(false);
             }
-
             if(this.currentTile==null)
             {
                 //center old then try again
@@ -342,21 +419,7 @@ MovingCharacter.prototype.step = function(elapseTime)
                     {
                         this.x = testx;
                         this.y = testy;
-                        this.path = null;//for now
-                        this.dir.x = 0;
-                        this.dir.y = 0;
-                        this.currentTile.enterTile(this);
-                        this.changeState("idle");
-                        //
-                        if(this.objectmovingto!=null && this.currentTile!=null){
-                            if(this.objectmovingto.areWeNeighbours(this.currentTile)){
-                                this.atTargetTile();
-                            }
-                        }
-                        else
-                        {
-                            this.atTargetTile();
-                        }
+                        this.finishMove(testx,testy);
                     }
                     this.setDirection();
                 }

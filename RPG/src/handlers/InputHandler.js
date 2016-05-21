@@ -50,7 +50,7 @@ InputHandler.prototype.onMove = function(pointer, x, y)
     }
     if(GlobalEvents.currentAction != GlobalEvents.WALK)
     {
-        return;
+        //return;
     }
     if(this.game.global.pause)
     {
@@ -77,7 +77,7 @@ InputHandler.prototype.onMove = function(pointer, x, y)
     //this.gameref.map.hexHandler.dolines(playertile,moveIndex,false,this.gameref.map.highlightHex);
     //var fridges = this.gameref.map.hexHandler.doFloodFill(moveIndex,6,true);
     //this.gameref.map.highlightHex.drawFringes(fridges);
-    this.gameref.map.highlightHex.highlighttilebytile(0,moveIndex);
+    this.gameref.map.highlightHex.moveCursor(moveIndex);
     //this.highlightHex.highilightneighbors(moveIndex);
 },
 InputHandler.prototype.doDragScreen = function(pointer)

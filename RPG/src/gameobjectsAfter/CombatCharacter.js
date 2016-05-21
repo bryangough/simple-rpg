@@ -248,6 +248,8 @@ CombatCharacter.prototype.startCombat = function()
 {
     //show health bar
     this.healthuigroup.visible = true;
+    // stop movement when in combat
+    this.changeMoveState("idle");
 }
 CombatCharacter.prototype.endCombat = function()
 {

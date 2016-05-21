@@ -11,6 +11,7 @@ var Map = function (game, gameRef)
 
     
     this.interactiveObjects = [];
+    this.paths = [];
     this.maskableobjects;
     this.spritegrid;
     this.movementgrid;
@@ -232,7 +233,8 @@ Map.prototype.createMapTiles = function(passedMap){
                         
                         if(isCombatSpecial)
                         {
-                            interactiveobject = new CombatCharacter(this.gameRef, objects[i], this);
+                            interactiveobject = new MonsterCharacter(this.gameRef, objects[i], this);
+                            //interactiveobject = new CombatCharacter(this.gameRef, objects[i], this);
                         }
                         else if(isMoveSpecial)
                         {
@@ -288,6 +290,16 @@ Map.prototype.createMapTiles = function(passedMap){
                     }
                     selectedtile.eventDispatcher.receiveData(actionSpots[i].triggers);
                 }
+            }
+        }
+        if(layer1.paths)//how to deal with collisions of path names?
+        {
+            var paths = layer1.paths;
+            var spotx,spoty;
+            for(var i = 0; i < paths.length; i ++)
+            {
+                var path = new Path(this.game, this.gameRef, paths[i]);
+                this.paths[path.name] = path;
             }
         }
     }
@@ -452,6 +464,10 @@ Map.prototype.refreshWalkablView = function(){
                 tile.tint = 0xffffff;
         }
     }
+}
+Map.prototype.getPath = function(pathName)
+{
+    return this.paths[pathName];
 }
 /*Map.prototype.refreshWalkablView = function(){
     for(var i = 0; i < this.movementgrid.gridSizeX; i ++)

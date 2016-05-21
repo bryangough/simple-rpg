@@ -13,8 +13,9 @@ BasicGame.LoadMap.prototype = {
         
         this.levels = [
             {gameData:"level1Data",map:"level1Map"},
-            {gameData:"level2Data",map:"level2Map"}
+            {gameData:"level2Data",map:"pathMap"}
         ];
+        
 
         this.load.json('gameData', 'assets/maps/'+this.levels[this.game.global.loadMap].gameData+".json");
         this.load.json('map', 'assets/maps/'+this.levels[this.game.global.loadMap].map+".json");

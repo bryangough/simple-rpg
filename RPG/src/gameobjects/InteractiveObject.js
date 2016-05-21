@@ -475,7 +475,8 @@ InteractiveObject.prototype.handleClick = function(touchedSprite, pointer)
         if(this.attackable)
             this.maingame.gGameMode.mCurrentState.inputHandler.clickedObject(this);
     }
-    pointer.active = false;
+    if(pointer!=null)
+        pointer.active = false;
     this.handleOut();
 }
 

@@ -35,10 +35,16 @@ InputHandlerBattle.prototype.onMove = function(pointer, x, y)
         //move around
         return;
     }
+    if(this.overEnemy!=null)
+    {
+        this.overEnemy.handleOut();
+        this.overEnemy = null;
+    }
+    
     if(this.playerDecide==null)
         return;
     if(GlobalEvents.currentAction != GlobalEvents.WALK && GlobalEvents.currentAction != GlobalEvents.COMBATSELECT)
-        return;
+        //return;
     if(!pointer.active)
         return;
     if(this.game.global.pause)
@@ -51,27 +57,25 @@ InputHandlerBattle.prototype.onMove = function(pointer, x, y)
     var moveIndex =  this.gameref.map.hexHandler.checkHex(pointerx, pointery);
 
     if(this.withinFringes(moveIndex))
-        this.gameref.map.highlightHex.highlighttilebytile(0,moveIndex);
-    
+        this.gameref.map.highlightHex.moveCursor(moveIndex);
+    else 
+        this.gameref.map.highlightHex.hideCursor();
     //attempting to make the tile select the player
     //select works, unselect doesn't
-    /*if(moveIndex!=undefined)
+    if(moveIndex!=undefined)
     {
        //console.log(moveIndex.moverontile);
         if(moveIndex.moverontile!=null)
         {
-            this.gameref.map.highlightHex.highlighttilebytile(0,moveIndex);
+            this.gameref.map.highlightHex.moveCursor(moveIndex);
             moveIndex.moverontile.handleOver();
+            this.overEnemy = moveIndex.moverontile;
         }
-    }*/
-   /* else
+    }
+   else
     {
-        if(this.overEnemy!=null)
-        {
-            this.overEnemy.handleOut();
-            this.overEnemy = null;
-        }
-    }*/
+        
+    }
 },
 InputHandlerBattle.prototype.withinFringes = function(moveIndex) 
 {
@@ -110,6 +114,13 @@ InputHandlerBattle.prototype.clickedHex = function(pointer,b)
         return;
     if(this.playerDecide==null)
         return;
+    
+    if(this.overEnemy)
+    {
+        this.overEnemy.handleClick();
+    }
+    
+    
     if(GlobalEvents.currentAction != GlobalEvents.WALK && GlobalEvents.currentAction != GlobalEvents.COMBATSELECT)
         return;
     if(this.game.global.pause)

@@ -12,6 +12,8 @@ var HighlightHex = function (game, maingame, hexhandler)
     this.showPath = true;//set this false to cancel any callbacks being shown
     
     this.type = "Iso";
+    
+    this.cursor;
 }
 HighlightHex.prototype = Object.create(Phaser.Group.prototype);
 HighlightHex.constructor = HighlightHex;
@@ -36,15 +38,27 @@ HighlightHex.prototype.setup = function()
         
         if(this.showNumbers)
         {
-         /*   var hexagonText = new Text(this.game, 25,25, i+"",{});
+            var hexagonText = new Phaser.Text(this.game, 25, 25, i+"",{});
             hexagonText.font = "arial";
             hexagonText.fontSize = 12;
+            //console.log(hexagonText)
             light.add(hexagonText);
-            light.x = -1000;*/
+            light.x = -1000;
         }
         light.x = -1000;
         light.visible = false;
     }
+    
+    //setup cursor
+    var high;
+    this.cursor = this.add(new Phaser.Group(this.game,null));
+    if(this.hexhandler.tiletype=="HexIso")
+        high = this.add(new Phaser.Sprite(this.game, 0,0, "tiles2", "tile_highlight0002.png"));
+    else
+        high = this.add(new Phaser.Sprite(this.game, 0,0, "tiles2", "halfiso_highlight.png"));
+    //
+    this.cursor.add(high);
+    this.add(this.cursor);
 }
 //
 HighlightHex.prototype.drawFringes = function(fringes) 
@@ -175,6 +189,28 @@ HighlightHex.prototype.cleanuptiles = function()
         this.neighborLights[i].visible = false;
     }
 }
+//
+HighlightHex.prototype.moveCursor = function(currenttile)
+{
+   if(this.cursor==null)
+        return;
+    if(currenttile!=null)
+    {
+        this.cursor.visible = true;
+        this.cursor.x = currenttile.x;
+        this.cursor.y = currenttile.y;
+    }
+    else
+    {
+        this.cursor.x = -1000;
+        this.cursor.y = 0;
+    } 
+}
+HighlightHex.prototype.hideCursor = function(i,currenttile)
+{
+    this.cursor.visible = false;
+}
+//
 HighlightHex.prototype.highlighttilebytile = function(i,currenttile)
 {
     if(this.neighborLights[i]==null)

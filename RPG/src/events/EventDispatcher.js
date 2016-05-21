@@ -112,51 +112,55 @@ EventDispatcher.prototype.setActions = function(eventAction, action, once, con, 
 {
     //console.log(action.type,action);
     if(action.type=="ChangeMap")
+    {
+        eventAction.push({func:this.maingame.map.userExit, para:[this.object, action], removeself:once, callee:this.maingame.map, con:con, walkto:walkto});
+    }
+    //
+    else if(action.type=="CONVERSATION")
+    {
+        eventAction.push({func:this.maingame.showDialog, para:[action.id], removeself:once, callee:this.maingame, con:con, walkto:walkto});
+    }
+    else if(action.type=="SIMPLE")
+    {
+        eventAction.push({func:this.maingame.textUIHandler.showJustText, para:[action.text], removeself:once, callee:this.maingame.textUIHandler, con:con, walkto:walkto});
+    }
+    else if(action.type=="BARK")
+    {
+        eventAction.push({func:this.maingame.textUIHandler.showBark, para:[this.object, action.text], removeself:once, callee:this.maingame.textUIHandler, con:con, walkto:walkto});
+    }
+    //
+    else if(action.type=="THIS")//call function on this
+    {
+        if(action.gototype!=undefined&&action.location)
         {
-            eventAction.push({func:this.maingame.map.userExit, para:[this.object, action], removeself:once, callee:this.maingame.map, con:con, walkto:walkto});
+            eventAction.push({func:this.object.callFunction, para:["moveToSpotByCoords", action.location.x+","+ action.location.y], removeself:false, callee:this.object, con:con, walkto:walkto});
         }
-        //
-        else if(action.type=="CONVERSATION")
+        else
         {
-            eventAction.push({func:this.maingame.showDialog, para:[action.id], removeself:once, callee:this.maingame, con:con, walkto:walkto});
+            eventAction.push({func:this.object.callFunction, para:[action.function, action.parameters], removeself:false, callee:this.object, con:con, walkto:walkto});
         }
-        else if(action.type=="SIMPLE")
-        {
-            eventAction.push({func:this.maingame.textUIHandler.showJustText, para:[action.text], removeself:once, callee:this.maingame.textUIHandler, con:con, walkto:walkto});
-        }
-        else if(action.type=="BARK")
-        {
-            eventAction.push({func:this.maingame.textUIHandler.showBark, para:[this.object, action.text], removeself:once, callee:this.maingame.textUIHandler, con:con, walkto:walkto});
-        }
-        //
-        else if(action.type=="THIS")//call function on this
-        {
-            if(action.gototype!=undefined&&action.location)
-            {
-                eventAction.push({func:this.object.callFunction, para:["moveToSpotByCoords", action.location.x+","+ action.location.y], removeself:false, callee:this.object, con:con, walkto:walkto});
-            }
-            else
-            {
-                eventAction.push({func:this.object.callFunction, para:[action.function, action.parameters], removeself:false, callee:this.object, con:con, walkto:walkto});
-            }
-        }
-        else if(action.type=="Item")
-        {
-            eventAction.push({func:this.maingame.globalHandler.updateItem, para:[action.name,action.mode, action.variable,action.value],  removeself:false, callee:this.maingame.globalHandler, con:con, walkto:walkto});
+    }
+    else if(action.type=="Item")
+    {
+        eventAction.push({func:this.maingame.globalHandler.updateItem, para:[action.name,action.mode, action.variable,action.value],  removeself:false, callee:this.maingame.globalHandler, con:con, walkto:walkto});
 
-        }
-        else if(action.type=="Actor")
-        {
-            eventAction.push({func:this.maingame.globalHandler.updateActor, para:[action.name,action.mode, action.variable,action.value],  removeself:false, callee:this.maingame.globalHandler, con:con, walkto:walkto});
-        }
-        else if(action.type=="Variable")
-        {
-            eventAction.push({func:this.maingame.globalHandler.updateVariableByID, para:[action.name,action.mode, action.value],  removeself:false, callee:this.maingame.globalHandler, con:con, walkto:walkto});
-        }
-        else if(action.type=="GLOBAL")
-        {
-            eventAction.push({func:this.maingame.callFunction, para:[action.variable, ""], removeself:false, callee:this.maingame, con:con, walkto:walkto});
-        }
+    }
+    else if(action.type=="Actor")
+    {
+        eventAction.push({func:this.maingame.globalHandler.updateActor, para:[action.name,action.mode, action.variable,action.value],  removeself:false, callee:this.maingame.globalHandler, con:con, walkto:walkto});
+    }
+    else if(action.type=="Variable")
+    {
+        eventAction.push({func:this.maingame.globalHandler.updateVariableByID, para:[action.name,action.mode, action.value],  removeself:false, callee:this.maingame.globalHandler, con:con, walkto:walkto});
+    }
+    else if(action.type=="GLOBAL")
+    {
+        eventAction.push({func:this.maingame.callFunction, para:[action.variable, ""], removeself:false, callee:this.maingame, con:con, walkto:walkto});
+    }
+    else if(action.type=="Activator")
+    {
+        eventAction.push({type:"Activator", func:null, para:[action.function, action.parameters], removeself:false, callee:null, con:con, walkto:walkto});
+    }
 }
 //
 EventDispatcher.prototype.applyConditions = function(con, conditions) 
@@ -232,8 +236,6 @@ EventDispatcher.prototype.testConditions = function(conditions)
 //this should pass in who
 EventDispatcher.prototype.doAction = function(activation, activator) 
 {
-    
-    
     var actionEvent = this.getEventType(activation); 
     //console.log("doAction",activation, activator, actionEvent);
     this.completeAction(actionEvent, false, activator);
@@ -282,7 +284,19 @@ EventDispatcher.prototype.completeAction = function(actionEvent, atPoint, activa
                         continue;
                     }
                 }
-                actionstoactivate.push(actionEvent[i]);
+                if(actionEvent[i].type=="Activator")
+                {
+                    if(activator!=null)
+                    {
+                        actionEvent[i].func = activator.callFunction;
+                        actionEvent[i].callee = activator;
+                        actionstoactivate.push(actionEvent[i]);    
+                    }
+                }
+                else
+                {
+                    actionstoactivate.push(actionEvent[i]);    
+                }
             }
         }
         //
