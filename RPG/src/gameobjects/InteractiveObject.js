@@ -260,9 +260,8 @@ InteractiveObject.prototype.changeState = function(newstate)
     {
         if(this.baseImage)
         {
-            var nextAnimation = this.baseImage.animations.getAnimation(newstate);
-            
-            //console.log(this,nextAnimation);
+            var nextAnimation = this.baseImage.animations.getAnimation(newstate);   
+            //console.log(this,nextAnimation,this.baseImage.animations);
             
             if(nextAnimation)
             {

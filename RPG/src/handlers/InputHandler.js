@@ -41,11 +41,7 @@ InputHandler.prototype.onMove = function(pointer, x, y)
 
         if(diffx!=0||diffy!=0)
             this.didDrag = true;
-        this.gameref.map.mapGroup.x -= diffx;
-        this.gameref.map.mapGroup.y -= diffy;
-
-        //console.log(diffx,diffy);
-        //move around
+        this.gameref.camera.adjustPosition(-diffx, -diffy);
         return;
     }
     if(GlobalEvents.currentAction != GlobalEvents.WALK)
@@ -73,8 +69,8 @@ InputHandler.prototype.onMove = function(pointer, x, y)
 
     //console.log(this.input.worldX,this.gameref.map.mapGroup.x,this.input.worldX-this.gameref.map.mapGroup.x);
 
-    //this.highlightHex.doShowPath(this.pathfinder,this.playerCharacter.currentTile,moveIndex);
-    //this.gameref.map.hexHandler.dolines(playertile,moveIndex,false,this.gameref.map.highlightHex);
+    //this.gameref.map.highlightHex.doShowPath(this.pathfinder,playertile,moveIndex);
+    //this.gameref.map.hexHandler.dolines(playertile, moveIndex, false, this.gameref.map.highlightHex);
     //var fridges = this.gameref.map.hexHandler.doFloodFill(moveIndex,6,true);
     //this.gameref.map.highlightHex.drawFringes(fridges);
     this.gameref.map.highlightHex.moveCursor(moveIndex);
@@ -95,12 +91,13 @@ InputHandler.prototype.clickedObject = function(clickedObject)
 }
 InputHandler.prototype.clickedHex = function(pointer,b)
 {
+    if (!pointer.withinGame) { return; }
     
     //console.log("hex",pointer.active);
     
     //this needs to be blocked if clicking ui
     this.dragScreen = false;
-    if(this.didDrag)        //test distance did it actually drag. or do I make a drag screen button?
+    if(this.didDrag)//test distance did it actually drag. or do I make a drag screen button?
     {
         this.didDrag = false;
         return;
@@ -124,7 +121,7 @@ InputHandler.prototype.clickedHex = function(pointer,b)
     {
         if(this.game.currentAction==this.game.WALK)
         {
-            this.gameref.map.playerCharacter.moveto(moveIndex);
+            this.gameref.map.playerCharacter.moveto(moveIndex, {pointerx, pointery});
         }
     }
 } 

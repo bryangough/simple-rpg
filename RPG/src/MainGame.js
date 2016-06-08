@@ -57,9 +57,13 @@ BasicGame.Game.prototype = {
         
         this.textUIHandler.setup(this.mapData, this.uiGroup, this.dialoghandler);
         //
+        this.camera = new PlayerCamera(this.game, this);
+        //
         if(this.map==null)
             this.map = new Map(this.game, this);
         this.map.initialMap(this.mapData, this.gameData, this.game.cache.getJSON('player'), this.gameDataPlayer);
+        
+        
         //
         this.gGameMode = new StateMachine();
         this.gGameMode.add("normal", new NormalState(this.gGameMode, this.game, this));
@@ -110,8 +114,8 @@ BasicGame.Game.prototype = {
         this.gGameMode.render();
         
         this.textUIHandler.update(elapsedTime);
-        //this.spritegrid.PosToMap(this.input.worldX-this.mapGroup.x,this.input.worldY-this.mapGroup.y);
         this.map.masker.updateMasks(this.input.worldX-this.map.mapGroup.x,this.input.worldY-this.map.mapGroup.y);
+        this.camera.step(elapsedTime);
         //this.masker.updateMasks(this.playerCharacter.x, this.playerCharacter.y, this.playerCharacter.posx, this.playerCharacter.posy);
         //fps.text = this.game.time.fps;
     },

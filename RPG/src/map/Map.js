@@ -252,13 +252,9 @@ Map.prototype.createMapTiles = function(passedMap){
                 }
                 else//this might not be complete true? //without any triggers the object is just a picture
                 {
-                    //
-                    //console.log(objects[i],objects[i].name,objects[i].tilesetid);
                     var objectreference = this.getTile(objects[i].name,objects[i].tilesetid);
                     spotx = objects[i].x;
                     spoty = objects[i].y * -1;
-                    //console.log(objects[i],objects[i].name,objects[i].tilesetid);
-                    //console.log(objectreference);
                     var tileobject = new SimpleObject(this.game,
                                                             spotx + this.objectoffset.x,
                                                             spoty + this.objectoffset.y,
@@ -267,11 +263,8 @@ Map.prototype.createMapTiles = function(passedMap){
                     tileobject.posy = objects[i].posy;
                     this.objectGroup.add(tileobject);
                     //
-
-                    //
                     if(objects[i].maskable){//maskable objects to check when player/mouse move
                         this.maskableobjects.push(tileobject);
-                        //console.log(this.maskableobjects);
                     }
                 }
             }
@@ -307,13 +300,13 @@ Map.prototype.createMapTiles = function(passedMap){
     this.hexHandler.hexagonArray = hexagonArray;
     //this.hexHandler.waterTilesArray = waterTilesArray;
     //these should be screen width and height
-    this.mapGroup.y = (440-hexagonHeight*Math.ceil(this.gridSizeY/2))/2;
+    //this.mapGroup.y = (440-hexagonHeight*Math.ceil(this.gridSizeY/2))/2;
 
     //if(this.gridSizeY%2==0){
     //    this.mapGroup.y-=hexagonHeight/4;
     //}
     //this.mapGroup.x = 0;//(900-Math.ceil(this.gridSizeX)*hexagonWidth)/2;
-    this.mapGroup.x = (900-Math.ceil(this.gridSizeX)*hexagonWidth)/2;
+    //this.mapGroup.x = (900-Math.ceil(this.gridSizeX)*hexagonWidth)/2;
     //if(this.gridSizeX%2==0){
     //    this.mapGroup.x-=hexagonWidth/8;
     //}
@@ -334,17 +327,24 @@ Map.prototype.createMapTiles = function(passedMap){
     //console.log("play: ",this.playerCharacter);
     if(!this.playerCharacter)
     {
+        console.log("Create Character.");
         this.playerCharacter = new PlayerCharacter(this.gameRef, this.playerData.Player, this);
-        this.game.add.existing(this.playerCharacter);
-        this.playerCharacter.setLocationByTile(hexagonArray[this.startpos.x][this.startpos.y]);
+ //       this.playerCharacter.setLocationByTile(hexagonArray[this.startpos.x][this.startpos.y]);
         this.playerCharacter.dosetup();
-    }
+    }    
+    
+    this.playerCharacter.setLocationByTile(hexagonArray[this.startpos.x]    [this.startpos.y]);
+    this.game.add.existing(this.playerCharacter);
     this.objectGroup.add(this.playerCharacter);
+    this.playerCharacter.resetMoving();
     //
     this.gameRef.pathfinder.setGrid(this.walkableArray, [1]);
     this.masker = new CheapMasker(this.game, this.gameRef, this.maskableobjects);
     //
     this.doZoom();
+    this.mapGroup.x = (900-hexagonWidth*Math.ceil(this.gridSizeX)*this.mapGroup.scale.x);
+    this.mapGroup.y = (440-hexagonHeight*Math.ceil(this.gridSizeY/2)*this.mapGroup.scale.y);
+    
     this.hexagonGroup.sort('y', Phaser.Group.SORT_ASCENDING);
     
     
@@ -353,6 +353,7 @@ Map.prototype.createMapTiles = function(passedMap){
         if(this.interactiveObjects[i].eventDispatcher)
             this.interactiveObjects[i].eventDispatcher.doAction("OnStart", null);
     }
+    this.gameRef.camera.setFollowObject(this.playerCharacter, true);
     //console.log("create new map");
     this.redoMap = false;
 };
@@ -401,21 +402,24 @@ Map.prototype.addLocationTextToTile = function(x,y,width,height,i,j){
 };
 
 Map.prototype.flushEntireMap = function(){
-    this.playerCharacter.flushAll();
+    //this.playerCharacter.flushAll();
     for(var i=0;i<this.interactiveObjects.length;i++)
     {
         if(this.interactiveObjects[i])
             this.interactiveObjects[i].flushAll();
     }
     this.interactiveObjects = [];
-    
+    //
+    this.objectGroup.remove(this.playerCharacter);
     //
     this.hexagonGroup.removeAll(true);
     this.highlightGroup.removeAll(true);
     this.objectGroup.removeAll(true);
+    this.paths = [];
     //this.mapGroup.removeAll(true);
 
-    this.playerCharacter = null;
+    
+    //this.playerCharacter = null;
     this.hexHandler.flush();
 }
 Map.prototype.getTile = function(name, tilesetid){
@@ -423,6 +427,8 @@ Map.prototype.getTile = function(name, tilesetid){
     return {tile:this.mapData.tileSets[tilesetid][name], spritesheet:this.mapData.tileSets[tilesetid].tileset};
 }
 Map.prototype.userExit = function(object, data) {
+    
+    //object
     this.gameRef.gGameMode.change("normal");
     //object is only the tile
     //on do this if player
@@ -437,7 +443,7 @@ Map.prototype.userExit = function(object, data) {
     //
     var currentmap = this.mapData.maps[this.startpos.map];
     //    
-    this.clonedCurrent = JSON.parse(JSON.stringify(currentmap));
+    //this.clonedCurrent = JSON.parse(JSON.stringify(currentmap));
     //JSON.stringify(currentmap) to save in database
     //
     console.log("build new-- ");

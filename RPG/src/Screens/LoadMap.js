@@ -13,7 +13,7 @@ BasicGame.LoadMap.prototype = {
         
         this.levels = [
             {gameData:"level1Data",map:"level1Map"},
-            {gameData:"level2Data",map:"pathMap"}
+            {gameData:"level2Data",map:"soloMap"}
         ];
         
 

@@ -247,6 +247,7 @@ CombatCharacter.prototype.updateBars = function()
 CombatCharacter.prototype.startCombat = function()
 {
     //show health bar
+    this.moveToCenter();
     this.healthuigroup.visible = true;
     // stop movement when in combat
     this.changeMoveState("idle");
