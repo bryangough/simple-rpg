@@ -28,7 +28,7 @@ CombatButtons = function(game, maingame, parent){
     if(this.player.weaponCatagories)
     {
         this.range = this.player.weaponCatagories["Range"];
-        this.melee = this.player.weaponCatagories["Melee"];
+       // this.melee = this.player.weaponCatagories["Melee"];
         this.buffs = this.player.weaponCatagories["Buffs"];
         
         this.bargroups = [];
@@ -49,15 +49,14 @@ CombatButtons = function(game, maingame, parent){
         {
             if(this.range[i]==undefined)
             {
-                var s = this.game.make.sprite(attacksx+i*iwidth,attacksy,"gameplayinterface","combat_power_empty.png");
+                var s = this.game.make.sprite(attacksx+i*iwidth, attacksy, "gameplayinterface", "combat_power_empty.png");
                 this.bargroups["Range"].addChild(s);
             }
             else
             {
-                
-               this.bargrouppowers["Range"][i] = {up:null, active:null, power:this.range[i], ui:this};
-                this.setButton(attacksx+i*iwidth,attacksy,"combat_power_attack.png","combat_power_attack.png", this.bargrouppowers["Range"][i], this.doPower, this.bargroups["Range"], this.handleOver, this.handleOut); 
-                this.setupText(attacksx+i*iwidth+3,attacksy+15, "simplefont", this.range[i].weaponname, 10);
+                this.bargrouppowers["Range"][i] = {up:null, active:null, power:this.range[i], ui:this};
+                this.setButton(attacksx+i*iwidth,attacksy,"combat_power_attack.png","combat_power_buff.png", this.bargrouppowers["Range"][i], this.doPower, this.bargroups["Range"], this.handleOver, this.handleOut); 
+                this.setupText(attacksx+i*iwidth+3,attacksy+15, "simplefont", this.range[i].weaponname, 10);//this should be resused
             }
         }
         
@@ -134,14 +133,14 @@ CombatButtons.prototype.setButton = function(x, y, imageup, imageactive, ref, cl
         ref.up.events.onInputOver.add(over, ref);
     }
     if(out!=undefined)    
+    {
         ref.up.events.onInputOut.add(out, ref);
-    this.buttons[ref.up] = ref;
-    
+    }
+    this.buttons[ref.up.x+""] = ref;
+
     ref.active = this.game.make.sprite(x,y,"gameplayinterface",imageactive);
     ref.active.visible = false;
     group.add(ref.active);
-    
-    
 }
 CombatButtons.prototype.endTurnPress = function(touchedSprite, pointer){
     //endTurn
@@ -152,11 +151,14 @@ CombatButtons.prototype.endTurnPress = function(touchedSprite, pointer){
 CombatButtons.prototype.handleOver = function(touchedSprite, pointer)
 {
     //console.log(this.ui.powerRollerOver, this)
+    
+    console.log("handle over", this.power)
     this.ui.powerRollerOver.setText(touchedSprite.x, touchedSprite.y, this.power);
 }
 CombatButtons.prototype.handleOut = function(touchedSprite, pointer)
 {
-    this.ui.powerRollerOver.hide();
+    console.log("handle out")
+    //this.ui.powerRollerOver.hide();
 }
 
 //Toggle
@@ -189,19 +191,15 @@ CombatButtons.prototype.doRange = function(touchedSprite, pointer){
 //
 
 CombatButtons.prototype.doPower = function(touchedSprite, pointer){
-    //this.ui is this
-    
-    
+    //this.ui is this    
     //console.log(this, a,b,c,d);
     //touching another player with weapon does attack
     //if self buff (heal) just clicking?
     
     this.ui.player.currentSelectedWeapon = this.power;
-    console.log(this, this.ui.player.currentSelectedWeapon);
-    
-    
+    //console.log(this, this.ui.player.currentSelectedWeapon);
     this.ui.disableButton(this.ui.currentActive);
-    this.ui.currentActive = this.ui.buttons[touchedSprite];
+    this.ui.currentActive = this.ui.buttons[touchedSprite.x+""];
     this.ui.enableButton(this.ui.currentActive);
     
     GlobalEvents.currentAction = GlobalEvents.COMBATSELECT;
@@ -214,6 +212,7 @@ CombatButtons.prototype.dowalk = function(touchedSprite, pointer){
     this.enableButton(this.currentActive);
     
     GlobalEvents.currentAction = GlobalEvents.COMBATSELECT;
+    console.log("do walk");
 }
 
 
@@ -233,4 +232,5 @@ CombatButtons.prototype.disableButton = function(ref){
         return;
     ref.up.visible = true;
     ref.active.visible = false;    
+    ref.ui.powerRollerOver.hide();
 }

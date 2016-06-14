@@ -238,7 +238,7 @@ InteractiveObject.prototype.setupArt = function(json)
                            objectreference.spritesheet, objectreference.tile+".png");
         */
         
-        //console.log(this, objectreference.spritesheet, objectreference.tile);
+        console.log("setupArt", this, objectreference, objectreference.spritesheet, objectreference.tile);
         
         this.baseImage = this.game.make.sprite(spotx + this.map.objectoffset.x,
                             spoty*-1 + this.map.objectoffset.y,
@@ -265,7 +265,7 @@ InteractiveObject.prototype.changeState = function(newstate)
             
             if(nextAnimation)
             {
-                //console.log("",this,this.baseImage);
+                //console.log("",this,this.baseImage, newstate);
                 this.baseImage.play(newstate);
 
                 for(var i=0;i<this.otherAnimations.length;i++)

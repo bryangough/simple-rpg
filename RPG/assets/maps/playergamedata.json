@@ -1,1 +1,176 @@
-{"Weapons":{"Energy Shot":{"triggers":[{"type":"weapon","weaponname":"Energy Shot","AIPower":1,"dmg":6,"acc":0.8,"range":8,"clipsize":-1,"inventoryImg":"","buttonImg":"","attackType":"attack","powerType":"pierce","cost":4,"cooldown":0,"description":""}]},"Aimed Shot":{"triggers":[{"type":"weapon","weaponname":"Aimed Shot","AIPower":1,"dmg":2,"acc":1.4,"range":8,"clipsize":-1,"inventoryImg":"","buttonImg":"","attackType":"attack","powerType":"","cost":8,"cooldown":0,"description":""}]},"hay maker":{"triggers":[{"type":"weapon","weaponname":"Hay maker","AIPower":1,"dmg":6,"acc":0.9,"range":2,"clipsize":-1,"inventoryImg":"","buttonImg":"","attackType":"attack","powerType":"aoe, melee","cost":4,"cooldown":0,"description":""}]},"turn back time":{"triggers":[{"type":"weapon","weaponname":"Pierce Shot","AIPower":1,"dmg":6,"acc":0.9,"range":1,"clipsize":-1,"inventoryImg":"","buttonImg":"","attackType":"buff","powerType":"personal","cost":4,"cooldown":6,"description":""}]},"reinforce  shield":{"triggers":[{"type":"weapon","weaponname":"Reinforce Shield","AIPower":1,"dmg":3,"acc":0.9,"range":1,"clipsize":-1,"inventoryImg":"","buttonImg":"","attackType":"heal","powerType":"personal","cost":4,"cooldown":0,"description":""}]}},"AnimatedBodies":{"GreenShirt":{"triggers":[{"type":"animations","animations":[{"id":"idle","name":"body1_human_idle","justName":"idle","start":1,"stop":2,"loop":true,"fps":-1,"createAtStart":true},{"id":"walk","name":"body1_human_walk","justName":"walk","start":1,"stop":4,"loop":true,"fps":-1,"createAtStart":true},{"id":"use","name":"body1_human_use","justName":"use","start":1,"stop":7,"loop":false,"fps":-1,"createAtStart":true,"onComplete":"doUse","onCompleteParams":""},{"id":"shoot","name":"body1_human_shoot","justName":"shoot","start":1,"stop":7,"loop":false,"fps":-1,"createAtStart":true,"onComplete":"doShoot","onCompleteParams":""},{"id":"hurt","name":"body1_human_hurt","justName":"hurt","start":1,"stop":7,"loop":false,"nextState":"idle","fps":-1,"createAtStart":true},{"id":"melee","name":"body1_human_melee","justName":"melee","start":1,"stop":6,"loop":false,"fps":-1,"createAtStart":true,"onComplete":"doShoot","onCompleteParams":""},{"id":"die","name":"body1_human_die","justName":"die","start":1,"stop":7,"loop":false,"fps":-1,"createAtStart":true,"onComplete":"doDead","onCompleteParams":""}],"startState":"idle","spriteSheet":""}]}}}
+{
+	"Weapons": {
+		"Energy Shot": {
+			"triggers": [{
+				"type": "weapon",
+				"weaponname": "Energy Shot",
+				"AIPower": 1,
+				"dmg": 6,
+				"acc": 0.8,
+				"range": 8,
+				"clipsize": -1,
+				"inventoryImg": "",
+				"buttonImg": "",
+				"attackType": "attack",
+				"powerType": "pierce",
+				"cost": 4,
+				"cooldown": 0,
+				"description": ""
+			}]
+		},
+		"Aimed Shot": {
+			"triggers": [{
+				"type": "weapon",
+				"weaponname": "Aimed Shot",
+				"AIPower": 1,
+				"dmg": 2,
+				"acc": 1.4,
+				"range": 8,
+				"clipsize": -1,
+				"inventoryImg": "",
+				"buttonImg": "",
+				"attackType": "attack",
+				"powerType": "",
+				"cost": 8,
+				"cooldown": 0,
+				"description": ""
+			}]
+		},
+		"hay maker": {
+			"triggers": [{
+				"type": "weapon",
+				"weaponname": "Hay maker",
+				"AIPower": 1,
+				"dmg": 6,
+				"acc": 0.9,
+				"range": 2,
+				"clipsize": -1,
+				"inventoryImg": "",
+				"buttonImg": "",
+				"attackType": "attack",
+				"powerType": "aoe, melee",
+				"cost": 4,
+				"cooldown": 0,
+				"description": ""
+			}]
+		},
+		"turn back time": {
+			"triggers": [{
+				"type": "weapon",
+				"weaponname": "Pierce Shot",
+				"AIPower": 1,
+				"dmg": 6,
+				"acc": 0.9,
+				"range": 1,
+				"clipsize": -1,
+				"inventoryImg": "",
+				"buttonImg": "",
+				"attackType": "buff",
+				"powerType": "personal",
+				"cost": 4,
+				"cooldown": 6,
+				"description": ""
+			}]
+		},
+		"reinforce  shield": {
+			"triggers": [{
+				"type": "weapon",
+				"weaponname": "Reinforce Shield",
+				"AIPower": 1,
+				"dmg": 3,
+				"acc": 0.9,
+				"range": 1,
+				"clipsize": -1,
+				"inventoryImg": "",
+				"buttonImg": "",
+				"attackType": "heal",
+				"powerType": "personal",
+				"cost": 4,
+				"cooldown": 0,
+				"description": ""
+			}]
+		}
+	},
+	"AnimatedBodies": {
+		"GreenShirt": {
+			"triggers": [{
+				"type": "animations",
+				"animations": [{
+					"id": "idle",
+					"name": "body1_human_idle",
+					"justName": "idle",
+					"start": 1,
+					"stop": 2,
+					"loop": true,
+					"fps": -1,
+					"createAtStart": true
+				}, {
+					"id": "walk",
+					"name": "body1_human_walk",
+					"justName": "walk",
+					"start": 1,
+					"stop": 4,
+					"loop": true,
+					"fps": -1,
+					"createAtStart": true
+				}, {
+					"id": "use",
+					"name": "body1_human_use",
+					"justName": "use",
+					"start": 1,
+					"stop": 7,
+					"loop": false,
+					"fps": -1,
+					"createAtStart": true,
+					"onComplete": "doUse",
+					"onCompleteParams": ""
+				}, {
+					"id": "shoot",
+					"name": "body1_human_shoot",
+					"justName": "shoot",
+					"start": 1,
+					"stop": 7,
+					"loop": false,
+					"fps": -1,
+					"createAtStart": true,
+					"onComplete": "doShoot",
+					"onCompleteParams": ""
+				}, {
+					"id": "hurt",
+					"name": "body1_human_hurt",
+					"justName": "hurt",
+					"start": 1,
+					"stop": 7,
+					"loop": false,
+					"nextState": "idle",
+					"fps": -1,
+					"createAtStart": true
+				}, {
+					"id": "melee",
+					"name": "body1_human_melee",
+					"justName": "melee",
+					"start": 1,
+					"stop": 6,
+					"loop": false,
+					"fps": -1,
+					"createAtStart": true,
+					"onComplete": "doShoot",
+					"onCompleteParams": ""
+				}, {
+					"id": "die",
+					"name": "body1_human_die",
+					"justName": "die",
+					"start": 1,
+					"stop": 7,
+					"loop": false,
+					"fps": -1,
+					"createAtStart": true,
+					"onComplete": "doDead",
+					"onCompleteParams": ""
+				}],
+				"startState": "idle",
+				"spriteSheet": ""
+			}]
+		}
+	}
+}
