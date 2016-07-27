@@ -291,6 +291,7 @@ CombatCharacter.prototype.doTint = function(myTint)
 //roller tints different if hostile
 CombatCharacter.prototype.handleOver = function() 
 {
+    
     if(this.hostile)
     {
         this.tintRed();
@@ -314,8 +315,9 @@ CombatCharacter.prototype.handleOver = function()
         //
         
     }*/
+    
     //console.log(this.jsondata,this.parent.jsondata);
-    if(this.maingame.gGameMode.currentState=="combat")
+    if(this.maingame.gGameMode.currentState=="combat" && !this.dead)
     {
         this.maingame.gGameMode.mCurrentState.handleOver(this);
     }

@@ -471,7 +471,7 @@ InteractiveObject.prototype.handleClick = function(touchedSprite, pointer)
         this.eventDispatcher.doAction("OnUseItem", this.map.playerCharacter);
     else if(GlobalEvents.currentAction == GlobalEvents.COMBATSELECT)
     {
-        if(this.attackable)
+        if(this.attackable && !this.dead)
             this.maingame.gGameMode.mCurrentState.inputHandler.clickedObject(this);
     }
     if(pointer!=null)

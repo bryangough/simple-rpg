@@ -55,7 +55,7 @@ CombatButtons = function(game, maingame, parent){
             else
             {
                 this.bargrouppowers["Range"][i] = {up:null, active:null, power:this.range[i], ui:this};
-                this.setButton(attacksx+i*iwidth,attacksy,"combat_power_attack.png","combat_power_buff.png", this.bargrouppowers["Range"][i], this.doPower, this.bargroups["Range"], this.handleOver, this.handleOut); 
+                this.setButton(attacksx+i*iwidth, attacksy, "combat_power_attack.png", "combat_power_buff.png", this.bargrouppowers["Range"][i], this.doPower, this.bargroups["Range"], this.handlePowerOver, this.handlePowerOut); 
                 this.setupText(attacksx+i*iwidth+3,attacksy+15, "simplefont", this.range[i].weaponname, 10);//this should be resused
             }
         }
@@ -79,7 +79,7 @@ CombatButtons = function(game, maingame, parent){
             }
         }*/
         //
-        this.bargroups["Buffs"] = this.game.add.group();
+       /* this.bargroups["Buffs"] = this.game.add.group();
         this.addChild(this.bargroups["Buffs"]);
         this.bargrouppowers["Buffs"] = [];
         for(var i=0;i<4;i++)
@@ -93,10 +93,10 @@ CombatButtons = function(game, maingame, parent){
             {
                 
                 this.bargrouppowers["Buffs"][i] = {up:null, active:null, power:this.buffs[i], ui:this};
-                this.setButton(attacksx+buffx+i*iwidth,attacksy,"combat_power_buff.png","combat_power_buff.png", this.bargrouppowers["Buffs"][i], this.doPower, this.bargroups["Buffs"], this.handleOver, this.handleOut); 
+                this.setButton( attacksx+buffx+i*iwidth, attacksy, "combat_power_buff.png", "combat_power_buff.png", this.bargrouppowers["Buffs"][i], this.doPower, this.bargroups["Buffs"], this.handleOver, this.handleOut); 
                 this.setupText(attacksx+buffx+i*iwidth+3,attacksy+15, "simplefont", this.buffs[i].weaponname, 10);
             }
-        }
+        }*/
         //
     }    
    /* this.toggleMelee = {up:null,active:null};
@@ -122,10 +122,13 @@ CombatButtons.prototype.setupText = function(x, y, font, text, size)
 CombatButtons.prototype.setButton = function(x, y, imageup, imageactive, ref, clickevent, group, over, out){
     
     ref.up = this.game.make.sprite(x,y,"gameplayinterface",imageup);
-    //console.log(imageup, group);
-    group.add(ref.up);
     ref.up.inputEnabled = true;
+    ref.up.useHandCursor = true;
     ref.up.input.priorityID = 10; 
+    //console.log(imageup, group);
+    //group.inputEnabled = true;
+    group.add(ref.up);
+    
     ref.up.events.onInputDown.add(clickevent, ref);
     
     if(over!=undefined)
@@ -138,9 +141,12 @@ CombatButtons.prototype.setButton = function(x, y, imageup, imageactive, ref, cl
     }
     this.buttons[ref.up.x+""] = ref;
 
-    ref.active = this.game.make.sprite(x,y,"gameplayinterface",imageactive);
-    ref.active.visible = false;
-    group.add(ref.active);
+    ref.imageup = imageup;
+    ref.imageactive = imageactive;
+    
+    //ref.active = this.game.make.sprite(x,y,"gameplayinterface",imageactive);
+    //ref.active.visible = false;
+    //group.add(ref.active);
 }
 CombatButtons.prototype.endTurnPress = function(touchedSprite, pointer){
     //endTurn
@@ -148,21 +154,21 @@ CombatButtons.prototype.endTurnPress = function(touchedSprite, pointer){
     if(this.gameref.gGameMode.mCurrentState.inputHandler.playerDecide)
         this.gameref.gGameMode.mCurrentState.inputHandler.playerDecide.endTurn();
 }
-CombatButtons.prototype.handleOver = function(touchedSprite, pointer)
+CombatButtons.prototype.handlePowerOver = function(touchedSprite, pointer)
 {
     //console.log(this.ui.powerRollerOver, this)
     
-    console.log("handle over", this.power)
+    console.log("handle over", this)
     this.ui.powerRollerOver.setText(touchedSprite.x, touchedSprite.y, this.power);
 }
-CombatButtons.prototype.handleOut = function(touchedSprite, pointer)
+CombatButtons.prototype.handlePowerOut = function(touchedSprite, pointer)
 {
     console.log("handle out")
     //this.ui.powerRollerOver.hide();
 }
 
 //Toggle
-CombatButtons.prototype.doMelee = function(touchedSprite, pointer){
+/*CombatButtons.prototype.doMelee = function(touchedSprite, pointer){
     //console.log("domelee",this.activeToggle);
     if(pointer!=undefined)
         pointer.active = false;  
@@ -183,7 +189,7 @@ CombatButtons.prototype.doRange = function(touchedSprite, pointer){
     
     this.bargroups["Range"].visible = true;
     this.bargroups["Melee"].visible = false;
-}
+}*/
 /*CombatButtons.prototype.switchWeaponLoadout = function()
 {
     //
@@ -195,7 +201,7 @@ CombatButtons.prototype.doPower = function(touchedSprite, pointer){
     //console.log(this, a,b,c,d);
     //touching another player with weapon does attack
     //if self buff (heal) just clicking?
-    
+    console.log("handle press")
     this.ui.player.currentSelectedWeapon = this.power;
     //console.log(this, this.ui.player.currentSelectedWeapon);
     this.ui.disableButton(this.ui.currentActive);
@@ -224,13 +230,16 @@ CombatButtons.prototype.checkRefresh = function(){
 CombatButtons.prototype.enableButton = function(ref){
     if(ref==null)
         return;
-    ref.up.visible = false;
-    ref.active.visible = true;
+    ref.up.frameName = ref.imageactive;
+    //imageactive
+    //ref.up.visible = false;
+    //ref.active.visible = true;
 }
 CombatButtons.prototype.disableButton = function(ref){
     if(ref==null)
         return;
-    ref.up.visible = true;
-    ref.active.visible = false;    
-    ref.ui.powerRollerOver.hide();
+    ref.up.frameName = ref.imageup;
+    //ref.up.visible = true;
+    //ref.active.visible = false;    
+    //ref.ui.powerRollerOver.hide();
 }
