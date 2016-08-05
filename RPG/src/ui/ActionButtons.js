@@ -116,16 +116,16 @@ ActionButtons.prototype.doCombat = function(touchedSprite, pointer){
 }
 ActionButtons.prototype.checkCombat = function(stateMachine,currentState){
 
-    
+    console.log(currentState)
     if(currentState=="combat")
     {
         this.enableButton(this.combat);    
         
     }
-    /*else
+    else
     {
         this.disableButton(this.combat);
-    }*/
+    }
     
 }
 

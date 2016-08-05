@@ -158,13 +158,13 @@ CombatButtons.prototype.handlePowerOver = function(touchedSprite, pointer)
 {
     //console.log(this.ui.powerRollerOver, this)
     
-    console.log("handle over", this)
+    //console.log("handle over", this)
     this.ui.powerRollerOver.setText(touchedSprite.x, touchedSprite.y, this.power);
 }
 CombatButtons.prototype.handlePowerOut = function(touchedSprite, pointer)
 {
-    console.log("handle out")
-    //this.ui.powerRollerOver.hide();
+    //console.log("handle out")
+    this.ui.powerRollerOver.hide();
 }
 
 //Toggle
@@ -201,7 +201,7 @@ CombatButtons.prototype.doPower = function(touchedSprite, pointer){
     //console.log(this, a,b,c,d);
     //touching another player with weapon does attack
     //if self buff (heal) just clicking?
-    console.log("handle press")
+    //console.log("handle press")
     this.ui.player.currentSelectedWeapon = this.power;
     //console.log(this, this.ui.player.currentSelectedWeapon);
     this.ui.disableButton(this.ui.currentActive);
@@ -218,7 +218,7 @@ CombatButtons.prototype.dowalk = function(touchedSprite, pointer){
     this.enableButton(this.currentActive);
     
     GlobalEvents.currentAction = GlobalEvents.COMBATSELECT;
-    console.log("do walk");
+    //console.log("do walk");
 }
 
 

@@ -199,6 +199,9 @@ CombatCharacter.prototype.takeDmg = function(dmg)
         this.dead = true;
         this.jsondata.destroyed = true;
         this.jsondata.dead = true;
+        
+        //make tile walkable after death. No need to litter the battlefield.
+        this.currentTile.changeWalkable(true);
     }
     else
     {

@@ -379,7 +379,7 @@ MovingCharacter.prototype.moveToCenter = function()
 }
 MovingCharacter.prototype.finishMove = function(successful)
 {
-    console.log("finish move")
+    //console.log("finish move")
     this.path = null;
     this.dir.x = 0;
     this.dir.y = 0;
