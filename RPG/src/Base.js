@@ -19,14 +19,8 @@ gameInit = {
         game.state.start('Boot');
         
 
-        game.global = {
-            mute: false,
-            pause: false,
-            //movetotouch:true,
-            showmovetile:false,
-            loadMap:1,
-            language: "en"
-        };
+        game.global = new Global();
+        
         if(lang!=undefined && lang!="en")
         {
             game.global.language = lang;

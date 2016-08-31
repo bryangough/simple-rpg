@@ -1,0 +1,11 @@
+@import "scss/lib/dep1.scss";
+@import "scss/lib/dep2.scss";
+@import "scss/style1.scss";
+@import "scss/style2.scss";
+
+// include: "type": "scss", "files": "<%= vars.scssPath %>/**/*.scss"
+@import "scss/lib/dep1.scss";
+@import "scss/lib/dep2.scss";
+@import "scss/style1.scss";
+@import "scss/style2.scss";
+// /include

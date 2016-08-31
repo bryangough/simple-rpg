@@ -16,11 +16,11 @@ BasicGame.LoadMap.prototype = {
             {gameData:"level2Data",map:"soloMap"}
         ];
         
-        console.log(this.game.global.loadMap,this.levels)
+        //console.log(this.game.global,this.game.global.loadMap,this.levels)
         var level = this.levels[this.game.global.loadMap];
         if(level!=null)
         {
-            console.log(level.gameData, level.map)
+            //console.log(level.gameData, level.map)
             this.load.json('gameData', 'assets/maps/'+level.gameData+".json");
             this.load.json('map', 'assets/maps/'+level.map+".json");
         }

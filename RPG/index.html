@@ -4,85 +4,72 @@
 	<meta charset="UTF-8" />
 	<title>Simple RPG</title>
     <script src="js/phaser.js"></script>
+    <!-- include: "type": "js", "files": "**/*.js" -->
     <script src="src/Base.js"></script>
-    <!--script src="src/easystar-0.1.13-hex.js"></script-->
-    <script src="src/pathfinding/easystar-0.2.1.js"></script>
+    <script src="src/Engine/Basestates/EmptyState.js"></script>
+    <script src="src/Engine/Combat/AIDecide.js"></script>
+    <script src="src/Engine/Combat/Buff.js"></script>
+    <script src="src/Engine/Combat/CombatAction.js"></script>
+    <script src="src/Engine/Combat/PlayerDecide.js"></script>
+    <script src="src/Engine/Combat/Weapon.js"></script>
+    <script src="src/Engine/Events/EventDispatcher.js"></script>
+    <script src="src/Engine/Events/GlobalsEvents.js"></script>
+    <script src="src/Engine/GameObjects/InteractiveObject.js"></script>
+    <script src="src/Engine/GameObjects/MovingCharacter.js"></script>
+    <script src="src/Engine/GameObjects/movementStates/IdleState.js"></script>
+    <script src="src/Engine/GameObjects/movementStates/WanderState.js"></script>
+    <script src="src/Engine/GameObjects/movementStates/after/PathState.js"></script>
+    <script src="src/Engine/GameObjectsAfter/CombatCharacter.js"></script>
+    <script src="src/Engine/GameObjectsAfter/MonsterCharacter.js"></script>
+    <script src="src/Engine/GameObjectsAfter/PlayerCharacter.js"></script>
+    <script src="src/Engine/Handlers/DialogHandler.js"></script>
+    <script src="src/Engine/Handlers/Globalhandler.js"></script>
+    <script src="src/Engine/Handlers/HexHandler.js"></script>
+    <script src="src/Engine/Handlers/InputHandler.js"></script>
+    <script src="src/Engine/Handlers/InputHandlerBattle.js"></script>
+    <script src="src/Engine/Handlers/MoreHexHandlers/DiamondHexHandler.js"></script>
+    <script src="src/Engine/Handlers/MoreHexHandlers/IsoHandler.js"></script>
+    <script src="src/Engine/MapArea/HighlightHex.js"></script>
+    <script src="src/Engine/MapArea/Map.js"></script>
+    <script src="src/Engine/MapArea/OtherMap.js"></script>
+    <script src="src/Engine/MapArea/Path.js"></script>
+    <script src="src/Engine/MapArea/PlayerCamera.js"></script>
+    <script src="src/Engine/MapArea/Tiles.js"></script>
+    <script src="src/Engine/Pathfinding/easystar-0.1.13-hex.js"></script>
+    <script src="src/Engine/Pathfinding/easystar-0.2.1.js"></script>
+    <script src="src/Engine/States/BattleExecute.js"></script>
+    <script src="src/Engine/States/BattleState.js"></script>
+    <script src="src/Engine/States/BattleTick.js"></script>
+    <script src="src/Engine/States/DeathState.js"></script>
+    <script src="src/Engine/States/DiaglogState.js"></script>
+    <script src="src/Engine/States/HeroBattleState.js"></script>
+    <script src="src/Engine/States/NormalState.js"></script>
+    <script src="src/Engine/States/StateMachine.js"></script>
+    <script src="src/Engine/States/StateStack.js"></script>
+    <script src="src/Engine/Utility/BasicObjectPool.js"></script>
+    <script src="src/Engine/Utility/CheapMasker.js"></script>
+    <script src="src/Engine/Utility/Masker.js"></script>
+    <script src="src/Engine/Utility/Utitlities.js"></script>
+    <script src="src/Global.js"></script>
+    <script src="src/MainGame.js"></script>
     <script src="src/Screens/Boot.js"></script>
-	<script src="src/Screens/Preloader.js"></script>
-	<script src="src/Screens/MainMenu.js"></script>
     <script src="src/Screens/Instructions.js"></script>
     <script src="src/Screens/LoadMap.js"></script>
+    <script src="src/Screens/MainMenu.js"></script>
     <script src="src/Screens/MapSelect.js"></script>
-    <script src="src/MainGame.js"></script>
-
-    <script src="src/utility/BasicObjectPool.js"></script>
+    <script src="src/Screens/Preloader.js"></script>
+    <script src="src/View/CombatUI/CombatButtons.js"></script>
+    <script src="src/View/CombatUI/PowerRollOver.js"></script>
+    <script src="src/View/DialogUI/BarkText.js"></script>
+    <script src="src/View/DialogUI/DialogPanel.js"></script>
+    <script src="src/View/DialogUI/JustTextPopup.js"></script>
+    <script src="src/View/DialogUI/TextUIHandler.js"></script>
+    <script src="src/View/UIButtons/ActionButtons.js"></script>
+    <script src="src/View/UIButtons/Inventory.js"></script>
+    <script src="src/View/UIButtons/NormalUI.js"></script>
+    <script src="src/View/UIButtons/before/InventoryObject.js"></script>
+    <!-- /include -->
     
-    <script src="src/dialogui/BarkText.js"></script>
-    <script src="src/dialogui/DialogPanel.js"></script>
-    <script src="src/dialogui/JustTextPopup.js"></script>
-    <script src="src/dialogui/TextUIHandler.js"></script>
-    
-    <script src="src/ui/ActionButtons.js"></script>
-    
-    <script src="src/level/tiles.js"></script>
-    <script src="src/handlers/HexHandler.js"></script>
-    <script src="src/handlers/MoreHexHandlers/DiamondHexHandler.js"></script>
-    <script src="src/handlers/MoreHexHandlers/IsoHandler.js"></script>
-    <script src="src/level/HighlightHex.js"></script>
-    
-    
-    <script src="src/events/EventDispatcher.js"></script>
-    <script src="src/map/PlayerCamera.js"></script>
-    
-    <script src="src/handlers/Globalhandler.js"></script>
-    <script src="src/gameobjects/InteractiveObject.js"></script>
-    <script src="src/gameobjects/MovingCharacter.js"></script>
-    <script src="src/gameobjectsAfter/CombatCharacter.js"></script>
-    <script src="src/gameobjectsAfter/PlayerCharacter.js"></script>
-    <script src="src/gameobjectsAfter/MonsterCharacter.js"></script>
-    
-    <script src="src/level/OtherMap.js"></script>
-    
-    <script src="src/events/GlobalsEvents.js"></script>
-    <script src="src/handlers/DialogHandler.js"></script>
-    
-    <script src="src/ui/Inventory.js"></script>
-    
-    <script src="src/utility/Masker.js"></script>
-    <script src="src/utility/CheapMasker.js"></script>
-    
-
-    <script src="src/basestates/EmptyState.js"></script>
-    <script src="src/combatui/CombatButtons.js"></script>
-    <script src="src/states/BattleState.js"></script>
-    <script src="src/states/HeroBattleState.js"></script>
-    
-    <script src="src/states/StateMachine.js"></script>
-    <script src="src/states/StateStack.js"></script>
-    <script src="src/states/BattleTick.js"></script>
-    <script src="src/states/BattleExecute.js"></script>
-    <script src="src/states/NormalState.js"></script>
-    
-    <script src="src/gameobjects/movementStates/IdleState.js"></script>
-    <script src="src/gameobjects/movementStates/WanderState.js"></script>
-    <script src="src/gameobjects/movementStates/PathState.js"></script>
-    <script src="src/map/Path.js"></script>
-    
-    <script src="src/map/Map.js"></script>
-    <script src="src/handlers/InputHandler.js"></script>
-    
-    
-    <script src="src/combat/Weapon.js"></script>
-    <script src="src/handlers/InputHandlerBattle.js"></script>
-    
-    <script src="src/ui/NormalUI.js"></script>
-    <script src="src/combat/AIDecide.js"></script>
-    <script src="src/combat/PlayerDecide.js"></script>
-    <script src="src/combat/CombatAction.js"></script>
-    <script src="src/utility/Utitlities.js"></script>
-    <script src="src/states/DiaglogState.js"></script>
-    <script src="src/states/DeathState.js"></script>
-    <script src="src/combatui/PowerRollOver.js"></script>
 </head>
 <body>
 
