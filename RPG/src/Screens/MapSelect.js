@@ -12,10 +12,11 @@ BasicGame.MapSelect.prototype = {
 		this.add.sprite(0, 0, 'mapselect');
 
 		this.back = this.add.button(10, 530, 'ui', this.returnToMain, this, 'menu0001.png', 'menu0002.png', 'menu0002.png','menu0001.png');
-        
-        this.displayLevel("Level 1", 1);
-        this.displayLevel("Level 2", 2);
-        this.displayLevel("Level 3", 3);
+        var levels = this.game.cache.getJSON('levels').Levels;
+        for(var x=0;x<levels.length;x++)
+        {
+            this.displayLevel(levels[x].name, (x+1));    
+        }
 	},
     displayLevel:function(name, level){
         

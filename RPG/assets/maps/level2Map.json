@@ -1,1 +1,1051 @@
-{"mapData":{},"maps":{"FirstArea":[{"height":14,"width":8,"hexWidth":100,"hexHeight":50,"tilesetid":"isotiles","tiletype":"Iso","handleSprite":true,"handleMovement":true,"data":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],"walkable":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],"actionSpots":[],"objects":[{"state":"","tilebase":false,"x":150,"y":-125,"posx":1,"posy":5,"offsetx":0,"offsety":0,"maskable":false,"tilesetid":"isoObjects","triggers":[{"type":"CharacterSpawn","EnemyType":"Blue Gob","FaceDirection":false,"ApplyState":"","conditions":{"logic":"All","conditions":[]}}]},{"state":"","tilebase":false,"x":0,"y":-50,"posx":0,"posy":2,"offsetx":0,"offsety":0,"maskable":false,"tilesetid":"isoObjects","triggers":[{"type":"CharacterSpawn","EnemyType":"Purple Gob","FaceDirection":false,"ApplyState":"","conditions":{"logic":"All","conditions":[]}}]},{"state":"","tilebase":false,"x":50,"y":-275,"posx":0,"posy":11,"offsetx":0,"offsety":0,"maskable":false,"tilesetid":"isoObjects","triggers":[{"type":"CharacterSpawn","EnemyType":"Purple Gob","FaceDirection":false,"ApplyState":"","conditions":{"logic":"All","conditions":[]}}]},{"name":21,"displayName":"","state":"","tilebase":false,"x":325,"y":-325,"posx":3,"posy":13,"offsetx":-25,"offsety":0,"maskable":false,"tilesetid":"isoObjects"},{"name":20,"displayName":"","state":"","tilebase":false,"x":325,"y":-300,"posx":3,"posy":13,"offsetx":-25,"offsety":25,"maskable":false,"tilesetid":"isoObjects"},{"name":23,"displayName":"","state":"","tilebase":false,"x":375,"y":-325,"posx":3,"posy":13,"offsetx":25,"offsety":0,"maskable":false,"tilesetid":"isoObjects"},{"name":22,"displayName":"","state":"","tilebase":false,"x":375,"y":-300,"posx":3,"posy":13,"offsetx":25,"offsety":25,"maskable":false,"tilesetid":"isoObjects"},{"name":21,"displayName":"","state":"","tilebase":false,"x":275,"y":-100,"posx":3,"posy":4,"offsetx":-25,"offsety":0,"maskable":false,"tilesetid":"isoObjects"},{"name":21,"displayName":"","state":"","tilebase":false,"x":325,"y":-125,"posx":3,"posy":5,"offsetx":-25,"offsety":0,"maskable":false,"tilesetid":"isoObjects"},{"name":21,"displayName":"","state":"","tilebase":false,"x":375,"y":-150,"posx":4,"posy":6,"offsetx":-25,"offsety":0,"maskable":false,"tilesetid":"isoObjects"},{"name":22,"displayName":"","state":"","tilebase":false,"x":475,"y":-150,"posx":4,"posy":7,"offsetx":25,"offsety":25,"maskable":false,"tilesetid":"isoObjects"},{"name":22,"displayName":"","state":"","tilebase":false,"x":525,"y":-175,"posx":5,"posy":8,"offsetx":25,"offsety":25,"maskable":false,"tilesetid":"isoObjects"},{"name":22,"displayName":"","state":"","tilebase":false,"x":575,"y":-200,"posx":5,"posy":9,"offsetx":25,"offsety":25,"maskable":false,"tilesetid":"isoObjects"},{"name":23,"displayName":"","state":"","tilebase":false,"x":575,"y":-325,"posx":5,"posy":13,"offsetx":25,"offsety":0,"maskable":false,"tilesetid":"isoObjects"},{"name":23,"displayName":"","state":"","tilebase":false,"x":625,"y":-300,"posx":6,"posy":12,"offsetx":25,"offsety":0,"maskable":false,"tilesetid":"isoObjects"},{"name":23,"displayName":"","state":"","tilebase":false,"x":675,"y":-275,"posx":6,"posy":11,"offsetx":25,"offsety":0,"maskable":false,"tilesetid":"isoObjects"},{"name":20,"displayName":"","state":"","tilebase":false,"x":475,"y":-275,"posx":5,"posy":12,"offsetx":-25,"offsety":25,"maskable":false,"tilesetid":"isoObjects"},{"name":20,"displayName":"","state":"","tilebase":false,"x":475,"y":-275,"posx":5,"posy":12,"offsetx":-25,"offsety":25,"maskable":false,"tilesetid":"isoObjects"},{"name":20,"displayName":"","state":"","tilebase":false,"x":525,"y":-250,"posx":5,"posy":11,"offsetx":-25,"offsety":25,"maskable":false,"tilesetid":"isoObjects"},{"name":20,"displayName":"","state":"","tilebase":false,"x":575,"y":-225,"posx":6,"posy":10,"offsetx":-25,"offsety":25,"maskable":false,"tilesetid":"isoObjects"},{"name":20,"displayName":"","state":"","tilebase":false,"x":475,"y":-225,"posx":5,"posy":12,"offsetx":-25,"offsety":25,"maskable":false,"tilesetid":"isoObjects"},{"name":20,"displayName":"","state":"","tilebase":false,"x":525,"y":-200,"posx":5,"posy":11,"offsetx":-25,"offsety":25,"maskable":false,"tilesetid":"isoObjects"},{"name":20,"displayName":"","state":"","tilebase":false,"x":575,"y":-175,"posx":6,"posy":10,"offsetx":-25,"offsety":25,"maskable":false,"tilesetid":"isoObjects"},{"name":9,"displayName":"","state":"","tilebase":false,"x":700,"y":-50,"posx":7,"posy":2,"offsetx":0,"offsety":0,"maskable":false,"tilesetid":"isoObjects"},{"name":8,"displayName":"","state":"","tilebase":false,"x":750,"y":-125,"posx":7,"posy":5,"offsetx":0,"offsety":0,"maskable":false,"tilesetid":"isoObjects"}]}]},"startPos":{"map":"FirstArea","x":3,"y":9},"tileSets":{"isotiles":{"tileset":"tiles2","0":"dirt","1":"grass","2":"ground_ash0001","3":"ground_ash0002","4":"ground_ash0003","5":"ground_ash0004","6":"ground_ash0005","7":"ground_ash0006","8":"ground_ash0007","9":"ground_ash0008","10":"ground_ash0009","11":"ground_ash0010","12":"ground_ash0011","13":"ground_ash0012","14":"ground_ash0013","15":"ground_ash0014","16":"ground_tracks0001","17":"ground_tracks0002","18":"ground_tracks0003","19":"ground_tracks0004","20":"ground_tracks0005","21":"halfiso_highlight","22":"invistile","23":"magicGrass","24":"otherWater","25":"sand","26":"tileisohalf0001","27":"tileisohalf0002","28":"tileisohalf0003","29":"tileisohalf0004","30":"tileisohalf0005","31":"tileisohalf0008","32":"tileisohalf0009","33":"wood/wood_floor0001","34":"wood/wood_floor0002"},"isoObjects":{"tileset":"tiles2","0":"bushGrass","1":"bushSand","2":"halfiso_block_1","3":"halfiso_block_2","4":"halfiso_block_3","5":"halfiso_block_4","6":"hillsGrass","7":"hillsSand","8":"treeGreen_high","9":"treeGreen_mid","10":"treeMagic_mid0001","11":"treeMagic_mid0002","12":"wood/wood_1x1","13":"wood/wood_1x2_vert","14":"wood/wood_2x1_hor","15":"wood/wood_4x4_hor","16":"wood/wood_4x4_vert","17":"wood/wood_door","18":"wood/wood_door_other"},"interactiveactors":{"tileset":"actors"}},"data":{"Name":"IsoTest1","Version":"0.0.3","Author":"Bryan Gough","Description":"Iso test\n","GlobalUserScript":"","Actors":[{"id":1,"Name":"Player","Description":"","IsPlayer":true,"state":"","Pictures":"portrait0003"},{"id":3,"Name":"Glowing Block","Description":"","IsPlayer":false,"state":"","Pictures":"portrait0005"},{"id":4,"Name":"Block","Description":"","IsPlayer":false,"state":"","Pictures":"portrait0004"},{"id":5,"Name":"Enemies","Description":"","IsPlayer":false,"state":"","Pictures":""}],"Items":[{"id":3,"Name":"Acorn","onLookat":"","Is Item":true,"Inventory":false,"onEnterInventoryText":"","Description":"","onTalk":"","VisibleInventory":true,"Count":0,"InventoryGraphicName":"inv_crab","InvetoryGraphicSheet":"dialogui","Combine Count":5,"Pictures":"","State":""},{"id":4,"Name":"Simple Key","onLookat":"","Is Item":true,"Inventory":false,"onEnterInventoryText":"","Description":"","onTalk":"","VisibleInventory":true,"Count":0,"InventoryGraphicName":"inv_crab","InvetoryGraphicSheet":"dialogui","Combine Count":0,"Pictures":"[]","State":""},{"id":5,"Name":"New Item 5","onLookat":"","Is Item":false,"Inventory":false,"onEnterInventoryText":"","Description":"","onTalk":"","VisibleInventory":false,"Count":0,"InventoryGraphicName":"","InvetoryGraphicSheet":"","Combine Count":0,"Pictures":"[]","State":""}],"Locations":[{"id":1,"Name":"New Location 1","Pictures":"[]","Description":""}],"Variables":[{"id":1,"Name":"Alert","Initial Value":0,"Description":"Num to kill."},{"id":2,"Name":"Did Conv","Initial Value":false,"Description":""},{"id":3,"Name":"Enemy Defeated","Initial Value":0,"Description":""},{"id":4,"Name":"First Door","Initial Value":false,"Description":""}],"Conversations":[{"id":1,"Title":"New Conversation 1","Description":"","Actor":"1","Conversant":"3","Pictures":"","DialogueEntries":[{"entrytag":"Glowing_Block_1_0","ConvID":1,"ID":0,"Actor":3,"Title":"START","MenuText":"","DialogueText":"I will start talking.","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":[{"OriginConvID":1,"OriginID":0,"DestConvID":1,"DestID":1}],"conditions":{"logic":"All","conditions":[]},"actions":[]},{"entrytag":"Glowing_Block_1_1","ConvID":1,"ID":1,"Actor":3,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"I am talking.","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":[{"OriginConvID":1,"OriginID":1,"DestConvID":1,"DestID":2}],"conditions":{"logic":"All","conditions":[]},"actions":[]},{"entrytag":"Glowing_Block_1_2","ConvID":1,"ID":2,"Actor":3,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"Now you make choices.","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":[{"OriginConvID":1,"OriginID":2,"DestConvID":1,"DestID":3},{"OriginConvID":1,"OriginID":2,"DestConvID":1,"DestID":4},{"OriginConvID":1,"OriginID":2,"DestConvID":1,"DestID":5}],"conditions":{"logic":"All","conditions":[]},"actions":[]},{"entrytag":"Player_1_3","ConvID":1,"ID":3,"Actor":1,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"Another End Conv","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":{},"conditions":{"logic":"All","conditions":[{"type":"Variable","name":2,"variable":"","compare":"Is","value":true}]},"actions":[]},{"entrytag":"Player_1_4","ConvID":1,"ID":4,"Actor":1,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"Continue Text\n","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":[{"OriginConvID":1,"OriginID":4,"DestConvID":1,"DestID":6}],"conditions":{"logic":"All","conditions":[]},"actions":[]},{"entrytag":"Player_1_5","ConvID":1,"ID":5,"Actor":1,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"End Conv","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":{},"conditions":{"logic":"All","conditions":[]},"actions":[{"type":"Quest","name":1,"mode":"To","variable":"UNDEFINED","value":"Unassigned"}]},{"entrytag":"Glowing_Block_1_6","ConvID":1,"ID":6,"Actor":3,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"No","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":[{"OriginConvID":1,"OriginID":6,"DestConvID":1,"DestID":7},{"OriginConvID":1,"OriginID":6,"DestConvID":1,"DestID":8}],"conditions":{"logic":"All","conditions":[]},"actions":[]},{"entrytag":"Player_1_7","ConvID":1,"ID":7,"Actor":1,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"End Conv Here.","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":{},"conditions":{"logic":"All","conditions":[]},"actions":[]},{"entrytag":"Player_1_8","ConvID":1,"ID":8,"Actor":1,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"Start Over!","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":[{"OriginConvID":1,"OriginID":8,"DestConvID":1,"DestID":1}],"conditions":{"logic":"All","conditions":[]},"actions":[]}]},{"id":2,"Title":"New Conversation 2","Description":"","Actor":"1","Conversant":"3","Pictures":"","DialogueEntries":[{"entrytag":"Block_2_0","ConvID":2,"ID":0,"Actor":4,"Title":"START","MenuText":"","DialogueText":"I'm a block","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":[{"OriginConvID":2,"OriginID":0,"DestConvID":2,"DestID":1}],"conditions":{"logic":"All","conditions":[]},"actions":[]},{"entrytag":"Block_2_1","ConvID":2,"ID":1,"Actor":4,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"Block block block","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":[{"OriginConvID":2,"OriginID":1,"DestConvID":2,"DestID":2}],"conditions":{"logic":"All","conditions":[]},"actions":[]},{"entrytag":"Glowing_Block_2_2","ConvID":2,"ID":2,"Actor":3,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"Me too!\n","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":[{"OriginConvID":2,"OriginID":2,"DestConvID":2,"DestID":3}],"conditions":{"logic":"All","conditions":[]},"actions":[]},{"entrytag":"Player_2_3","ConvID":2,"ID":3,"Actor":1,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"A block?","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":[{"OriginConvID":2,"OriginID":3,"DestConvID":2,"DestID":4}],"conditions":{"logic":"All","conditions":[]},"actions":[]},{"entrytag":"Block_2_4","ConvID":2,"ID":4,"Actor":4,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"Yes a block.","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":{},"conditions":{"logic":"All","conditions":[]},"actions":[{"type":"Variable","name":2,"mode":"To","variable":"","value":true}]}]},{"id":3,"Title":"New Conversation 3","Description":"","Actor":"1","Conversant":"3","Pictures":"[]","DialogueEntries":[{"entrytag":"Player_3_0","ConvID":3,"ID":0,"Actor":1,"Title":"START","MenuText":"","DialogueText":"","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":[{"OriginConvID":3,"OriginID":0,"DestConvID":3,"DestID":1},{"OriginConvID":3,"OriginID":0,"DestConvID":3,"DestID":2},{"OriginConvID":3,"OriginID":0,"DestConvID":3,"DestID":3}],"conditions":{"logic":"All","conditions":[]},"actions":[]},{"entrytag":"Glowing_Block_3_1","ConvID":3,"ID":1,"Actor":3,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":{},"conditions":{"logic":"All","conditions":[]},"actions":[]},{"entrytag":"Glowing_Block_3_2","ConvID":3,"ID":2,"Actor":3,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":{},"conditions":{"logic":"All","conditions":[]},"actions":[]},{"entrytag":"Glowing_Block_3_3","ConvID":3,"ID":3,"Actor":3,"Title":"New Dialogue Entry","MenuText":"","DialogueText":"","Pictures":"[]","Description":"","Parenthetical":"","Audio Files":"[]","Video File":"","Response Menu Sequence":"","Special Portrait":"","links":{},"conditions":{"logic":"All","conditions":[]},"actions":[]}]}]}}
+{
+	"mapData": {},
+	"maps": {
+		"FirstArea": [{
+			"height": 14,
+			"width": 8,
+			"hexWidth": 100,
+			"hexHeight": 50,
+			"tilesetid": "isotiles",
+			"tiletype": "Iso",
+			"handleSprite": true,
+			"handleMovement": true,
+			"data": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+			"walkable": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+			"actionSpots": [],
+			"objects": [{
+				"state": "",
+				"tilebase": false,
+				"x": 150,
+				"y": -125,
+				"posx": 1,
+				"posy": 5,
+				"offsetx": 0,
+				"offsety": 0,
+				"maskable": false,
+				"tilesetid": "isoObjects",
+				"triggers": [{
+					"type": "CharacterSpawn",
+					"EnemyType": "Blue Gob",
+					"FaceDirection": false,
+					"ApplyState": "",
+					"conditions": {
+						"logic": "All",
+						"conditions": []
+					}
+				}]
+			}, {
+				"state": "",
+				"tilebase": false,
+				"x": 0,
+				"y": -50,
+				"posx": 0,
+				"posy": 2,
+				"offsetx": 0,
+				"offsety": 0,
+				"maskable": false,
+				"tilesetid": "isoObjects",
+				"triggers": [{
+					"type": "CharacterSpawn",
+					"EnemyType": "Purple Gob",
+					"FaceDirection": false,
+					"ApplyState": "",
+					"conditions": {
+						"logic": "All",
+						"conditions": []
+					}
+				}]
+			}, {
+				"state": "",
+				"tilebase": false,
+				"x": 50,
+				"y": -275,
+				"posx": 0,
+				"posy": 11,
+				"offsetx": 0,
+				"offsety": 0,
+				"maskable": false,
+				"tilesetid": "isoObjects",
+				"triggers": [{
+					"type": "CharacterSpawn",
+					"EnemyType": "Purple Gob",
+					"FaceDirection": false,
+					"ApplyState": "",
+					"conditions": {
+						"logic": "All",
+						"conditions": []
+					}
+				}]
+			}, {
+				"name": 21,
+				"displayName": "",
+				"state": "",
+				"tilebase": false,
+				"x": 325,
+				"y": -325,
+				"posx": 3,
+				"posy": 13,
+				"offsetx": -25,
+				"offsety": 0,
+				"maskable": false,
+				"tilesetid": "isoObjects"
+			}, {
+				"name": 20,
+				"displayName": "",
+				"state": "",
+				"tilebase": false,
+				"x": 325,
+				"y": -300,
+				"posx": 3,
+				"posy": 13,
+				"offsetx": -25,
+				"offsety": 25,
+				"maskable": false,
+				"tilesetid": "isoObjects"
+			}, {
+				"name": 23,
+				"displayName": "",
+				"state": "",
+				"tilebase": false,
+				"x": 375,
+				"y": -325,
+				"posx": 3,
+				"posy": 13,
+				"offsetx": 25,
+				"offsety": 0,
+				"maskable": false,
+				"tilesetid": "isoObjects"
+			}, {
+				"name": 22,
+				"displayName": "",
+				"state": "",
+				"tilebase": false,
+				"x": 375,
+				"y": -300,
+				"posx": 3,
+				"posy": 13,
+				"offsetx": 25,
+				"offsety": 25,
+				"maskable": false,
+				"tilesetid": "isoObjects"
+			}, {
+				"name": 21,
+				"displayName": "",
+				"state": "",
+				"tilebase": false,
+				"x": 275,
+				"y": -100,
+				"posx": 3,
+				"posy": 4,
+				"offsetx": -25,
+				"offsety": 0,
+				"maskable": false,
+				"tilesetid": "isoObjects"
+			}, {
+				"name": 21,
+				"displayName": "",
+				"state": "",
+				"tilebase": false,
+				"x": 325,
+				"y": -125,
+				"posx": 3,
+				"posy": 5,
+				"offsetx": -25,
+				"offsety": 0,
+				"maskable": false,
+				"tilesetid": "isoObjects"
+			}, {
+				"name": 21,
+				"displayName": "",
+				"state": "",
+				"tilebase": false,
+				"x": 375,
+				"y": -150,
+				"posx": 4,
+				"posy": 6,
+				"offsetx": -25,
+				"offsety": 0,
+				"maskable": false,
+				"tilesetid": "isoObjects"
+			}, {
+				"name": 22,
+				"displayName": "",
+				"state": "",
+				"tilebase": false,
+				"x": 475,
+				"y": -150,
+				"posx": 4,
+				"posy": 7,
+				"offsetx": 25,
+				"offsety": 25,
+				"maskable": false,
+				"tilesetid": "isoObjects"
+			}, {
+				"name": 22,
+				"displayName": "",
+				"state": "",
+				"tilebase": false,
+				"x": 525,
+				"y": -175,
+				"posx": 5,
+				"posy": 8,
+				"offsetx": 25,
+				"offsety": 25,
+				"maskable": false,
+				"tilesetid": "isoObjects"
+			}, {
+				"name": 22,
+				"displayName": "",
+				"state": "",
+				"tilebase": false,
+				"x": 575,
+				"y": -200,
+				"posx": 5,
+				"posy": 9,
+				"offsetx": 25,
+				"offsety": 25,
+				"maskable": false,
+				"tilesetid": "isoObjects"
+			}, {
+				"name": 23,
+				"displayName": "",
+				"state": "",
+				"tilebase": false,
+				"x": 575,
+				"y": -325,
+				"posx": 5,
+				"posy": 13,
+				"offsetx": 25,
+				"offsety": 0,
+				"maskable": false,
+				"tilesetid": "isoObjects"
+			}, {
+				"name": 23,
+				"displayName": "",
+				"state": "",
+				"tilebase": false,
+				"x": 625,
+				"y": -300,
+				"posx": 6,
+				"posy": 12,
+				"offsetx": 25,
+				"offsety": 0,
+				"maskable": false,
+				"tilesetid": "isoObjects"
+			}, {
+				"name": 23,
+				"displayName": "",
+				"state": "",
+				"tilebase": false,
+				"x": 675,
+				"y": -275,
+				"posx": 6,
+				"posy": 11,
+				"offsetx": 25,
+				"offsety": 0,
+				"maskable": false,
+				"tilesetid": "isoObjects"
+			}, {
+				"name": 20,
+				"displayName": "",
+				"state": "",
+				"tilebase": false,
+				"x": 475,
+				"y": -275,
+				"posx": 5,
+				"posy": 12,
+				"offsetx": -25,
+				"offsety": 25,
+				"maskable": false,
+				"tilesetid": "isoObjects"
+			}, {
+				"name": 20,
+				"displayName": "",
+				"state": "",
+				"tilebase": false,
+				"x": 475,
+				"y": -275,
+				"posx": 5,
+				"posy": 12,
+				"offsetx": -25,
+				"offsety": 25,
+				"maskable": false,
+				"tilesetid": "isoObjects"
+			}, {
+				"name": 20,
+				"displayName": "",
+				"state": "",
+				"tilebase": false,
+				"x": 525,
+				"y": -250,
+				"posx": 5,
+				"posy": 11,
+				"offsetx": -25,
+				"offsety": 25,
+				"maskable": false,
+				"tilesetid": "isoObjects"
+			}, {
+				"name": 20,
+				"displayName": "",
+				"state": "",
+				"tilebase": false,
+				"x": 575,
+				"y": -225,
+				"posx": 6,
+				"posy": 10,
+				"offsetx": -25,
+				"offsety": 25,
+				"maskable": false,
+				"tilesetid": "isoObjects"
+			}, {
+				"name": 20,
+				"displayName": "",
+				"state": "",
+				"tilebase": false,
+				"x": 475,
+				"y": -225,
+				"posx": 5,
+				"posy": 12,
+				"offsetx": -25,
+				"offsety": 25,
+				"maskable": false,
+				"tilesetid": "isoObjects"
+			}, {
+				"name": 20,
+				"displayName": "",
+				"state": "",
+				"tilebase": false,
+				"x": 525,
+				"y": -200,
+				"posx": 5,
+				"posy": 11,
+				"offsetx": -25,
+				"offsety": 25,
+				"maskable": false,
+				"tilesetid": "isoObjects"
+			}, {
+				"name": 20,
+				"displayName": "",
+				"state": "",
+				"tilebase": false,
+				"x": 575,
+				"y": -175,
+				"posx": 6,
+				"posy": 10,
+				"offsetx": -25,
+				"offsety": 25,
+				"maskable": false,
+				"tilesetid": "isoObjects"
+			}, {
+				"name": 9,
+				"displayName": "",
+				"state": "",
+				"tilebase": false,
+				"x": 700,
+				"y": -50,
+				"posx": 7,
+				"posy": 2,
+				"offsetx": 0,
+				"offsety": 0,
+				"maskable": false,
+				"tilesetid": "isoObjects"
+			}, {
+				"name": 8,
+				"displayName": "",
+				"state": "",
+				"tilebase": false,
+				"x": 750,
+				"y": -125,
+				"posx": 7,
+				"posy": 5,
+				"offsetx": 0,
+				"offsety": 0,
+				"maskable": false,
+				"tilesetid": "isoObjects"
+			}]
+		}]
+	},
+	"startPos": {
+		"map": "FirstArea",
+		"x": 3,
+		"y": 9
+	},
+	"tileSets": {
+		"isotiles": {
+			"tileset": "tiles2",
+			"0": "dirt",
+			"1": "grass",
+			"2": "ground_ash0001",
+			"3": "ground_ash0002",
+			"4": "ground_ash0003",
+			"5": "ground_ash0004",
+			"6": "ground_ash0005",
+			"7": "ground_ash0006",
+			"8": "ground_ash0007",
+			"9": "ground_ash0008",
+			"10": "ground_ash0009",
+			"11": "ground_ash0010",
+			"12": "ground_ash0011",
+			"13": "ground_ash0012",
+			"14": "ground_ash0013",
+			"15": "ground_ash0014",
+			"16": "ground_tracks0001",
+			"17": "ground_tracks0002",
+			"18": "ground_tracks0003",
+			"19": "ground_tracks0004",
+			"20": "ground_tracks0005",
+			"21": "halfiso_highlight",
+			"22": "invistile",
+			"23": "magicGrass",
+			"24": "otherWater",
+			"25": "sand",
+			"26": "tileisohalf0001",
+			"27": "tileisohalf0002",
+			"28": "tileisohalf0003",
+			"29": "tileisohalf0004",
+			"30": "tileisohalf0005",
+			"31": "tileisohalf0008",
+			"32": "tileisohalf0009",
+			"33": "wood/wood_floor0001",
+			"34": "wood/wood_floor0002"
+		},
+		"isoObjects": {
+			"tileset": "tiles2",
+			"0": "bushGrass",
+			"1": "bushSand",
+			"2": "halfiso_block_1",
+			"3": "halfiso_block_2",
+			"4": "halfiso_block_3",
+			"5": "halfiso_block_4",
+			"6": "hillsGrass",
+			"7": "hillsSand",
+			"8": "treeGreen_high",
+			"9": "treeGreen_mid",
+			"10": "treeMagic_mid0001",
+			"11": "treeMagic_mid0002",
+			"12": "wood/wood_1x1",
+			"13": "wood/wood_1x2_vert",
+			"14": "wood/wood_2x1_hor",
+			"15": "wood/wood_4x4_hor",
+			"16": "wood/wood_4x4_vert",
+			"17": "wood/wood_door",
+			"18": "wood/wood_door_other"
+		},
+		"interactiveactors": {
+			"tileset": "actors2"
+		}
+	},
+	"data": {
+		"Name": "IsoTest1",
+		"Version": "0.0.3",
+		"Author": "Bryan Gough",
+		"Description": "Iso test\n",
+		"GlobalUserScript": "",
+		"Actors": [{
+			"id": 1,
+			"Name": "Player",
+			"Description": "",
+			"IsPlayer": true,
+			"state": "",
+			"Pictures": "portrait0003"
+		}, {
+			"id": 3,
+			"Name": "Glowing Block",
+			"Description": "",
+			"IsPlayer": false,
+			"state": "",
+			"Pictures": "portrait0005"
+		}, {
+			"id": 4,
+			"Name": "Block",
+			"Description": "",
+			"IsPlayer": false,
+			"state": "",
+			"Pictures": "portrait0004"
+		}, {
+			"id": 5,
+			"Name": "Enemies",
+			"Description": "",
+			"IsPlayer": false,
+			"state": "",
+			"Pictures": ""
+		}],
+		"Items": [{
+			"id": 3,
+			"Name": "Acorn",
+			"onLookat": "",
+			"Is Item": true,
+			"Inventory": false,
+			"onEnterInventoryText": "",
+			"Description": "",
+			"onTalk": "",
+			"VisibleInventory": true,
+			"Count": 0,
+			"InventoryGraphicName": "inv_crab",
+			"InvetoryGraphicSheet": "dialogui",
+			"Combine Count": 5,
+			"Pictures": "",
+			"State": ""
+		}, {
+			"id": 4,
+			"Name": "Simple Key",
+			"onLookat": "",
+			"Is Item": true,
+			"Inventory": false,
+			"onEnterInventoryText": "",
+			"Description": "",
+			"onTalk": "",
+			"VisibleInventory": true,
+			"Count": 0,
+			"InventoryGraphicName": "inv_crab",
+			"InvetoryGraphicSheet": "dialogui",
+			"Combine Count": 0,
+			"Pictures": "[]",
+			"State": ""
+		}, {
+			"id": 5,
+			"Name": "New Item 5",
+			"onLookat": "",
+			"Is Item": false,
+			"Inventory": false,
+			"onEnterInventoryText": "",
+			"Description": "",
+			"onTalk": "",
+			"VisibleInventory": false,
+			"Count": 0,
+			"InventoryGraphicName": "",
+			"InvetoryGraphicSheet": "",
+			"Combine Count": 0,
+			"Pictures": "[]",
+			"State": ""
+		}],
+		"Locations": [{
+			"id": 1,
+			"Name": "New Location 1",
+			"Pictures": "[]",
+			"Description": ""
+		}],
+		"Variables": [{
+			"id": 1,
+			"Name": "Alert",
+			"Initial Value": 0,
+			"Description": "Num to kill."
+		}, {
+			"id": 2,
+			"Name": "Did Conv",
+			"Initial Value": false,
+			"Description": ""
+		}, {
+			"id": 3,
+			"Name": "Enemy Defeated",
+			"Initial Value": 0,
+			"Description": ""
+		}, {
+			"id": 4,
+			"Name": "First Door",
+			"Initial Value": false,
+			"Description": ""
+		}],
+		"Conversations": [{
+			"id": 1,
+			"Title": "New Conversation 1",
+			"Description": "",
+			"Actor": "1",
+			"Conversant": "3",
+			"Pictures": "",
+			"DialogueEntries": [{
+				"entrytag": "Glowing_Block_1_0",
+				"ConvID": 1,
+				"ID": 0,
+				"Actor": 3,
+				"Title": "START",
+				"MenuText": "",
+				"DialogueText": "I will start talking.",
+				"Pictures": "[]",
+				"Description": "",
+				"Parenthetical": "",
+				"Audio Files": "[]",
+				"Video File": "",
+				"Response Menu Sequence": "",
+				"Special Portrait": "",
+				"links": [{
+					"OriginConvID": 1,
+					"OriginID": 0,
+					"DestConvID": 1,
+					"DestID": 1
+				}],
+				"conditions": {
+					"logic": "All",
+					"conditions": []
+				},
+				"actions": []
+			}, {
+				"entrytag": "Glowing_Block_1_1",
+				"ConvID": 1,
+				"ID": 1,
+				"Actor": 3,
+				"Title": "New Dialogue Entry",
+				"MenuText": "",
+				"DialogueText": "I am talking.",
+				"Pictures": "[]",
+				"Description": "",
+				"Parenthetical": "",
+				"Audio Files": "[]",
+				"Video File": "",
+				"Response Menu Sequence": "",
+				"Special Portrait": "",
+				"links": [{
+					"OriginConvID": 1,
+					"OriginID": 1,
+					"DestConvID": 1,
+					"DestID": 2
+				}],
+				"conditions": {
+					"logic": "All",
+					"conditions": []
+				},
+				"actions": []
+			}, {
+				"entrytag": "Glowing_Block_1_2",
+				"ConvID": 1,
+				"ID": 2,
+				"Actor": 3,
+				"Title": "New Dialogue Entry",
+				"MenuText": "",
+				"DialogueText": "Now you make choices.",
+				"Pictures": "[]",
+				"Description": "",
+				"Parenthetical": "",
+				"Audio Files": "[]",
+				"Video File": "",
+				"Response Menu Sequence": "",
+				"Special Portrait": "",
+				"links": [{
+					"OriginConvID": 1,
+					"OriginID": 2,
+					"DestConvID": 1,
+					"DestID": 3
+				}, {
+					"OriginConvID": 1,
+					"OriginID": 2,
+					"DestConvID": 1,
+					"DestID": 4
+				}, {
+					"OriginConvID": 1,
+					"OriginID": 2,
+					"DestConvID": 1,
+					"DestID": 5
+				}],
+				"conditions": {
+					"logic": "All",
+					"conditions": []
+				},
+				"actions": []
+			}, {
+				"entrytag": "Player_1_3",
+				"ConvID": 1,
+				"ID": 3,
+				"Actor": 1,
+				"Title": "New Dialogue Entry",
+				"MenuText": "",
+				"DialogueText": "Another End Conv",
+				"Pictures": "[]",
+				"Description": "",
+				"Parenthetical": "",
+				"Audio Files": "[]",
+				"Video File": "",
+				"Response Menu Sequence": "",
+				"Special Portrait": "",
+				"links": {},
+				"conditions": {
+					"logic": "All",
+					"conditions": [{
+						"type": "Variable",
+						"name": 2,
+						"variable": "",
+						"compare": "Is",
+						"value": true
+					}]
+				},
+				"actions": []
+			}, {
+				"entrytag": "Player_1_4",
+				"ConvID": 1,
+				"ID": 4,
+				"Actor": 1,
+				"Title": "New Dialogue Entry",
+				"MenuText": "",
+				"DialogueText": "Continue Text\n",
+				"Pictures": "[]",
+				"Description": "",
+				"Parenthetical": "",
+				"Audio Files": "[]",
+				"Video File": "",
+				"Response Menu Sequence": "",
+				"Special Portrait": "",
+				"links": [{
+					"OriginConvID": 1,
+					"OriginID": 4,
+					"DestConvID": 1,
+					"DestID": 6
+				}],
+				"conditions": {
+					"logic": "All",
+					"conditions": []
+				},
+				"actions": []
+			}, {
+				"entrytag": "Player_1_5",
+				"ConvID": 1,
+				"ID": 5,
+				"Actor": 1,
+				"Title": "New Dialogue Entry",
+				"MenuText": "",
+				"DialogueText": "End Conv",
+				"Pictures": "[]",
+				"Description": "",
+				"Parenthetical": "",
+				"Audio Files": "[]",
+				"Video File": "",
+				"Response Menu Sequence": "",
+				"Special Portrait": "",
+				"links": {},
+				"conditions": {
+					"logic": "All",
+					"conditions": []
+				},
+				"actions": [{
+					"type": "Quest",
+					"name": 1,
+					"mode": "To",
+					"variable": "UNDEFINED",
+					"value": "Unassigned"
+				}]
+			}, {
+				"entrytag": "Glowing_Block_1_6",
+				"ConvID": 1,
+				"ID": 6,
+				"Actor": 3,
+				"Title": "New Dialogue Entry",
+				"MenuText": "",
+				"DialogueText": "No",
+				"Pictures": "[]",
+				"Description": "",
+				"Parenthetical": "",
+				"Audio Files": "[]",
+				"Video File": "",
+				"Response Menu Sequence": "",
+				"Special Portrait": "",
+				"links": [{
+					"OriginConvID": 1,
+					"OriginID": 6,
+					"DestConvID": 1,
+					"DestID": 7
+				}, {
+					"OriginConvID": 1,
+					"OriginID": 6,
+					"DestConvID": 1,
+					"DestID": 8
+				}],
+				"conditions": {
+					"logic": "All",
+					"conditions": []
+				},
+				"actions": []
+			}, {
+				"entrytag": "Player_1_7",
+				"ConvID": 1,
+				"ID": 7,
+				"Actor": 1,
+				"Title": "New Dialogue Entry",
+				"MenuText": "",
+				"DialogueText": "End Conv Here.",
+				"Pictures": "[]",
+				"Description": "",
+				"Parenthetical": "",
+				"Audio Files": "[]",
+				"Video File": "",
+				"Response Menu Sequence": "",
+				"Special Portrait": "",
+				"links": {},
+				"conditions": {
+					"logic": "All",
+					"conditions": []
+				},
+				"actions": []
+			}, {
+				"entrytag": "Player_1_8",
+				"ConvID": 1,
+				"ID": 8,
+				"Actor": 1,
+				"Title": "New Dialogue Entry",
+				"MenuText": "",
+				"DialogueText": "Start Over!",
+				"Pictures": "[]",
+				"Description": "",
+				"Parenthetical": "",
+				"Audio Files": "[]",
+				"Video File": "",
+				"Response Menu Sequence": "",
+				"Special Portrait": "",
+				"links": [{
+					"OriginConvID": 1,
+					"OriginID": 8,
+					"DestConvID": 1,
+					"DestID": 1
+				}],
+				"conditions": {
+					"logic": "All",
+					"conditions": []
+				},
+				"actions": []
+			}]
+		}, {
+			"id": 2,
+			"Title": "New Conversation 2",
+			"Description": "",
+			"Actor": "1",
+			"Conversant": "3",
+			"Pictures": "",
+			"DialogueEntries": [{
+				"entrytag": "Block_2_0",
+				"ConvID": 2,
+				"ID": 0,
+				"Actor": 4,
+				"Title": "START",
+				"MenuText": "",
+				"DialogueText": "I'm a block",
+				"Pictures": "[]",
+				"Description": "",
+				"Parenthetical": "",
+				"Audio Files": "[]",
+				"Video File": "",
+				"Response Menu Sequence": "",
+				"Special Portrait": "",
+				"links": [{
+					"OriginConvID": 2,
+					"OriginID": 0,
+					"DestConvID": 2,
+					"DestID": 1
+				}],
+				"conditions": {
+					"logic": "All",
+					"conditions": []
+				},
+				"actions": []
+			}, {
+				"entrytag": "Block_2_1",
+				"ConvID": 2,
+				"ID": 1,
+				"Actor": 4,
+				"Title": "New Dialogue Entry",
+				"MenuText": "",
+				"DialogueText": "Block block block",
+				"Pictures": "[]",
+				"Description": "",
+				"Parenthetical": "",
+				"Audio Files": "[]",
+				"Video File": "",
+				"Response Menu Sequence": "",
+				"Special Portrait": "",
+				"links": [{
+					"OriginConvID": 2,
+					"OriginID": 1,
+					"DestConvID": 2,
+					"DestID": 2
+				}],
+				"conditions": {
+					"logic": "All",
+					"conditions": []
+				},
+				"actions": []
+			}, {
+				"entrytag": "Glowing_Block_2_2",
+				"ConvID": 2,
+				"ID": 2,
+				"Actor": 3,
+				"Title": "New Dialogue Entry",
+				"MenuText": "",
+				"DialogueText": "Me too!\n",
+				"Pictures": "[]",
+				"Description": "",
+				"Parenthetical": "",
+				"Audio Files": "[]",
+				"Video File": "",
+				"Response Menu Sequence": "",
+				"Special Portrait": "",
+				"links": [{
+					"OriginConvID": 2,
+					"OriginID": 2,
+					"DestConvID": 2,
+					"DestID": 3
+				}],
+				"conditions": {
+					"logic": "All",
+					"conditions": []
+				},
+				"actions": []
+			}, {
+				"entrytag": "Player_2_3",
+				"ConvID": 2,
+				"ID": 3,
+				"Actor": 1,
+				"Title": "New Dialogue Entry",
+				"MenuText": "",
+				"DialogueText": "A block?",
+				"Pictures": "[]",
+				"Description": "",
+				"Parenthetical": "",
+				"Audio Files": "[]",
+				"Video File": "",
+				"Response Menu Sequence": "",
+				"Special Portrait": "",
+				"links": [{
+					"OriginConvID": 2,
+					"OriginID": 3,
+					"DestConvID": 2,
+					"DestID": 4
+				}],
+				"conditions": {
+					"logic": "All",
+					"conditions": []
+				},
+				"actions": []
+			}, {
+				"entrytag": "Block_2_4",
+				"ConvID": 2,
+				"ID": 4,
+				"Actor": 4,
+				"Title": "New Dialogue Entry",
+				"MenuText": "",
+				"DialogueText": "Yes a block.",
+				"Pictures": "[]",
+				"Description": "",
+				"Parenthetical": "",
+				"Audio Files": "[]",
+				"Video File": "",
+				"Response Menu Sequence": "",
+				"Special Portrait": "",
+				"links": {},
+				"conditions": {
+					"logic": "All",
+					"conditions": []
+				},
+				"actions": [{
+					"type": "Variable",
+					"name": 2,
+					"mode": "To",
+					"variable": "",
+					"value": true
+				}]
+			}]
+		}, {
+			"id": 3,
+			"Title": "New Conversation 3",
+			"Description": "",
+			"Actor": "1",
+			"Conversant": "3",
+			"Pictures": "[]",
+			"DialogueEntries": [{
+				"entrytag": "Player_3_0",
+				"ConvID": 3,
+				"ID": 0,
+				"Actor": 1,
+				"Title": "START",
+				"MenuText": "",
+				"DialogueText": "",
+				"Pictures": "[]",
+				"Description": "",
+				"Parenthetical": "",
+				"Audio Files": "[]",
+				"Video File": "",
+				"Response Menu Sequence": "",
+				"Special Portrait": "",
+				"links": [{
+					"OriginConvID": 3,
+					"OriginID": 0,
+					"DestConvID": 3,
+					"DestID": 1
+				}, {
+					"OriginConvID": 3,
+					"OriginID": 0,
+					"DestConvID": 3,
+					"DestID": 2
+				}, {
+					"OriginConvID": 3,
+					"OriginID": 0,
+					"DestConvID": 3,
+					"DestID": 3
+				}],
+				"conditions": {
+					"logic": "All",
+					"conditions": []
+				},
+				"actions": []
+			}, {
+				"entrytag": "Glowing_Block_3_1",
+				"ConvID": 3,
+				"ID": 1,
+				"Actor": 3,
+				"Title": "New Dialogue Entry",
+				"MenuText": "",
+				"DialogueText": "",
+				"Pictures": "[]",
+				"Description": "",
+				"Parenthetical": "",
+				"Audio Files": "[]",
+				"Video File": "",
+				"Response Menu Sequence": "",
+				"Special Portrait": "",
+				"links": {},
+				"conditions": {
+					"logic": "All",
+					"conditions": []
+				},
+				"actions": []
+			}, {
+				"entrytag": "Glowing_Block_3_2",
+				"ConvID": 3,
+				"ID": 2,
+				"Actor": 3,
+				"Title": "New Dialogue Entry",
+				"MenuText": "",
+				"DialogueText": "",
+				"Pictures": "[]",
+				"Description": "",
+				"Parenthetical": "",
+				"Audio Files": "[]",
+				"Video File": "",
+				"Response Menu Sequence": "",
+				"Special Portrait": "",
+				"links": {},
+				"conditions": {
+					"logic": "All",
+					"conditions": []
+				},
+				"actions": []
+			}, {
+				"entrytag": "Glowing_Block_3_3",
+				"ConvID": 3,
+				"ID": 3,
+				"Actor": 3,
+				"Title": "New Dialogue Entry",
+				"MenuText": "",
+				"DialogueText": "",
+				"Pictures": "[]",
+				"Description": "",
+				"Parenthetical": "",
+				"Audio Files": "[]",
+				"Video File": "",
+				"Response Menu Sequence": "",
+				"Special Portrait": "",
+				"links": {},
+				"conditions": {
+					"logic": "All",
+					"conditions": []
+				},
+				"actions": []
+			}]
+		}]
+	}
+}

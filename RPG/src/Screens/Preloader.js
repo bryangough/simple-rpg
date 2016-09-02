@@ -15,7 +15,7 @@ BasicGame.Preloader.prototype = {
 		//	These are the assets we loaded in Boot.js
 		//	A nice sparkly background and a loading progress bar
 		this.background = this.add.sprite(0, 0, 'loadingScreen', 'bg.png');
-		this.preloadBar = this.add.sprite(0, 278, 'loadingScreen', 'loading_barfront.png');
+		this.preloadBar = this.add.sprite(0, 273, 'loadingScreen', 'loading_barfront.png');
         
 		//	This sets the preloadBar sprite as a loader sprite.
 		//	What that does is automatically crop the sprite from 0 to full-width
@@ -26,21 +26,23 @@ BasicGame.Preloader.prototype = {
 		//	As this is just a Project Template I've not provided these assets, swap them for your own.
         
         this.load.atlasJSONHash('ui', 'assets/simpleui.png', 'assets/simpleui.json');
-        this.load.atlasJSONHash('tiles2', 'assets/tiles2.png', 'assets/tiles2.json');
-        //this.load.atlasJSONHash('actors', 'assets/actors.png', 'assets/actors.json');
-        this.load.atlasJSONHash('actors2', 'assets/actors2.png', 'assets/actors2.json');
-        
-        this.load.atlasJSONHash('tileobjects1', 'assets/tileobjects1.png', 'assets/tileobjects1.json');
-        this.load.atlasJSONHash('inventory', 'assets/inventory.png', 'assets/inventory.json');
-        
-        
         this.load.atlasJSONHash('gameplayinterface', 'assets/paradoxinterface.png', 'assets/paradoxinterface.json');
+        //this.load.atlasJSONHash('tiles2', 'assets/tiles2.png', 'assets/tiles2.json');
+        //this.load.atlasJSONHash('actors2', 'assets/actors2.png', 'assets/actors2.json');
+        
+        //this.load.atlasJSONHash('actors', 'assets/actors.png', 'assets/actors.json');
+        //this.load.atlasJSONHash('tileobjects1', 'assets/tileobjects1.png', 'assets/tileobjects1.json');
+        
+        //this.load.atlasJSONHash('inventory', 'assets/inventory.png', 'assets/inventory.json');
+        
+        
+        
 		this.load.image('loading', 'assets/loading.png');
         this.load.image('mainmenu', 'assets/mainmenu.png');
         this.load.image('mapselect', 'assets/mapselect.png');
         this.load.image('winscreen', 'assets/winscreen.png');
         this.load.image('instructions', 'assets/instructions.png');
-        //this.load.bitmapFont("simplefont", "assets/fonts/calibri_white.png", "assets/fonts/calibri_white.fnt");
+
         this.load.bitmapFont("simplefont", "assets/fonts/badabb.png", "assets/fonts/badabb.fnt");
         
         //this.load.atlasJSONHash('dialogui', 'assets/dialogui.png', 'assets/dialogui.json');//dialogui
@@ -51,8 +53,20 @@ BasicGame.Preloader.prototype = {
 		//	+ lots of other required assets here
         this.load.json('player', 'assets/maps/playerdata.json');
         this.load.json('playergamedata', 'assets/maps/playergamedata.json');
+        this.load.json('levels', 'assets/levels.json');
+        
+        this.barwidth = this.preloadBar.width;
+        this.preloadBar.width = 0;
+        
+        this.load.onFileComplete.add(this.updateProgress,this);
 	},
-
+    updateProgress:function(progress, filekey, success, totalloadedfiles, totalfiles){
+        var val = progress /100;
+        //console.log(this.barwidth * val)
+        this.preloadBar.width = this.barwidth * val;
+        //this.rocket.x = this.barwidth * val;
+        //console.log(val);
+    },
 	create: function () {
 
 		//	Once the load has finished we disable the crop because we're going to sit in the update loop for a short while as the music decodes

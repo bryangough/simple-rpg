@@ -4,6 +4,6 @@ var Global = function ()
     this.pause = false;
     //this.movetotouch:true,
     this.showmovetile = false;
-    this.loadMap = 1;
+    this.loadMap = 2;
     this.language = "en";
 };
