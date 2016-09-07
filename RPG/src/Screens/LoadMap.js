@@ -46,6 +46,8 @@ BasicGame.LoadMap.prototype = {
             this.secondLoader.atlasJSONHash(obj.tileset, 'assets/'+obj.tileset+'.png', 'assets/'+obj.tileset+'.json');
         }
         //gamedata.Items loop for InvetoryGraphicSheet 
+        //or have ability to just set which other graphics to load
+        
         
         //test if interface is different?
         this.secondLoader.atlasJSONHash('gameplayinterface', 'assets/paradoxinterface.png', 'assets/paradoxinterface.json');

@@ -25,35 +25,28 @@ BasicGame.Preloader.prototype = {
 		//	Here we load the rest of the assets our game needs.
 		//	As this is just a Project Template I've not provided these assets, swap them for your own.
         
-        this.load.atlasJSONHash('ui', 'assets/simpleui.png', 'assets/simpleui.json');
-        this.load.atlasJSONHash('gameplayinterface', 'assets/paradoxinterface.png', 'assets/paradoxinterface.json');
-        //this.load.atlasJSONHash('tiles2', 'assets/tiles2.png', 'assets/tiles2.json');
-        //this.load.atlasJSONHash('actors2', 'assets/actors2.png', 'assets/actors2.json');
+        this.load.atlasJSONHash('ui', this.game.global.uilocation + 'simpleui.png', this.game.global.uilocation + 'simpleui.json');
+        this.load.atlasJSONHash('gameplayinterface', this.game.global.uilocation + 'paradoxinterface.png', this.game.global.uilocation + 'paradoxinterface.json');
         
-        //this.load.atlasJSONHash('actors', 'assets/actors.png', 'assets/actors.json');
-        //this.load.atlasJSONHash('tileobjects1', 'assets/tileobjects1.png', 'assets/tileobjects1.json');
-        
-        //this.load.atlasJSONHash('inventory', 'assets/inventory.png', 'assets/inventory.json');
-        
-        
-        
-		this.load.image('loading', 'assets/loading.png');
-        this.load.image('mainmenu', 'assets/mainmenu.png');
-        this.load.image('mapselect', 'assets/mapselect.png');
-        this.load.image('winscreen', 'assets/winscreen.png');
-        this.load.image('instructions', 'assets/instructions.png');
+		this.load.image('loading', this.game.global.uilocation + 'loading.png');
+        this.load.image('mainmenu', this.game.global.uilocation + 'mainmenu.png');
+        this.load.image('mapselect', this.game.global.uilocation + 'mapselect.png');
+        this.load.image('winscreen', this.game.global.uilocation + 'winscreen.png');
+        this.load.image('instructions', this.game.global.uilocation + 'instructions.png');
 
-        this.load.bitmapFont("simplefont", "assets/fonts/badabb.png", "assets/fonts/badabb.fnt");
+        this.load.bitmapFont("simplefont", this.game.global.uilocation + "fonts/badabb.png", this.game.global.uilocation + "fonts/badabb.fnt");
         
-        //this.load.atlasJSONHash('dialogui', 'assets/dialogui.png', 'assets/dialogui.json');//dialogui
+        //this.load.atlasJSONHash('dialogui', 'dialogui.png', 'dialogui.json');//dialogui
         
 		//this.load.atlas('playButton', 'images/play_button.png', 'images/play_button.json');
 		//this.load.audio('titleMusic', ['audio/main_menu.mp3']);
 	   //this.load.bitmapFont('caslon', 'fonts/caslon.png', 'fonts/caslon.xml');
 		//	+ lots of other required assets here
-        this.load.json('player', 'assets/maps/playerdata.json');
-        this.load.json('playergamedata', 'assets/maps/playergamedata.json');
-        this.load.json('levels', 'assets/levels.json');
+        this.load.json('player', this.game.global.assetsLocation + 'maps/playerdata.json');
+        this.load.json('playergamedata', this.game.global.assetsLocation + 'maps/playergamedata.json');
+        
+        //
+        this.load.json('levels', 'levels.json');
         
         this.barwidth = this.preloadBar.width;
         this.preloadBar.width = 0;

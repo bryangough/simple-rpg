@@ -6,4 +6,6 @@ var Global = function ()
     this.showmovetile = false;
     this.loadMap = 2;
     this.language = "en";
+    this.uilocation = "assets/basicUI/";
+    this.assetsLocation = "assets/paradox/";
 };
