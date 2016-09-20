@@ -19,8 +19,8 @@ BasicGame.LoadMap.prototype = {
         if(level!=null)
         {
             console.log(level.gameData, level.map)
-            this.load.json('gameData', 'assets/maps/'+level.gameData+".json");
-            this.load.json('map', 'assets/maps/'+level.map+".json");
+            this.load.json('gameData', this.game.global.assetsLocation +"maps/" + level.gameData+".json");
+            this.load.json('map', this.game.global.assetsLocation +"maps/" + level.map+".json");
         }
         else
         {
@@ -43,14 +43,14 @@ BasicGame.LoadMap.prototype = {
         for (var key in tilesets) {
             var obj = tilesets[key];
             //console.log('assets/'+obj.tileset+'.png', 'assets/'+obj.tileset+'.json');
-            this.secondLoader.atlasJSONHash(obj.tileset, 'assets/'+obj.tileset+'.png', 'assets/'+obj.tileset+'.json');
+            this.secondLoader.atlasJSONHash(obj.tileset, this.game.global.assetsLocation + 'assets/'+obj.tileset+'.png', this.game.global.assetsLocation + 'assets/'+obj.tileset+'.json');
         }
         //gamedata.Items loop for InvetoryGraphicSheet 
         //or have ability to just set which other graphics to load
         
         
         //test if interface is different?
-        this.secondLoader.atlasJSONHash('gameplayinterface', 'assets/paradoxinterface.png', 'assets/paradoxinterface.json');
+        this.secondLoader.atlasJSONHash('gameplayinterface', this.game.global.assetsLocation + 'assets/paradoxinterface.png', this.game.global.assetsLocation + 'assets/paradoxinterface.json');
 
         this.barwidth = this.preloadBar.width;
         this.preloadBar.width = 0;

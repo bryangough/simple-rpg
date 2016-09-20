@@ -26,7 +26,7 @@ BasicGame.Preloader.prototype = {
 		//	As this is just a Project Template I've not provided these assets, swap them for your own.
         
         this.load.atlasJSONHash('ui', this.game.global.uilocation + 'simpleui.png', this.game.global.uilocation + 'simpleui.json');
-        this.load.atlasJSONHash('gameplayinterface', this.game.global.uilocation + 'paradoxinterface.png', this.game.global.uilocation + 'paradoxinterface.json');
+        //this.load.atlasJSONHash('gameplayinterface', this.game.global.uilocation + 'paradoxinterface.png', this.game.global.uilocation + 'paradoxinterface.json');
         
 		this.load.image('loading', this.game.global.uilocation + 'loading.png');
         this.load.image('mainmenu', this.game.global.uilocation + 'mainmenu.png');
@@ -46,7 +46,7 @@ BasicGame.Preloader.prototype = {
         this.load.json('playergamedata', this.game.global.assetsLocation + 'maps/playergamedata.json');
         
         //
-        this.load.json('levels', 'levels.json');
+        this.load.json('levels', 'assets/levels.json');
         
         this.barwidth = this.preloadBar.width;
         this.preloadBar.width = 0;
