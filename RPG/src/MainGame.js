@@ -94,8 +94,9 @@ BasicGame.Game.prototype = {
         this.uiGroup.add(this.graphics);
         
 
-        
+        //console.log(this.map.mapGroup.width/2,this.map.mapGroup.height);
         this.updatewalkable = true;
+        //this.camera.step(elapsedTime);
     },
     //
     update: function () {

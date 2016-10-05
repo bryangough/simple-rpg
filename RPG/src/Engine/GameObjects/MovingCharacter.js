@@ -137,7 +137,7 @@ MovingCharacter.prototype.setLocationByTile = function(tile)
     if(tile==null)
         tile  = this.map.hexHandler.getTileByCords(this.posx, this.posy);
     this.x = tile.x;//+this.map.hexHandler.halfHex;
-    this.y = tile.y-this.map.hexHandler.halfHexHeight;
+    this.y = tile.y-this.map.hexHandler.halfHexHeight;//-this.map.hexHandler.bottomOffset
     this.oldTile = tile;
     this.currentTile = tile;
     //
@@ -153,14 +153,17 @@ MovingCharacter.prototype.gotoAnotherMap = function(map, tile)
 }
 //
 MovingCharacter.prototype.setDirection = function() 
-{ //console.log(this.nextTile.x,this.map.hexHandler.halfHex,this.nextTile.x+this.map.hexHandler.halfHex, this.nextTile.x-this.map.hexHandler.halfHex);
+{ 
+    //console.log(this.nextTile.x,this.map.hexHandler.halfHex,this.nextTile.x+this.map.hexHandler.halfHex, this.nextTile.x-this.map.hexHandler.halfHex);
     //if(this.nextTile==null || this.map==null)
     //console.log("setDirection",this.nextTile.x,this.map.hexHandler.halfHex,this.x);
     //console.log("setDirection",this.nextTile.y,this.map.hexHandler.halfHexHeight,this.y);
     if(this.nextTile!=null)
     {
-        this.dir.x =  this.nextTile.x+this.map.hexHandler.halfHex-this.x;
+        this.dir.x =  this.nextTile.x-this.x;//+this.map.hexHandler.halfHex
         this.dir.y =  this.nextTile.y+this.map.hexHandler.halfHexHeight-this.y;
+        //this.dir.x =  this.nextTile.x-this.x;
+        //this.dir.y =  this.nextTile.y+this.map.hexHandler.bottomOffset+this.map.hexHandler.halfHexHeight-this.y;
         this.dir.normalize();
     }
     else
@@ -423,6 +426,7 @@ MovingCharacter.prototype.step = function(elapseTime)
         if(this.path.length>0)
         {
             //need to test if next spot is now not walkable
+            //am I getting the wrong hex?
             this.currentTile = this.map.hexHandler.checkHex(this.x,this.y);
             //console.log(this.oldTile, this.currentTile);
             if(this.oldTile != this.currentTile)
@@ -447,7 +451,7 @@ MovingCharacter.prototype.step = function(elapseTime)
                 if(this.pathlocation>=this.path.length || this.limit==0)// at last tile, now walk to the center
                 {
                     this.pathlocation=this.path.length;
-                    var testx = this.currentTile.x+this.map.hexHandler.halfHex;
+                    var testx = this.currentTile.x;//+this.map.hexHandler.halfHex;
                     var testy = this.currentTile.y+this.map.hexHandler.halfHexHeight;
                     
                     var range = 3;

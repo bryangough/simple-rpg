@@ -435,7 +435,7 @@ EasyStar.js = function() {
 		}
 
 		//End point is not an acceptable tile.
-		var endTile = collisionGrid[endX][endY];
+		/*var endTile = collisionGrid[endX][endY];
 		var isAcceptable = false;
 		for (var i = 0; i < acceptableTiles.length; i++) {
             
@@ -443,7 +443,7 @@ EasyStar.js = function() {
 				isAcceptable = true;
 				break;
 			}
-		}
+		}*/
 
         /*console.log(endTile, isAcceptable);
 		if (isAcceptable === false) {
@@ -657,15 +657,20 @@ EasyStar.js = function() {
         //if no 0 or 1 use changex and changey to determine if walking in correct direction
         //console.log(x,y,collisionGrid.length,collisionGrid[0].length);
         
+        //console.log(changex,changey,collisionGrid[x][y]);
+        
         if(x < 0 || x > collisionGrid.length || y < 0 || y > collisionGrid[0].length)
                 return false;
-        
-        
-		for (var i = 0; i < acceptableTiles.length; i++) {
+        //console.log("-",collisionGrid[x][y]);
+        var ret = collisionGrid[x][y].isWalkable(x,y,changex,changey)
+        if(ret==1)
+            return true;
+
+        /*for (var i = 0; i < acceptableTiles.length; i++) {
 			if (collisionGrid[x][y] === acceptableTiles[i]) {
 				return true;
 			}
-		}
+		}*/
 
 		return false;
 	};

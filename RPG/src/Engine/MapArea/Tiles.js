@@ -17,6 +17,45 @@ var SimpleObject = function (game, x,y, spritesheet, imagename, objectPassed)
 SimpleObject.prototype = Object.create(Phaser.Image.prototype);
 SimpleObject.constructor = SimpleObject;
 //
+var Walkable = function(arrayIn)
+{
+    this.l = arrayIn.l;
+    this.u = arrayIn.u;
+    this.r = arrayIn.r;
+    this.d = arrayIn.d;
+    
+    this.walkable = true;
+}
+Walkable.prototype.isWalkable = function(atx, aty, dirx, diry)
+{
+    if(!this.walkable)//if not walkable can't enter.
+        return 0;
+    //use location and direction to determine cost.
+    if(aty % 2 == 1)
+    {
+        if(dirx == 1 && diry == -1)
+            return this.u;
+        if(dirx == 1 && diry == 1)
+            return this.r;
+        if(dirx == 0 && diry == 1)
+            return this.d;
+        if(dirx == 0 && diry == -1)
+            return this.l;
+    }
+    else
+    {
+        if(dirx == 0 && diry == -1)
+            return this.u;
+        if(dirx == 0 && diry == 1)
+            return this.r;
+        if(dirx == -1 && diry == 1)
+            return this.l;
+        if(dirx == -1 && diry == -1)
+            return this.d;
+    }
+    return 1;
+}
+//
 var Grid = function(maingame, layer1)
 {
     this.maingame = maingame;
@@ -132,6 +171,7 @@ var SimpleTile = function(maingame, posx, posy, x, y)
 {
     this.maingame = maingame;
     this.walkable = true;  
+    this.walkHandler;  
     this.openair = true;
     this.x = x;
     this.y = y;
@@ -151,13 +191,22 @@ SimpleTile.prototype.changeWalkable = function(walkableto)
     console.log("updatewalkable",this.maingame.updatewalkable);
     
     if(walkableto==true||walkableto=="true")
-        this.maingame.walkableArray[this.posx][this.posy] = 1;
+        //this.maingame.walkableArray[this.posx][this.posy] = 1;
+        walkHandler.walkable = 1;
     else
-        this.maingame.walkableArray[this.posx][this.posy] = 0;
+        walkHandler.walkable = 0;
+        //this.maingame.walkableArray[this.posx][this.posy] = 0;
 
-    this.walkable = walkableto;
+    this.walkable = walkHandler.walkable;
     this.maingame.updatewalkable = true;
 }
+/*SimpleTile.prototype.setWalkArray = function(newarray) 
+{
+    this.walkarray = newarray;
+    if(!walkarray[0] && !walkarray[1] && !walkarray[2] && !walkarray[3])//is never walkable
+        this.walkable = false;
+    this.walkable = true;
+}*/
 SimpleTile.prototype.enterTile = function(enterer)
 {
     if(this.eventDispatcher)
@@ -216,9 +265,9 @@ BaseTile.prototype.changeWalkable = function(walkableto)
     //console.log("asdf",this.maingame);
     
     if(walkableto)
-        this.maingame.map.walkableArray[this.posx][this.posy] = 1;
+        this.maingame.map.walkableArray[this.posx][this.posy].walkable = true;
     else
-        this.maingame.map.walkableArray[this.posx][this.posy] = 0;
+        this.maingame.map.walkableArray[this.posx][this.posy].walkable = false;
     //
     this.walkable = walkableto;
     this.maingame.updatewalkable = true;

@@ -19,7 +19,7 @@ var Map = function (game, gameRef)
     this.highlightArray;
     
     this.mapGroup;
-    this.scaledto = 0.8;
+    this.scaledto = 1;//0.8;
     
     this.redoMap = false;
 }
@@ -69,7 +69,7 @@ Map.prototype.createMapTiles = function(passedMap){
             
             this.objectoffset.x = 0;//hexagonWidth + hexagonWidth/2;
             this.objectoffset.y = 0;//hexagonHeight*2 + hexagonHeight/2;
-            console.log(this.objectoffset);
+            //console.log(this.objectoffset);
         }
     }
     for(mapscounter=0;mapscounter<passedMap.length;mapscounter++)
@@ -140,8 +140,14 @@ Map.prototype.createMapTiles = function(passedMap){
                     tilereference = this.getTile(objectName,tilesetid);
                     
                     tempPoint = this.spritegrid.GetMapCoords(i,j);
-                    tempPoint.x += this.objectoffset.x;
-                    tempPoint.y += this.objectoffset.y;
+                    //this.x = tile.x;//+this.map.hexHandler.halfHex;
+                    //this.y = tile.y;//-this.map.hexHandler.bottomOffset-this.map.hexHandler.halfHexHeight;
+                    //console.log(this.objectoffset)
+                    //tempPoint.x += -this.hexHandler.halfHex;
+                    //tempPoint.y += +this.hexHandler.bottomOffset + this.hexHandler.halfHexHeight;
+                    
+                    //tempPoint.x += this.objectoffset.x;
+                    //tempPoint.y += this.objectoffset.y;
                     if(layer1.handleMovement)//make tile
                     {
                         temptile = new WalkableTile(this.game, tilereference.tile, tilereference.spritesheet, i, j, tempPoint.x, tempPoint.y, this.gameRef);
@@ -152,7 +158,7 @@ Map.prototype.createMapTiles = function(passedMap){
                         temptile = new GraphicTile(this.game, tilereference.tile, tilereference.spritesheet, i, j, tempPoint.x, tempPoint.y, this.gameRef);
                     }
                     this.hexagonGroup.add(temptile);
-                   // this.addLocationTextToTile(tempPoint.x,tempPoint.y,hexagonWidth,hexagonHeight,i,j);
+                    this.addLocationTextToTile(tempPoint.x,tempPoint.y,hexagonWidth,hexagonHeight,i,j);
                 }
             }
         }
@@ -170,7 +176,7 @@ Map.prototype.createMapTiles = function(passedMap){
                 this.walkableArray[i] = [];
                 for(var j = 0; j < this.gridSizeY; j ++)
                 {
-                    this.walkableArray[i][j] = layer1.walkable[j*this.gridSizeX+i];
+                    this.walkableArray[i][j] = new Walkable(layer1.walkable[j*this.gridSizeX+i]);
                     //this.walkableArray[i][j] = 1;
                     if(!layer1.handleSprite)//no sprite - need to something to select (this might not need to be destroyed)
                     {
@@ -178,7 +184,7 @@ Map.prototype.createMapTiles = function(passedMap){
                         hexagonArray[i][j] = new SimpleTile(this.gameRef,i,j,tempPoint.x,tempPoint.y);
 
                         //this needs to be switched out
-                        if(this.game.global.showmovetile)
+                        /*if(this.game.global.showmovetile)
                         {
                             //var tile = new GraphicTile(this, "tile_highlight0002", "standardimages", i, j, tempPoint.x, tempPoint.y, this);
                             var tile = null;
@@ -192,13 +198,14 @@ Map.prototype.createMapTiles = function(passedMap){
                             this.highlightArray[i][j] = tile;
                             this.highlightGroup.add(tile);
                             //this.addLocationTextToTile(tempPoint.x,tempPoint.y,hexagonWidth,hexagonHeight,i,j);
-                        }
+                        }*/
                         //
                     }
-                    if(this.walkableArray[i][j] == 0)
-                    {                    
-                        hexagonArray[i][j].walkable = false;
-                    }
+                    //if(this.walkableArray[i][j] == 0)
+                    //{                    
+                        //hexagonArray[i][j].walkable = false;
+                        hexagonArray[i][j].walkHandler = this.walkableArray[i][j];
+                    //}
                 }
             }
         }
@@ -320,6 +327,7 @@ Map.prototype.createMapTiles = function(passedMap){
     //    this.mapGroup.x-=hexagonWidth/8;
     //}
     //
+    //console.log(this.mapGroup.x, this.mapGroup.y);
     this.highlightHex = new HighlightHex(this.game, this.gameRef, this.hexHandler);
     //this.game.add.existing(this.highlightHex);
     this.highlightHex.setup();
@@ -348,13 +356,16 @@ Map.prototype.createMapTiles = function(passedMap){
     this.objectGroup.add(this.playerCharacter);
     this.playerCharacter.resetMoving();
     //
+    //console.log(this.walkableArray);
+    //
     this.gameRef.pathfinder.setGrid(this.walkableArray, [1]);
     this.masker = new CheapMasker(this.game, this.gameRef, this.maskableobjects);
     //
     this.doZoom();
-    this.mapGroup.x = (900-hexagonWidth*Math.ceil(this.gridSizeX)*this.mapGroup.scale.x);
-    this.mapGroup.y = (440-hexagonHeight*Math.ceil(this.gridSizeY/2)*this.mapGroup.scale.y);
-    
+    //start centered
+    this.mapGroup.x = (900-hexagonWidth*Math.ceil(this.gridSizeX)*this.mapGroup.scale.x);//*1.15);
+    this.mapGroup.y = (440-hexagonHeight*Math.ceil(this.gridSizeY/2)*this.mapGroup.scale.y*0.76);
+    //console.log(this.mapGroup.x,this.mapGroup.y,hexagonWidth,Math.ceil(this.gridSizeX),this.mapGroup.scale.x);
     this.hexagonGroup.sort('y', Phaser.Group.SORT_ASCENDING);
 
     for(var i=0;i<this.interactiveObjects.length;i++)
@@ -403,10 +414,11 @@ Map.prototype.getCombatCharacters = function()
     return returnArray;
 }
 Map.prototype.addLocationTextToTile = function(x,y,width,height,i,j){
-    var hexagonText = this.gameRef.add.text(x+width/2-5,y+height/2+3,i+","+j);
+    //var hexagonText = this.gameRef.add.text(x+width/2-5,y+height/2+3,i+","+j);
+    var hexagonText = this.gameRef.add.text(x,y - this.hexHandler.bottomOffset -this.hexHandler.halfHexHeight,i+","+j);
     //var hexagonText = this.add.text(x+5,y+3,i+","+j);
     hexagonText.font = "arial";
-    hexagonText.fontSize = 8;
+    hexagonText.fontSize = 10;
     //hexagonText.font = 0xffffff;
     this.highlightGroup.add(hexagonText);
 };
@@ -485,17 +497,3 @@ Map.prototype.getPath = function(pathName)
 {
     return this.paths[pathName];
 }
-/*Map.prototype.refreshWalkablView = function(){
-    for(var i = 0; i < this.movementgrid.gridSizeX; i ++)
-    { 
-        for(var j = 0; j < this.movementgrid.gridSizeY; j ++)
-        {
-            console.log(this.highlightArray);
-            var tile = this.highlightArray[i][j];
-            if(this.walkableArray[i][j]==0)
-                tile.tint = 0xff00ff;
-            else
-                tile.tint = 0xffffff;
-        }
-    }
-}*/

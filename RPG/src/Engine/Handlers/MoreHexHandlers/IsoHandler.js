@@ -12,14 +12,19 @@ IsoHandler.prototype.checkHex=function(checkx, checky){
     //this is for top left
     //move to middle,bottem
     //+ width/2, + height 
+    //180, 90
+    var w = this.hexagonWidth;
+    var h = this.hexagonHeight;
     
-    var i = Math.floor(checkx / (this.hexagonWidth ));//- 2
-    var j = Math.floor(checky / (this.hexagonHeight)) * 2;// - 1
+    var i = Math.floor(checkx / (w ));//- 2
+    var j = Math.floor(checky / (h)) * 2;// - 1
 
-    var xQuadrant = Math.floor(checkx % (this.hexagonWidth - 2));
-    var yQuadrant = Math.floor(checky % (this.hexagonHeight - 1));
-    //console.log(checkx,checky,i,j,xQuadrant, yQuadrant);
+    var xQuadrant = Math.floor(checkx % (w - 2));
+    var yQuadrant = Math.floor(checky % (h - 1));
+    //console.log(checkx,checky,i,j,xQuadrant, yQuadrant, w, h);
     //
+    //this.touchmap.x = checkx;
+    //this.touchmap.y = checky;
     this.touchmap.update();
     this.touchmap.getPixelRGB (xQuadrant, yQuadrant, this.tempcolour);
     //

@@ -4,8 +4,8 @@
 		"Flat": [{
 			"height": 20,
 			"width": 10,
-			"hexWidth": 85,
-			"hexHeight": 51,
+			"hexWidth": 90,
+			"hexHeight": 53,
 			"tilesetid": "iso_medival_town0",
 			"tiletype": "Iso",
 			"handleSprite": true,

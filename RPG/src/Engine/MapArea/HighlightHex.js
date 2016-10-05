@@ -32,13 +32,15 @@ HighlightHex.prototype.setup = function()
         else
             high = this.add(new Phaser.Sprite(this.game, 0,0, "standardimages", "halfiso_highlight"));
         //
+        high.anchor.x = 0.5;
+        high.anchor.y = 1.0;
         this.neighborLights.push(light);
         light.add(high);
         this.add(light);
         
         if(this.showNumbers)
         {
-            var hexagonText = new Phaser.Text(this.game, 25, 25, i+"",{});
+            var hexagonText = new Phaser.Text(this.game, 0, -this.hexhandler.halfHexHeight, i+"",{});
             hexagonText.font = "arial";
             hexagonText.fontSize = 12;
             //console.log(hexagonText)
@@ -60,6 +62,7 @@ HighlightHex.prototype.setup = function()
     high.anchor.y = 1.0;
     //
     this.cursor.add(high);
+    this.cursor.x = -1000;
     this.add(this.cursor);
 }
 //
@@ -178,9 +181,10 @@ HighlightHex.prototype.highlighttileoffset = function(i,x,y,currenttile)
     var thetile = this.hexhandler.getTileByCords(currenttile.posx+x,currenttile.posy+y);
     if(thetile!=null)
     {
+        //console.log(this.hexhandler);//,this.hexhandle.bottomOffset)
         this.neighborLights[i].visible = true;
         this.neighborLights[i].x = thetile.x;
-        this.neighborLights[i].y = thetile.y;
+        this.neighborLights[i].y = thetile.y - this.hexhandler.bottomOffset;
     }
 }
 HighlightHex.prototype.cleanuptiles = function()
@@ -200,7 +204,7 @@ HighlightHex.prototype.moveCursor = function(currenttile)
     {
         this.cursor.visible = true;
         this.cursor.x = currenttile.x;
-        this.cursor.y = currenttile.y-15;
+        this.cursor.y = currenttile.y - this.hexhandler.bottomOffset;
     }
     else
     {
@@ -222,7 +226,7 @@ HighlightHex.prototype.highlighttilebytile = function(i,currenttile)
         //console.log(i,currenttile);
         this.neighborLights[i].visible = true;
         this.neighborLights[i].x = currenttile.x;
-        this.neighborLights[i].y = currenttile.y;
+        this.neighborLights[i].y = currenttile.y - this.hexhandler.bottomOffset;
     }
     else
     {

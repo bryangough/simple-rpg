@@ -34,6 +34,7 @@ PlayerCamera.prototype.adjustPosition = function(x, y)
 {
     this.gameref.map.mapGroup.x += x;
     this.gameref.map.mapGroup.y += y;
+    //console.log(this.gameref.map.mapGroup.x,this.gameref.map.mapGroup.y);
 }
 PlayerCamera.prototype.step = function(elapsedTime)
 {
