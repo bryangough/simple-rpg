@@ -1,0 +1,28 @@
+{"frames": [
+
+{
+	"filename": "halfiso_highlight",
+	"frame": {"x":2,"y":2,"w":90,"h":45},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":90,"h":45},
+	"sourceSize": {"w":90,"h":45}
+},
+{
+	"filename": "mousemapiso",
+	"frame": {"x":2,"y":49,"w":90,"h":45},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":90,"h":45},
+	"sourceSize": {"w":90,"h":45}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "standardimages.png",
+	"format": "RGBA8888",
+	"size": {"w":96,"h":96},
+	"scale": "0.5",
+	"smartupdate": "$TexturePacker:SmartUpdate:c92128be3b52d9585e612041e4051391:a225148718fdd2b89834072dee4a1a56:d176b664f701f5185988792eef17a062$"
+}
+}

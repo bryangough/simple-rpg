@@ -4,8 +4,8 @@ var Global = function ()
     this.pause = false;
     //this.movetotouch:true,
     this.showmovetile = false;
-    this.loadMap = 2;
+    this.loadMap = 0;
     this.language = "en";
     this.uilocation = "assets/basicUI/";
-    this.assetsLocation = "assets/paradox/";
+    this.assetsLocation = "assets/simpletown/";
 };

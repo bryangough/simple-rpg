@@ -42,13 +42,13 @@ BasicGame.LoadMap.prototype = {
         var spritesheetstoload = [];
         for (var key in tilesets) {
             var obj = tilesets[key];
-            //console.log('assets/'+obj.tileset+'.png', 'assets/'+obj.tileset+'.json');
+            console.log('assets/'+obj.tileset+'.png', 'assets/'+obj.tileset+'.json');
             this.secondLoader.atlasJSONHash(obj.tileset, this.game.global.assetsLocation + 'assets/'+obj.tileset+'.png', this.game.global.assetsLocation + 'assets/'+obj.tileset+'.json');
         }
         //gamedata.Items loop for InvetoryGraphicSheet 
         //or have ability to just set which other graphics to load
         
-        
+        this.secondLoader.atlasJSONHash('standardimages', this.game.global.assetsLocation + 'assets/standardimages.png', this.game.global.assetsLocation + 'assets/standardimages.json');
         //test if interface is different?
         this.secondLoader.atlasJSONHash('gameplayinterface', this.game.global.assetsLocation + 'assets/paradoxinterface.png', this.game.global.assetsLocation + 'assets/paradoxinterface.json');
 

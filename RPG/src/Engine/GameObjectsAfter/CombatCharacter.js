@@ -141,7 +141,7 @@ CombatCharacter.prototype.setupHealthBar = function()
     var count = 0;
     for(var i=0;i<this.shieldhp;i++)
     {
-        hpbar = this.game.make.image(0,0,"tiles2","bushGrass.png");
+        hpbar = this.game.make.image(0,0,'gameplayinterface',"combat_actionpoints0001.png");
 
         if(i%8==0)
         {
@@ -158,7 +158,8 @@ CombatCharacter.prototype.setupHealthBar = function()
     
     for(var i=0;i<this.selfhp;i++)
     {
-        hpbar = this.game.make.image(0,0,"tiles2","bushSand.png");
+        hpbar = this.game.make.image(0,0,'gameplayinterface',"combat_actionpoints0001.png");
+        hpbar.tint = 0x0000ff;
         if(i%8==0)
         {
             rowcount++;

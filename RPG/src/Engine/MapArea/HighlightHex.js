@@ -28,9 +28,9 @@ HighlightHex.prototype.setup = function()
         //console.log(this.hexhandler.tiletype);
         //
         if(this.hexhandler.tiletype=="HexIso")
-            high = this.add(new Phaser.Sprite(this.game, 0,0, "tiles2", "tile_highlight0002.png"));
+            high = this.add(new Phaser.Sprite(this.game, 0,0, "standardimages", "tile_highlight0002"));
         else
-            high = this.add(new Phaser.Sprite(this.game, 0,0, "tiles2", "halfiso_highlight.png"));
+            high = this.add(new Phaser.Sprite(this.game, 0,0, "standardimages", "halfiso_highlight"));
         //
         this.neighborLights.push(light);
         light.add(high);
@@ -53,9 +53,9 @@ HighlightHex.prototype.setup = function()
     var high;
     this.cursor = this.add(new Phaser.Group(this.game,null));
     if(this.hexhandler.tiletype=="HexIso")
-        high = this.add(new Phaser.Sprite(this.game, 0,0, "tiles2", "tile_highlight0002.png"));
+        high = this.add(new Phaser.Sprite(this.game, 0,0, "standardimages", "tile_highlight0002"));
     else
-        high = this.add(new Phaser.Sprite(this.game, 0,0, "tiles2", "halfiso_highlight.png"));
+        high = this.add(new Phaser.Sprite(this.game, 0,0, "standardimages", "halfiso_highlight"));
     //
     this.cursor.add(high);
     this.add(this.cursor);

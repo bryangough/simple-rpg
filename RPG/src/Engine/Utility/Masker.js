@@ -8,7 +8,8 @@ var Masker = function (game, maingame, maskableobjects)
     
     this.maskableobjects = maskableobjects;
     //?
-    this.mask = new Phaser.Image(game, 0, 0, "tiles2", "box/seethrough.png")
+    //this.mask = new Phaser.Image(game, 0, 0, "standardimages", "box/seethrough.png")
+    
     //this.maingame.objectGroup.add(this.mask);
     //this.maingame.objectGroup.add(mask);
 }

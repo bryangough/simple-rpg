@@ -43,11 +43,11 @@ var HexHandler = function (maingame, game, hexagonWidth, hexagonHeight, tiletype
     
     this.gradient = (this.hexagonHeight/4)/(this.hexagonWidth/2);
 
-    //var sprite = new Phaser.Image(game,0,0,"tiles2","hextiletouchmap.png");
+    //var sprite = new Phaser.Image(game,0,0,"standardimages","hextiletouchmap");
     if(this.tiletype=="HexIso")
-        this.sprite = new Phaser.Image(game,0,0,"tiles2","hexmousemap1.png");//mousemap
+        this.sprite = new Phaser.Image(game,0,0,"standardimages","hexmousemap1");//mousemap
     else
-        this.sprite = new Phaser.Image(game,0,0,"tiles2","mousemapiso.png");
+        this.sprite = new Phaser.Image(game,0,0,"standardimages","mousemapiso");
     
     this.touchmap = new Phaser.BitmapData (game,"touchmap",100, 50);
 	this.touchmap.draw(this.sprite, 0, 0);
@@ -346,20 +346,20 @@ HexHandler.prototype.doFloodFill = function(tile,range,ignorefirst)
             var n = this.fringes[k-1][i];
             if(n.posx % 2 == 1)
             {
-                this.addNeighbor(n, 0,    -1,k);
-                this.addNeighbor(n, -1,   0 ,k);
-                this.addNeighbor(n, 0,    +1,k);
-                this.addNeighbor(n, +1,   +1,k);
+                this.addNeighbor(n, 0,    -1, k);
+                this.addNeighbor(n, -1,   0, k);
+                this.addNeighbor(n, 0,    +1, k);
+                this.addNeighbor(n, +1,   +1, k);
                 this.addNeighbor(n, +1,   0, k);
                 this.addNeighbor(n, -1,   1, k);
             }
             else
             {
-                this.addNeighbor(n, -1,   -1,k);
+                this.addNeighbor(n, -1,   -1, k);
                 this.addNeighbor(n, -1,   0, k);
-                this.addNeighbor(n, 0,    +1,k);
+                this.addNeighbor(n, 0,    +1, k);
                 this.addNeighbor(n, +1,   0, k);
-                this.addNeighbor(n, 0,    -1,k);
+                this.addNeighbor(n, 0,    -1, k);
                 this.addNeighbor(n, 1,   -1, k);
             }
         }

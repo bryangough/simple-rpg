@@ -1,6 +1,6 @@
-var SimpleObject = function (game, x,y, spritesheet, imagename) 
+var SimpleObject = function (game, x,y, spritesheet, imagename, objectPassed) 
 {
-    //console.log(imagename);
+    //console.log(x,y,imagename);
     if(imagename=="undefined.png")
         imagename = "bushSand.png";
     Phaser.Image.call(this, game, x, y, spritesheet, imagename);
@@ -8,6 +8,11 @@ var SimpleObject = function (game, x,y, spritesheet, imagename)
     this.posy;
     this.anchor.x = 0.5;
     this.anchor.y = 1.0;
+    //
+    this.isox = objectPassed.x;
+    this.isoy = objectPassed.y;
+    this.isoz = objectPassed.z;
+    this.isoorder = objectPassed.order;
 }
 SimpleObject.prototype = Object.create(Phaser.Image.prototype);
 SimpleObject.constructor = SimpleObject;

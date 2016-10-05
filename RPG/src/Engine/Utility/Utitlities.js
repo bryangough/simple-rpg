@@ -1,7 +1,59 @@
 Utilties = function()
 {
 }
+/*
 
+    this.isox = objectPassed.x;
+    this.isoy = objectPassed.y;
+    this.isoz = objectPassed.z;
+    this.isoorder = objectPassed.order;
+    
+*/
+Utilties.customSortIso = function(a,b){
+    //console.log(a,b);
+    if(b.IsPlayer||a.IsPlayer)
+    {
+    //    console.log(a.posx, a.posy, b.posx, b.posy,a.y,b.y);
+    }
+    if(a.isox<b.isox)
+    {
+        return 1;
+    }
+    else if(a.isox>b.isox)
+    {
+        return -1;
+    }
+    else
+    {
+        if(a.isoz<b.isoz)
+        {
+            return 1;
+        }
+        if(a.isoz>b.isoz)
+        {
+            return -1;
+        }
+    }
+    if(a.isoy<b.isoy)
+    {
+        return -1;
+    }
+    else if(a.isoy>b.isoy)
+    {
+        return 1;
+    }
+    //
+    if(a.isoorder<b.isoorder)
+    {
+        return -1;
+    }
+    else if(a.isoorder>b.isoorder)
+    {
+        return 1;
+    }
+    return 0;
+    //-1 if a > b, 1 if a < b or 0 if a === b
+};
 Utilties.customSortHexOffsetIso = function(a,b){
     //console.log(a,b);
     if(b.IsPlayer||a.IsPlayer)

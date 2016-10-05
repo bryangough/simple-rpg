@@ -28,6 +28,7 @@ Map.prototype.initialMap = function(mapData, gameData, playerData){
     this.mapData = mapData;
     this.gameData = gameData;
     this.playerData = playerData;
+    //console.log(mapData, gameData, playerData);
     this.startpos = this.mapData.startPos;//.split("_");
     var currentmap = this.mapData.maps[this.startpos.map];
     //
@@ -138,12 +139,12 @@ Map.prototype.createMapTiles = function(passedMap){
 
                     if(layer1.handleMovement)//make tile
                     {
-                        temptile = new WalkableTile(this.game, tilereference.tile+".png", tilereference.spritesheet, i, j, tempPoint.x, tempPoint.y, this.gameRef);
+                        temptile = new WalkableTile(this.game, tilereference.tile, tilereference.spritesheet, i, j, tempPoint.x, tempPoint.y, this.gameRef);
                         hexagonArray[i][j]=temptile;//only if same
                     }
                     else
                     {
-                        temptile = new GraphicTile(this.game, tilereference.tile+".png", tilereference.spritesheet, i, j, tempPoint.x, tempPoint.y, this.gameRef);
+                        temptile = new GraphicTile(this.game, tilereference.tile, tilereference.spritesheet, i, j, tempPoint.x, tempPoint.y, this.gameRef);
                     }
                     this.hexagonGroup.add(temptile);
                    // this.addLocationTextToTile(tempPoint.x,tempPoint.y,hexagonWidth,hexagonHeight,i,j);
@@ -177,12 +178,12 @@ Map.prototype.createMapTiles = function(passedMap){
                         //this needs to be switched out
                         if(this.game.global.showmovetile)
                         {
-                            //var tile = new GraphicTile(this, "tile_highlight0002.png", "tiles2", i, j, tempPoint.x, tempPoint.y, this);
+                            //var tile = new GraphicTile(this, "tile_highlight0002", "standardimages", i, j, tempPoint.x, tempPoint.y, this);
                             var tile = null;
                             if(tiletype=="HexIso")
-                                tile = new GraphicTile(this.game, "tile_highlight0001.png", "tiles2", i, j, tempPoint.x, tempPoint.y, this);
+                                tile = new GraphicTile(this.game, "tile_highlight0001", "standardimages", i, j, tempPoint.x, tempPoint.y, this);
                             else
-                                tile = new GraphicTile(this.game, "halfiso_highlight.png", "tiles2", i, j, tempPoint.x, tempPoint.y, this);
+                                tile = new GraphicTile(this.game, "halfiso_highlight", "standardimages", i, j, tempPoint.x, tempPoint.y, this);
                             if(this.walkableArray[i][j]==0)
                                 tile.tint = 0xff0000;
 
@@ -253,12 +254,18 @@ Map.prototype.createMapTiles = function(passedMap){
                 else//this might not be complete true? //without any triggers the object is just a picture
                 {
                     var objectreference = this.getTile(objects[i].name,objects[i].tilesetid);
-                    spotx = objects[i].x;
-                    spoty = objects[i].y * -1;
+                    
+                    //var newtile = this.hexHandler.getTileByCords(objects[i].posx,objects[i].posy);
+                    tempPoint = this.spritegrid.GetMapCoords(objects[i].posx,objects[i].posy);
+                    //console.log(tempPoint, this.objectoffset, layer1.hexWidth, layer1.hexHeight);
+            
+                    //spotx = objects[i].x;
+                    //spoty = objects[i].y * -1;
+                    tempPoint.y -= objects[i].y * 90;
                     var tileobject = new SimpleObject(this.game,
-                                                            spotx + this.objectoffset.x,
-                                                            spoty + this.objectoffset.y,
-                                                            objectreference.spritesheet, objectreference.tile+".png");
+                                                            tempPoint.x + this.objectoffset.x*2 + layer1.hexWidth/2,
+                                                            tempPoint.y + this.objectoffset.y*2 + layer1.hexHeight/2,
+                                                            objectreference.spritesheet, objectreference.tile+"", objects[i]);
                     tileobject.posx = objects[i].posx;
                     tileobject.posy = objects[i].posy;
                     this.objectGroup.add(tileobject);
@@ -353,7 +360,7 @@ Map.prototype.createMapTiles = function(passedMap){
         if(this.interactiveObjects[i].eventDispatcher)
             this.interactiveObjects[i].eventDispatcher.doAction("OnStart", null);
     }
-    this.gameRef.camera.setFollowObject(this.playerCharacter, true);
+    //this.gameRef.camera.setFollowObject(this.playerCharacter, true);
     //console.log("create new map");
     this.redoMap = false;
 };
@@ -377,7 +384,8 @@ Map.prototype.update = function(elapsedTime)
     {
         this.interactiveObjects[i].step(elapsedTime);
     }
-    this.objectGroup.customSort (Utilties.customSortHexOffsetIso);
+    //this.objectGroup.customSort (Utilties.customSortHexOffsetIso);
+    this.objectGroup.customSort (Utilties.customSortIso);
 
 }
 Map.prototype.getCombatCharacters = function()
