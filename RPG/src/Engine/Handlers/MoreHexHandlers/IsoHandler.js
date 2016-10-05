@@ -9,43 +9,20 @@ IsoHandler.constructor = IsoHandler;
 IsoHandler.prototype.checkHex=function(checkx, checky){
     if(!this.hexagonArray)
         return;
+    //this is for top left
+    //move to middle,bottem
+    //+ width/2, + height 
     
-    var i = Math.floor(checkx / (this.hexagonWidth - 2));
-    var j = Math.floor(checky / (this.hexagonHeight - 1)) * 2;
+    var i = Math.floor(checkx / (this.hexagonWidth ));//- 2
+    var j = Math.floor(checky / (this.hexagonHeight)) * 2;// - 1
 
     var xQuadrant = Math.floor(checkx % (this.hexagonWidth - 2));
-    var yQuadrant = Math.floor( checky % (this.hexagonHeight - 1));
-
-    /*if(i<0)
-    {
-        i = 0;
-    }
-    if(j<0)
-    {
-        j = 0;
-    }
-    if(i>=this.maingame.map.movementgrid.gridSizeX)
-    {
-       i = this.maingame.map.movementgrid.gridSizeX;
-    }
-    if(j>=this.maingame.map.movementgrid.gridSizeY)
-    {
-       j = this.maingame.map.movementgrid.gridSizeY;
-    }
-    */
-    /*tile = this.hexagonArray[i][j]; 
-    if(tile!=null)
-    {
-        //this.sprite.x = tile.x;
-        //this.sprite.y = tile.y;
-    }*/
+    var yQuadrant = Math.floor(checky % (this.hexagonHeight - 1));
+    //console.log(checkx,checky,i,j,xQuadrant, yQuadrant);
     //
     this.touchmap.update();
     this.touchmap.getPixelRGB (xQuadrant, yQuadrant, this.tempcolour);
-    
-    //console.log(this.tempcolour,xQuadrant, yQuadrant,this.touchmap);
     //
-    //console.log(this.tempcolour,xQuadrant, yQuadrant);
     if(this.tempcolour.r==0xFF && this.tempcolour.g==0x00 && this.tempcolour.b==0x00)
     {
         //case 0xFF0000: // red top left        
@@ -69,7 +46,6 @@ IsoHandler.prototype.checkHex=function(checkx, checky){
         j++;
     }
     //
-    //console.log(j, this.maingame.map.movementgrid.gridSizeY);
     if(i==-1)
     {
         i=0;
@@ -90,24 +66,7 @@ IsoHandler.prototype.checkHex=function(checkx, checky){
         j=this.maingame.map.movementgrid.gridSizeY-1;
         i--;
     }
-    //re max
-    /*if(i<0)
-    {
-        i=0;
-    }
-    if(j<0)
-    {
-        j=0;
-    }
-    if(i>=this.maingame.map.movementgrid.gridSizeX)
-    {
-        i=this.maingame.map.movementgrid.gridSizeX-1;
-    }
-    if(j>=this.maingame.map.movementgrid.gridSizeY)
-    {
-        j=this.maingame.map.movementgrid.gridSizeY-1;
-    }*/
-       
+    //
     if(i<0 || j<0 || j>=this.maingame.map.movementgrid.gridSizeY || i>=this.maingame.map.movementgrid.gridSizeX)
     {
         return;
@@ -216,5 +175,117 @@ Point HexGeometry::fromScreen(const Point& pos) const {
         p2.y = p2.y - p2.x/2;
         return p2;
 }
+IsoHandler.prototype.checkHex=function(checkx, checky){
+    if(!this.hexagonArray)
+        return;
+    //this is for top left
+    //move to middle,bottem
+    //+ width/2, + height 
+    
+    var i = Math.floor(checkx / (this.hexagonWidth - 2));
+    var j = Math.floor(checky / (this.hexagonHeight - 1)) * 2;
 
+    var xQuadrant = Math.floor(checkx % (this.hexagonWidth - 2));
+    var yQuadrant = Math.floor(checky % (this.hexagonHeight - 1));
+
+    /*if(i<0)
+    {
+        i = 0;
+    }
+    if(j<0)
+    {
+        j = 0;
+    }
+    if(i>=this.maingame.map.movementgrid.gridSizeX)
+    {
+       i = this.maingame.map.movementgrid.gridSizeX;
+    }
+    if(j>=this.maingame.map.movementgrid.gridSizeY)
+    {
+       j = this.maingame.map.movementgrid.gridSizeY;
+    }
+    */
+    /*tile = this.hexagonArray[i][j]; 
+    if(tile!=null)
+    {
+        //this.sprite.x = tile.x;
+        //this.sprite.y = tile.y;
+    }*/
+    //
+   /* this.touchmap.update();
+    this.touchmap.getPixelRGB (xQuadrant, yQuadrant, this.tempcolour);
+    
+    //console.log(this.tempcolour,xQuadrant, yQuadrant,this.touchmap);
+    //
+    //console.log(this.tempcolour,xQuadrant, yQuadrant);
+    if(this.tempcolour.r==0xFF && this.tempcolour.g==0x00 && this.tempcolour.b==0x00)
+    {
+        //case 0xFF0000: // red top left        
+        i--;
+        j--;
+    }
+    if(this.tempcolour.r==0x00 && this.tempcolour.g==0xFF && this.tempcolour.b==0x00)
+    {
+        //case 0x00FF00: // green top right
+        j--;
+    }
+    if(this.tempcolour.r==0x00 && this.tempcolour.g==0x00 && this.tempcolour.b==0x00)
+    {
+        //case 0x000000: // black bottom left
+        i--;
+        j++;
+    }
+    if(this.tempcolour.r==0x00 && this.tempcolour.g==0x00 && this.tempcolour.b==0xFF)
+    {
+        //case 0x0000FF: // blue bottom right
+        j++;
+    }
+    //
+    //console.log(j, this.maingame.map.movementgrid.gridSizeY);
+    if(i==-1)
+    {
+        i=0;
+        j++;
+    }
+    if(j==-1)
+    {
+        j=0;
+        i++;
+    }
+    if(i==this.maingame.map.movementgrid.gridSizeX)
+    {
+        i=this.maingame.map.movementgrid.gridSizeX-1;
+        j--;
+    }
+    if(j==this.maingame.map.movementgrid.gridSizeY)
+    {
+        j=this.maingame.map.movementgrid.gridSizeY-1;
+        i--;
+    }
+    //re max
+    /*if(i<0)
+    {
+        i=0;
+    }
+    if(j<0)
+    {
+        j=0;
+    }
+    if(i>=this.maingame.map.movementgrid.gridSizeX)
+    {
+        i=this.maingame.map.movementgrid.gridSizeX-1;
+    }
+    if(j>=this.maingame.map.movementgrid.gridSizeY)
+    {
+        j=this.maingame.map.movementgrid.gridSizeY-1;
+    }*/
+       
+   /*if(i<0 || j<0 || j>=this.maingame.map.movementgrid.gridSizeY || i>=this.maingame.map.movementgrid.gridSizeX)
+    {
+        return;
+    }
+        
+    tile = this.hexagonArray[i][j]; 
+    return tile;
+}
 */

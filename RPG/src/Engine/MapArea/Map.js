@@ -64,8 +64,12 @@ Map.prototype.createMapTiles = function(passedMap){
         { 
             var hexagonWidth = layer1.hexWidth;
             var hexagonHeight = layer1.hexHeight;
-            this.objectoffset.x = hexagonWidth/2;
-            this.objectoffset.y = hexagonHeight;
+            //this.objectoffset.x = hexagonWidth/2;
+            //this.objectoffset.y = hexagonHeight;
+            
+            this.objectoffset.x = 0;//hexagonWidth + hexagonWidth/2;
+            this.objectoffset.y = 0;//hexagonHeight*2 + hexagonHeight/2;
+            console.log(this.objectoffset);
         }
     }
     for(mapscounter=0;mapscounter<passedMap.length;mapscounter++)
@@ -136,7 +140,8 @@ Map.prototype.createMapTiles = function(passedMap){
                     tilereference = this.getTile(objectName,tilesetid);
                     
                     tempPoint = this.spritegrid.GetMapCoords(i,j);
-
+                    tempPoint.x += this.objectoffset.x;
+                    tempPoint.y += this.objectoffset.y;
                     if(layer1.handleMovement)//make tile
                     {
                         temptile = new WalkableTile(this.game, tilereference.tile, tilereference.spritesheet, i, j, tempPoint.x, tempPoint.y, this.gameRef);
@@ -155,9 +160,6 @@ Map.prototype.createMapTiles = function(passedMap){
         this.highlightArray = [];
         if(layer1.handleMovement)
         { 
-           // this.objectoffset.x = hexagonWidth/2;
-            //this.objectoffset.y = hexagonHeight;
-            //console.log(this.objectoffset);
             for(var i = 0; i < this.gridSizeX; i ++)
             {
                 if(!layer1.handleSprite)
@@ -263,8 +265,8 @@ Map.prototype.createMapTiles = function(passedMap){
                     //spoty = objects[i].y * -1;
                     tempPoint.y -= objects[i].y * 90;
                     var tileobject = new SimpleObject(this.game,
-                                                            tempPoint.x + this.objectoffset.x*2 + layer1.hexWidth/2,
-                                                            tempPoint.y + this.objectoffset.y*2 + layer1.hexHeight/2,
+                                                            tempPoint.x+this.objectoffset.x,
+                                                            tempPoint.y+this.objectoffset.y,
                                                             objectreference.spritesheet, objectreference.tile+"", objects[i]);
                     tileobject.posx = objects[i].posx;
                     tileobject.posy = objects[i].posy;
@@ -322,7 +324,8 @@ Map.prototype.createMapTiles = function(passedMap){
     //this.game.add.existing(this.highlightHex);
     this.highlightHex.setup();
     this.highlightGroup.add(this.highlightHex);
-
+    //this.highlightGroup.x -= this.objectoffset.x;
+    //this.highlightGroup.y -= this.objectoffset.y;
     //
     //console.log(this.game);
     for(var i=0;i<this.interactiveObjects.length;i++)
@@ -340,7 +343,7 @@ Map.prototype.createMapTiles = function(passedMap){
         this.playerCharacter.dosetup();
     }    
     
-    this.playerCharacter.setLocationByTile(hexagonArray[this.startpos.x]    [this.startpos.y]);
+    this.playerCharacter.setLocationByTile(hexagonArray[this.startpos.x][this.startpos.y]);
     this.game.add.existing(this.playerCharacter);
     this.objectGroup.add(this.playerCharacter);
     this.playerCharacter.resetMoving();
@@ -353,8 +356,7 @@ Map.prototype.createMapTiles = function(passedMap){
     this.mapGroup.y = (440-hexagonHeight*Math.ceil(this.gridSizeY/2)*this.mapGroup.scale.y);
     
     this.hexagonGroup.sort('y', Phaser.Group.SORT_ASCENDING);
-    
-    
+
     for(var i=0;i<this.interactiveObjects.length;i++)
     {
         if(this.interactiveObjects[i].eventDispatcher)

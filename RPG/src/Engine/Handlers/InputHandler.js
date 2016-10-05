@@ -52,11 +52,12 @@ InputHandler.prototype.onMove = function(pointer, x, y)
     {
         return;
     }
-    var pointerx = (this.gameref.input.worldX-this.gameref.map.mapGroup.x)/this.gameref.map.scaledto;
-    var pointery = (this.gameref.input.worldY-this.gameref.map.mapGroup.y)/this.gameref.map.scaledto;
+    //these number have to be adjuested 94, 60?
+    var pointerx = (this.gameref.input.worldX-this.gameref.map.mapGroup.x+35)/this.gameref.map.scaledto;
+    var pointery = (this.gameref.input.worldY-this.gameref.map.mapGroup.y+53)/this.gameref.map.scaledto;
 
     var moveIndex =  this.gameref.map.hexHandler.checkHex(pointerx, pointery);
-    var playertile = this.gameref.map.hexHandler.checkHex(this.gameref.map.playerCharacter.x, this.gameref.map.playerCharacter.y);
+    //var playertile = this.gameref.map.hexHandler.checkHex(this.gameref.map.playerCharacter.x, this.gameref.map.playerCharacter.y);
     if(moveIndex)
     {
         //this.tiletest.x = moveIndex.x;

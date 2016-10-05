@@ -136,8 +136,8 @@ MovingCharacter.prototype.setLocationByTile = function(tile)
 {
     if(tile==null)
         tile  = this.map.hexHandler.getTileByCords(this.posx, this.posy);
-    this.x = tile.x+this.map.hexHandler.halfHex;
-    this.y = tile.y+this.map.hexHandler.halfHexHeight;
+    this.x = tile.x;//+this.map.hexHandler.halfHex;
+    this.y = tile.y-this.map.hexHandler.halfHexHeight;
     this.oldTile = tile;
     this.currentTile = tile;
     //

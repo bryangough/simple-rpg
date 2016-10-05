@@ -114,7 +114,7 @@ BasicGame.Game.prototype = {
         this.gGameMode.render();
         
         this.textUIHandler.update(elapsedTime);
-        this.map.masker.updateMasks(this.input.worldX-this.map.mapGroup.x,this.input.worldY-this.map.mapGroup.y);
+        //this.map.masker.updateMasks(this.input.worldX-this.map.mapGroup.x,this.input.worldY-this.map.mapGroup.y);
         this.camera.step(elapsedTime);
         //this.masker.updateMasks(this.playerCharacter.x, this.playerCharacter.y, this.playerCharacter.posx, this.playerCharacter.posy);
         //fps.text = this.game.time.fps;

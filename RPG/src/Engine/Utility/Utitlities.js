@@ -15,39 +15,72 @@ Utilties.customSortIso = function(a,b){
     {
     //    console.log(a.posx, a.posy, b.posx, b.posy,a.y,b.y);
     }
-    if(a.isox<b.isox)
+    if(a.isox!=null && b.isox!=null)
     {
-        return 1;
-    }
-    else if(a.isox>b.isox)
-    {
-        return -1;
-    }
-    else
-    {
-        if(a.isoz<b.isoz)
+        if(a.isox<b.isox)
         {
             return 1;
         }
-        if(a.isoz>b.isoz)
+        else if(a.isox>b.isox)
         {
             return -1;
         }
+        else
+        {
+            if(a.isoz<b.isoz)
+            {
+                return 1;
+            }
+            if(a.isoz>b.isoz)
+            {
+                return -1;
+            }
+        }
+        if(a.isoy<b.isoy)
+        {
+            return -1;
+        }
+        else if(a.isoy>b.isoy)
+        {
+            return 1;
+        }
+        //
+        if(a.isoorder<b.isoorder)
+        {
+            return -1;
+        }
+        else if(a.isoorder>b.isoorder)
+        {
+            return 1;
+        }
     }
-    if(a.isoy<b.isoy)
+    if(a.posy==b.posy)
+    {
+        if(a.posx<b.posx)
+        {
+            return 1;
+        }
+        else if(a.posx>b.posx)
+        {
+            return -1;
+        }
+        else
+        {
+            if(a.y<b.y)
+            {
+                return -1;
+            }
+            if(a.y>b.y)
+            {
+                return 1;
+            }
+        }
+    }
+    else if(a.posy<b.posy)
     {
         return -1;
     }
-    else if(a.isoy>b.isoy)
-    {
-        return 1;
-    }
-    //
-    if(a.isoorder<b.isoorder)
-    {
-        return -1;
-    }
-    else if(a.isoorder>b.isoorder)
+    else if(a.posy>b.posy)
     {
         return 1;
     }

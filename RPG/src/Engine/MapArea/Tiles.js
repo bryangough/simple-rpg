@@ -138,6 +138,8 @@ var SimpleTile = function(maingame, posx, posy, x, y)
     this.posx = posx;
     this.posy = posy;
     this.moverontile = null;
+    //this.anchor.x = 0.5;
+    //this.anchor.y = 1.0;
 }
 SimpleTile.prototype.callFunction = function(fnstring,fnparams) 
 {
@@ -179,6 +181,8 @@ var GraphicTile = function(game, tileName, spritesheet, posx, posy, x, y, mainga
     this.maingame = maingame;
     //this.posx = posx;
     //this.posy = posy;
+    //this.anchor.x = 0.5;
+    //this.anchor.y = 1.0;
 }
 GraphicTile.prototype = Object.create(Phaser.Image.prototype);
 GraphicTile.constructor = GraphicTile;
@@ -196,6 +200,8 @@ var BaseTile = function(game, tileName, spritesheet, posx, posy, x, y, maingame)
     this.maingame = maingame;
     //this.posx = posx;
     //this.posy = posy;
+    this.anchor.x = 0.5;
+    this.anchor.y = 1.0;
 }
 BaseTile.prototype = Object.create(Phaser.Sprite.prototype);
 BaseTile.constructor = BaseTile;
@@ -223,13 +229,14 @@ BaseTile.prototype.changeWalkable = function(walkableto)
 //
 var WalkableTile = function(game,tileName,spritesheet, posx,posy,x,y, maingame)
 {
-    //Phaser.Sprite.call(this, game, x,y, spritesheet,tileName);
+    //system.
     BaseTile.call(this, game,tileName,spritesheet, posx,posy,x,y, maingame)
     this.walkable = true;  
     this.openair = true;
 
     this.posx = posx;
     this.posy = posy;
+    
     
     this.eventDispatcher;
 };
