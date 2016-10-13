@@ -19,7 +19,7 @@ var Map = function (game, gameRef)
     this.highlightArray;
     
     this.mapGroup;
-    this.scaledto = 1;//0.8;
+    this.scaledto = 0.8;
     
     this.redoMap = false;
 }
@@ -64,11 +64,11 @@ Map.prototype.createMapTiles = function(passedMap){
         { 
             var hexagonWidth = layer1.hexWidth;
             var hexagonHeight = layer1.hexHeight;
-            //this.objectoffset.x = hexagonWidth/2;
-            //this.objectoffset.y = hexagonHeight;
+            this.objectoffset.x = hexagonWidth/2;
+            this.objectoffset.y = hexagonHeight;
             
-            this.objectoffset.x = 0;//hexagonWidth + hexagonWidth/2;
-            this.objectoffset.y = 0;//hexagonHeight*2 + hexagonHeight/2;
+            //this.objectoffset.x = 0;//hexagonWidth + hexagonWidth/2;
+            //this.objectoffset.y = 0;//hexagonHeight*2 + hexagonHeight/2;
             //console.log(this.objectoffset);
         }
     }
@@ -150,6 +150,9 @@ Map.prototype.createMapTiles = function(passedMap){
                     //tempPoint.y += this.objectoffset.y;
                     if(layer1.handleMovement)//make tile
                     {
+                        var ret = this.spritegrid.projectGrid(tempPoint.x/(hexagonWidth/2), tempPoint.y/hexagonHeight);
+                        console.log(ret,i,j);
+                        console.log(this.spritegrid.projectIso(ret.x,0,ret.y));
                         temptile = new WalkableTile(this.game, tilereference.tile, tilereference.spritesheet, i, j, tempPoint.x, tempPoint.y, this.gameRef);
                         hexagonArray[i][j]=temptile;//only if same
                     }
@@ -267,10 +270,12 @@ Map.prototype.createMapTiles = function(passedMap){
                     //var newtile = this.hexHandler.getTileByCords(objects[i].posx,objects[i].posy);
                     tempPoint = this.spritegrid.GetMapCoords(objects[i].posx,objects[i].posy);
                     //console.log(tempPoint, this.objectoffset, layer1.hexWidth, layer1.hexHeight);
-            
+                    //tempPoint.x -= this.hexHandler.halfHex;
+                    //tempPoint.y += this.hexHandler.halfHexHeight;
+
                     //spotx = objects[i].x;
                     //spoty = objects[i].y * -1;
-                    tempPoint.y -= objects[i].y * 90;
+                    //tempPoint.y -= objects[i].y * 90;
                     var tileobject = new SimpleObject(this.game,
                                                             tempPoint.x+this.objectoffset.x,
                                                             tempPoint.y+this.objectoffset.y,
@@ -414,8 +419,8 @@ Map.prototype.getCombatCharacters = function()
     return returnArray;
 }
 Map.prototype.addLocationTextToTile = function(x,y,width,height,i,j){
-    //var hexagonText = this.gameRef.add.text(x+width/2-5,y+height/2+3,i+","+j);
-    var hexagonText = this.gameRef.add.text(x,y - this.hexHandler.bottomOffset -this.hexHandler.halfHexHeight,i+","+j);
+    var hexagonText = this.gameRef.add.text(x+width/2-5,y+height/2+3,i+","+j);
+    //var hexagonText = this.gameRef.add.text(x,y,i+","+j);//- this.hexHandler.bottomOffset -this.hexHandler.halfHexHeight
     //var hexagonText = this.add.text(x+5,y+3,i+","+j);
     hexagonText.font = "arial";
     hexagonText.fontSize = 10;
@@ -486,10 +491,13 @@ Map.prototype.refreshWalkablView = function(){
         {
             //console.log(this.hex
             var tile = this.hexHandler.hexagonArray[i][j];
-            if(this.walkableArray[i][j]==0)
+            if(this.walkableArray[i][j].isWalkable==0)
+            {
+                console.log("not walk");
                 tile.tint = 0xff00ff;
+            }
             else
-                tile.tint = 0xffffff;
+                tile.tint = 0x33ff33;
         }
     }
 }

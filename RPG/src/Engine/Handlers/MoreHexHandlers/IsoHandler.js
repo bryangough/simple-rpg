@@ -16,8 +16,8 @@ IsoHandler.prototype.checkHex=function(checkx, checky){
     var w = this.hexagonWidth;
     var h = this.hexagonHeight;
     
-    var i = Math.floor(checkx / (w ));//- 2
-    var j = Math.floor(checky / (h)) * 2;// - 1
+    var i = Math.floor(checkx / (w - 2));//
+    var j = Math.floor(checky / (h - 1)) * 2;// 
 
     var xQuadrant = Math.floor(checkx % (w - 2));
     var yQuadrant = Math.floor(checky % (h - 1));

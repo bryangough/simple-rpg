@@ -435,7 +435,7 @@ EasyStar.js = function() {
 		}
 
 		//End point is not an acceptable tile.
-		/*var endTile = collisionGrid[endX][endY];
+		/*
 		var isAcceptable = false;
 		for (var i = 0; i < acceptableTiles.length; i++) {
             
@@ -445,11 +445,12 @@ EasyStar.js = function() {
 			}
 		}*/
 
-        /*console.log(endTile, isAcceptable);
-		if (isAcceptable === false) {
+        //console.log(endTile, isAcceptable);
+        var endTile = collisionGrid[endX][endY];
+		if (endTile.walkable === false) {
 			callbackWrapper(null);
 			return;
-		}*/
+		}
 
 		//Create the instance
 		var instance = new EasyStar.instance();

@@ -54,22 +54,26 @@ InputHandler.prototype.onMove = function(pointer, x, y)
     }
     //these number have to be adjuested 94, 60?
     //85, 51
-    var pointerx = (this.gameref.input.worldX-this.gameref.map.mapGroup.x)/this.gameref.map.scaledto;
-    var pointery = (this.gameref.input.worldY-this.gameref.map.mapGroup.y)/this.gameref.map.scaledto;
+    //var pointerx = (this.gameref.input.worldX-this.gameref.map.mapGroup.x+ this.gameref.map.hexHandler.halfHex/2) / this.gameref.map.scaledto;
+    //var pointery = (this.gameref.input.worldY-this.gameref.map.mapGroup.y+ this.gameref.map.hexHandler.bottomOffset + this.gameref.map.hexHandler.halfHexHeight) / this.gameref.map.scaledto;
+    
+    var pointerx = (this.gameref.input.worldX-this.gameref.map.mapGroup.x) / this.gameref.map.scaledto;
+    var pointery = (this.gameref.input.worldY-this.gameref.map.mapGroup.y) / this.gameref.map.scaledto;
 
     //pointerx -= this.gameref.map.hexHandler.halfHex;
     //pointery += this.gameref.map.hexHandler.bottomOffset + this.gameref.map.hexHandler.halfHexHeight;
     var moveIndex =  this.gameref.map.hexHandler.checkHex(pointerx, pointery);
     
-    var playertile = this.gameref.map.hexHandler.checkHex(this.gameref.map.playerCharacter.x, this.gameref.map.playerCharacter.y + this.gameref.map.hexHandler.bottomOffset + this.gameref.map.hexHandler.halfHexHeight);
-    console.log(moveIndex.posx,moveIndex.posy);
-    //var playertile = this.gameref.map.hexHandler.checkHex( this.gameref.map.playerCharacter.x, this.gameref.map.playerCharacter.y);
+    /*var playertile = this.gameref.map.hexHandler.checkHex(
+        this.gameref.map.playerCharacter.x + this.gameref.map.hexHandler.halfHex/2, this.gameref.map.playerCharacter.y + this.gameref.map.hexHandler.bottomOffset + this.gameref.map.hexHandler.halfHexHeight);*/
+    //console.log(moveIndex.posx,moveIndex.posy);
+    var playertile = this.gameref.map.hexHandler.checkHex( this.gameref.map.playerCharacter.x, this.gameref.map.playerCharacter.y);
     //console.log("width "+moveIndex.width,moveIndex.height);
     //console.log(playertile,this.gameref.map.playerCharacter.x, this.gameref.map.playerCharacter.y);
     if(moveIndex)
     {
-        this.gameref.map.hexHandler.sprite.x = playertile.x;
-        this.gameref.map.hexHandler.sprite.y = playertile.y - this.gameref.map.hexHandler.bottomOffset;
+        //this.gameref.map.hexHandler.sprite.x = playertile.x;
+        //this.gameref.map.hexHandler.sprite.y = playertile.y;// - this.gameref.map.hexHandler.bottomOffset;
         //this.tiletest.y = moveIndex.y;
     }
     //console.log(playertile);
@@ -79,7 +83,7 @@ InputHandler.prototype.onMove = function(pointer, x, y)
 
     //console.log(this.input.worldX,this.gameref.map.mapGroup.x,this.input.worldX-this.gameref.map.mapGroup.x);
 
-    //this.gameref.map.highlightHex.doShowPath(this.gameref.pathfinder,playertile,moveIndex);
+    this.gameref.map.highlightHex.doShowPath(this.gameref.pathfinder,playertile,moveIndex);
     //this.gameref.map.hexHandler.dolines(playertile, moveIndex, false, this.gameref.map.highlightHex);
     //var fridges = this.gameref.map.hexHandler.doFloodFill(moveIndex,6,true);
     //this.gameref.map.highlightHex.drawFringes(fridges);

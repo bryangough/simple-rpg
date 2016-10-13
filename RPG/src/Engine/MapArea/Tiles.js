@@ -13,6 +13,8 @@ var SimpleObject = function (game, x,y, spritesheet, imagename, objectPassed)
     this.isoy = objectPassed.y;
     this.isoz = objectPassed.z;
     this.isoorder = objectPassed.order;
+    
+    //console.log(this.posx);
 }
 SimpleObject.prototype = Object.create(Phaser.Image.prototype);
 SimpleObject.constructor = SimpleObject;
@@ -25,6 +27,11 @@ var Walkable = function(arrayIn)
     this.d = arrayIn.d;
     
     this.walkable = true;
+    
+    if(this.l==0 && this.u==0 && this.r==0 && this.d==0)
+    {
+        this.walkable = false;
+    }    
 }
 Walkable.prototype.isWalkable = function(atx, aty, dirx, diry)
 {
@@ -69,6 +76,24 @@ var Grid = function(maingame, layer1)
     this.type = layer1.tiletype;
     
     this.coords = new Point(0,0);
+}
+Grid.prototype.projectIso = function(x, y, z) 
+{
+    return {
+        x: Math.floor((x - z)/2),
+        y: Math.abs(x+z)
+    };
+}
+Grid.prototype.projectGrid = function(x, y) 
+{
+    //ignore y since all grids
+    var z0 = y/2 - x;
+    var x0 = y-z0
+    return {
+        x: x0,
+        y: 0,
+        z: z0
+    }
 }
 Grid.prototype.GetMapCoords = function(i,j)
 {
@@ -249,8 +274,13 @@ var BaseTile = function(game, tileName, spritesheet, posx, posy, x, y, maingame)
     this.maingame = maingame;
     //this.posx = posx;
     //this.posy = posy;
-    this.anchor.x = 0.5;
-    this.anchor.y = 1.0;
+    //this.anchor.x = 0.5;
+    //this.anchor.y = 1.0;
+    
+    this.isox = -1;
+    this.isoy = -1;
+    this.isoz = -1;
+    this.isoorder = -1;
 }
 BaseTile.prototype = Object.create(Phaser.Sprite.prototype);
 BaseTile.constructor = BaseTile;
@@ -285,7 +315,6 @@ var WalkableTile = function(game,tileName,spritesheet, posx,posy,x,y, maingame)
 
     this.posx = posx;
     this.posy = posy;
-    
     
     this.eventDispatcher;
 };

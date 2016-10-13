@@ -136,8 +136,8 @@ MovingCharacter.prototype.setLocationByTile = function(tile)
 {
     if(tile==null)
         tile  = this.map.hexHandler.getTileByCords(this.posx, this.posy);
-    this.x = tile.x;//+this.map.hexHandler.halfHex;
-    this.y = tile.y-this.map.hexHandler.halfHexHeight;//-this.map.hexHandler.bottomOffset
+    this.x = tile.x+this.map.hexHandler.halfHex;
+    this.y = tile.y+this.map.hexHandler.halfHexHeight;//-this.map.hexHandler.bottomOffset
     this.oldTile = tile;
     this.currentTile = tile;
     //
@@ -160,8 +160,8 @@ MovingCharacter.prototype.setDirection = function()
     //console.log("setDirection",this.nextTile.y,this.map.hexHandler.halfHexHeight,this.y);
     if(this.nextTile!=null)
     {
-        this.dir.x =  this.nextTile.x-this.x;//+this.map.hexHandler.halfHex
-        this.dir.y =  this.nextTile.y+this.map.hexHandler.halfHexHeight-this.y;
+        this.dir.x =  this.nextTile.x+this.map.hexHandler.halfHex-this.x;//
+        this.dir.y =  this.nextTile.y+this.map.hexHandler.halfHexHeight-this.y;//
         //this.dir.x =  this.nextTile.x-this.x;
         //this.dir.y =  this.nextTile.y+this.map.hexHandler.bottomOffset+this.map.hexHandler.halfHexHeight-this.y;
         this.dir.normalize();
@@ -336,6 +336,7 @@ MovingCharacter.prototype.findtile = function()
         this.posx = onmap.x;
         this.posy = onmap.y;
     }
+    //console.log(this.posx, this.posy);
 }
 //None, Wander, Path?
 //should this be done with states?
@@ -451,7 +452,7 @@ MovingCharacter.prototype.step = function(elapseTime)
                 if(this.pathlocation>=this.path.length || this.limit==0)// at last tile, now walk to the center
                 {
                     this.pathlocation=this.path.length;
-                    var testx = this.currentTile.x;//+this.map.hexHandler.halfHex;
+                    var testx = this.currentTile.x+this.map.hexHandler.halfHex;
                     var testy = this.currentTile.y+this.map.hexHandler.halfHexHeight;
                     
                     var range = 3;
@@ -488,6 +489,7 @@ MovingCharacter.prototype.step = function(elapseTime)
         this.prevx = this.x;
         this.prevy = this.y;
     }
+    
     //this should be changed?
     if(this.dir.x<0)
         this.scale.x = -1;

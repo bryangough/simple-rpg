@@ -32,8 +32,8 @@ HighlightHex.prototype.setup = function()
         else
             high = this.add(new Phaser.Sprite(this.game, 0,0, "standardimages", "halfiso_highlight"));
         //
-        high.anchor.x = 0.5;
-        high.anchor.y = 1.0;
+        //high.anchor.x = 0.5;
+        //high.anchor.y = 1.0;
         this.neighborLights.push(light);
         light.add(high);
         this.add(light);
@@ -58,8 +58,8 @@ HighlightHex.prototype.setup = function()
         high = this.add(new Phaser.Sprite(this.game, 0,0, "standardimages", "tile_highlight0002"));
     else
         high = this.add(new Phaser.Sprite(this.game, 0,0, "standardimages", "halfiso_highlight"));
-    high.anchor.x = 0.5;
-    high.anchor.y = 1.0;
+    //high.anchor.x = 0.5;
+    //high.anchor.y = 1.0;
     //
     this.cursor.add(high);
     this.cursor.x = -1000;
