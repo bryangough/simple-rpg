@@ -5,7 +5,7 @@ var HighlightHex = function (game, maingame, hexhandler)
     this.maingame = maingame;
     
     this.hexhandler = hexhandler;
-    this.showNumbers = true;
+    this.showNumbers = false;
     
     this.neighborLights = [];
     

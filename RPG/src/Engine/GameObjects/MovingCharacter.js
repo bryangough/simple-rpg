@@ -146,6 +146,7 @@ MovingCharacter.prototype.setLocationByTile = function(tile)
     this.findtile();
     this.resetMoving();
     this.currentTile.changeWalkable(false);
+    this.updateIso();
 }
 //this is only avaliable to players - for when we have multiple players moving around
 MovingCharacter.prototype.gotoAnotherMap = function(map, tile) 
@@ -245,6 +246,7 @@ MovingCharacter.prototype.moveto = function(moveIndex, selectedPosition)
         {
             this.currentTile = this.map.hexHandler.checkHex(this.x,this.y);
             this.setLocationByTile(this.currentTile);
+            this.updateIso();
         }
         if(this.objectmovingto!=null && this.objectmovingto.areWeNeighbours(this.currentTile)){
             this.atTargetTile();
@@ -400,6 +402,7 @@ MovingCharacter.prototype.finishMove = function(successful)
     {
         this.atTargetTile();
     }
+    this.updateIso();
 }
 //
 MovingCharacter.prototype.step = function(elapseTime) 
@@ -429,6 +432,7 @@ MovingCharacter.prototype.step = function(elapseTime)
             //need to test if next spot is now not walkable
             //am I getting the wrong hex?
             this.currentTile = this.map.hexHandler.checkHex(this.x,this.y);
+            this.updateIso();
             //console.log(this.oldTile, this.currentTile);
             if(this.oldTile != this.currentTile)
             {
@@ -495,6 +499,8 @@ MovingCharacter.prototype.step = function(elapseTime)
         this.scale.x = -1;
     else if(this.dir.x>0)
         this.scale.x = 1;
+    
+    
 }
 
     //this.changeState("idle");

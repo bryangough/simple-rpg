@@ -4,20 +4,38 @@ var SimpleObject = function (game, x,y, spritesheet, imagename, objectPassed)
     if(imagename=="undefined.png")
         imagename = "bushSand.png";
     Phaser.Image.call(this, game, x, y, spritesheet, imagename);
+    this.gameref = game;
     this.posx;
     this.posy;
     this.anchor.x = 0.5;
     this.anchor.y = 1.0;
     //
-    this.isox = objectPassed.x;
-    this.isoy = objectPassed.y;
-    this.isoz = objectPassed.z;
+    //if(objectPassed.x!=n)
+    this.iso = new Vec3(objectPassed.x, objectPassed.y, objectPassed.z);
     this.isoorder = objectPassed.order;
+    //for now. This might be changed.
+    this.y += this.iso.y * -50;
+    this.adjustVisible(0);
     
-    //console.log(this.posx);
+    //this.staticobjects
 }
 SimpleObject.prototype = Object.create(Phaser.Image.prototype);
 SimpleObject.constructor = SimpleObject;
+//
+SimpleObject.prototype.adjustVisible = function(newVisible)
+{
+    this.tint = 0xffffff * newVisible;
+}
+SimpleObject.prototype.dosetup = function(hexHandler)
+{
+    //find tile based on posx, posy
+    var tile = hexHandler.getTileByCords(this.posx,this.posy);
+    //console.log(tile);
+    if( tile != null)
+    {
+        tile.staticobjects.push(this);
+    }
+}
 //
 var Walkable = function(arrayIn)
 {
@@ -86,14 +104,12 @@ Grid.prototype.projectIso = function(x, y, z)
 }
 Grid.prototype.projectGrid = function(x, y) 
 {
-    //ignore y since all grids
-    var z0 = y/2 - x;
-    var x0 = y-z0
-    return {
-        x: x0,
-        y: 0,
-        z: z0
-    }
+    //ignore y since all grids?
+    var x0 = Math.floor(y/2 - x);
+    var z0 =  y - x0;
+    x0 = -1 * x0;
+    z0 = -1 * Math.abs(z0);
+    return new Vec3(x0, 0, z0);
 }
 Grid.prototype.GetMapCoords = function(i,j)
 {
@@ -277,10 +293,10 @@ var BaseTile = function(game, tileName, spritesheet, posx, posy, x, y, maingame)
     //this.anchor.x = 0.5;
     //this.anchor.y = 1.0;
     
-    this.isox = -1;
-    this.isoy = -1;
-    this.isoz = -1;
+    this.iso = null;//new Vec3(-1,-1,-1);
     this.isoorder = -1;
+    
+    this.staticobjects = [];
 }
 BaseTile.prototype = Object.create(Phaser.Sprite.prototype);
 BaseTile.constructor = BaseTile;
@@ -302,6 +318,21 @@ BaseTile.prototype.changeWalkable = function(walkableto)
     this.walkable = walkableto;
     this.maingame.updatewalkable = true;
 }
+BaseTile.prototype.adjustVisible = function(newVisible)
+{
+    this.tint = 0xffffff * newVisible;
+    //console.log(this.staticobjects);
+    if(this.staticobjects.length>0)
+    {
+        for(var i=0;i<this.staticobjects.length;i++)
+        {
+            if(this.staticobjects[i])
+            {
+                this.staticobjects[i].adjustVisible(newVisible);
+            }
+        }
+    }
+}
 //
 //WalkableTile
 //
@@ -317,6 +348,7 @@ var WalkableTile = function(game,tileName,spritesheet, posx,posy,x,y, maingame)
     this.posy = posy;
     
     this.eventDispatcher;
+    this.adjustVisible(0.2);
 };
 WalkableTile.prototype = Object.create(BaseTile.prototype);
 WalkableTile.constructor = WalkableTile;

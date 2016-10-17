@@ -11,6 +11,7 @@ var Map = function (game, gameRef)
 
     
     this.interactiveObjects = [];
+    this.staticObjects = [];
     this.paths = [];
     this.maskableobjects;
     this.spritegrid;
@@ -49,6 +50,7 @@ Map.prototype.createMapTiles = function(passedMap){
     var waterTilesArray = [];
     //
     this.interactiveObjects = [];
+    this.staticObjects = [];
     //
 
     //
@@ -150,9 +152,12 @@ Map.prototype.createMapTiles = function(passedMap){
                     //tempPoint.y += this.objectoffset.y;
                     if(layer1.handleMovement)//make tile
                     {
-                        var ret = this.spritegrid.projectGrid(tempPoint.x/(hexagonWidth/2), tempPoint.y/hexagonHeight);
-                        console.log(ret,i,j);
-                        console.log(this.spritegrid.projectIso(ret.x,0,ret.y));
+                        //var ret = this.spritegrid.projectGrid(tempPoint.x/(hexagonWidth/2), tempPoint.y/hexagonHeight);
+                        var ret = this.spritegrid.projectGrid(i,j);
+                        //console.log("*projectGrid*",ret);
+                        //console.log("**projectIso**",this.spritegrid.projectIso(ret.x,0,ret.z),i,j);
+                        
+                        
                         temptile = new WalkableTile(this.game, tilereference.tile, tilereference.spritesheet, i, j, tempPoint.x, tempPoint.y, this.gameRef);
                         hexagonArray[i][j]=temptile;//only if same
                     }
@@ -183,8 +188,8 @@ Map.prototype.createMapTiles = function(passedMap){
                     //this.walkableArray[i][j] = 1;
                     if(!layer1.handleSprite)//no sprite - need to something to select (this might not need to be destroyed)
                     {
-                        tempPoint = this.movementgrid.GetMapCoords(i,j);
-                        hexagonArray[i][j] = new SimpleTile(this.gameRef,i,j,tempPoint.x,tempPoint.y);
+                        //tempPoint = this.movementgrid.GetMapCoords(i,j);
+                        //hexagonArray[i][j] = new SimpleTile(this.gameRef,i,j,tempPoint.x,tempPoint.y);
 
                         //this needs to be switched out
                         /*if(this.game.global.showmovetile)
@@ -207,7 +212,7 @@ Map.prototype.createMapTiles = function(passedMap){
                     //if(this.walkableArray[i][j] == 0)
                     //{                    
                         //hexagonArray[i][j].walkable = false;
-                        hexagonArray[i][j].walkHandler = this.walkableArray[i][j];
+                    hexagonArray[i][j].walkHandler = this.walkableArray[i][j];
                     //}
                 }
             }
@@ -283,6 +288,7 @@ Map.prototype.createMapTiles = function(passedMap){
                     tileobject.posx = objects[i].posx;
                     tileobject.posy = objects[i].posy;
                     this.objectGroup.add(tileobject);
+                    this.staticObjects.push(tileobject);
                     //
                     if(objects[i].maskable){//maskable objects to check when player/mouse move
                         this.maskableobjects.push(tileobject);
@@ -346,6 +352,12 @@ Map.prototype.createMapTiles = function(passedMap){
         if(this.interactiveObjects[i])
             this.interactiveObjects[i].dosetup();
     }
+    for(var i=0;i<this.staticObjects.length;i++)
+    {
+        if(this.staticObjects[i])
+            this.staticObjects[i].dosetup(this.hexHandler);
+    }
+    
     //create player
     //console.log("play: ",this.playerCharacter);
     if(!this.playerCharacter)
@@ -498,6 +510,17 @@ Map.prototype.refreshWalkablView = function(){
             }
             else
                 tile.tint = 0x33ff33;
+        }
+    }
+}
+Map.prototype.doSight = function(fromTile, distance)
+{
+    var fringes = this.hexHandler.doFloodFill(fromTile, distance, false, false);
+    for(var i=0;i<fringes.length;i++)
+    {
+        for(var j=0;j<fringes[i].length;j++)
+        {
+            fringes[i][j].adjustVisible(1);
         }
     }
 }

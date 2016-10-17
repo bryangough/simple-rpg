@@ -112,7 +112,7 @@ IsoHandler.prototype.areTilesNeighbors=function(starttile,testtile)
     }
     return false;
 }
-IsoHandler.prototype.doFloodFill = function(tile,range,ignorefirst)
+IsoHandler.prototype.doFloodFill = function(tile,range,ignorefirst,testWalkbable)
 {
     if(tile==null)
         return;
@@ -126,7 +126,7 @@ IsoHandler.prototype.doFloodFill = function(tile,range,ignorefirst)
     else
     {
         this.fringes.push([]);
-        this.findNieghbors(tile,0);
+        this.findNieghbors(tile,0,testWalkbable);
     }
 
     for(var k=1;k<=range;k++)
@@ -135,13 +135,18 @@ IsoHandler.prototype.doFloodFill = function(tile,range,ignorefirst)
         for(var i=0;i<this.fringes[k-1].length;i++)
         { 
             var n = this.fringes[k-1][i];
-            this.findNieghbors(n,k);
+            this.findNieghbors(n,k,testWalkbable);
         }
     }
     return this.fringes;
 };
-IsoHandler.prototype.findNieghbors = function(n, k)
+IsoHandler.prototype.findNieghbors = function(n, k, testWalkbable)
 {
+    if(testWalkbable)
+    {
+        this.findNieghborsIfWalkable(n,k);
+        return;
+    }
     if(n.posy % 2 == 1)
     {
         this.addNeighbor(n, 1,    -1,k);
@@ -157,6 +162,37 @@ IsoHandler.prototype.findNieghbors = function(n, k)
         this.addNeighbor(n, -1,   -1, k);
     }
 }
+IsoHandler.prototype.findNieghborsIfWalkable = function(n, k)
+{
+    if(n.posy % 2 == 1)
+    {
+        this.addNeighborTestWalkable(n, 1,    -1,k);
+        this.addNeighborTestWalkable(n, 1,     1,k);
+        this.addNeighborTestWalkable(n, 0,    1,k);
+        this.addNeighborTestWalkable(n, 0,   -1,k);
+    }
+    else
+    {
+        this.addNeighborTestWalkable(n, 0,   -1,k);
+        this.addNeighborTestWalkable(n, 0,   1, k);
+        this.addNeighborTestWalkable(n, -1,    +1,k);
+        this.addNeighborTestWalkable(n, -1,   -1, k);
+    }
+}
+IsoHandler.prototype.addNeighborTestWalkable=function(fromtile,changex,changey,k)
+{
+    var x = fromtile.posx+changex;
+    var y = fromtile.posy+changey;
+    var tile = this.getTileByCords(x,y);
+    if(tile!=null)
+    {
+        if(tile.walkHandler.isWalkable(fromtile.posx, fromtile.posy, changex, changey) && this.visited.indexOf(tile)==-1)
+        {
+            this.fringes[k].push(tile);
+        }
+        this.visited.push(tile);
+    }
+};
 /*
 for grid:
 http://fifengine.net/fifesvnrepo/tags/2007.1/src/engine/map/gridgeometry.cpp

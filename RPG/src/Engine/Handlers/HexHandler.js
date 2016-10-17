@@ -58,7 +58,7 @@ var HexHandler = function (maingame, game, hexagonWidth, hexagonHeight, tiletype
     //this.maingame.map.highlightGroup.add(this.sprite);
     this.sprite.anchor.x = 0.5;
     this.sprite.anchor.y = 1.0;
-    console.log(this.sprite.anchor);
+    //console.log(this.sprite.anchor);
     this.tempcolour = {r:0,g:0,b:0}
 };
 HexHandler.prototype.update=function(elapsedTime)
@@ -236,14 +236,17 @@ HexHandler.prototype.dolines = function(tilestart, tileend, ignoreWalkable, high
     {
         this.maingame.graphics.clear();
         this.maingame.graphics.lineStyle(10, 0xffd900, 1);
-       // this.maingame.graphics.moveTo(tilestart.x+ this.maingame.mapGroup.x+ this.halfHex, tilestart.y+ this.maingame.mapGroup.y+ this.halfHexHeight);
-       // this.maingame.graphics.lineTo(tileend.x+ this.maingame.mapGroup.x+ this.halfHex, tileend.y+ this.maingame.mapGroup.y+ this.halfHexHeight);
+
+        this.maingame.graphics.moveTo(p0.x * this.maingame.map.mapGroup.scale.x + this.maingame.map.mapGroup.x, p0.y * this.maingame.map.mapGroup.scale.y + this.maingame.map.mapGroup.y);
+        
+        this.maingame.graphics.lineTo(p1.x * this.maingame.map.mapGroup.scale.x + this.maingame.map.mapGroup.x, p1.y * this.maingame.map.mapGroup.scale.y + this.maingame.map.mapGroup.y);
     }
     //
     var N = this.game.math.distance(p0.x,p0.y,p1.x,p1.y);
     var cut = this.hexagonWidth;
     if(this.hexagonWidth>this.hexagonHeight)
         cut = this.hexagonHeight;
+    cut = cut/2;
     N = Math.ceil(N/cut)+1;
     
     var points = [];
@@ -266,7 +269,7 @@ HexHandler.prototype.dolines = function(tilestart, tileend, ignoreWalkable, high
         var overtile = this.checkHex(points[i].x, points[i].y);
         if(this.debug)
         {
-            //this.maingame.graphics.drawCircle(points[i].x+this.maingame.map.mapGroup.x, points[i].y+this.maingame.map.mapGroup.y, 10);
+            this.maingame.graphics.drawCircle(points[i].x * this.maingame.map.mapGroup.scale.x +this.maingame.map.mapGroup.x, points[i].y * this.maingame.map.mapGroup.scale.y+this.maingame.map.mapGroup.y, 10);
         }
         if(overtile!=null)
         {
@@ -310,7 +313,7 @@ HexHandler.prototype.getlinepath = function(tilestart, tileend, ignoreWalkable)
         var overtile = this.checkHex(points[i].x, points[i].y);
         if(overtile!=null)
         {
-            console.log(points[i].x, points[i].y, overtile.posx, overtile.posy, overtile.walkable)
+            //console.log(points[i].x, points[i].y, overtile.posx, overtile.posy, overtile.walkable)
             if(!overtile.walkable&&!ignoreWalkable)
             {
                 break;

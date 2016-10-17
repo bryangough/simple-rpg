@@ -1,52 +1,44 @@
 Utilties = function()
 {
 }
-/*
-
-    this.isox = objectPassed.x;
-    this.isoy = objectPassed.y;
-    this.isoz = objectPassed.z;
-    this.isoorder = objectPassed.order;
-    
-*/
 Utilties.customSortIso = function(a,b){
-    return Utilties.doNormal(a,b);
-    console.log(a,b);
+    //return Utilties.doNormal(a,b);
+    //console.log(a,b);
     if(b.IsPlayer||a.IsPlayer)
     {
-    //    console.log(a.posx, a.posy, b.posx, b.posy,a.y,b.y);
-        //console.log(a.isox,b.isox);
-       // console.log(a,a.isox,b,b.isox);
-        
+
     }
-    if(a.isox!=null && b.isox!=null)
+    if(a.iso!=null && b.iso!=null)
     {
-        if(b.IsPlayer||a.IsPlayer)
-            console.log("do");
-        if(a.isox<b.isox)
+        if(a.IsPlayer)
+        {
+          //  console.log(a.iso);
+        }
+            
+        if(a.iso.x<b.iso.x)
         {
             return 1;
         }
-        else if(a.isox>b.isox)
+        else if(a.iso.x>b.iso.x)
         {
             return -1;
         }
         else
         {
-            if(a.isoz<b.isoz)
+            if(a.iso.z<b.iso.z)
             {
                 return 1;
             }
-            if(a.isoz>b.isoz)
+            if(a.iso.z>b.iso.z)
             {
                 return -1;
             }
         }
-        if(a.isoy<b.isoy)
+        if(a.iso.y<b.iso.y)
         {
             return -1;
         }
-        else if(a.isoy>b.isoy)
+        else if(a.iso.y>b.iso.y)
         {
             return 1;
         }
@@ -62,7 +54,7 @@ Utilties.customSortIso = function(a,b){
     }
    //console.log(a.posy,b.posy);
     //if(b.posy%2==0)
-        return Utilties.doNormal(a,b);
+    return Utilties.doNormal(a,b);
     //else
     //    return Utilties.doReverse(a,b);
     
@@ -118,11 +110,13 @@ Utilties.doNormal = function(a,b){
     }
     else if(a.posy<b.posy)
     {
-        return -1;
+        //console.log(a.posy,b.posy);
+        return 1;
     }
     else if(a.posy>b.posy)
     {
-        return 1;
+        //console.log(a.posy,b.posy);
+        return -1;
     }
     return 0;
 }

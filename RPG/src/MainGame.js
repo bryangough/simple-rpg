@@ -108,8 +108,8 @@ BasicGame.Game.prototype = {
         {
             this.pathfinder.setGrid(this.map.walkableArray, [1]);
             this.updatewalkable = false;
-            if(this.game.global.showmovetile)
-                this.map.refreshWalkablView();
+            //if(this.game.global.showmovetile)
+                //this.map.refreshWalkablView();
         }
         this.gGameMode.update(elapsedTime);
         this.gGameMode.render();
@@ -232,4 +232,9 @@ BasicGame.Game.prototype = {
 var Point = function(x, y) {
   this.x = x;
   this.y = y;
+};
+var Vec3 = function(x, y, z) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
 };

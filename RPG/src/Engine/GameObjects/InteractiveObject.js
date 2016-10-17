@@ -30,8 +30,10 @@ var InteractiveObject = function (maingame, jsondata, map)
     this.otherAnimations = [];
     
     this.baseImage;
-    
+    this.iso = null;
     this.notcreated = false;
+    if(!this.IsPlayer)
+        this.adjustVisible(1);
 }
 InteractiveObject.prototype = Object.create(Phaser.Group.prototype);
 //InteractiveObject.prototype = Object.create(Phaser.Sprite.prototype);
@@ -74,8 +76,18 @@ InteractiveObject.prototype.dosetup = function()
     //
     if(!this.notcreated)
         this.currentTile = this.map.hexHandler.checkHex(this.x,this.y);
+    
+    this.updateIso();
     this.finalSetup();
     //
+}
+InteractiveObject.prototype.updateIso = function()
+{
+    if(this.currentTile)
+    {
+        //console.log(this.currentTile.posx,)
+        this.iso = this.map.spritegrid.projectGrid(this.currentTile.posx,this.currentTile.posy);
+    }
 }
 InteractiveObject.prototype.finalSetup = function()     
 {
@@ -374,6 +386,9 @@ InteractiveObject.prototype.updateLocation = function(tile)
     //moving characters should always be in middle
     //this.jsondata.posx = tile.x;
     //this.jsondata.posy = tile.y;
+    
+    if(this.IsPlayer)
+        this.map.doSight(tile, 3);
 }
  
 InteractiveObject.prototype.destroySelf = function(elapseTime) 
@@ -477,6 +492,10 @@ InteractiveObject.prototype.handleClick = function(touchedSprite, pointer)
     if(pointer!=null)
         pointer.active = false;
     this.handleOut();
+}
+InteractiveObject.prototype.adjustVisible = function(newVisible)
+{
+    this.tint = 0xffffff * newVisible;
 }
 
 /*
