@@ -1,7 +1,7 @@
 {
 	"Levels": [{
 		"name": "Simple Town",
-		"gameData": "level1Data",
+		"gameData": "level2Data",
 		"map": "Simple Town"
 	}]
 

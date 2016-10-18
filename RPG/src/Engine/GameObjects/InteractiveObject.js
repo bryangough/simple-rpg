@@ -29,6 +29,8 @@ var InteractiveObject = function (maingame, jsondata, map)
     this.eventDispatcher = new EventDispatcher(this.game,this.maingame,this);
     this.otherAnimations = [];
     
+    this.sightRange = 4;
+    
     this.baseImage;
     this.iso = null;
     this.notcreated = false;
@@ -49,6 +51,7 @@ InteractiveObject.prototype.allowInputNow = function(val)
 }
 InteractiveObject.prototype.dosetup = function() 
 {
+    //console.log(this.jsondata);
     this.setupArt(this.jsondata);
     this.footprint;//
     //this.events.onInputDown.add(this.handleClick, this);    
@@ -74,8 +77,8 @@ InteractiveObject.prototype.dosetup = function()
     if(this.eventDispatcher)
         this.eventDispatcher.doAction("OnActivate", null);
     //
-    if(!this.notcreated)
-        this.currentTile = this.map.hexHandler.checkHex(this.x,this.y);
+    //if(!this.notcreated)
+    //    this.currentTile = this.map.hexHandler.checkHex(this.x,this.y);
     
     this.updateIso();
     this.finalSetup();
@@ -229,10 +232,11 @@ InteractiveObject.prototype.createTempArt = function(spritesheet,image) //charac
 }
 InteractiveObject.prototype.setupArt = function(json) 
 {
-    if(json.name!=undefined && json.tilesetid!=undefined)
+    if(json.name!=undefined && json.tilesetid!=undefined && json.name!=-1 && json.tilesetid!=-1)
     {
         //console.log("setupart", this, json.name);
         this.isCreated = true;
+        console.log(json.name, json.tilesetid);
         var objectreference = this.map.getTile(json.name,json.tilesetid);
         //console.log(objectreference.spritesheet, objectreference.tile);
         var spotx = json.x || 0;
@@ -388,7 +392,7 @@ InteractiveObject.prototype.updateLocation = function(tile)
     //this.jsondata.posy = tile.y;
     
     if(this.IsPlayer)
-        this.map.doSight(tile, 3);
+        this.map.doSight(tile, this.sightRange);
 }
  
 InteractiveObject.prototype.destroySelf = function(elapseTime) 
@@ -474,6 +478,7 @@ InteractiveObject.prototype.setupReactToAction = function()
 }
 InteractiveObject.prototype.handleClick = function(touchedSprite, pointer) 
 {
+    this.eventDispatcher.doAction("Any", this.map.playerCharacter);
     if(GlobalEvents.currentAction == GlobalEvents.WALK)
         return;
     else if(GlobalEvents.currentAction == GlobalEvents.TOUCH)

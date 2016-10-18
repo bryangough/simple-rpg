@@ -36,6 +36,8 @@ EventDispatcher.prototype.testAction = function()
 EventDispatcher.prototype.shouldBeActive = function() 
 {
     //if has anything 
+    if(this.object.IsPlayer)
+        return true;
     if(GlobalEvents.currentAction == GlobalEvents.WALK)
         return false;
     if(GlobalEvents.currentAction == GlobalEvents.TOUCH && this.actionArray["OnTouch"])

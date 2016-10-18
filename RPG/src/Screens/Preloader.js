@@ -29,11 +29,14 @@ BasicGame.Preloader.prototype = {
         //this.load.atlasJSONHash('gameplayinterface', this.game.global.uilocation + 'paradoxinterface.png', this.game.global.uilocation + 'paradoxinterface.json');
         
 		this.load.image('loading', this.game.global.uilocation + 'loading.png');
-        this.load.image('mainmenu', this.game.global.uilocation + 'mainmenu.png');
-        this.load.image('mapselect', this.game.global.uilocation + 'mapselect.png');
-        this.load.image('winscreen', this.game.global.uilocation + 'winscreen.png');
-        this.load.image('instructions', this.game.global.uilocation + 'instructions.png');
-
+        
+        if(!this.game.global.fastLoad)
+        {
+            this.load.image('mainmenu', this.game.global.uilocation + 'mainmenu.png');
+            this.load.image('mapselect', this.game.global.uilocation + 'mapselect.png');
+            this.load.image('winscreen', this.game.global.uilocation + 'winscreen.png');
+            this.load.image('instructions', this.game.global.uilocation + 'instructions.png');
+        }
         this.load.bitmapFont("simplefont", this.game.global.uilocation + "fonts/badabb.png", this.game.global.uilocation + "fonts/badabb.fnt");
         
         //this.load.atlasJSONHash('dialogui', 'dialogui.png', 'dialogui.json');//dialogui
@@ -65,8 +68,10 @@ BasicGame.Preloader.prototype = {
 		//	Once the load has finished we disable the crop because we're going to sit in the update loop for a short while as the music decodes
 		this.preloadBar.cropEnabled = false;
         
-        this.state.start('LoadMap');
-        //this.state.start('MainMenu');
+        if(this.game.global.fastLoad)
+            this.state.start('LoadMap');
+        else
+            this.state.start('MainMenu');
         //this.state.start('MapSelect');
 	},
 

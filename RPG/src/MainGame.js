@@ -96,6 +96,7 @@ BasicGame.Game.prototype = {
 
         //console.log(this.map.mapGroup.width/2,this.map.mapGroup.height);
         this.updatewalkable = true;
+        this.camera.setinit();
         //this.camera.step(elapsedTime);
     },
     //
@@ -163,7 +164,8 @@ BasicGame.Game.prototype = {
         else if(this.gGameMode.currentState == "normal")
         {
             var inCombat = this.map.getCombatCharacters();
-            inCombat.push(this.map.playerCharacter);
+            for(var x=0;x<this.playerCharacters.length;x++)
+                inCombat.push(this.map.playerCharacters[x]);
             this.gGameMode.change("combat", {entities:inCombat});
         }
         else

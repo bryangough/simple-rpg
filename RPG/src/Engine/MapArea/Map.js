@@ -4,6 +4,7 @@ var Map = function (game, gameRef)
     this.game = game;
     
     this.playerCharacter;
+    this.playerCharacters = [];
     
     this.highlightHex;
     this.hexHandler;
@@ -166,7 +167,7 @@ Map.prototype.createMapTiles = function(passedMap){
                         temptile = new GraphicTile(this.game, tilereference.tile, tilereference.spritesheet, i, j, tempPoint.x, tempPoint.y, this.gameRef);
                     }
                     this.hexagonGroup.add(temptile);
-                    this.addLocationTextToTile(tempPoint.x,tempPoint.y,hexagonWidth,hexagonHeight,i,j);
+                    //this.addLocationTextToTile(tempPoint.x,tempPoint.y,hexagonWidth,hexagonHeight,i,j);
                 }
             }
         }
@@ -188,8 +189,8 @@ Map.prototype.createMapTiles = function(passedMap){
                     //this.walkableArray[i][j] = 1;
                     if(!layer1.handleSprite)//no sprite - need to something to select (this might not need to be destroyed)
                     {
-                        //tempPoint = this.movementgrid.GetMapCoords(i,j);
-                        //hexagonArray[i][j] = new SimpleTile(this.gameRef,i,j,tempPoint.x,tempPoint.y);
+                        tempPoint = this.movementgrid.GetMapCoords(i,j);
+                        hexagonArray[i][j] = new SimpleTile(this.gameRef,i,j,tempPoint.x,tempPoint.y);
 
                         //this needs to be switched out
                         /*if(this.game.global.showmovetile)
@@ -271,27 +272,29 @@ Map.prototype.createMapTiles = function(passedMap){
                 else//this might not be complete true? //without any triggers the object is just a picture
                 {
                     var objectreference = this.getTile(objects[i].name,objects[i].tilesetid);
-                    
-                    //var newtile = this.hexHandler.getTileByCords(objects[i].posx,objects[i].posy);
-                    tempPoint = this.spritegrid.GetMapCoords(objects[i].posx,objects[i].posy);
-                    //console.log(tempPoint, this.objectoffset, layer1.hexWidth, layer1.hexHeight);
-                    //tempPoint.x -= this.hexHandler.halfHex;
-                    //tempPoint.y += this.hexHandler.halfHexHeight;
+                    if(objectreference!=null)
+                    {
+                        //var newtile = this.hexHandler.getTileByCords(objects[i].posx,objects[i].posy);
+                        tempPoint = this.spritegrid.GetMapCoords(objects[i].posx,objects[i].posy);
+                        //console.log(tempPoint, this.objectoffset, layer1.hexWidth, layer1.hexHeight);
+                        //tempPoint.x -= this.hexHandler.halfHex;
+                        //tempPoint.y += this.hexHandler.halfHexHeight;
 
-                    //spotx = objects[i].x;
-                    //spoty = objects[i].y * -1;
-                    //tempPoint.y -= objects[i].y * 90;
-                    var tileobject = new SimpleObject(this.game,
-                                                            tempPoint.x+this.objectoffset.x,
-                                                            tempPoint.y+this.objectoffset.y,
-                                                            objectreference.spritesheet, objectreference.tile+"", objects[i]);
-                    tileobject.posx = objects[i].posx;
-                    tileobject.posy = objects[i].posy;
-                    this.objectGroup.add(tileobject);
-                    this.staticObjects.push(tileobject);
-                    //
-                    if(objects[i].maskable){//maskable objects to check when player/mouse move
-                        this.maskableobjects.push(tileobject);
+                        //spotx = objects[i].x;
+                        //spoty = objects[i].y * -1;
+                        //tempPoint.y -= objects[i].y * 90;
+                        var tileobject = new SimpleObject(this.game,
+                                                                tempPoint.x+this.objectoffset.x,
+                                                                tempPoint.y+this.objectoffset.y,
+                                                                objectreference.spritesheet, objectreference.tile+"", objects[i]);
+                        tileobject.posx = objects[i].posx;
+                        tileobject.posy = objects[i].posy;
+                        this.objectGroup.add(tileobject);
+                        this.staticObjects.push(tileobject);
+                        //
+                        if(objects[i].maskable){//maskable objects to check when player/mouse move
+                            this.maskableobjects.push(tileobject);
+                        }
                     }
                 }
             }
@@ -363,15 +366,21 @@ Map.prototype.createMapTiles = function(passedMap){
     if(!this.playerCharacter)
     {
         console.log("Create Character.");
-        this.playerCharacter = new PlayerCharacter(this.gameRef, this.playerData.Player, this);
- //       this.playerCharacter.setLocationByTile(hexagonArray[this.startpos.x][this.startpos.y]);
-        this.playerCharacter.dosetup();
+        for(var x=0;x<3;x++)
+        {
+            this.playerCharacter = new PlayerCharacter(this.gameRef, this.playerData.Player, this);
+            this.playerCharacter.dosetup();   
+            this.playerCharacters.push(this.playerCharacter);
+        } 
     }    
-    
-    this.playerCharacter.setLocationByTile(hexagonArray[this.startpos.x][this.startpos.y]);
-    this.game.add.existing(this.playerCharacter);
-    this.objectGroup.add(this.playerCharacter);
-    this.playerCharacter.resetMoving();
+    for(var x=0;x<this.playerCharacters.length;x++)
+    {
+        this.playerCharacter = this.playerCharacters[x];
+        this.playerCharacter.setLocationByTile(hexagonArray[this.startpos.x][this.startpos.y+x]);
+        this.game.add.existing(this.playerCharacter);
+        this.objectGroup.add(this.playerCharacter);
+        this.playerCharacter.resetMoving();
+    }
     //
     //console.log(this.walkableArray);
     //
@@ -380,9 +389,7 @@ Map.prototype.createMapTiles = function(passedMap){
     //
     this.doZoom();
     //start centered
-    this.mapGroup.x = (900-hexagonWidth*Math.ceil(this.gridSizeX)*this.mapGroup.scale.x);//*1.15);
-    this.mapGroup.y = (440-hexagonHeight*Math.ceil(this.gridSizeY/2)*this.mapGroup.scale.y*0.76);
-    //console.log(this.mapGroup.x,this.mapGroup.y,hexagonWidth,Math.ceil(this.gridSizeX),this.mapGroup.scale.x);
+     //console.log(this.mapGroup.x,this.mapGroup.y,hexagonWidth,Math.ceil(this.gridSizeX),this.mapGroup.scale.x);
     this.hexagonGroup.sort('y', Phaser.Group.SORT_ASCENDING);
 
     for(var i=0;i<this.interactiveObjects.length;i++)
@@ -408,7 +415,8 @@ Map.prototype.update = function(elapsedTime)
     //
     if(!this.game.global.pause)
     {
-        this.playerCharacter.step(elapsedTime);
+        for(var x=0;x<this.playerCharacters.length;x++)
+            this.playerCharacters[x].step(elapsedTime);
     }
     for(var i=0;i<this.interactiveObjects.length;i++)
     {
@@ -449,7 +457,8 @@ Map.prototype.flushEntireMap = function(){
     }
     this.interactiveObjects = [];
     //
-    this.objectGroup.remove(this.playerCharacter);
+    for(var x=0;x<this.playerCharacters.length;x++)
+        this.objectGroup.remove(this.playerCharacters[x]);
     //
     this.hexagonGroup.removeAll(true);
     this.highlightGroup.removeAll(true);
@@ -462,7 +471,10 @@ Map.prototype.flushEntireMap = function(){
     this.hexHandler.flush();
 }
 Map.prototype.getTile = function(name, tilesetid){
-   // console.log(tilesetid,name);
+    console.log(tilesetid,name);
+    
+    if(tilesetid<0 || name == undefined || tilesetid == undefined || name == -1)
+        return null;
     return {tile:this.mapData.tileSets[tilesetid][name], spritesheet:this.mapData.tileSets[tilesetid].tileset};
 }
 Map.prototype.userExit = function(object, data) {
@@ -520,7 +532,10 @@ Map.prototype.doSight = function(fromTile, distance)
     {
         for(var j=0;j<fringes[i].length;j++)
         {
-            fringes[i][j].adjustVisible(1);
+            if(i==fringes.length-1)
+                fringes[i][j].adjustVisible(0.3);
+            else
+                fringes[i][j].adjustVisible(1);
         }
     }
 }

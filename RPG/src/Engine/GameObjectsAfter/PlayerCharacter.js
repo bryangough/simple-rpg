@@ -9,6 +9,7 @@ var PlayerCharacter = function (maingame, jsondata, map)
     this.movementState.change("idle");
     
     this.moveStraight = false;
+    this.baseImage.events.onInputUp.add(this.handleSelect, this);//this is for select player if there are multiple selectable players
 };
 //PlayerCharacter.prototype = Object.create(MovingCharacter.prototype);
 PlayerCharacter.prototype = Object.create(CombatCharacter.prototype);
@@ -24,4 +25,10 @@ PlayerCharacter.prototype.doDead = function()
     this.jsondata.state = "idle";
     //activate death state
     this.maingame.gGameMode.change("playerDead");
+}
+PlayerCharacter.prototype.handleSelect = function()
+{
+    console.log('this');
+    if(this.maingame.map.playerCharacter!=this)
+        this.maingame.map.playerCharacter = this;
 }
