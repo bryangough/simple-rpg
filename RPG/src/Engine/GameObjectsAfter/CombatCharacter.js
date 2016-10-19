@@ -13,6 +13,9 @@ var CombatCharacter = function (maingame, jsondata, map)
     this.displayNameText = "";
     this.dead = false;
     
+    
+    this.faction = [];
+    
     this.applyCombatActions(actions);
 };
 
@@ -139,6 +142,7 @@ CombatCharacter.prototype.setupHealthBar = function()
     var hpbar;
     var rowcount = 0;
     var count = 0;
+    this.shieldhp = 0; //bg
     for(var i=0;i<this.shieldhp;i++)
     {
         hpbar = this.game.make.image(0,0,'gameplayinterface',"combat_actionpoints0001.png");

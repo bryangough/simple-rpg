@@ -32,3 +32,7 @@ StateMachine.prototype.add = function(name, state)
 {
     this.mStates[name] = state;
 }
+StateMachine.prototype.getByName = function(name) 
+{
+    return this.mStates[name];
+}

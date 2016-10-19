@@ -6,6 +6,7 @@ var AIDecide = function (game, gameref, combater, speed, state)
     this.state = state;
     
     this.isReady = true;
+    this.isDone = true;
     //
 }
 AIDecide.prototype.Update = function(elapse)

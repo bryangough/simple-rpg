@@ -98,6 +98,8 @@ BasicGame.Game.prototype = {
         this.updatewalkable = true;
         this.camera.setinit();
         //this.camera.step(elapsedTime);
+        
+        this.toggleCombat();
     },
     //
     update: function () {
@@ -164,7 +166,7 @@ BasicGame.Game.prototype = {
         else if(this.gGameMode.currentState == "normal")
         {
             var inCombat = this.map.getCombatCharacters();
-            for(var x=0;x<this.playerCharacters.length;x++)
+            for(var x=0;x<this.map.playerCharacters.length;x++)
                 inCombat.push(this.map.playerCharacters[x]);
             this.gGameMode.change("combat", {entities:inCombat});
         }

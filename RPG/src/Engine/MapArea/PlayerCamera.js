@@ -49,7 +49,7 @@ PlayerCamera.prototype.setinit = function()
 {
     var mapgroup = this.gameref.map.mapGroup;
     var map = this.gameref.map;
-    console.log(map.objectoffset.x, map.gridSizeX, mapgroup.scale.x);
+
     mapgroup.x = (900 - map.objectoffset.x * 2 * (Math.ceil(map.gridSizeX)+0.7) * mapgroup.scale.x);
     mapgroup.y = (440 - map.objectoffset.y * (Math.ceil(map.gridSizeY/2)-0.3) * mapgroup.scale.y);
 }

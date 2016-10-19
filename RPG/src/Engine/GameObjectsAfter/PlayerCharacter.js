@@ -28,7 +28,6 @@ PlayerCharacter.prototype.doDead = function()
 }
 PlayerCharacter.prototype.handleSelect = function()
 {
-    console.log('this');
     if(this.maingame.map.playerCharacter!=this)
         this.maingame.map.playerCharacter = this;
 }

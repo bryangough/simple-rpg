@@ -51,14 +51,13 @@ CombatAction.prototype.doFinish = function()
     if(this.combater.IsPlayer)
     {
         var action = new PlayerDecide(this.game, this.gameref, this.combater, this.combater.Speed(), this.state);
-        this.state.addToActionsRear(action);
+        this.state.addToActionsRear(action, true);
     }
     else
     {
         var action = new AIDecide(this.game, this.gameref, this.combater, this.combater.Speed(), this.state);
-        this.state.addToActionsRear(action);
+        this.state.addToActionsRear(action, false);
     }
     //}
-    
-    this.state.mBattleStates.change("tick");
+    this.state.NextTick();
 }

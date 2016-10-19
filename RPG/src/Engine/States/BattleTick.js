@@ -30,7 +30,7 @@ BattleTick.prototype.update = function(elapsedTime)
          //   console.log(this,a);
         }
     }
-    if(mActions[mActions.length-1].isReady)
+    if(mActions[mActions.length-1].isReady)// && mActions[mActions.length-1].isDone)
     {
         var top = mActions.pop();
         this.mStateMachine.change("execute", top);

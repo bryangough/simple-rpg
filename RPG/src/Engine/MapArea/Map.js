@@ -365,7 +365,7 @@ Map.prototype.createMapTiles = function(passedMap){
     //console.log("play: ",this.playerCharacter);
     if(!this.playerCharacter)
     {
-        console.log("Create Character.");
+        //console.log("Create Character.");
         for(var x=0;x<3;x++)
         {
             this.playerCharacter = new PlayerCharacter(this.gameRef, this.playerData.Player, this);
@@ -471,7 +471,7 @@ Map.prototype.flushEntireMap = function(){
     this.hexHandler.flush();
 }
 Map.prototype.getTile = function(name, tilesetid){
-    console.log(tilesetid,name);
+    //console.log(tilesetid,name);
     
     if(tilesetid<0 || name == undefined || tilesetid == undefined || name == -1)
         return null;

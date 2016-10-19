@@ -5,7 +5,10 @@ var PlayerDecide = function (game, gameref, combater, speed, state)
     this.combater = combater;
     this.state = state;
     
-    this.isReady = true;
+    this.isReady = false;
+    this.isDone = false;
+    
+    this.maxActions = 1;
     //
 }
 PlayerDecide.prototype.Update = function(elapse)
@@ -15,8 +18,9 @@ PlayerDecide.prototype.execute = function()
 {
     //console.log("Player decide execute.");
     
-    this.state.inputHandler.playerDecide = this;
-    this.state.inputHandler.showAreaForMove(this.combater);
+    this.state.statemachine.inputHandler.selectPlayer(this.combater);
+    //this.state.inputHandler.playerDecide = this;
+    //this.state.inputHandler.showAreaForMove(this.combater);
     
     //activate player can control
     
@@ -24,14 +28,15 @@ PlayerDecide.prototype.execute = function()
 }
 PlayerDecide.prototype.cleanup = function()
 {
-    this.state.inputHandler.playerDecide = null;
-    this.state.inputHandler.hideInputAreas();
+    
 }
 
 PlayerDecide.prototype.domove = function(spot)
 {
     action = new CombatAction(this.game, this.gameref, this.combater, spot, "move", this.state);
+    this.testEndOfTurn();
     this.state.addToActionsFront(action);
+   // this.isDone = true;
 }
 PlayerDecide.prototype.dotouched = function(clickedObject)
 {
@@ -51,9 +56,15 @@ PlayerDecide.prototype.dotouched = function(clickedObject)
         if(weapon!=null)
         {
             action = new CombatAction(this.game, this.gameref, this.combater, clickedObject, "shoot", this.state,[weapon]);
+            this.testEndOfTurn();
             this.state.addToActionsFront(action);
         }
     }
+}
+PlayerDecide.prototype.testEndOfTurn = function()
+{
+    this.maxActions--;
+    this.state.removeTopAction();
 }
 PlayerDecide.prototype.endTurn = function()
 {

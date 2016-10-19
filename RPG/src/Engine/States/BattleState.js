@@ -13,15 +13,20 @@ BattleState = function (statemachine, game, gameref) {
     this.game = game;
     this.gameref = gameref;
     this.inputHandler = new InputHandlerBattle(this.game, this.gameref);
+    this.inputHandler.battleState = this;
     this.enemyRollover = new EnemyTargetRollOver(this.game, this.gameref, this);
     
-    this.mActions = [];//actions
     this.mEntities = [];//entitys
     this.mBattleStates = new StateMachine();
     
-    this.mBattleStates.add("tick", new BattleTick(this.mBattleStates, this));
-    this.mBattleStates.add("execute", new BattleExecute(this.mBattleStates));
     
+    //player turn, enemy turn, other turn
+    //plus allow everyone more turns
+    this.battleOrder = ["Player","AI"];
+    this.currentOrder = -1;
+    
+    this.mBattleStates.add("Player", new BattleHeroTurnState(this, game, gameref, true));
+    this.mBattleStates.add("AI", new BattleHeroTurnState(this, game, gameref, false));
     
     this.activeButtons = new CombatButtons(this.game, this.gameref);
     this.activeButtons.x = 50;
@@ -30,14 +35,20 @@ BattleState = function (statemachine, game, gameref) {
     this.gameref.uiGroup.add(this.activeButtons);
     this.activeButtons.visible = false;
     //
-    this.iteractor = -1;
-    //
 }
 BattleState.prototype = Object.create(EmptyState.prototype);
 BattleState.constructor = BattleState;
 //
 BattleState.prototype.init = function(map) 
 {
+}
+BattleState.prototype.nextTeam = function() 
+{
+    this.currentOrder++;
+    if(this.currentOrder>this.battleOrder.length-1)
+        this.currentOrder = 0;
+    this.mBattleStates.change(this.battleOrder[this.currentOrder]);
+    return this.battleOrder[this.currentOrder];
 }
 //
 BattleState.prototype.handleOver = function(combat) 
@@ -80,10 +91,6 @@ BattleState.prototype.handleOut = function()
     this.enemyRollover.visible = false;
 }
 //
-BattleState.prototype.SortByTime = function(a,b)
-{
-    return a.TimeRemaining() > b.TimeRemaining()
-}
 BattleState.prototype.update = function(elapsedTime) 
 {
     this.mBattleStates.update(elapsedTime);    
@@ -91,10 +98,6 @@ BattleState.prototype.update = function(elapsedTime)
 BattleState.prototype.render = function() 
 {
     this.mBattleStates.render();
-}
-BattleState.prototype.getActiveCombater = function()
-{
-    this.mEntities[this.iteractor];
 }
 BattleState.prototype.onEnter = function(params) 
 {
@@ -108,48 +111,30 @@ BattleState.prototype.onEnter = function(params)
         this.mEntities[i].startCombat();
     }
     //
-    this.mBattleStates.change("tick");
+    //this.NextTick();
  
     this.mEntities = params.entities;
     for(var i=0;i<this.mEntities.length;i++)
     {
         var e = this.mEntities[i];
-        //for(var j=0;j<2;j++)//each player will have 2 actions?
-        //{
-            if(e.IsPlayer)
-            {
-                var action = new PlayerDecide(this.game, this.gameref, e,  e.Speed(), this);
-                this.mActions.push(action);
-            }
-            else
-            {
-                var action = new AIDecide(this.game, this.gameref, e, e.Speed(), this);
-                this.mActions.push(action);
-            }
-        //}
+        if(e.IsPlayer)
+        {
+            var playerTurn = this.mBattleStates.getByName("Player");
+            playerTurn.addTeamate(e);
+            
+            //pass to player state
+        }
+        else
+        {
+            var playerTurn = this.mBattleStates.getByName("AI");
+            playerTurn.addTeamate(e);
+            //pass to enemy state
+        }
     }
+    this.nextTeam();
     //
     //Sort(this.mActions, this.SortByTime);
     //
-}
-BattleState.prototype.removeTopAction = function()
-{
-    this.mActions.pop();
-}
-BattleState.prototype.addToActionsRear = function(val)
-{
-    this.mActions.unshift(val);
-    this.mBattleStates.change("tick");
-}
-BattleState.prototype.addToActionsFront = function(val)
-{
-    this.mActions.push(val);
-    this.mBattleStates.change("tick");
-}
-BattleState.prototype.moveOn = function()
-{
-    GlobalEvents.currentAction = GlobalEvents.COMBATSELECT;
-    this.mBattleStates.change("tick");
 }
 BattleState.prototype.onExit = function() 
 {
