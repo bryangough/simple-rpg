@@ -122,7 +122,7 @@ InputHandlerBattle.prototype.clickedHex = function(pointer,b)
         this.overEnemy.handleClick();
         if(this.overEnemy.IsPlayer)
         {
-            this.selectPlayer(this.overEnemy);
+            this.clickedPlayer(this.overEnemy);
         }
     }
     
@@ -155,13 +155,19 @@ InputHandlerBattle.prototype.clickedObject = function(clickedObject)
         return;
     this.playerDecide.dotouched(clickedObject);
 }
-
-InputHandlerBattle.prototype.selectPlayer = function(actor)
+InputHandlerBattle.prototype.clickedPlayer = function(actor)
+{
+    this.cleanUpPlayer();
+    var playerChoice = this.battleState.mBattleStates.mCurrentState.findDecideByActor(actor);
+    if(playerChoice)
+        playerChoice.execute();
+    else
+        console.log("no player");
+}
+InputHandlerBattle.prototype.highlightplayer = function(actor, clicked)
 {
     this.playerDecide = this.battleState.mBattleStates.mCurrentState.findDecideByActor(actor);
-    //this.hideInputAreas();
     this.showAreaForMove(actor);
-    //console.log("select player = ", this.playerDecide);
 }
 InputHandlerBattle.prototype.cleanUpPlayer = function()
 {

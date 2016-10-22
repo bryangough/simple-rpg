@@ -8,6 +8,7 @@ var AIDecide = function (game, gameref, combater, speed, state)
     this.isReady = true;
     this.isDone = true;
     //
+    this.maxActions = 2;
 }
 AIDecide.prototype.Update = function(elapse)
 {
@@ -15,8 +16,10 @@ AIDecide.prototype.Update = function(elapse)
 AIDecide.prototype.execute = function()
 {
     // this.state.removeTopAction();
-    if(this.combater.isAlive())
+        
+    if(this.combater.isAlive() && this.maxActions>0)
     {
+        this.selectThis();
         //move to random location -
         // eventuall move towards Player
         
@@ -63,16 +66,31 @@ AIDecide.prototype.execute = function()
             this.maingame.pathfinder.calculatePath();*/
             action = this.moveToPlayer();
         }
+        this.testEndOfTurn();
         this.state.addToActionsFront(action);
     }
     else
     {
+        this.state.removeAction(this);
         this.state.moveOn();
         this.gameref.toggleCombat();//I don't like this
         //this.state.leaveThisState();//test if no more enemies
     }
 }
-
+AIDecide.prototype.selectThis = function()
+{
+    console.log("AI decide select.",this.combater);
+    this.state.placeAtFront(this);    
+}
+AIDecide.prototype.testEndOfTurn = function()
+{
+    this.maxActions--;
+    //this.state.removeTopAction();
+    //if player has no more action remove from list
+    console.log("AI actions: ", this.maxActions);
+    if(this.maxActions<=0)
+        this.state.removeAction(this);
+}
 /*AIDecide.prototype.movercallback = function(path){
     path = path || [];
     console.log(path);
@@ -83,6 +101,7 @@ AIDecide.prototype.cleanup = function()
 }
 AIDecide.prototype.moveToPlayer = function()
 {
+//    return this.randomMove();
     var action;
     action = new CombatAction(this.game, this.gameref, this.combater, this.gameref.map.playerCharacter, "move", this.state);
     return action;

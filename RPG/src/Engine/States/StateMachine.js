@@ -16,6 +16,7 @@ StateMachine.prototype.render = function()
 }
 StateMachine.prototype.change = function(stateName, params) 
 {
+    //console.log("change state: ",stateName);
     var newState = this.mStates[stateName];
     if(newState==null)
         return;
@@ -26,6 +27,7 @@ StateMachine.prototype.change = function(stateName, params)
     this.mCurrentState = newState;
     this.mCurrentState.onEnter(params);
     this.currentState = stateName;
+    
     this.changeState.dispatch(this, this.currentState, this.mCurrentState)
 }
 StateMachine.prototype.add = function(name, state) 

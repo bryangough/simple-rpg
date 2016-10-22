@@ -219,6 +219,7 @@ MovingCharacter.prototype.moveToSpot = function(tile, actions)
 
 MovingCharacter.prototype.moveToSpotCombat = function(tile, actions, limit)
 {
+    console.log("moveToSpotCombat",tile,actions,limit);
     this.actionsaftermove = actions;
     this.moveto(tile);
     this.actionsaftermove = actions;

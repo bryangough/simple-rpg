@@ -72,8 +72,8 @@ BasicGame.Game.prototype = {
         this.gGameMode.add("playerDead", new DeathState(this.gGameMode, this.game, this));
         
         /**/
-        var inCombat = this.map.getCombatCharacters();
-        inCombat.unshift(this.map.playerCharacter);
+        //var inCombat = this.map.getCombatCharacters();
+        //inCombat.unshift(this.map.playerCharacter);
         
         //this.gGameMode.change("combat", {entities:inCombat});
         this.gGameMode.change("normal");
@@ -99,7 +99,7 @@ BasicGame.Game.prototype = {
         this.camera.setinit();
         //this.camera.step(elapsedTime);
         
-        this.toggleCombat();
+        //this.toggleCombat();
     },
     //
     update: function () {

@@ -50,6 +50,14 @@ BattleState.prototype.nextTeam = function()
     this.mBattleStates.change(this.battleOrder[this.currentOrder]);
     return this.battleOrder[this.currentOrder];
 }
+BattleState.prototype.endPlayerTurn = function() 
+{
+    if(this.battleOrder[this.currentOrder]=="Player")
+    {
+        this.nextTeam();
+    }
+}
+
 //
 BattleState.prototype.handleOver = function(combat) 
 {

@@ -12,7 +12,7 @@ var CombatAction = function (game, gameref, combater, target, action, state, par
 }
 CombatAction.prototype.execute = function()
 {
-    //console.log("Combat Action execute");
+    console.log("Combat Action execute ",this.action);
     //
     if(this.action=="move")
     {
@@ -34,6 +34,7 @@ CombatAction.prototype.execute = function()
 }
 CombatAction.prototype.cleanup = function()
 {
+    
 }
 CombatAction.prototype.Update = function(elapse)
 {
@@ -41,6 +42,7 @@ CombatAction.prototype.Update = function(elapse)
 
 CombatAction.prototype.doFinish = function()
 {
+    console.log("combat action: doFinish")
     /*if(this.combater.numberOfActions)
     {    
         //var action = new AIDecide(this.game, this.gameref, this.combater, this.combater.Speed(), this.state);
@@ -48,7 +50,7 @@ CombatAction.prototype.doFinish = function()
     }
     else
     {*/
-    if(this.combater.IsPlayer)
+    /*if(this.combater.IsPlayer)
     {
         var action = new PlayerDecide(this.game, this.gameref, this.combater, this.combater.Speed(), this.state);
         this.state.addToActionsRear(action, true);
@@ -57,7 +59,8 @@ CombatAction.prototype.doFinish = function()
     {
         var action = new AIDecide(this.game, this.gameref, this.combater, this.combater.Speed(), this.state);
         this.state.addToActionsRear(action, false);
-    }
+    }*/
     //}
+    this.state.removeAction(this);
     this.state.NextTick();
 }

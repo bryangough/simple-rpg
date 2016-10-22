@@ -206,6 +206,7 @@ EasyStar.instance = function() {
 	this.endY;
 	this.nodeHash = {};
 	this.openList;
+    this.endwalkable;
 };
 /**
 *	EasyStar.js
@@ -446,10 +447,11 @@ EasyStar.js = function() {
 		}*/
 
         //console.log(endTile, isAcceptable);
+        var isAcceptable = false;
         var endTile = collisionGrid[endX][endY];
-		if (endTile.walkable === false) {
-			callbackWrapper(null);
-			return;
+        console.log(endTile.walkable);
+		if (endTile.walkable === true) {
+            isAcceptable = true;
 		}
 
 		//Create the instance
@@ -462,7 +464,7 @@ EasyStar.js = function() {
 		instance.endX = endX;
 		instance.endY = endY;
 		instance.callback = callbackWrapper;
-
+        instance.endwalkable = isAcceptable;
 		instance.openList.insert(coordinateToNode(instance, instance.startX, 
 			instance.startY, null, STRAIGHT_COST));
 
@@ -620,8 +622,13 @@ EasyStar.js = function() {
 				instance.isDoneCalculating = true;
 				var path = [];
 				var pathLen = 0;
-				path[pathLen] = {x: adjacentCoordinateX, y: adjacentCoordinateY};
-				pathLen++;
+                //if end isn't walkable? stop on adjacent
+                console.log("a",instance.endwalkable);
+                if(instance.endwalkable && isTileWalkable(collisionGrid, null,searchNode.x, searchNode.y, x, y))
+                {
+				    path[pathLen] = {x: adjacentCoordinateX, y: adjacentCoordinateY};
+				    pathLen++;
+                }
 				path[pathLen] = {x: searchNode.x, y:searchNode.y};
 				pathLen++;
 				var parent = searchNode.parent;
@@ -636,7 +643,7 @@ EasyStar.js = function() {
 				ic.callback(ip);
 			}
 
-			if (isTileWalkable(collisionGrid, acceptableTiles, adjacentCoordinateX, adjacentCoordinateY,x,y)) {
+			if (isTileWalkable(collisionGrid, acceptableTiles, adjacentCoordinateX, adjacentCoordinateY, x, y)) {
 				var node = coordinateToNode(instance, adjacentCoordinateX, adjacentCoordinateY, searchNode, cost);
 
 				if (node.list === undefined) {
@@ -654,25 +661,16 @@ EasyStar.js = function() {
 
 	//Helpers
 	var isTileWalkable = function(collisionGrid, acceptableTiles, x, y, changex, changey) {
-        //console.log(x, y, changex, changey );
-        //if no 0 or 1 use changex and changey to determine if walking in correct direction
-        //console.log(x,y,collisionGrid.length,collisionGrid[0].length);
-        
-        //console.log(changex,changey,collisionGrid[x][y]);
-        
         if(x < 0 || x > collisionGrid.length || y < 0 || y > collisionGrid[0].length)
                 return false;
-        //console.log("-",collisionGrid[x][y]);
         var ret = collisionGrid[x][y].isWalkable(x,y,changex,changey)
         if(ret==1)
             return true;
-
         /*for (var i = 0; i < acceptableTiles.length; i++) {
 			if (collisionGrid[x][y] === acceptableTiles[i]) {
 				return true;
 			}
 		}*/
-
 		return false;
 	};
 

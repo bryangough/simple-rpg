@@ -152,7 +152,7 @@ CombatButtons.prototype.endTurnPress = function(touchedSprite, pointer){
     //endTurn
     
     if(this.gameref.gGameMode.mCurrentState.inputHandler.playerDecide)
-        this.gameref.gGameMode.mCurrentState.inputHandler.playerDecide.endTurn();
+        this.gameref.gGameMode.mCurrentState.endPlayerTurn();
 }
 CombatButtons.prototype.handlePowerOver = function(touchedSprite, pointer)
 {

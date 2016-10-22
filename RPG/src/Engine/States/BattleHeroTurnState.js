@@ -30,7 +30,11 @@ BattleHeroTurnState.prototype.SortByTime = function(a,b)
 }
 BattleHeroTurnState.prototype.update = function(elapsedTime) 
 {
-    this.actionStates.update(elapsedTime);    
+    this.game.debug.text(this.mActions.length+"", 20, 25) 
+    if(this.mActions.length>0)
+        this.actionStates.update(elapsedTime);    
+    else
+        this.statemachine.nextTeam();
 }
 BattleHeroTurnState.prototype.render = function() 
 {
@@ -50,8 +54,8 @@ BattleHeroTurnState.prototype.onEnter = function(params)
     this.createTeam();
     if(this.isPlayerTurn)
     {
-        if(this.mActions.length>0)
-            this.mActions[0].execute();
+        //if(this.mActions.length>0)
+        //    this.mActions[this.mActions.length-1].execute();
     }
 }
 BattleHeroTurnState.prototype.setTeam = function(team) 
@@ -72,6 +76,11 @@ BattleHeroTurnState.prototype.createTeam = function()
     //
     this.NextTick();
     console.log("num: "+this.mEntities.length);
+    this.createActions();
+}
+BattleHeroTurnState.prototype.createActions = function()
+{
+    //this.mActions.clear();
     for(var i=0;i<this.mEntities.length;i++)
     {
         var e = this.mEntities[i];
@@ -98,6 +107,27 @@ BattleHeroTurnState.prototype.findDecideByActor = function(actor)
     }
     return null;
 }
+BattleHeroTurnState.prototype.removeAction = function(action)
+{
+    var i = this.mActions.indexOf(action);
+    console.log(i,this.mActions,action);
+    if (i > -1) 
+    {
+        this.mActions.splice(i, 1);
+        return true;
+    }
+    return false;
+}
+BattleHeroTurnState.prototype.placeAtFront = function(action)
+{
+    var i = this.mActions.indexOf(action);
+    if (i > -1) 
+    {
+        this.mActions.splice(i, 1);
+    }
+    this.mActions.push(action);
+}
+
 BattleHeroTurnState.prototype.placeAtEnd = function()
 {
     var a = this.mActions.pop();

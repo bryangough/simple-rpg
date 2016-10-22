@@ -5,32 +5,41 @@ var PlayerDecide = function (game, gameref, combater, speed, state)
     this.combater = combater;
     this.state = state;
     
-    this.isReady = false;
+    this.isReady = true;
     this.isDone = false;
     
-    this.maxActions = 1;
+    this.maxActions = 2;
     //
 }
 PlayerDecide.prototype.Update = function(elapse)
 {
 }
+PlayerDecide.prototype.onEnter = function(params)
+{
+}
+
+
 PlayerDecide.prototype.execute = function()
 {
-    //console.log("Player decide execute.");
-    
-    this.state.statemachine.inputHandler.selectPlayer(this.combater);
-    //this.state.inputHandler.playerDecide = this;
-    //this.state.inputHandler.showAreaForMove(this.combater);
-    
-    //activate player can control
-    
-    //if not look,
+    console.log("Player decide execute.", this.maxActions);
+    if(this.maxActions<1)
+    {
+        
+        this.state.removeAction(this);
+        return;
+    }
+    this.state.statemachine.inputHandler.highlightplayer(this.combater);
+    this.selectThis();
+}
+PlayerDecide.prototype.selectThis = function()
+{
+    console.log("Player decide select.",this.combater);
+    this.state.placeAtFront(this);    
 }
 PlayerDecide.prototype.cleanup = function()
 {
     
 }
-
 PlayerDecide.prototype.domove = function(spot)
 {
     action = new CombatAction(this.game, this.gameref, this.combater, spot, "move", this.state);
@@ -64,7 +73,11 @@ PlayerDecide.prototype.dotouched = function(clickedObject)
 PlayerDecide.prototype.testEndOfTurn = function()
 {
     this.maxActions--;
-    this.state.removeTopAction();
+    //this.state.removeTopAction();
+    //if player has no more action remove from list
+    console.log("actions: ", this.maxActions);
+    if(this.maxActions<=0)
+        this.state.removeAction(this);
 }
 PlayerDecide.prototype.endTurn = function()
 {
@@ -80,6 +93,7 @@ PlayerDecide.prototype.usePower = function(spot)
     if(weapon!=null)
     {
         action = new CombatAction(this.game, this.gameref, this.combater, this.combater, "useitem", this.state,[weapon]);
+        this.testEndOfTurn();
         this.state.addToActionsFront(action);
     }
 }
