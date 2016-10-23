@@ -56,8 +56,8 @@ var HexHandler = function (maingame, game, hexagonWidth, hexagonHeight, tiletype
 	this.touchmap.draw(this.sprite, 0, 0);
 	this.touchmap.update();
     //this.maingame.map.highlightGroup.add(this.sprite);
-    this.sprite.anchor.x = 0.5;
-    this.sprite.anchor.y = 1.0;
+    //this.sprite.anchor.x = 0.5;
+    //this.sprite.anchor.y = 1.0;
     //console.log(this.sprite.anchor);
     this.tempcolour = {r:0,g:0,b:0}
 };
@@ -246,7 +246,7 @@ HexHandler.prototype.dolines = function(tilestart, tileend, ignoreWalkable, high
     var cut = this.hexagonWidth;
     if(this.hexagonWidth>this.hexagonHeight)
         cut = this.hexagonHeight;
-    cut = cut/2;
+    //cut = cut/2;
     N = Math.ceil(N/cut)+1;
     
     var points = [];

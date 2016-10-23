@@ -435,15 +435,16 @@ MovingCharacter.prototype.step = function(elapseTime)
             this.currentTile = this.map.hexHandler.checkHex(this.x,this.y);
             this.updateIso();
             //console.log(this.oldTile, this.currentTile);
+            if(this.currentTile==null)
+            {
+                //center old then try again
+                return;
+            }
             if(this.oldTile != this.currentTile)
             {
                 this.oldTile.changeWalkable(true);
                 this.oldTile = this.currentTile;
                 this.currentTile.changeWalkable(false);
-            }
-            if(this.currentTile==null)
-            {
-                //center old then try again
             }
             if(this.currentTile.posx==this.nextTile.posx && this.currentTile.posy==this.nextTile.posy)
             {

@@ -449,7 +449,7 @@ EasyStar.js = function() {
         //console.log(endTile, isAcceptable);
         var isAcceptable = false;
         var endTile = collisionGrid[endX][endY];
-        console.log(endTile.walkable);
+        //console.log(endTile.walkable);
 		if (endTile.walkable === true) {
             isAcceptable = true;
 		}
@@ -623,7 +623,7 @@ EasyStar.js = function() {
 				var path = [];
 				var pathLen = 0;
                 //if end isn't walkable? stop on adjacent
-                console.log("a",instance.endwalkable);
+                //console.log("a",instance.endwalkable);
                 if(instance.endwalkable && isTileWalkable(collisionGrid, null,searchNode.x, searchNode.y, x, y))
                 {
 				    path[pathLen] = {x: adjacentCoordinateX, y: adjacentCoordinateY};

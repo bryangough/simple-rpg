@@ -69,7 +69,7 @@ Map.prototype.createMapTiles = function(passedMap){
             var hexagonHeight = layer1.hexHeight;
             this.objectoffset.x = hexagonWidth/2;
             this.objectoffset.y = hexagonHeight;
-            
+            console.log("height width ",hexagonWidth, hexagonHeight);
             //this.objectoffset.x = 0;//hexagonWidth + hexagonWidth/2;
             //this.objectoffset.y = 0;//hexagonHeight*2 + hexagonHeight/2;
             //console.log(this.objectoffset);
@@ -160,6 +160,7 @@ Map.prototype.createMapTiles = function(passedMap){
                         
                         
                         temptile = new WalkableTile(this.game, tilereference.tile, tilereference.spritesheet, i, j, tempPoint.x, tempPoint.y, this.gameRef);
+
                         hexagonArray[i][j]=temptile;//only if same
                     }
                     else

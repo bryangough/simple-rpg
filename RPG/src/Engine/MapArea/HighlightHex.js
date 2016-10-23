@@ -49,6 +49,7 @@ HighlightHex.prototype.setup = function()
         }
         light.x = -1000;
         light.visible = false;
+        
     }
     
     //setup cursor
@@ -61,6 +62,7 @@ HighlightHex.prototype.setup = function()
     //high.anchor.x = 0.5;
     //high.anchor.y = 1.0;
     //
+    
     this.cursor.add(high);
     this.cursor.x = -1000;
     this.add(this.cursor);
