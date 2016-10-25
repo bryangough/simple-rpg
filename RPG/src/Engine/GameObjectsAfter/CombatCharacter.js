@@ -377,46 +377,15 @@ CombatCharacter.prototype.Speed = function()
 {
     return 1;
 }
-CombatCharacter.prototype.shootGun = function(target, weapon, afterAction)
+CombatCharacter.prototype.shootGun = function(target, weapon, afterAction, action)
 {
     this.faceTarget(target);
     
-    //do hit chance calculation so can show different shoot
-    
+    //do critical fail calcs
     
     this.changeState("shoot");
-    this.actionsaftermove = [{func:this.afterShoot, para:[{weapon:weapon, target:target, afterAction:afterAction}], removeself:false, callee:this, con:null, walkto:false}];
+    this.actionsaftermove = [{func:this.afterShoot, para:[{weapon:weapon, target:target, afterAction:afterAction, action:action}], removeself:false, callee:this, con:null, walkto:false}];
 }
-CombatCharacter.prototype.afterShoot = function(params)
-{
-    //console.log(params);
-    var target = params.target;
-    var weapon = params.weapon;
-    var afterAction = params.afterAction;
-    
-    var distanceTo = this.maingame.map.hexHandler.testRange(target.currentTile, this.currentTile, false)
-    var range = weapon.range;
-    
-    var acc = weapon.acc - (distanceTo/(range * 60))/5;
-    //
-    if(distanceTo > range * 60)
-    {
-        acc = 0;
-    }
-        
-    if(Math.random()<acc)
-    {
-        target.takeDmg(weapon.dmg);
-    }
-    else
-    {
-        //miss
-        console.log("miss");
-    }
-        
-    afterAction.func.apply(afterAction.callee,[]);
-}
-//
 CombatCharacter.prototype.doShoot = function()
 {
     //animate shot
@@ -429,3 +398,43 @@ CombatCharacter.prototype.doShoot = function()
     this.clearTargetTile();
     
 }
+CombatCharacter.prototype.afterShoot = function(params)
+{
+    //console.log(params);
+    var target = params.target;
+    var weapon = params.weapon;
+    var afterAction = params.afterAction;
+    var action = params.action;
+    
+    var distanceTo = this.maingame.map.hexHandler.testRange(target.currentTile, this.currentTile, false)
+    var range = weapon.range;
+    
+    var acc = weapon.acc - (distanceTo/(range * 60))/5;
+    //
+    if(distanceTo > range * 60)
+    {
+        acc = 0;
+    }
+        
+    var action = new CombatAction(this.game, this.gameref, this, clickedObject, "bullet", this.state,[weapon, acc]);
+    
+    
+    //create bullet action
+    //
+    //
+    //pass target, weapon, acc back to combat action to 
+    // create a bullet
+    /*if(Math.random()<acc)
+    {
+        target.takeDmg(weapon.dmg);
+    }
+    else
+    {
+        //miss
+        console.log("miss");
+    }*/
+        
+    afterAction.func.apply(afterAction.callee,[action]);
+}
+//
+

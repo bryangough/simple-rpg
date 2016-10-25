@@ -5,7 +5,7 @@
 				"type": "weapon",
 				"weaponname": "Energy Shot",
 				"AIPower": 1,
-				"dmg": 6,
+				"dmg": 2,
 				"acc": 0.8,
 				"range": 8,
 				"clipsize": -1,

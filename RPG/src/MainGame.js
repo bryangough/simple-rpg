@@ -22,6 +22,7 @@ BasicGame.Game = function (game) {
     //this.inputHandler = null;
     this.textUIHandler = null;
     this.dialoghandler;
+    this.bulletHandler;
 };
 
 //
@@ -63,7 +64,7 @@ BasicGame.Game.prototype = {
             this.map = new Map(this.game, this);
         this.map.initialMap(this.mapData, this.gameData, this.game.cache.getJSON('player'), this.gameDataPlayer);
         
-        
+        this.bulletHandler = new BulletHandler(this.game, this, this.map.objectGroup, 'gameplayinterface', "combat_actionpoints0001.png");
         //
         this.gGameMode = new StateMachine();
         this.gGameMode.add("normal", new NormalState(this.gGameMode, this.game, this));
