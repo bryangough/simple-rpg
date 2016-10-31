@@ -64,7 +64,7 @@ BasicGame.Game.prototype = {
             this.map = new Map(this.game, this);
         this.map.initialMap(this.mapData, this.gameData, this.game.cache.getJSON('player'), this.gameDataPlayer);
         
-        this.bulletHandler = new BulletHandler(this.game, this, this.map.objectGroup, 'gameplayinterface', "combat_actionpoints0001.png");
+        this.bulletHandler = new BulletHandler(this.game, this, this.map.objectGroup, 'gameplayinterface', "combat_actionpoints0002.png");
         //
         this.gGameMode = new StateMachine();
         this.gGameMode.add("normal", new NormalState(this.gGameMode, this.game, this));
@@ -100,13 +100,14 @@ BasicGame.Game.prototype = {
         this.camera.setinit();
         //this.camera.step(elapsedTime);
         
-        //this.toggleCombat();
+        this.toggleCombat();
     },
     //
     update: function () {
         var elapsedTime = this.game.time.elapsed;
         //
         this.map.update(elapsedTime);
+        this.bulletHandler.step(elapsedTime);
         //
         if(this.updatewalkable)
         {

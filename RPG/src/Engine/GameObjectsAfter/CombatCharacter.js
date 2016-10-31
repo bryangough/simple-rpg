@@ -415,8 +415,13 @@ CombatCharacter.prototype.afterShoot = function(params)
     {
         acc = 0;
     }
-        
-    var action = new CombatAction(this.game, this.gameref, this, clickedObject, "bullet", this.state,[weapon, acc]);
+    var hit = true;
+    if(Math.random()<acc)
+    {
+        hit = true;
+        //target.takeDmg(weapon.dmg);
+    }
+    var action = new CombatAction(this.game, this.gameref, this, target, "bullet", this.state, [weapon, acc, hit]);
     
     
     //create bullet action
@@ -424,15 +429,7 @@ CombatCharacter.prototype.afterShoot = function(params)
     //
     //pass target, weapon, acc back to combat action to 
     // create a bullet
-    /*if(Math.random()<acc)
-    {
-        target.takeDmg(weapon.dmg);
-    }
-    else
-    {
-        //miss
-        console.log("miss");
-    }*/
+    /**/
         
     afterAction.func.apply(afterAction.callee,[action]);
 }

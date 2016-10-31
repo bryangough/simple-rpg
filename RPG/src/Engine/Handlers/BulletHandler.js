@@ -19,7 +19,8 @@ simple:
 
 
 //handle flame thrower or just simply animation
-
+// sprite instead of image
+//play animation (that plays at the same times as character animation)
 
 */
 BulletHandler = function(game, gameref, bulletGroup, spritesheet, defaultImageName){
@@ -36,7 +37,8 @@ BulletHandler.prototype = Object.create(Phaser.Group.prototype);
 BulletHandler.constructor = BulletHandler;
 //
 BulletHandler.prototype.createItem = function(){
-    var bullet = new BulletText(this.game, -1000, 0, this.spritesheet, this.defaultImageName, this);
+    var bullet = new Bullet(this.game, this.gameref, -1000, 0, this.spritesheet, this.defaultImageName, this);
+    console.log(bullet);
     //this.add(bullet);
     this.bulletGroup.add(bullet);
     return bullet;
@@ -52,24 +54,23 @@ BulletHandler.prototype.cleanupAllBullets = function(){
         allbullets[i].killSelf();
     }
 }
-BulletHandler.prototype.fireBullet = function(imagename, action, onhitaction, start, target, afterAction){
+BulletHandler.prototype.fireBullet = function(imagename, action, start, target, afterAction, weaponParams){
     /*var allbullets = this.pool.allObjectsArray;
     for(var i=0;i<allbullets.length;i++){
         if(allbullets[i].over==object && allbullets[i].over!=null)
             allbullets[i].killSelf();
     }*/
     
-    var bullet = this.pool.getObject();
+    
     if(imagename==null)//|| speed = -1 : instant
     {
         
     }
     else
     {
-        bullet.getReady(imagename, action, onhitaction, start, target);
+        var bullet = this.pool.getObject();
+        bullet.getReady(imagename, action, start, target, weaponParams);
     }
-    bullet.x = start.x;
-    bullet.y = start.y;
 }
 BulletHandler.prototype.step = function(elapseTime){
     var allbullets = this.pool.allObjectsArray;
@@ -79,48 +80,122 @@ BulletHandler.prototype.step = function(elapseTime){
     }
 }
 //*********** Bullet
-var Bullet = function (game, x, y, spritesheet, imagename, handler) 
+var Bullet = function (game, gameref, x, y, spritesheet, imagename, handler) 
 {
     Phaser.Image.call(this, game, x, y, spritesheet, imagename);
-    this.gameref = game;
+    this.game = game;
+    this.gameref = gameref;
     this.anchor.x = 0.5;
     this.anchor.y = 0.5;
     
     this.target = null;
-    this.velocity = null;
-    
     /*this.iso = new Vec3(objectPassed.x, objectPassed.y, objectPassed.z);
     this.isoorder = objectPassed.order;
     this.y += this.iso.y * -50;*/
     this.time;//
     this.inUse = false;
     this.handler = handler;
+    this.dir = new Phaser.Point();
+    this.weaponParams;
+    this.iso = null;
+    this.speed = 0.1875;
+    
+    this.tint = 0xff0055;
 }
 Bullet.prototype = Object.create(Phaser.Image.prototype);
 Bullet.constructor = Bullet;
 //
-Bullet.prototype.dosetup = function(hexHandler)
+Bullet.prototype.step = function(elapseTime)
 {
+    var nextx = this.x + this.dir.x * this.speed * elapseTime;
+    var nexty = this.y + this.dir.y * this.speed * elapseTime;
+    if(this.prevx != nextx || this.prevy != nexty)
+    {
+        
+        this.x = nextx;
+        this.y = nexty;
+        this.findtile();
+        
+        this.prevx = this.x;
+        this.prevy = this.y;
+        
+        //this.setDirection();
+        this.updateIso();
+    }
+    console.log(this.x,this.y, this.target.x, this.target.y);
 }
 Bullet.prototype.killSelf = function(){
     this.handler.returnbulletToPool(this);
 }
-Bullet.prototype.getReady = function(imagename, action, onhitaction, start, target)
+Bullet.prototype.getReady = function(imagename, action, start, target, weaponParams)
 {
     this.inUse = true;
     this.visible = true;
     //
-    if(this.frameName!=imagename)
-        this.frameName = imagename;
+    //if(this.frameName!=imagename)
+        //this.frameName = imagename;
     //
     this.start = start;
     this.target = target;
+    
+    this.weaponParams = weaponParams;
+    //if miss pick random location
     //
-    //action, onhitaction?
+    //action
+    this.x = start.x;
+    this.y = start.y;
+    this.target = target;
+    console.log(this.target);
+    this.setDirection();
+    
+    this.posx = -1;
+    this.posy = -1;
+    this.prevx = -1;
+    this.prevy = -1;
+    this.findtile();
+    this.updateIso();
 }
 Bullet.prototype.reset = function(){
     this.time = -1;
     this.over = null;
     this.inUse = false;
     this.visible = false;
+}
+Bullet.prototype.setDirection = function() 
+{ 
+    if(this.target!=null)
+    {
+        this.dir.x =  this.target.x-this.x;//+this.gameref.map.hexHandler.halfHex
+        this.dir.y =  this.target.y-this.y;//+this.gameref.map.hexHandler.halfHexHeight
+        this.dir.normalize();
+    }
+    else
+    {
+        this.dir.x = 0;
+        this.dir.y = 0;
+    }
+}
+Bullet.prototype.findtile = function()
+{
+    //console.log(this.x,this.y);
+    var onmap = this.gameref.map.spritegrid.PosToMap(this.x,this.y);
+    if(onmap.x!=-1)
+    {
+        this.posx = onmap.x;
+        this.posy = onmap.y;
+    }
+    //this.currentTile = this.gameref.hexHandler.checkHex(this.x,this.y);
+}
+Bullet.prototype.updateIso = function()
+{
+    if(this.currentTile)
+    {
+        //console.log(this.currentTile.posx,)
+        this.iso = this.gameref.map.spritegrid.projectGrid(this.currentTile.posx,this.currentTile.posy);
+    }
+}
+Bullet.prototype.updateIso = function()
+{
+    this.iso = this.gameref.map.spritegrid.projectGrid(this.posx,this.posy);
+    this.iso.y += 50;
 }

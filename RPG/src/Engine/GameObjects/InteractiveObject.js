@@ -14,7 +14,7 @@ destroyed - if destroyed don't recreate on enter
 */
 var InteractiveObject = function (maingame, jsondata, map) 
 {
-    this.maingame = maingame;
+    this.gameref = this.maingame = maingame;
     this.game = maingame.game;
     this.map = map;
     

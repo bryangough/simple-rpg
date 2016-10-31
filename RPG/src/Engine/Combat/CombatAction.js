@@ -31,9 +31,10 @@ CombatAction.prototype.execute = function()
     {
         var weapon = this.params[0];
         var acc = this.params[1];
+        var hit = this.params[2];
         //this.game, this.gameref, this, clickedObject, "bullet", this.state,[weapon, acc]
         //imagename, action, onhitaction, start, target
-        this.gameref.bulletHandler.fireBullet("combat_actionpoints0001.png", this, null, this.combater, this.target, {func:this.doFinish, callee:this});
+        this.gameref.bulletHandler.fireBullet("combat_actionpoints0001.png", this, this.combater, this.target, {func:this.doFinish, callee:this}, {weapon:weapon, acc:acc, hit:hit});
     } 
     else
         this.doFinish();
@@ -51,9 +52,9 @@ CombatAction.prototype.addActionToState = function(nextAction)
 }
 CombatAction.prototype.doFinish = function(nextState)
 {
-    console.log("combat action: doFinish")
+    console.log("combat action: doFinish",nextState)
     if(nextState!=null)
-        this.state.placeAtFront(nextAction);
+        this.state.placeAtFront(nextState);
     this.state.removeAction(this);//this should be just a pop
     this.state.NextTick();
 }
