@@ -58,7 +58,7 @@ BattleState.prototype.endPlayerTurn = function()
     }
 }
 
-//
+//why is this here?
 BattleState.prototype.handleOver = function(combat) 
 {
     if(!this.gameref.map.playerCharacter.currentSelectedWeapon)

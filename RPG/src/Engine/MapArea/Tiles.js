@@ -53,9 +53,11 @@ var Walkable = function(arrayIn)
 }
 Walkable.prototype.isWalkable = function(atx, aty, dirx, diry)
 {
+    console.log("walkable set to: ",this.walkable);
     if(!this.walkable)//if not walkable can't enter.
         return 0;
     //use location and direction to determine cost.
+    
     if(aty % 2 == 1)
     {
         if(dirx == 1 && diry == -1)
@@ -227,7 +229,7 @@ SimpleTile.prototype.callFunction = function(fnstring,fnparams)
     var fn = window[fnstring];
     if (typeof fn === "function") fn.apply(null, fnparams);
 }
-SimpleTile.prototype.changeWalkable = function(walkableto) 
+SimpleTile.prototype.changeWalkable = function(walkableto, mover) 
 {
     console.log("updatewalkable",this.maingame.updatewalkable);
     
@@ -237,7 +239,10 @@ SimpleTile.prototype.changeWalkable = function(walkableto)
     else
         walkHandler.walkable = 0;
         //this.maingame.walkableArray[this.posx][this.posy] = 0;
-
+    if(mover!=null)
+        this.moverontile = mover;
+    else 
+        this.moverontile = null;
     this.walkable = walkHandler.walkable;
     this.maingame.updatewalkable = true;
 }
@@ -248,6 +253,20 @@ SimpleTile.prototype.changeWalkable = function(walkableto)
         this.walkable = false;
     this.walkable = true;
 }*/
+SimpleTile.prototype.fillTile = function(fillingObject) 
+{
+    console.log("updatewalkable fillTile",this.maingame.updatewalkable);
+    
+    /*if(walkableto==true||walkableto=="true")
+        //this.maingame.walkableArray[this.posx][this.posy] = 1;
+        walkHandler.walkable = 1;
+    else
+        walkHandler.walkable = 0;
+        //this.maingame.walkableArray[this.posx][this.posy] = 0;
+
+    this.walkable = walkHandler.walkable;
+    this.maingame.updatewalkable = true;*/
+}
 SimpleTile.prototype.enterTile = function(enterer)
 {
     if(this.eventDispatcher)
@@ -306,7 +325,7 @@ BaseTile.prototype.callFunction = function(fnstring,fnparams)
     var fn = window[fnstring];
     if (typeof fn === "function") fn.apply(null, fnparams);
 }
-BaseTile.prototype.changeWalkable = function(walkableto) 
+BaseTile.prototype.changeWalkable = function(walkableto, mover) 
 {
     //console.log("asdf",this.maingame);
     
@@ -317,6 +336,10 @@ BaseTile.prototype.changeWalkable = function(walkableto)
     //
     this.walkable = walkableto;
     this.maingame.updatewalkable = true;
+    if(mover!=null)
+        this.moverontile = mover;
+    else 
+        this.moverontile = null;
 }
 BaseTile.prototype.adjustVisible = function(newVisible)
 {

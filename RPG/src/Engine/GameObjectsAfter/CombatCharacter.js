@@ -155,7 +155,7 @@ CombatCharacter.prototype.setupHealthBar = function()
         hpbar.x = 15 * count;
         hpbar.y = 15 * rowcount;
         count++;
-        
+        hpbar.tint = 0xffffff;
         this.shieldbar.push(hpbar);
         this.healthuigroup.add(hpbar);
     }
@@ -172,6 +172,7 @@ CombatCharacter.prototype.setupHealthBar = function()
         hpbar.x = 15 * count;
         hpbar.y = 15 * rowcount;
         count++;
+        hpbar.tint = 0xffffff;
         this.healthbar.push(hpbar);
         this.healthuigroup.add(hpbar);
     }
@@ -396,7 +397,7 @@ CombatCharacter.prototype.doShoot = function()
         this.eventDispatcher.completeAction(this.actionsaftermove, true);
     }
     this.clearTargetTile();
-    
+    this.actionsaftermove = null;
 }
 CombatCharacter.prototype.afterShoot = function(params)
 {
@@ -405,6 +406,7 @@ CombatCharacter.prototype.afterShoot = function(params)
     var weapon = params.weapon;
     var afterAction = params.afterAction;
     var action = params.action;
+    var state = params.state;
     
     var distanceTo = this.maingame.map.hexHandler.testRange(target.currentTile, this.currentTile, false)
     var range = weapon.range;
@@ -421,9 +423,8 @@ CombatCharacter.prototype.afterShoot = function(params)
         hit = true;
         //target.takeDmg(weapon.dmg);
     }
-    var action = new CombatAction(this.game, this.gameref, this, target, "bullet", this.state, [weapon, acc, hit]);
     
-    
+    var action = new CombatAction(this.game, this.gameref, this, target, "bullet", state, [weapon, acc, hit]);
     //create bullet action
     //
     //

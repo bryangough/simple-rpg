@@ -168,7 +168,7 @@ Map.prototype.createMapTiles = function(passedMap){
                         temptile = new GraphicTile(this.game, tilereference.tile, tilereference.spritesheet, i, j, tempPoint.x, tempPoint.y, this.gameRef);
                     }
                     this.hexagonGroup.add(temptile);
-                    //this.addLocationTextToTile(tempPoint.x,tempPoint.y,hexagonWidth,hexagonHeight,i,j);
+                    this.addLocationTextToTile(tempPoint.x,tempPoint.y,hexagonWidth,hexagonHeight,i,j);
                 }
             }
         }

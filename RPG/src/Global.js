@@ -9,4 +9,5 @@ var Global = function ()
     this.language = "en";
     this.uilocation = "assets/basicUI/";
     this.assetsLocation = "assets/simpletown/";
+    this.actionspeed = 1.0;
 };

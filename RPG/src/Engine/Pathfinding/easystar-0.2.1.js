@@ -401,6 +401,7 @@ EasyStar.js = function() {
 	**/
 	this.findPath = function(startX, startY, endX, endY, callback, callbackObj) {
 		//Wraps the callback for sync vs async logic
+        console.log('findPath ',startX, startY, endX, endY);
 		var callbackWrapper = function(result) {
 			if (syncEnabled) {
 				//callback(result);
@@ -467,7 +468,9 @@ EasyStar.js = function() {
         instance.endwalkable = isAcceptable;
 		instance.openList.insert(coordinateToNode(instance, instance.startX, 
 			instance.startY, null, STRAIGHT_COST));
-
+        
+        //force only 1 for now!
+        instances = [];
 		instances.push(instance);
 	};
 
@@ -478,6 +481,7 @@ EasyStar.js = function() {
 	* easystar.setIteratonsPerCalculation().
 	**/
 	this.calculate = function() {
+        console.log('calculate ', instances[0]);
 		if (instances.length === 0 || collisionGrid === undefined || acceptableTiles === undefined) {
 			return;
 		}
@@ -619,16 +623,19 @@ EasyStar.js = function() {
 
 		if (pointsToAvoid[adjacentCoordinateX + "_" + adjacentCoordinateY] === undefined) {
 			if (instance.endX === adjacentCoordinateX && instance.endY === adjacentCoordinateY) {
+                console.log('end adjacent: '+adjacentCoordinateX,adjacentCoordinateY);
 				instance.isDoneCalculating = true;
 				var path = [];
 				var pathLen = 0;
                 //if end isn't walkable? stop on adjacent
-                //console.log("a",instance.endwalkable);
-                if(instance.endwalkable && isTileWalkable(collisionGrid, null,searchNode.x, searchNode.y, x, y))
+                console.log(" endwalkable ", instance.endwalkable, isTileWalkable(collisionGrid, null, searchNode.x, searchNode.y, x, y), searchNode.x, searchNode.y, x, y);
+                
+                if(instance.endwalkable && isTileWalkable(collisionGrid, null, searchNode.x, searchNode.y, x, y))
                 {
 				    path[pathLen] = {x: adjacentCoordinateX, y: adjacentCoordinateY};
 				    pathLen++;
                 }
+                console.log("after")
 				path[pathLen] = {x: searchNode.x, y:searchNode.y};
 				pathLen++;
 				var parent = searchNode.parent;
@@ -664,6 +671,7 @@ EasyStar.js = function() {
         if(x < 0 || x > collisionGrid.length || y < 0 || y > collisionGrid[0].length)
                 return false;
         var ret = collisionGrid[x][y].isWalkable(x,y,changex,changey)
+        console.log('ret ',ret)
         if(ret==1)
             return true;
         /*for (var i = 0; i < acceptableTiles.length; i++) {

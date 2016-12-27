@@ -453,10 +453,12 @@ HexHandler.prototype.findClosesInPath = function(currenttile, tiles, path)
 }
 HexHandler.prototype.pathCoordsToTiles = function(path)
 {
+    console.log("HexHandler.pathCoordsToTiles")
     newpath = [];
     for(var i=0;i<path.length;i++)
     {
         var overtile = this.getTileByCords(path[i].x,path[i].y);
+        console.log(overtile.posx, overtile.posy, overtile.walkable);
         if(overtile!=null && overtile.walkable)
         {
             newpath.push(overtile);

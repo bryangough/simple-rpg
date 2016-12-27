@@ -116,7 +116,7 @@ MovingCharacter.prototype.isMoving = function()
 MovingCharacter.prototype.finalSetup = function()     
 {
     //this.currentTile = null;
-    
+    //console.log('final setup')
     this.setLocationByTile(this.currentTile);
     this.currentTile.enterTile(this);
 }
@@ -145,7 +145,7 @@ MovingCharacter.prototype.setLocationByTile = function(tile)
     
     this.findtile();
     this.resetMoving();
-    this.currentTile.changeWalkable(false);
+    this.currentTile.changeWalkable(false, this);
     this.updateIso();
 }
 //this is only avaliable to players - for when we have multiple players moving around
@@ -241,6 +241,7 @@ MovingCharacter.prototype.jumpTo = function(jumpToTile)
 MovingCharacter.prototype.moveto = function(moveIndex, selectedPosition)
 {
     //selectedPosition used for moveStraight
+    console.log("moving character moveto ", moveIndex, this.currentTile);
     if(moveIndex!=null)
     {
         if(this.currentTile==null)
@@ -249,7 +250,9 @@ MovingCharacter.prototype.moveto = function(moveIndex, selectedPosition)
             this.setLocationByTile(this.currentTile);
             this.updateIso();
         }
-        if(this.objectmovingto!=null && this.objectmovingto.areWeNeighbours(this.currentTile)){
+        if(this.objectmovingto!=null && this.objectmovingto.areWeNeighbours(this.currentTile))
+        {
+            console.log("We are neighbours");
             this.atTargetTile();
         }
         else
@@ -282,10 +285,12 @@ MovingCharacter.prototype.moveto = function(moveIndex, selectedPosition)
             }
             else if(this.currentTile.posx == moveIndex.posx && this.currentTile.posy == moveIndex.posy)
             {
+                console.log("same tile?")
                 path = this.map.hexHandler.checkHex(moveIndex.posx,moveIndex.posy);
             }
             else
             {
+                this.currentTile.changeWalkable(true);
                 this.maingame.pathfinder.setCallbackFunction(this.movercallback, this);
                 this.maingame.pathfinder.preparePathCalculation( [this.currentTile.posx,this.currentTile.posy], [moveIndex.posx, moveIndex.posy] );
                 this.maingame.pathfinder.calculatePath();
@@ -297,8 +302,10 @@ MovingCharacter.prototype.moveto = function(moveIndex, selectedPosition)
     }
 }
 MovingCharacter.prototype.movercallback = function(path){
+    //console.log("mover callback. "+path)
     path = path || [];
     path = this.map.hexHandler.pathCoordsToTiles(path);
+    console.log("mover callback. "+path.length)
     this.setPath(path);
     this.maingame.map.highlightHex.showPathCallback(path);
 }
@@ -444,7 +451,7 @@ MovingCharacter.prototype.step = function(elapseTime)
             {
                 this.oldTile.changeWalkable(true);
                 this.oldTile = this.currentTile;
-                this.currentTile.changeWalkable(false);
+                this.currentTile.changeWalkable(false, this);
             }
             if(this.currentTile.posx==this.nextTile.posx && this.currentTile.posy==this.nextTile.posy)
             {
@@ -452,7 +459,7 @@ MovingCharacter.prototype.step = function(elapseTime)
                 if(this.limit>0 && !this.IsPlayer)
                 {
                     this.limit--;
-                    //console.log("step",this.limit);
+                    console.log("step",this.limit);
                 }
                 //
                 if(this.pathlocation>=this.path.length || this.limit==0)// at last tile, now walk to the center

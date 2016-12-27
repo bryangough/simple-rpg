@@ -17,17 +17,20 @@ PlayerCharacter.constructor = PlayerCharacter;
 
 PlayerCharacter.prototype.doDead = function()
 {
-    this.currentTile.changeWalkable(true);
+    this.currentTile.changeWalkable(true, this);
     this.eventDispatcher.doAction("OnDeath",this);
     
     this.jsondata.destroyed = false;
     this.jsondata.dead = false;
     this.jsondata.state = "idle";
     //activate death state
-    this.maingame.gGameMode.change("playerDead");
+    //this.maingame.gGameMode.change("playerDead");
 }
 PlayerCharacter.prototype.handleSelect = function()
 {
+    //stop old character?
+    console.log('****** select player')
     if(this.maingame.map.playerCharacter!=this)
         this.maingame.map.playerCharacter = this;
+    
 }

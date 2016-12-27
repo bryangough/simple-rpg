@@ -100,7 +100,7 @@ BasicGame.Game.prototype = {
         this.camera.setinit();
         //this.camera.step(elapsedTime);
         
-        this.toggleCombat();
+        //this.toggleCombat();
     },
     //
     update: function () {

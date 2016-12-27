@@ -1,4 +1,3 @@
-//wtf?
 //will alpha any maskable object that is in bounds that that point.
 //This is the simpler method.
 var CheapMasker = function (game, maingame, maskableobjects)

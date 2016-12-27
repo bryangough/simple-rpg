@@ -18,6 +18,11 @@ simple:
 - how to handle explosions as well
 
 
+//start shoot
+//create bullet on frame + location
+//
+
+
 //handle flame thrower or just simply animation
 // sprite instead of image
 //play animation (that plays at the same times as character animation)
@@ -60,8 +65,6 @@ BulletHandler.prototype.fireBullet = function(imagename, action, start, target, 
         if(allbullets[i].over==object && allbullets[i].over!=null)
             allbullets[i].killSelf();
     }*/
-    
-    
     if(imagename==null)//|| speed = -1 : instant
     {
         
@@ -69,7 +72,7 @@ BulletHandler.prototype.fireBullet = function(imagename, action, start, target, 
     else
     {
         var bullet = this.pool.getObject();
-        bullet.getReady(imagename, action, start, target, weaponParams);
+        bullet.getReady(imagename, action, start, target, weaponParams, afterAction);
     }
 }
 BulletHandler.prototype.step = function(elapseTime){
@@ -98,7 +101,7 @@ var Bullet = function (game, gameref, x, y, spritesheet, imagename, handler)
     this.dir = new Phaser.Point();
     this.weaponParams;
     this.iso = null;
-    this.speed = 0.1875;
+    this.speed = 0.1875*2;
     
     this.tint = 0xff0055;
 }
@@ -122,12 +125,22 @@ Bullet.prototype.step = function(elapseTime)
         //this.setDirection();
         this.updateIso();
     }
-    console.log(this.x,this.y, this.target.x, this.target.y);
+    if(this.iso.x==this.target.iso.x&&this.iso.z==this.target.iso.z)
+    {
+        //stop();    
+        this.killSelf();
+        this.afterAction.func.apply(this.afterAction.callee,[]);
+        this.target.takeDmg(this.weaponParams.weapon.dmg);
+    }
+    //console.log(this.posx,this.posy, this.target.posx, this.target.posy);
+    //console.log(this.iso, this.target.iso);
 }
 Bullet.prototype.killSelf = function(){
-    this.handler.returnbulletToPool(this);
+    this.handler.returnBullet(this);
+    this.visible = false;
+    this.inUse = false;
 }
-Bullet.prototype.getReady = function(imagename, action, start, target, weaponParams)
+Bullet.prototype.getReady = function(imagename, action, start, target, weaponParams, afterAction)
 {
     this.inUse = true;
     this.visible = true;
@@ -137,7 +150,7 @@ Bullet.prototype.getReady = function(imagename, action, start, target, weaponPar
     //
     this.start = start;
     this.target = target;
-    
+    this.afterAction = afterAction;
     this.weaponParams = weaponParams;
     //if miss pick random location
     //
@@ -197,5 +210,5 @@ Bullet.prototype.updateIso = function()
 Bullet.prototype.updateIso = function()
 {
     this.iso = this.gameref.map.spritegrid.projectGrid(this.posx,this.posy);
-    this.iso.y += 50;
+    //this.iso.y += 50;
 }

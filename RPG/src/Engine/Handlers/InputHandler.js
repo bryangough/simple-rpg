@@ -88,6 +88,8 @@ InputHandler.prototype.onMove = function(pointer, x, y)
     //var fridges = this.gameref.map.hexHandler.doFloodFill(moveIndex,3,false,true);
     //this.gameref.map.highlightHex.drawFringes(fridges);
     this.gameref.map.highlightHex.moveCursor(moveIndex);
+    
+    //console.log('mover on tile: ',moveIndex.moverontile);
     //this.gameref.map.highlightHex.highilightneighbors(playertile);
 },
 InputHandler.prototype.doDragScreen = function(pointer)
@@ -105,6 +107,7 @@ InputHandler.prototype.clickedObject = function(clickedObject)
 }
 InputHandler.prototype.clickedHex = function(pointer,b)
 {
+    console.log('****** clicked hex')
     if (!pointer.withinGame) { return; }
     
     //console.log("hex",pointer.active);
@@ -131,9 +134,21 @@ InputHandler.prototype.clickedHex = function(pointer,b)
     var pointery = (this.gameref.input.worldY-this.gameref.map.mapGroup.y)/this.gameref.map.scaledto;
     var moveIndex =  this.gameref.map.hexHandler.checkHex(pointerx,pointery);
     
+    var overGuy = null;
     if(moveIndex!=null)
     {
-        if(this.game.currentAction==this.game.WALK)
+        if(moveIndex!=undefined)
+        {
+           
+            if(moveIndex.moverontile!=null)
+            {
+                //this.gameref.map.highlightHex.moveCursor(moveIndex);
+                moveIndex.moverontile.handleOver();
+                overGuy = moveIndex.moverontile;
+            }
+        }
+        //if moveIndex contains another player don't move
+        if(this.game.currentAction==this.game.WALK && !(overGuy!=null && !overGuy.IsPlayer))
         {
             this.gameref.map.playerCharacter.moveto(moveIndex, {x:pointerx, y:pointery});
         }
