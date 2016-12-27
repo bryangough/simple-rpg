@@ -1,5 +1,5 @@
 //
-BattleHeroTurnState = function (statemachine, game, gameref, isPlayerTurn) {
+BattleHeroTurnState = function (statemachine, game, gameref, isPlayerTurn, inputHandler) {
     this.statemachine = statemachine;
     this.game = game;
     this.gameref = gameref;
@@ -8,6 +8,7 @@ BattleHeroTurnState = function (statemachine, game, gameref, isPlayerTurn) {
     this.mEntities = [];//entitys
     this.actionStates = new StateMachine();
     
+    this.inputHandler = inputHandler;
     this.actionStates.add("tick", new BattleTick(this.actionStates, this));
     this.actionStates.add("execute", new BattleExecute(this.actionStates));
     
@@ -30,7 +31,8 @@ BattleHeroTurnState.prototype.SortByTime = function(a,b)
 }
 BattleHeroTurnState.prototype.update = function(elapsedTime) 
 {
-    this.game.debug.text(this.mActions.length+"", 20, 25) 
+    //this.game.debug.text(this.mActions.length+"", 20, 25) 
+    this.game.debug.text("Pause input: "+ this.inputHandler.pauseInput, 20, 25) 
     if(this.mActions.length>0)
         this.actionStates.update(elapsedTime);    
     else
@@ -52,8 +54,9 @@ BattleHeroTurnState.prototype.onEnter = function(params)
 {
     console.log("BattleTurn")
     this.createTeam();
-    if(this.isPlayerTurn)
+    if(!this.isPlayerTurn)
     {
+        this.inputHandler.pauseInput = true;
         //if(this.mActions.length>0)
         //    this.mActions[this.mActions.length-1].execute();
     }
@@ -110,7 +113,7 @@ BattleHeroTurnState.prototype.findDecideByActor = function(actor)
 BattleHeroTurnState.prototype.removeAction = function(action)
 {
     var i = this.mActions.indexOf(action);
-    console.log(i,this.mActions,action);
+    console.log("removeAction ",i,this.mActions,action);
     if (i > -1) 
     {
         this.mActions.splice(i, 1);
@@ -155,7 +158,9 @@ BattleHeroTurnState.prototype.moveOn = function()
 }
 BattleHeroTurnState.prototype.onExit = function() 
 {
+    console.log('On exit.')
     this.mActions = [];
+    this.inputHandler.cleanUpPlayer();
 }
 BattleHeroTurnState.prototype.leaveThisState = function() 
 {

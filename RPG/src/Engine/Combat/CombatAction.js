@@ -13,6 +13,7 @@ var CombatAction = function (game, gameref, combater, target, action, state, par
 }
 CombatAction.prototype.execute = function()
 {
+    this.state.inputHandler.pauseInput = true;
     console.log("Combat Action execute ",this.action);
     //
     if(this.action=="move")
@@ -21,7 +22,7 @@ CombatAction.prototype.execute = function()
     }
     else if(this.action=="shoot")//shoot
     {
-        this.combater.shootGun(this.target, this.params[0], {func:this.doFinish, callee:this}, this);
+        this.combater.shootGun(this.target, this.params[0], {func:this.doFinish, callee:this}, this, this.state);
     }
     else if(this.action=="useitem")//use item
     {
@@ -55,8 +56,11 @@ CombatAction.prototype.addActionToState = function(nextAction)
 CombatAction.prototype.doFinish = function(nextState)
 {
     console.log("combat action: doFinish",nextState,this.state)
-    if(nextState!=null)
-        this.state.placeAtFront(nextState);
-    this.state.removeAction(this);//this should be just a pop
-    this.state.NextTick();
+    if(this.state!=null)
+    {
+        if(nextState!=null)
+            this.state.placeAtFront(nextState);
+        this.state.removeAction(this);//this should be just a pop
+        this.state.NextTick();
+    }
 }

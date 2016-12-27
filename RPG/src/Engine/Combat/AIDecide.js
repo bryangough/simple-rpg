@@ -9,6 +9,8 @@ var AIDecide = function (game, gameref, combater, speed, state)
     this.isDone = true;
     //
     this.maxActions = 2;
+    
+    this.enemyfocus = null;
 }
 AIDecide.prototype.Update = function(elapse)
 {
@@ -76,6 +78,12 @@ AIDecide.prototype.execute = function()
         this.gameref.toggleCombat();//I don't like this
         //this.state.leaveThisState();//test if no more enemies
     }
+}
+AIDecide.prototype.selectPlayerToAttack = function()
+{
+    //get players from other team
+    //get alive players
+    //
 }
 AIDecide.prototype.selectThis = function()
 {

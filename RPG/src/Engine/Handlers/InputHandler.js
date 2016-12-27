@@ -21,6 +21,7 @@ InputHandler.prototype.turnOn = function()
 }
 InputHandler.prototype.turnOff = function()
 {
+    console.log("inputhandler turnoff")
     this.gameref.input.deleteMoveCallback(this.onMove, this); 
     this.gameref.input.onDown.remove(this.doDragScreen, this);
     this.gameref.input.onUp.remove(this.clickedHex, this);
@@ -105,9 +106,9 @@ InputHandler.prototype.doDragScreen = function(pointer)
 InputHandler.prototype.clickedObject = function(clickedObject)
 {
 }
-InputHandler.prototype.clickedHex = function(pointer,b)
+InputHandler.prototype.clickedHex = function(pointer,eventt)
 {
-    console.log('****** clicked hex')
+    //console.log('****** clicked hex ',pointer)
     if (!pointer.withinGame) { return; }
     
     //console.log("hex",pointer.active);

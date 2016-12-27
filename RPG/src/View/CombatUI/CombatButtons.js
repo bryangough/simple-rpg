@@ -1,5 +1,7 @@
 //***** CombatButtons ********
 //Player select able buttons
+//will need multiple of these for each active player?
+//for now only the main player gets powers?
 CombatButtons = function(game, maingame, parent){
 	Phaser.Group.call(this, game, parent);
     this.gameref = maingame;
@@ -17,6 +19,7 @@ CombatButtons = function(game, maingame, parent){
     //end turn
 
     this.player = this.gameref.map.playerCharacter;
+    this.players = this.gameref.map.playerCharacters;
       
     this.range = null;
     this.melee = null;
@@ -202,7 +205,13 @@ CombatButtons.prototype.doPower = function(touchedSprite, pointer){
     //touching another player with weapon does attack
     //if self buff (heal) just clicking?
     //console.log("handle press")
-    this.ui.player.currentSelectedWeapon = this.power;
+    console.log(this.ui)
+    
+    for(var x=0;x<this.ui.players.length;x++)
+    {
+        this.ui.players[x].currentSelectedWeapon = this.power;
+    }
+    //this.ui.player.currentSelectedWeapon = this.power;
     //console.log(this, this.ui.player.currentSelectedWeapon);
     this.ui.disableButton(this.ui.currentActive);
     this.ui.currentActive = this.ui.buttons[touchedSprite.x+""];

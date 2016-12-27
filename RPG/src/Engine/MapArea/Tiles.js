@@ -53,7 +53,7 @@ var Walkable = function(arrayIn)
 }
 Walkable.prototype.isWalkable = function(atx, aty, dirx, diry)
 {
-    console.log("walkable set to: ",this.walkable);
+    //console.log("walkable set to: ",this.walkable);
     if(!this.walkable)//if not walkable can't enter.
         return 0;
     //use location and direction to determine cost.

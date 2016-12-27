@@ -458,7 +458,7 @@ HexHandler.prototype.pathCoordsToTiles = function(path)
     for(var i=0;i<path.length;i++)
     {
         var overtile = this.getTileByCords(path[i].x,path[i].y);
-        console.log(overtile.posx, overtile.posy, overtile.walkable);
+        //console.log(overtile.posx, overtile.posy, overtile.walkable);
         if(overtile!=null && overtile.walkable)
         {
             newpath.push(overtile);

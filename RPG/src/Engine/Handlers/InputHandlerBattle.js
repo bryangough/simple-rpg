@@ -8,6 +8,8 @@ var InputHandlerBattle = function (game, gameref)
     
     this.overEnemy = null;
     this.battleState = null;
+    
+    this.pauseInput = false;
 };
 InputHandlerBattle.prototype = Object.create(InputHandler.prototype);
 InputHandlerBattle.constructor = InputHandlerBattle;
@@ -41,7 +43,7 @@ InputHandlerBattle.prototype.onMove = function(pointer, x, y)
         this.overEnemy.handleOut();
         this.overEnemy = null;
     }
-    
+    //console.log("this.playerDecide ",this.playerDecide)
     if(this.playerDecide==null)
         return;
     if(GlobalEvents.currentAction != GlobalEvents.WALK && GlobalEvents.currentAction != GlobalEvents.COMBATSELECT)
@@ -97,12 +99,14 @@ InputHandlerBattle.prototype.hideInputAreas = function(combater)
 
 InputHandlerBattle.prototype.showAreaForMove = function(combater) 
 {
+    console.log('showareaformove **')
     this.frindges = combater.findWalkableFromCurrent();
     this.gameref.map.highlightHex.drawFringes(this.frindges);
 }
-InputHandlerBattle.prototype.clickedHex = function(pointer,b)
+InputHandlerBattle.prototype.clickedHex = function(pointer,eventt)
 {
     //console.log("click",pointer,pointer.active,this.gameref.input.priorityID);
+    //console.log('handleClick ',pointer);
     this.dragScreen = false;
     if(this.didDrag)        //test distance did it actually drag. or do I make a drag screen button?
     {
@@ -110,7 +114,8 @@ InputHandlerBattle.prototype.clickedHex = function(pointer,b)
         return;
     }
     //pointers will be false by other input ui methods so the character isn't randomly walking around
-    
+    if(this.pauseInput)
+        return;
     if(!pointer.active)
         return;
     if(this.playerDecide==null)
@@ -119,10 +124,10 @@ InputHandlerBattle.prototype.clickedHex = function(pointer,b)
     
     if(this.overEnemy)
     {
-        this.overEnemy.handleClick();
+        this.overEnemy.handleClick(pointer);
         if(this.overEnemy.IsPlayer)
         {
-            this.clickedPlayer(this.overEnemy);
+            this.clickedPlayer(this.overEnemy,pointer);
         }
     }
     
@@ -151,12 +156,17 @@ InputHandlerBattle.prototype.clickedHex = function(pointer,b)
 } 
 InputHandlerBattle.prototype.clickedObject = function(clickedObject)
 {
-    if(this.playerDecide==null)
+    if(this.pauseInput)
+        return;
+    console.log('**** clickedObject ',clickedObject,this.playerDecide);
+    if(this.playerDecide==null || !this.playerDecide.dotouched)
         return;
     this.playerDecide.dotouched(clickedObject);
 }
 InputHandlerBattle.prototype.clickedPlayer = function(actor)
 {
+    if(this.pauseInput)
+        return;
     this.cleanUpPlayer();
     var playerChoice = this.battleState.mBattleStates.mCurrentState.findDecideByActor(actor);
     if(playerChoice)

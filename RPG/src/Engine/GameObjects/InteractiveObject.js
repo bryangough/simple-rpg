@@ -36,6 +36,7 @@ var InteractiveObject = function (maingame, jsondata, map)
     this.notcreated = false;
     if(!this.IsPlayer)
         this.adjustVisible(1);
+    this.lastpointer = null;
 }
 InteractiveObject.prototype = Object.create(Phaser.Group.prototype);
 //InteractiveObject.prototype = Object.create(Phaser.Sprite.prototype);
@@ -478,6 +479,13 @@ InteractiveObject.prototype.setupReactToAction = function()
 }
 InteractiveObject.prototype.handleClick = function(touchedSprite, pointer) 
 {
+    console.log('handleClick ',touchedSprite, pointer);
+    if(pointer==this.lastpointer && pointer!=null)
+    {
+        console.log('** handleClick ** Ignore this touch.')
+        return;
+    }
+    this.lastpointer = pointer;
     this.eventDispatcher.doAction("Any", this.map.playerCharacter);
     if(GlobalEvents.currentAction == GlobalEvents.WALK)
         return;

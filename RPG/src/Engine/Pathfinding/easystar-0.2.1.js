@@ -671,7 +671,7 @@ EasyStar.js = function() {
         if(x < 0 || x > collisionGrid.length || y < 0 || y > collisionGrid[0].length)
                 return false;
         var ret = collisionGrid[x][y].isWalkable(x,y,changex,changey)
-        console.log('ret ',ret)
+        //console.log('ret ',ret)
         if(ret==1)
             return true;
         /*for (var i = 0; i < acceptableTiles.length; i++) {

@@ -16,6 +16,11 @@ PlayerDecide.prototype.Update = function(elapse)
 }
 PlayerDecide.prototype.onEnter = function(params)
 {
+    console.log('Playerdecide onEnter')
+}
+PlayerDecide.prototype.onExit = function(params)
+{
+    console.log('Playerdecide onExit')
 }
 
 
@@ -24,10 +29,10 @@ PlayerDecide.prototype.execute = function()
     console.log("Player decide execute.", this.maxActions);
     if(this.maxActions<1)
     {
-        
         this.state.removeAction(this);
         return;
     }
+    this.state.inputHandler.pauseInput = false;
     this.state.statemachine.inputHandler.highlightplayer(this.combater);
     this.selectThis();
 }
@@ -62,6 +67,7 @@ PlayerDecide.prototype.dotouched = function(clickedObject)
         {
             weapon = this.combater.weapons[0];
         }*/
+        console.log("weapon ",weapon)
         if(weapon!=null)
         {
             action = new CombatAction(this.game, this.gameref, this.combater, clickedObject, "shoot", this.state,[weapon]);

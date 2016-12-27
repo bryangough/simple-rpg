@@ -25,8 +25,8 @@ BattleState = function (statemachine, game, gameref) {
     this.battleOrder = ["Player","AI"];
     this.currentOrder = -1;
     
-    this.mBattleStates.add("Player", new BattleHeroTurnState(this, game, gameref, true));
-    this.mBattleStates.add("AI", new BattleHeroTurnState(this, game, gameref, false));
+    this.mBattleStates.add("Player", new BattleHeroTurnState(this, game, gameref, true, this.inputHandler));
+    this.mBattleStates.add("AI", new BattleHeroTurnState(this, game, gameref, false, this.inputHandler));
     
     this.activeButtons = new CombatButtons(this.game, this.gameref);
     this.activeButtons.x = 50;
@@ -52,6 +52,7 @@ BattleState.prototype.nextTeam = function()
 }
 BattleState.prototype.endPlayerTurn = function() 
 {
+    console.log('Endplayer turn.')
     if(this.battleOrder[this.currentOrder]=="Player")
     {
         this.nextTeam();
@@ -146,6 +147,7 @@ BattleState.prototype.onEnter = function(params)
 }
 BattleState.prototype.onExit = function() 
 {
+    console.log("BattleState **  onExit")
     this.mActions = [];//flush actions
     
     this.activeButtons.visible = false;

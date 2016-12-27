@@ -191,6 +191,8 @@ CombatCharacter.prototype.boostShield = function(heal)
 }
 CombatCharacter.prototype.takeDmg = function(dmg)
 {
+    if(this.dead)//don't hurt dead characters
+        return;
     this.shieldhp -= dmg;
     if(this.shieldhp<0)
     {
@@ -205,6 +207,7 @@ CombatCharacter.prototype.takeDmg = function(dmg)
         this.dead = true;
         this.jsondata.destroyed = true;
         this.jsondata.dead = true;
+        this.attackable = false;
         
         //make tile walkable after death. No need to litter the battlefield.
         this.currentTile.changeWalkable(true);
@@ -259,7 +262,8 @@ CombatCharacter.prototype.startCombat = function()
     this.moveToCenter();
     this.healthuigroup.visible = true;
     // stop movement when in combat
-    this.changeMoveState("idle");
+    if(!this.dead)
+        this.changeMoveState("idle");
 }
 CombatCharacter.prototype.endCombat = function()
 {
@@ -378,14 +382,14 @@ CombatCharacter.prototype.Speed = function()
 {
     return 1;
 }
-CombatCharacter.prototype.shootGun = function(target, weapon, afterAction, action)
+CombatCharacter.prototype.shootGun = function(target, weapon, afterAction, action, state)
 {
     this.faceTarget(target);
     
     //do critical fail calcs
     
     this.changeState("shoot");
-    this.actionsaftermove = [{func:this.afterShoot, para:[{weapon:weapon, target:target, afterAction:afterAction, action:action}], removeself:false, callee:this, con:null, walkto:false}];
+    this.actionsaftermove = [{func:this.afterShoot, para:[{weapon:weapon, target:target, afterAction:afterAction, action:action, state:state}], removeself:false, callee:this, con:null, walkto:false}];
 }
 CombatCharacter.prototype.doShoot = function()
 {
