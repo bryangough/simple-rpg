@@ -1,3 +1,4 @@
+"use strict";
 var MonsterCharacter = function (maingame, jsondata, map) 
 {
     CombatCharacter.call(this, maingame, jsondata, map);

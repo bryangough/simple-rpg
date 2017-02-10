@@ -1,3 +1,4 @@
+"use strict";
 /*
 this.jsondata.destroyed - object has been destroy
 
@@ -195,6 +196,7 @@ InteractiveObject.prototype.applyAnimations = function(actions)
 }
 InteractiveObject.prototype.addOtherAnimation = function(animations, addTo, doOnComplete, otherName)
 {
+    var tempanimation;
     for(var j=0;j<animations.length;j++)
     {
         if(animations[j].start==0 && animations[j].stop==0){

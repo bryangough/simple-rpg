@@ -1,3 +1,4 @@
+"use strict";
 var CombatCharacter = function (maingame, jsondata, map)
 {
     MovingCharacter.call(this, maingame, jsondata, map);

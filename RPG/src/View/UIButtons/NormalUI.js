@@ -8,7 +8,7 @@ var NormalUI = function(game,maingame,globalhandler,uiGroup)
 
     this.activeButtons = new ActionButtons(this.game, this.gameref);
     this.activeButtons.x = 20;
-    this.activeButtons.y = 540;
+    this.activeButtons.y = this.game.world.height-70;//540;
     this.game.add.existing(this.activeButtons);
     this.uiGroup.add(this.activeButtons);
 }

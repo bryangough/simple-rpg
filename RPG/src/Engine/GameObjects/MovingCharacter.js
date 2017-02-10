@@ -1,3 +1,4 @@
+"use strict";
 //characters that will be moving around the map using the patherfinder
 //
 //

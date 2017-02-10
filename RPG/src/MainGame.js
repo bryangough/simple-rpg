@@ -1,3 +1,4 @@
+"use strict";
 BasicGame.Game = function (game) {
 
     this.neighborLights = [];
@@ -86,7 +87,7 @@ BasicGame.Game.prototype = {
         this.game.add.existing(this.inventory);
         this.uiGroup.add(this.inventory);
         //this.inventory.x = 0;
-        this.inventory.y = 490;
+        this.inventory.y = this.game.world.height-110;//490;
         this.inventory.visible = false;
 
         this.normalUI = new NormalUI(this.game, this, this.globalHandler, this.uiGroup);

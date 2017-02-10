@@ -1,3 +1,4 @@
+"use strict";
 // extra json - map
 
 var PlayerCharacter = function (maingame, jsondata, map) 

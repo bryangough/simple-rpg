@@ -21,7 +21,7 @@ var Map = function (game, gameRef)
     this.highlightArray;
     
     this.mapGroup;
-    this.scaledto = 0.8;
+    this.scaledto = 1.0;
     
     this.redoMap = false;
 }
@@ -367,7 +367,7 @@ Map.prototype.createMapTiles = function(passedMap){
     if(!this.playerCharacter)
     {
         //console.log("Create Character.");
-        for(var x=0;x<3;x++)
+        for(var x=0;x<1;x++)
         {
             this.playerCharacter = new PlayerCharacter(this.gameRef, this.playerData.Player, this);
             this.playerCharacter.dosetup();   
