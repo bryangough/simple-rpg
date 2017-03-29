@@ -220,7 +220,7 @@ MovingCharacter.prototype.moveToSpot = function(tile, actions)
 
 MovingCharacter.prototype.moveToSpotCombat = function(tile, actions, limit)
 {
-    console.log("moveToSpotCombat",tile,actions,limit);
+    //console.log("moveToSpotCombat",tile,actions,limit);
     this.actionsaftermove = actions;
     this.moveto(tile);
     this.actionsaftermove = actions;
@@ -242,7 +242,7 @@ MovingCharacter.prototype.jumpTo = function(jumpToTile)
 MovingCharacter.prototype.moveto = function(moveIndex, selectedPosition)
 {
     //selectedPosition used for moveStraight
-    console.log("moving character moveto ", moveIndex, this.currentTile);
+    //console.log("moving character moveto ", moveIndex, this.currentTile);
     if(moveIndex!=null)
     {
         if(this.currentTile==null)
@@ -253,7 +253,7 @@ MovingCharacter.prototype.moveto = function(moveIndex, selectedPosition)
         }
         if(this.objectmovingto!=null && this.objectmovingto.areWeNeighbours(this.currentTile))
         {
-            console.log("We are neighbours");
+            //console.log("We are neighbours");
             this.atTargetTile();
         }
         else
@@ -265,20 +265,20 @@ MovingCharacter.prototype.moveto = function(moveIndex, selectedPosition)
             //
             if(this.moveStraight)
             {
-                console.log(this.currentTile.posx, this.currentTile.posy, moveIndex.posx, moveIndex.posy);
+                //console.log(this.currentTile.posx, this.currentTile.posy, moveIndex.posx, moveIndex.posy);
                 
                 this.path = this.map.hexHandler.getlinepath(this.currentTile, moveIndex);
-                console.log(this.path.length, this.path)
+                //console.log(this.path.length, this.path)
                 if(this.path!=null && this.path.length > 0)
                 {
                     this.pathlocation = this.path.length - 1;
                     this.nextTile = this.path[this.pathlocation];
-                    console.log("next tile ", this.nextTile.posx, this.nextTile.posy, this.nextTile.x, this.nextTile.y);
+                    //console.log("next tile ", this.nextTile.posx, this.nextTile.posy, this.nextTile.x, this.nextTile.y);
                     
                     this.movingtotile = moveIndex;
                 
                     this.setDirection();
-                    console.log(this.dir)
+                    //console.log(this.dir)
                     this.changeState("walk");
 
                 }
@@ -286,7 +286,7 @@ MovingCharacter.prototype.moveto = function(moveIndex, selectedPosition)
             }
             else if(this.currentTile.posx == moveIndex.posx && this.currentTile.posy == moveIndex.posy)
             {
-                console.log("same tile?")
+                //console.log("same tile?")
                 path = this.map.hexHandler.checkHex(moveIndex.posx,moveIndex.posy);
             }
             else
@@ -306,7 +306,7 @@ MovingCharacter.prototype.movercallback = function(path){
     //console.log("mover callback. "+path)
     path = path || [];
     path = this.map.hexHandler.pathCoordsToTiles(path);
-    console.log("mover callback. "+path.length)
+    //console.log("mover callback. "+path.length)
     this.setPath(path);
     this.maingame.map.highlightHex.showPathCallback(path);
 }

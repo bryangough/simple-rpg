@@ -453,7 +453,7 @@ HexHandler.prototype.findClosesInPath = function(currenttile, tiles, path)
 }
 HexHandler.prototype.pathCoordsToTiles = function(path)
 {
-    console.log("HexHandler.pathCoordsToTiles")
+    //console.log("HexHandler.pathCoordsToTiles")
     newpath = [];
     for(var i=0;i<path.length;i++)
     {

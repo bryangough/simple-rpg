@@ -178,9 +178,6 @@ ActionButtons.prototype.disableAll = function(){
     this.currentActive = null;
 }
 ActionButtons.prototype.checkRefresh = function(){
-    
-    
-    
     if(GlobalEvents.currentAction == GlobalEvents.ITEM)
     {
         this.disableAll();

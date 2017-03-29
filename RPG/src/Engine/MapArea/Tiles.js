@@ -1,3 +1,13 @@
+//SimpleObject
+//Walkable
+//Grid
+//SimpleTile
+//GraphicTile
+//BaseTile
+//WalkableTile
+//WaterTile
+
+
 var SimpleObject = function (game, x,y, spritesheet, imagename, objectPassed) 
 {
     //console.log(x,y,imagename);

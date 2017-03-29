@@ -1,3 +1,4 @@
+//4 point test. Changed to also handle weighted edges.
 //NameSpace
 var EasyStar = EasyStar || {};
 
@@ -217,7 +218,7 @@ EasyStar.instance = function() {
 **/
 EasyStar.js = function() {
 	var STRAIGHT_COST = 10;
-	var DIAGONAL_COST = 14;
+	var DIAGONAL_COST = 16;
 	var syncEnabled = false;
 	var pointsToAvoid = {};
 	var collisionGrid;
@@ -228,7 +229,7 @@ EasyStar.js = function() {
 	var instances = [];
 	var iterationsPerCalculation = Number.MAX_VALUE;
 	var acceptableTiles;
-	var diagonalsEnabled = false;
+	var diagonalsEnabled = true;
 
 	/**
 	* Sets the collision grid that EasyStar uses.
@@ -401,7 +402,8 @@ EasyStar.js = function() {
 	**/
 	this.findPath = function(startX, startY, endX, endY, callback, callbackObj) {
 		//Wraps the callback for sync vs async logic
-        console.log('findPath ',startX, startY, endX, endY);
+        if(this.debug)
+            console.log('findPath ',startX, startY, endX, endY);
 		var callbackWrapper = function(result) {
 			if (syncEnabled) {
 				//callback(result);
@@ -481,7 +483,8 @@ EasyStar.js = function() {
 	* easystar.setIteratonsPerCalculation().
 	**/
 	this.calculate = function() {
-        console.log('calculate ', instances[0]);
+        if(this.debug)
+            console.log('calculate ', instances[0]);
 		if (instances.length === 0 || collisionGrid === undefined || acceptableTiles === undefined) {
 			return;
 		}
@@ -519,25 +522,25 @@ EasyStar.js = function() {
                         (isTileWalkable(collisionGrid, acceptableTiles, searchNode.x, searchNode.y-1,0,-1) &&
                         isTileWalkable(collisionGrid, acceptableTiles, searchNode.x-1, searchNode.y,-1,0))) {
 
-                        testNode(searchNode,-1,-1,instances[0],tilesToSearch,DIAGONAL_COST);
+                        testNode(searchNode,0,-2,instances[0],tilesToSearch,DIAGONAL_COST);
                     }
                     if (allowCornerCutting ||
                         (isTileWalkable(collisionGrid, acceptableTiles, searchNode.x, searchNode.y+1,0,1) &&
                         isTileWalkable(collisionGrid, acceptableTiles, searchNode.x+1, searchNode.y,1,0))) {
 
-                        testNode(searchNode,1,1,instances[0],tilesToSearch,DIAGONAL_COST);
+                        testNode(searchNode,1,0,instances[0],tilesToSearch,DIAGONAL_COST);
                     }
                     if (allowCornerCutting ||
                         (isTileWalkable(collisionGrid, acceptableTiles, searchNode.x, searchNode.y-1,0,-1) &&
                         isTileWalkable(collisionGrid, acceptableTiles, searchNode.x+1, searchNode.y,1,0))) {
 
-                        testNode(searchNode,1,-1,instances[0],tilesToSearch,DIAGONAL_COST);
+                        testNode(searchNode,0,2,instances[0],tilesToSearch,DIAGONAL_COST);
                     }
                     if (allowCornerCutting ||
                         (isTileWalkable(collisionGrid, acceptableTiles, searchNode.x, searchNode.y+1,0,1) &&
                         isTileWalkable(collisionGrid, acceptableTiles, searchNode.x-1, searchNode.y,-1,0))) {
 
-                        testNode(searchNode,-1,1,instances[0],tilesToSearch,DIAGONAL_COST);
+                        testNode(searchNode,-1,0,instances[0],tilesToSearch,DIAGONAL_COST);
                     }
                 }
             }
@@ -553,25 +556,25 @@ EasyStar.js = function() {
                         (isTileWalkable(collisionGrid, acceptableTiles, searchNode.x, searchNode.y-1) &&
                         isTileWalkable(collisionGrid, acceptableTiles, searchNode.x-1, searchNode.y))) {
 
-                        testNode(searchNode,-1,-1,instances[0],tilesToSearch,DIAGONAL_COST);
+                        testNode(searchNode,-1,0,instances[0],tilesToSearch,DIAGONAL_COST);
                     }
                     if (allowCornerCutting ||
                         (isTileWalkable(collisionGrid, acceptableTiles, searchNode.x, searchNode.y+1) &&
                         isTileWalkable(collisionGrid, acceptableTiles, searchNode.x+1, searchNode.y))) {
 
-                        testNode(searchNode,1,1,instances[0],tilesToSearch,DIAGONAL_COST);
+                        testNode(searchNode,0,2,instances[0],tilesToSearch,DIAGONAL_COST);
                     }
                     if (allowCornerCutting ||
                         (isTileWalkable(collisionGrid, acceptableTiles, searchNode.x, searchNode.y-1) &&
                         isTileWalkable(collisionGrid, acceptableTiles, searchNode.x+1, searchNode.y))) {
 
-                        testNode(searchNode,1,-1,instances[0],tilesToSearch,DIAGONAL_COST);
+                        testNode(searchNode,0,-2,instances[0],tilesToSearch,DIAGONAL_COST);
                     }
                     if (allowCornerCutting ||
                         (isTileWalkable(collisionGrid, acceptableTiles, searchNode.x, searchNode.y+1) &&
                         isTileWalkable(collisionGrid, acceptableTiles, searchNode.x-1, searchNode.y))) {
 
-                        testNode(searchNode,-1,1,instances[0],tilesToSearch,DIAGONAL_COST);
+                        testNode(searchNode,1,0,instances[0],tilesToSearch,DIAGONAL_COST);
                     }
                 }
             }
@@ -613,7 +616,7 @@ EasyStar.js = function() {
            searchNode.y+valy > -1 && searchNode.y+valy < collisionGrid[0].length)
 
             tilesToSearch.push({ instance: instance, searchNode: searchNode, 
-                x: valx, y: valy, cost: STRAIGHT_COST * getTileCost(searchNode.x+valx, searchNode.y+valy)});
+                x: valx, y: valy, cost: cost * getTileCost(searchNode.x+valx, searchNode.y+valy)});
         
     }
 	//Private methods follow
@@ -623,19 +626,22 @@ EasyStar.js = function() {
 
 		if (pointsToAvoid[adjacentCoordinateX + "_" + adjacentCoordinateY] === undefined) {
 			if (instance.endX === adjacentCoordinateX && instance.endY === adjacentCoordinateY) {
-                console.log('end adjacent: '+adjacentCoordinateX,adjacentCoordinateY);
+                if(this.debug)
+                    console.log('end adjacent: '+adjacentCoordinateX,adjacentCoordinateY);
 				instance.isDoneCalculating = true;
 				var path = [];
 				var pathLen = 0;
                 //if end isn't walkable? stop on adjacent
-                console.log(" endwalkable ", instance.endwalkable, isTileWalkable(collisionGrid, null, searchNode.x, searchNode.y, x, y), searchNode.x, searchNode.y, x, y);
+                if(this.debug)
+                    console.log(" endwalkable ", instance.endwalkable, isTileWalkable(collisionGrid, null, searchNode.x, searchNode.y, x, y), searchNode.x, searchNode.y, x, y);
                 
                 if(instance.endwalkable && isTileWalkable(collisionGrid, null, searchNode.x, searchNode.y, x, y))
                 {
 				    path[pathLen] = {x: adjacentCoordinateX, y: adjacentCoordinateY};
 				    pathLen++;
                 }
-                console.log("after")
+                if(this.debug)
+                    console.log("after")
 				path[pathLen] = {x: searchNode.x, y:searchNode.y};
 				pathLen++;
 				var parent = searchNode.parent;
@@ -733,6 +739,7 @@ Phaser.Plugin.PathFinderPlugin = function (parent) {
     this._callbackObj = null;
     this._prepared = false;
     this._walkables = [0];
+    this.debug = false;
 
 };
 

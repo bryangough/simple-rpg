@@ -1,4 +1,4 @@
-//Bryan Gough, March 18/2015 - removed diag, changed this.calculate to do 6 neighbors instead of 4
+//Bryan Gough, March 18/2015 - removed diag, changed to calculate to do 6 neighbors instead of 4 for hex
 //
 //NameSpace
 var EasyStarHex = EasyStarHex || {};

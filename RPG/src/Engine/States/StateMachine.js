@@ -1,3 +1,4 @@
+//I need to find where I got this from so I can properly link to it.
 StateMachine = function (game) {
     this.mStates = [];//associative
     this.mCurrentState = null;

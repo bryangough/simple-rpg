@@ -3,7 +3,7 @@ var BasicGame = {
 };
 var gameInit = {
     //
-    init: function(lang, container)
+    init: function(lang, container, assetslocation)
     {
         if(container==undefined)
             container = "gameContainer";

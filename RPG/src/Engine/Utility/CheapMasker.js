@@ -1,5 +1,5 @@
-//will alpha any maskable object that is in bounds that that point.
-//This is the simpler method.
+//will alpha any maskable object that is in bounds to that point.
+//This is the simpler method then Master.
 var CheapMasker = function (game, maingame, maskableobjects)
 {
     this.game = game;
