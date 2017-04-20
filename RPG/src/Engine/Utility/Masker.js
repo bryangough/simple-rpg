@@ -1,3 +1,5 @@
+// This was an attempt to cut background sprites so that characters are visible behind objects.
+// The masking wasn't working properly for the calculations
 var Masker = function (game, maingame, maskableobjects)
 {
     this.game = game;

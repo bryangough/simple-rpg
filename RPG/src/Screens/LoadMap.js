@@ -18,7 +18,7 @@ BasicGame.LoadMap.prototype = {
         var level = levels[this.game.global.loadMap];
         if(level!=null)
         {
-            console.log(level.gameData, level.map)
+            console.log("Load map: ", level.gameData, level.map)
             this.load.json('gameData', this.game.global.assetsLocation +"maps/" + level.gameData+".json");
             this.load.json('map', this.game.global.assetsLocation +"maps/" + level.map+".json");
         }

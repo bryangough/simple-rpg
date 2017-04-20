@@ -1,9 +1,0 @@
-interact trigger - on enter - set location (either tile or tile group)
-
-
-- start combat from conversation
-- start combat within range
-
-
-
-- if attacked enters combat

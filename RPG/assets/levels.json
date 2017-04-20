@@ -4,17 +4,9 @@
 		"gameData": "level2Data",
 		"map": "TwoMaps"
 	}, {
-		"name": "Level 1",
-		"gameData": "level1Data",
-		"map": "level1Map"
-	}, {
-		"name": "Level 2",
+		"name": "Group Combat",
 		"gameData": "level2Data",
-		"map": "pathMap"
-	}, {
-		"name": "Level 3",
-		"gameData": "level2Data",
-		"map": "soloMap"
+		"map": "Group Combat"
 	}]
 
 }

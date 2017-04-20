@@ -7,7 +7,7 @@ var gameInit = {
     {
         if(container==undefined)
             container = "gameContainer";
-        var game = new Phaser.Game(700, 500, Phaser.AUTO, container);
+        var game = new Phaser.Game(900, 600, Phaser.AUTO, container);
 
         game.state.add('Boot', BasicGame.Boot);
         game.state.add('Preloader', BasicGame.Preloader);

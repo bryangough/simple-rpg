@@ -287,7 +287,7 @@ MovingCharacter.prototype.moveto = function(moveIndex, selectedPosition)
             else if(this.currentTile.posx == moveIndex.posx && this.currentTile.posy == moveIndex.posy)
             {
                 //console.log("same tile?")
-                path = this.map.hexHandler.checkHex(moveIndex.posx,moveIndex.posy);
+                this.path = this.map.hexHandler.checkHex(moveIndex.posx,moveIndex.posy);
             }
             else
             {

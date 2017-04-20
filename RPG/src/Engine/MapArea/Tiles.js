@@ -25,7 +25,8 @@ var SimpleObject = function (game, x,y, spritesheet, imagename, objectPassed)
     this.isoorder = objectPassed.order;
     //for now. This might be changed.
     this.y += this.iso.y * -50;
-    this.adjustVisible(0);
+    if(Global.doShadows)
+        this.adjustVisible(0);
     
     //this.staticobjects
 }
@@ -381,7 +382,8 @@ var WalkableTile = function(game,tileName,spritesheet, posx,posy,x,y, maingame)
     this.posy = posy;
     
     this.eventDispatcher;
-    this.adjustVisible(0.2);
+    if(Global.doShadows)
+        this.adjustVisible(0.2);
 };
 WalkableTile.prototype = Object.create(BaseTile.prototype);
 WalkableTile.constructor = WalkableTile;

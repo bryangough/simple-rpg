@@ -15,7 +15,7 @@ BasicGame.MapSelect.prototype = {
         var levels = this.game.cache.getJSON('levels').Levels;
         for(var x=0;x<levels.length;x++)
         {
-            this.displayLevel(levels[x].name, (x+1));    
+            this.displayLevel(levels[x].name, x);    
         }
 	},
     displayLevel:function(name, level){
@@ -26,6 +26,7 @@ BasicGame.MapSelect.prototype = {
         this.setupText(140,215+60*level, "simplefont", name, 20);
     },    
     clickMap:function(clicked, pointer){
+        console.log(clicked.level, pointer);
         this.game.global.loadMap = clicked.level;
         this.state.start('LoadMap');
     },

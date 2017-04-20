@@ -1,8 +1,6 @@
 "use strict";
 BasicGame.Game = function (game) {
 
-    this.neighborLights = [];
-
     this.pathfinder;//a* searcher
     
     this.graphics;//drawable

@@ -2,7 +2,7 @@ var Global = function ()
 {   
     this.mute = false;
     this.pause = false;
-    this.fastLoad = true;
+    this.fastLoad = false;
     //this.movetotouch:true,
     this.showmovetile = true;
     this.loadMap = 0;
@@ -10,4 +10,5 @@ var Global = function ()
     this.uilocation = "assets/basicUI/";
     this.assetsLocation = "assets/simpletown/";
     this.actionspeed = 1.0;
+    this.doShadows = false;
 };

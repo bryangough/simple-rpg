@@ -83,13 +83,18 @@ InputHandler.prototype.onMove = function(pointer, x, y)
     //    console.log(moveIndex.posx,moveIndex.posy);
 
     //console.log(this.input.worldX,this.gameref.map.mapGroup.x,this.input.worldX-this.gameref.map.mapGroup.x);
-
-    this.gameref.map.highlightHex.doShowPath(this.gameref.pathfinder,playertile,moveIndex);
-    //this.gameref.map.hexHandler.dolines(playertile, moveIndex, false, //this.gameref.map.highlightHex);
-    //var fridges = this.gameref.map.hexHandler.doFloodFill(moveIndex,3,false,true);
-    //this.gameref.map.highlightHex.drawFringes(fridges);
-    this.gameref.map.highlightHex.moveCursor(moveIndex);
-    
+    if(GlobalEvents.currentAction == GlobalEvents.WALK)
+    {
+        this.gameref.map.highlightHex.doShowPath(this.gameref.pathfinder,playertile,moveIndex);
+        //this.gameref.map.hexHandler.dolines(playertile, moveIndex, false, //this.gameref.map.highlightHex);
+        //var fridges = this.gameref.map.hexHandler.doFloodFill(moveIndex,3,false,true);
+        //this.gameref.map.highlightHex.drawFringes(fridges);
+        this.gameref.map.highlightHex.moveCursor(moveIndex);
+    }
+    else
+    {
+        this.gameref.map.highlightHex.cleanuptiles();
+    }
     //console.log('mover on tile: ',moveIndex.moverontile);
     //this.gameref.map.highlightHex.highilightneighbors(playertile);
 },

@@ -394,8 +394,12 @@ InteractiveObject.prototype.updateLocation = function(tile)
     //this.jsondata.posx = tile.x;
     //this.jsondata.posy = tile.y;
     
-    if(this.IsPlayer)
-        this.map.doSight(tile, this.sightRange);
+    //Handles showing shadows
+    if(Global.doShadows)
+    {
+        if(this.IsPlayer)
+            this.map.doSight(tile, this.sightRange);
+    }
 }
  
 InteractiveObject.prototype.destroySelf = function(elapseTime) 
