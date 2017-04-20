@@ -1,5 +1,9 @@
 {
 	"Levels": [{
+		"name": "LargeMap",
+		"gameData": "level2Data",
+		"map": "LargeMap"
+	}, {
 		"name": "TwoMaps",
 		"gameData": "level2Data",
 		"map": "TwoMaps"

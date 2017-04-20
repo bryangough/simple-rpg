@@ -73,8 +73,8 @@ InputHandler.prototype.onMove = function(pointer, x, y)
     //console.log(playertile,this.gameref.map.playerCharacter.x, this.gameref.map.playerCharacter.y);
     if(moveIndex)
     {
-        //this.gameref.map.hexHandler.sprite.x = moveIndex.x;
-        //this.gameref.map.hexHandler.sprite.y = moveIndex.y;// - this.gameref.map.hexHandler.bottomOffset;
+        this.gameref.map.hexHandler.sprite.x = moveIndex.x;
+        this.gameref.map.hexHandler.sprite.y = moveIndex.y;// - this.gameref.map.hexHandler.bottomOffset;
         //this.tiletest.y = moveIndex.y;
     }
     //console.log(playertile);

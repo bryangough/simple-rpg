@@ -50,11 +50,29 @@ SimpleObject.prototype.dosetup = function(hexHandler)
 //
 var Walkable = function(arrayIn)
 {
-    this.l = arrayIn.l;
-    this.u = arrayIn.u;
-    this.r = arrayIn.r;
-    this.d = arrayIn.d;
-    
+    var binaryNumber = Number(arrayIn).toString(2);
+    //if(binaryNumber!=1111)
+    //    console.log(binaryNumber,this)
+    if(binaryNumber & 1000)
+        this.l = 1
+    else
+        this.l = 0
+    if(binaryNumber & 100)
+        this.u = 1
+    else
+        this.u = 0
+    if(binaryNumber & 10)
+        this.r = 1
+    else
+        this.r = 0
+    if(binaryNumber & 1)
+        this.d = 1
+    else
+        this.d = 0
+    //if(this.d==0 && binaryNumber!=0000)
+    //    console.log(arrayIn, binaryNumber, this)
+    if(binaryNumber==0000)
+        console.log(arrayIn, this)
     this.walkable = true;
     
     if(this.l==0 && this.u==0 && this.r==0 && this.d==0)

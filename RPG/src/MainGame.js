@@ -62,6 +62,7 @@ BasicGame.Game.prototype = {
         if(this.map==null)
             this.map = new Map(this.game, this);
         this.map.initialMap(this.mapData, this.gameData, this.game.cache.getJSON('player'), this.gameDataPlayer);
+        //this.map.initialMap(this.mapData, this.gameData, this.game.cache.getJSON('player'), this.gameDataPlayer);
         
         this.bulletHandler = new BulletHandler(this.game, this, this.map.objectGroup, 'gameplayinterface', "combat_actionpoints0002.png");
         //
@@ -144,19 +145,21 @@ BasicGame.Game.prototype = {
         }
         return null;
     },
+    //
     zoomIn:function(button, pointer){
-        //console.log(button,pointer);
+        //console.log(button,pointer,this);
         pointer.active = false;
-        this.map.scaledto -= 0.05;
-        if(this.map.scaledto<0)
-            this.map.scaledto = 0.01;
-        this.map.doZoom();
+        var scaledto = this.map.scaledto - 0.05;
+        if(scaledto<0)
+            scaledto = 0.01;
+        this.map.doZoom(scaledto);
     },
     zoomOut:function(button, pointer){
         pointer.active = false;
-        this.map.scaledto += 0.05;
-        this.map.doZoom();
+        var scaledto = this.map.scaledto + 0.05;
+        this.map.doZoom(scaledto);
     },
+    //
     toggleCombat:function()
     {   
         if(this.gGameMode.currentState == "combat" && this.gGameMode.mCurrentState.leaveThisState())

@@ -55,7 +55,7 @@ var HexHandler = function (maingame, game, hexagonWidth, hexagonHeight, tiletype
     this.touchmap = new Phaser.BitmapData (game,"touchmap", 180, 90);//,100, 50);
 	this.touchmap.draw(this.sprite, 0, 0);
 	this.touchmap.update();
-    //this.maingame.map.highlightGroup.add(this.sprite);
+    this.maingame.map.highlightGroup.add(this.sprite);
     //this.sprite.anchor.x = 0.5;
     //this.sprite.anchor.y = 1.0;
     //console.log(this.sprite.anchor);

@@ -1,3 +1,4 @@
+//"use strict";
 var Map = function (game, gameRef) 
 {
     this.gameRef = gameRef;
@@ -21,7 +22,7 @@ var Map = function (game, gameRef)
     this.highlightArray;
     
     this.mapGroup;
-    this.scaledto = 1.0;
+    this.scaledto = 0.4;
     
     this.redoMap = false;
 }
@@ -168,7 +169,7 @@ Map.prototype.createMapTiles = function(passedMap){
                         temptile = new GraphicTile(this.game, tilereference.tile, tilereference.spritesheet, i, j, tempPoint.x, tempPoint.y, this.gameRef);
                     }
                     this.hexagonGroup.add(temptile);
-                    this.addLocationTextToTile(tempPoint.x,tempPoint.y,hexagonWidth,hexagonHeight,i,j);
+                    //this.addLocationTextToTile(tempPoint.x,tempPoint.y,hexagonWidth,hexagonHeight,i,j);
                 }
             }
         }
@@ -388,7 +389,7 @@ Map.prototype.createMapTiles = function(passedMap){
     this.gameRef.pathfinder.setGrid(this.walkableArray, [1]);
     this.masker = new CheapMasker(this.game, this.gameRef, this.maskableobjects);
     //
-    this.doZoom();
+    this.doZoom(this.scaledto);
     //start centered
      //console.log(this.mapGroup.x,this.mapGroup.y,hexagonWidth,Math.ceil(this.gridSizeX),this.mapGroup.scale.x);
     this.hexagonGroup.sort('y', Phaser.Group.SORT_ASCENDING);
@@ -398,13 +399,28 @@ Map.prototype.createMapTiles = function(passedMap){
         if(this.interactiveObjects[i].eventDispatcher)
             this.interactiveObjects[i].eventDispatcher.doAction("OnStart", null);
     }
-    //this.gameRef.camera.setFollowObject(this.playerCharacter, true);
+    this.gameRef.camera.setFollowObject(this.playerCharacter, true);
     //console.log("create new map");
     this.redoMap = false;
 };
-Map.prototype.doZoom = function()
+Map.prototype.doZoom = function(newscaledto)
 {
+    var oldsaledto = this.scaledto;
+    var oldwidth = this.mapGroup.width;
+    var oldheight = this.mapGroup.height;
+    this.scaledto = newscaledto;
     this.mapGroup.scale.setTo(this.scaledto,this.scaledto);
+    
+    /*var diffwidth = this.mapGroup.width - oldwidth;
+    var diffheight = this.mapGroup.height - oldheight;
+    
+    console.log(diffwidth,diffheight);
+    this.mapGroup.x -= diffwidth * 0.05;*/
+    //this.mapGroup.y += diffheight/2;
+    
+    //this.mapGroup.scale.setto()
+    //console.log(this.mapGroup.scale, this.scaledto)
+    //this.game.add.tween(this.mapGroup.scale).to( { x:this.scaledto, y:this.scaledto }, 2000, Phaser.Easing.Bounce.Out, false);
 }
 Map.prototype.update = function(elapsedTime)
 {
@@ -425,7 +441,6 @@ Map.prototype.update = function(elapsedTime)
     }
     //this.objectGroup.customSort (Utilties.customSortHexOffsetIso);
     this.objectGroup.customSort (Utilties.customSortIso);
-
 }
 Map.prototype.getCombatCharacters = function()
 {
@@ -544,3 +559,29 @@ Map.prototype.getPath = function(pathName)
 {
     return this.paths[pathName];
 }
+
+
+
+
+/*var Cell = function (game, gameRef) 
+
+Cell.prototype.update = function(elapsedTime)
+{
+    if(this.redoMap)
+    {
+        return;
+    }
+    //this.hexHandler.update(elapsedTime);
+    //
+    if(!this.game.global.pause)
+    {
+        for(var x=0;x<this.playerCharacters.length;x++)
+            this.playerCharacters[x].step(elapsedTime);
+    }
+    for(var i=0;i<this.interactiveObjects.length;i++)
+    {
+        this.interactiveObjects[i].step(elapsedTime);
+    }
+    //this.objectGroup.customSort (Utilties.customSortHexOffsetIso);
+    this.objectGroup.customSort (Utilties.customSortIso);
+}*/

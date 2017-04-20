@@ -218,7 +218,7 @@ EasyStar.instance = function() {
 **/
 EasyStar.js = function() {
 	var STRAIGHT_COST = 10;
-	var DIAGONAL_COST = 16;
+	var DIAGONAL_COST = 12;
 	var syncEnabled = false;
 	var pointsToAvoid = {};
 	var collisionGrid;

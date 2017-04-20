@@ -35,6 +35,16 @@ ActionButtons = function(game, maingame, parent){
     
     var offset = 35;
     width = 94.7;
+    this.zoomIn = {up:null,active:null};
+    this.setButton(this.game.world.width - width * 1 - offset, -50,"actionButtonSqr_end0001.png", "actionButtonSqr_end0003.png", this.zoomIn, this.doZoomIn, undefined, false, "+");
+    
+    this.zoomIn = {up:null,active:null};
+    this.setButton(this.game.world.width - width * 2 - offset, -50,"actionButtonSqr_end0001.png", "actionButtonSqr_end0003.png", this.zoomIn, this.doZoomOut, undefined, false, "-");
+    
+    this.settings = {up:null,active:null};
+    this.setButton(this.game.world.width - width * 1 - offset, 0,"actionButtonSqr_end0001.png", "actionButtonSqr_end0003.png", this.settings, this.returnToMenu, "actionbuttonIcons0003.png", true);
+    
+    
     this.settings = {up:null,active:null};
     this.setButton(this.game.world.width - width * 1 - offset, 0,"actionButtonSqr_end0001.png", "actionButtonSqr_end0003.png", this.settings, this.returnToMenu, "actionbuttonIcons0003.png", true);
     //this.settings.up.tint = 0x00ffff
@@ -62,7 +72,7 @@ ActionButtons.prototype.returnToMenu = function()
 {
     this.game.state.start('MainMenu');
 }
-ActionButtons.prototype.setButton = function(x,y,imageup,imageactive,ref, clickevent, icon, toggle){
+ActionButtons.prototype.setButton = function(x,y,imageup,imageactive,ref, clickevent, icon, toggle, text){
     
     ref.up = this.game.make.sprite(x,y,"gameplayinterface",imageup);
     this.add(ref.up);
@@ -84,6 +94,14 @@ ActionButtons.prototype.setButton = function(x,y,imageup,imageactive,ref, clicke
         var iconImage = this.game.make.sprite(x+20,y+10,"gameplayinterface",icon);
         this.add(iconImage);
     }
+    if(text!=undefined)
+    {
+        var buttontext = this.gameref.add.text(x+40,y+10,text);
+        buttontext.font = "arial";
+        buttontext.fontSize = 20;
+        buttontext.color = 0xffffff;
+        this.add(buttontext);
+    }
     
 }
 //these also should do something
@@ -103,6 +121,15 @@ ActionButtons.prototype.checkInv = function(state){
 }
 ActionButtons.prototype.invSelected = function(){
     this.clearActive();
+}
+
+ActionButtons.prototype.doZoomIn = function(button, pointer)
+{
+    this.gameref.zoomIn(button, pointer)
+}
+ActionButtons.prototype.doZoomOut = function(button, pointer)
+{
+    this.gameref.zoomOut(button, pointer)
 }
 
 //open settings state
