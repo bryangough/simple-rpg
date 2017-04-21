@@ -48,9 +48,9 @@ SimpleObject.prototype.dosetup = function(hexHandler)
     }
 }
 //
-var Walkable = function(arrayIn)
+var Walkable = function(valueIn)
 {
-    var binaryNumber = Number(arrayIn).toString(2);
+    var binaryNumber = Number(valueIn).toString(2);
     //if(binaryNumber!=1111)
     //    console.log(binaryNumber,this)
     if(binaryNumber & 1000)
@@ -69,10 +69,12 @@ var Walkable = function(arrayIn)
         this.d = 1
     else
         this.d = 0
+    this.hex = parseInt(valueIn, 10).toString(16)
+    //console.log(this.hex);
     //if(this.d==0 && binaryNumber!=0000)
     //    console.log(arrayIn, binaryNumber, this)
-    if(binaryNumber==0000)
-        console.log(arrayIn, this)
+    //if(binaryNumber==0000)
+    //    console.log(arrayIn, this)
     this.walkable = true;
     
     if(this.l==0 && this.u==0 && this.r==0 && this.d==0)
@@ -343,7 +345,7 @@ var BaseTile = function(game, tileName, spritesheet, posx, posy, x, y, maingame)
     
     this.iso = null;//new Vec3(-1,-1,-1);
     this.isoorder = -1;
-    
+    //console.log(tileName, this.width, this.height)
     this.staticobjects = [];
 }
 BaseTile.prototype = Object.create(Phaser.Sprite.prototype);

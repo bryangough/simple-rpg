@@ -113,8 +113,8 @@ BasicGame.Game.prototype = {
         {
             this.pathfinder.setGrid(this.map.walkableArray, [1]);
             this.updatewalkable = false;
-            //if(this.game.global.showmovetile)
-                //this.map.refreshWalkablView();
+            if(this.game.global.showmovetile)
+                this.map.refreshWalkablView();
         }
         this.gGameMode.update(elapsedTime);
         this.gGameMode.render();

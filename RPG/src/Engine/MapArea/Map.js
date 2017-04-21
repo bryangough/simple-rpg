@@ -399,7 +399,7 @@ Map.prototype.createMapTiles = function(passedMap){
         if(this.interactiveObjects[i].eventDispatcher)
             this.interactiveObjects[i].eventDispatcher.doAction("OnStart", null);
     }
-    this.gameRef.camera.setFollowObject(this.playerCharacter, true);
+    //this.gameRef.camera.setFollowObject(this.playerCharacter, true);
     //console.log("create new map");
     this.redoMap = false;
 };
@@ -529,15 +529,15 @@ Map.prototype.refreshWalkablView = function(){
     { 
         for(var j = 0; j < this.gridSizeY; j ++)
         {
-            //console.log(this.hex
             var tile = this.hexHandler.hexagonArray[i][j];
-            if(this.walkableArray[i][j].isWalkable==0)
+            tile.tint = "0x"+this.walkableArray[i][j].hex+this.walkableArray[i][j].hex+this.walkableArray[i][j].hex+this.walkableArray[i][j].hex+this.walkableArray[i][j].hex+this.walkableArray[i][j].hex;
+            /*if(this.walkableArray[i][j].isWalkable==0)
             {
                 console.log("not walk");
                 tile.tint = 0xff00ff;
             }
             else
-                tile.tint = 0x33ff33;
+                tile.tint = 0xffffff;*/
         }
     }
 }

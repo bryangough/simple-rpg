@@ -63,29 +63,33 @@ InputHandler.prototype.onMove = function(pointer, x, y)
 
     //pointerx -= this.gameref.map.hexHandler.halfHex;
     //pointery += this.gameref.map.hexHandler.bottomOffset + this.gameref.map.hexHandler.halfHexHeight;
+    //console.log(this.gameref.input.worldX, this.gameref.input.worldY, this.gameref.map.mapGroup.scale, this.gameref.map.scaledto)
+    //console.log(this.gameref.map.x, this.gameref.map.mapGroup.x)
+    //console.log((this.gameref.input.worldX-this.gameref.map.mapGroup.x), (this.gameref.input.worldY-this.gameref.map.mapGroup.y))
+    //console.log(pointerx,pointery)
     var moveIndex =  this.gameref.map.hexHandler.checkHex(pointerx, pointery);
     
     /*var playertile = this.gameref.map.hexHandler.checkHex(
         this.gameref.map.playerCharacter.x + this.gameref.map.hexHandler.halfHex/2, this.gameref.map.playerCharacter.y + this.gameref.map.hexHandler.bottomOffset + this.gameref.map.hexHandler.halfHexHeight);*/
     //console.log(moveIndex.posx,moveIndex.posy);
-    var playertile = this.gameref.map.hexHandler.checkHex( this.gameref.map.playerCharacter.x, this.gameref.map.playerCharacter.y);
+    //var playertile = this.gameref.map.hexHandler.checkHex( this.gameref.map.playerCharacter.x, this.gameref.map.playerCharacter.y);
     //console.log("width "+moveIndex.width,moveIndex.height);
     //console.log(playertile,this.gameref.map.playerCharacter.x, this.gameref.map.playerCharacter.y);
     if(moveIndex)
     {
-        this.gameref.map.hexHandler.sprite.x = moveIndex.x;
-        this.gameref.map.hexHandler.sprite.y = moveIndex.y;// - this.gameref.map.hexHandler.bottomOffset;
+        //this.gameref.map.hexHandler.sprite.x = moveIndex.x;
+        //this.gameref.map.hexHandler.sprite.y = moveIndex.y;// - this.gameref.map.hexHandler.bottomOffset;
         //this.tiletest.y = moveIndex.y;
     }
     //console.log(playertile);
     //console.log(playertile.posx,playertile.posy,this.playerCharacter.x,this.playerCharacter.y);
-   // if(moveIndex)
+    //if(moveIndex)
     //    console.log(moveIndex.posx,moveIndex.posy);
 
     //console.log(this.input.worldX,this.gameref.map.mapGroup.x,this.input.worldX-this.gameref.map.mapGroup.x);
     if(GlobalEvents.currentAction == GlobalEvents.WALK)
     {
-        this.gameref.map.highlightHex.doShowPath(this.gameref.pathfinder,playertile,moveIndex);
+        //this.gameref.map.highlightHex.doShowPath(this.gameref.pathfinder,playertile,moveIndex);
         //this.gameref.map.hexHandler.dolines(playertile, moveIndex, false, //this.gameref.map.highlightHex);
         //var fridges = this.gameref.map.hexHandler.doFloodFill(moveIndex,3,false,true);
         //this.gameref.map.highlightHex.drawFringes(fridges);

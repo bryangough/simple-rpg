@@ -16,17 +16,22 @@ IsoHandler.prototype.checkHex=function(checkx, checky){
     var w = this.hexagonWidth;
     var h = this.hexagonHeight;
     
-    var i = Math.floor(checkx / (w - 2));//
-    var j = Math.floor(checky / (h - 1)) * 2;// 
+    var wc = (w);//w-2
+    var hc = (h);//h-1
+    
+    var i = Math.floor(checkx / wc);//
+    var j = Math.floor(checky / hc) * 2;// 
 
-    var xQuadrant = Math.floor(checkx % (w - 2));
-    var yQuadrant = Math.floor(checky % (h - 1));
+    var xQuadrant = Math.floor(checkx % wc);
+    var yQuadrant = Math.floor(checky % hc);
     //console.log(checkx,checky,i,j,xQuadrant, yQuadrant, w, h);
     //
     //this.touchmap.x = checkx;
     //this.touchmap.y = checky;
     this.touchmap.update();
     this.touchmap.getPixelRGB (xQuadrant, yQuadrant, this.tempcolour);
+    
+    //console.log(checkx,checky,i,j,xQuadrant, yQuadrant, w, h, this.tempcolour);
     //
     if(this.tempcolour.r==0xFF && this.tempcolour.g==0x00 && this.tempcolour.b==0x00)
     {
