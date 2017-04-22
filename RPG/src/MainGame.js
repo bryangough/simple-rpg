@@ -211,7 +211,7 @@ BasicGame.Game.prototype = {
     },
     render: function()
     {
-        //this.game.debug.text(this.game.time.fps || '--', 2, 40, "#00ff00");   
+        this.game.debug.text(this.game.time.fps || '--', 2, 40, "#00ff00");   
         //this.game.debug.text(this.gGameMode.currentState, 2, 10, "#00ff00");
         //this.game.debug.text("currentAction "+GlobalEvents.currentAction, 2, 25, "#00ff00");
         //this.game.debug.text("currentAction "+GlobalEvents.currentAction, 2, 50, "#00ff00");

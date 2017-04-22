@@ -53,6 +53,14 @@ EventDispatcher.prototype.shouldBeActive = function()
         if(this.object.isAlive())
             return true;
     }
+    /*else
+    {
+        for(var x=0;x<GlobalEvents.actionMap.length;x++)
+        {
+             if(GlobalEvents.currentAction == GlobalEvents.actionMap[x].action && this.actionArray[GlobalEvents.actionMap[x].array])
+                 return true;
+        }
+    }*/
     return false;
 }//if all action is null. clear out array?
 EventDispatcher.prototype.hasAction = function(action)

@@ -14,9 +14,14 @@ GlobalEvents.TOUCH = 2;
 GlobalEvents.TALK = 3;
 GlobalEvents.ITEM = 4;
 GlobalEvents.MAGIC = 5;
-GlobalEvents.COMBATSELECT = 6;
-
-
+GlobalEvents.COMBATSELECT = 6;  
+        
+GlobalEvents.actionMap = [
+    {action:GlobalEvents.WALK, array:"OnTouch", condition:[]},
+    {action:GlobalEvents.LOOK, array:"OnLook", condition:[]},
+    {action:GlobalEvents.TALK, array:"OnTalk", condition:[]},
+    {action:GlobalEvents.ITEM, array:"OnUseItem", condition:[]}
+]
 GlobalEvents.lastAction = GlobalEvents.DISABLE;
 GlobalEvents._currentAction = GlobalEvents.WALK;
 

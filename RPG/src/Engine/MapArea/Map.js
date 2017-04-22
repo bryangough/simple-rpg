@@ -1,4 +1,4 @@
-//"use strict";
+"use strict";
 var Map = function (game, gameRef) 
 {
     this.gameRef = gameRef;
