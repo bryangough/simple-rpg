@@ -7,7 +7,7 @@ I wanted an easy to use html5 engine to create small adventure games. The idea i
 Each individual game should stand alone and be fun but also have some branching story.
 
 I remember playing the original Fallout's demo over and over. 
-[Fallout Demo wikia](http://fallout.wikia.com/wiki/Fallout_Demo)
+[Fallout Demo wikia](http://fallout.wikia.com/wiki/Fallout_Demo) Instead of creating a massive game all at once, the idea is to release smaller stories over time.
 
 ## Features
 - Multiple map types: isometric, top down and the hex system used in Fallout 1 [Demo](http://swarmherdflock.com/games/RPG/RPG_Old1/index.html)
