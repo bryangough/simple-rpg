@@ -1,4 +1,13 @@
-//Bryan Gough, March 18/2015 - removed diag, changed to calculate to do 6 neighbors instead of 4 for hex
+/**
+*   EasyStar.js
+*   github.com/prettymuchbryce/EasyStarJS
+*   Licensed under the MIT license.
+*
+*   Implementation By Bryce Neal (@prettymuchbryce)
+**/
+
+//Bryan Gough, March 18/2015 - removed diag, changed to calculate to do 6 neighbors instead of 4 for hex pathfinding
+//https://github.com/prettymuchbryce/easystarjs
 //
 //NameSpace
 var EasyStarHex = EasyStarHex || {};

@@ -1,4 +1,15 @@
+/**
+*   EasyStar.js
+*   github.com/prettymuchbryce/EasyStarJS
+*   Licensed under the MIT license.
+*
+*   Implementation By Bryce Neal (@prettymuchbryce)
+**/
+
 //4 point test. Changed to also handle weighted edges.
+//
+//https://github.com/prettymuchbryce/easystarjs
+//
 //NameSpace
 var EasyStar = EasyStar || {};
 
