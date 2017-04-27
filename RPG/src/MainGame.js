@@ -33,6 +33,7 @@ BasicGame.Game.prototype = {
         
     },
     create: function () {
+        this.game.stage.disableVisibilityChange = true;
         this.game.time.advancedTiming = true;
         this.stage.backgroundColor = "#444444"
         
@@ -101,6 +102,7 @@ BasicGame.Game.prototype = {
         //this.camera.step(elapsedTime);
         
         //this.toggleCombat();
+        Client.askNewPlayer();
     },
     //
     update: function () {
@@ -233,6 +235,9 @@ BasicGame.Game.prototype = {
             //console.log(fn,this);
             fn.apply(this, fnparams);
         }
+    },
+    addNewPlayer: function(id,x,y){
+        Game.playerMap[id] = game.add.sprite(x,y,'sprite');
     }
 };
 

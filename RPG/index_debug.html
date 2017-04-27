@@ -1,22 +1,11 @@
 <!DOCTYPE HTML>
 <html>
-
 <head>
 	<meta charset="UTF-8" />
-	<title>Simple RPG Min</title>
-    <script src="/socket.io/socket.io.js"></script>
-    <script type="text/javascript" src="js/phaser.min.js"></script>
-    
-</head>
-<body>
-
-<div id="gameContainer"></div>
-
-
-    Test
-</body>
-    
-<script src="src/Base.js"></script>
+	<title>Simple RPG</title>
+    <script src="js/phaser.js"></script>
+    <!-- include: "type": "js", "files": "**/*.js" -->
+    <script src="src/Base.js"></script>
     <script src="src/Engine/Basestates/EmptyState.js"></script>
     <script src="src/Engine/Combat/AIDecide.js"></script>
     <script src="src/Engine/Combat/Buff.js"></script>
@@ -80,15 +69,21 @@
     <script src="src/View/UIButtons/Inventory.js"></script>
     <script src="src/View/UIButtons/NormalUI.js"></script>
     <script src="src/View/UIButtons/before/InventoryObject.js"></script>
+    <!-- /include -->
     
-    
-<script type="text/javascript" src="js/client.js"></script>
+</head>
+<body>
+
+<div id="gameContainer"></div>
+
 <script type="text/javascript">
 
 window.onload = function() {
     gameInit.init("en","gameContainer");
 };
 
+
 </script>
 
+</body>
 </html>
