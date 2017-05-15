@@ -102,7 +102,7 @@ BasicGame.Game.prototype = {
         //this.camera.step(elapsedTime);
         
         //this.toggleCombat();
-        Client.askNewPlayer();
+        //Client.askNewPlayer();
     },
     //
     update: function () {
