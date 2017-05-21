@@ -14,7 +14,6 @@ var CombatCharacter = function (maingame, jsondata, map)
     this.displayNameText = "";
     this.dead = false;
     
-    
     this.faction = [];
     
     this.applyCombatActions(actions);
@@ -128,7 +127,10 @@ CombatCharacter.prototype.finalSetup = function()
     if(this.currentTile!=null)
         this.setLocationByTile(this.currentTile);
     if(!this.notcreated)
+    {
+        
         this.setupHealthBar();
+    }    
 }
 
 //
@@ -182,6 +184,10 @@ CombatCharacter.prototype.setupHealthBar = function()
     this.healthuigroup.x = -this.width/2;
     this.healthuigroup.y = -this.height;//*this.maingame.map.scaledto;//-this.healthuigroup.height;
     this.healthuigroup.visible = false;
+    
+        //realtime combat
+    this.startCombat()
+
 }
 CombatCharacter.prototype.boostShield = function(heal)
 {
@@ -262,12 +268,14 @@ CombatCharacter.prototype.startCombat = function()
     //show health bar
     this.moveToCenter();
     this.healthuigroup.visible = true;
+
     // stop movement when in combat
     if(!this.dead)
         this.changeMoveState("idle");
 }
 CombatCharacter.prototype.endCombat = function()
 {
+    
     this.healthuigroup.visible = false;
     //hide health bar
     //give back control?

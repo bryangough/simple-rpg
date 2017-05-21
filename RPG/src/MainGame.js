@@ -22,6 +22,10 @@ BasicGame.Game = function (game) {
     this.textUIHandler = null;
     this.dialoghandler;
     this.bulletHandler;
+    
+    this.client = Client
+    this.client.doConnect();
+    this.client.setupSockect();
 };
 
 //
@@ -68,8 +72,9 @@ BasicGame.Game.prototype = {
         this.bulletHandler = new BulletHandler(this.game, this, this.map.objectGroup, 'gameplayinterface', "combat_actionpoints0002.png");
         //
         this.gGameMode = new StateMachine();
-        this.gGameMode.add("normal", new NormalState(this.gGameMode, this.game, this));
-        this.gGameMode.add("combat", new BattleState(this.gGameMode, this.game, this));
+        this.gGameMode.add("normal", new RealTimeCombatState(this.gGameMode, this.game, this));
+        //this.gGameMode.add("normal", new NormalState(this.gGameMode, this.game, this));
+        //this.gGameMode.add("combat", new BattleState(this.gGameMode, this.game, this));
         this.gGameMode.add("dialog", new DiaglogState(this.gGameMode, this.game, this, this.dialoghandler, this.uiGroup));
         this.gGameMode.add("playerDead", new DeathState(this.gGameMode, this.game, this));
         

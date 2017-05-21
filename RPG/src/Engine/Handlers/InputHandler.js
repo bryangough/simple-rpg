@@ -7,6 +7,7 @@ var InputHandler = function (game, gameref)
     this.dragScreen = false;
     this.didDrag = false;
     this.dragPoint = new Point(0,0);
+    this.overGuy = null;
 };
 //
 InputHandler.prototype.turnOn = function()
@@ -26,25 +27,15 @@ InputHandler.prototype.turnOff = function()
     this.gameref.input.onDown.remove(this.doDragScreen, this);
     this.gameref.input.onUp.remove(this.clickedHex, this);
 }
+
 //
 InputHandler.prototype.onMove = function(pointer, x, y)
 {
     //console.log("move ",pointer.active);
     //if(!pointer.active)
     //    return;
-    if(this.dragScreen)
-    {
-        var diffx = this.dragPoint.x-x;
-        var diffy = this.dragPoint.y-y;
-
-        this.dragPoint.x = x;
-        this.dragPoint.y = y;
-
-        if(diffx!=0||diffy!=0)
-            this.didDrag = true;
-        this.gameref.camera.adjustPosition(-diffx, -diffy);
-        return;
-    }
+    this.doDragScreenMove(x,y)
+    
     if(GlobalEvents.currentAction != GlobalEvents.WALK)
     {
         //return;
@@ -112,16 +103,28 @@ InputHandler.prototype.doDragScreen = function(pointer)
     this.dragPoint.x = pointer.x;
     this.dragPoint.y = pointer.y;
 }
+InputHandler.prototype.doDragScreenMove = function(x,y)
+{
+    if(this.dragScreen)
+    {
+        var diffx = this.dragPoint.x-x;
+        var diffy = this.dragPoint.y-y;
+
+        this.dragPoint.x = x;
+        this.dragPoint.y = y;
+
+        if(diffx!=0||diffy!=0)
+            this.didDrag = true;
+        this.gameref.camera.adjustPosition(-diffx, -diffy);
+        return;
+    }
+}
 InputHandler.prototype.clickedObject = function(clickedObject)
 {
 }
 InputHandler.prototype.clickedHex = function(pointer,eventt)
 {
-    //console.log('****** clicked hex ',pointer)
     if (!pointer.withinGame) { return; }
-    
-    //console.log("hex",pointer.active);
-    
     //this needs to be blocked if clicking ui
     this.dragScreen = false;
     if(this.didDrag)//test distance did it actually drag. or do I make a drag screen button?
@@ -132,19 +135,23 @@ InputHandler.prototype.clickedHex = function(pointer,eventt)
     //pointers will be false by other input ui methods so the character isn't randomly walking around
     if(!pointer.active)
         return;
-
+    //
     if(GlobalEvents.currentAction != GlobalEvents.WALK)
         return;
     if(this.game.global.pause)
     {
         return;
     }
-    
+    //
+    this.handleCharMove();
+} 
+InputHandler.prototype.handleCharMove = function()
+{
     var pointerx = (this.gameref.input.worldX-this.gameref.map.mapGroup.x)/this.gameref.map.scaledto;
     var pointery = (this.gameref.input.worldY-this.gameref.map.mapGroup.y)/this.gameref.map.scaledto;
     var moveIndex =  this.gameref.map.hexHandler.checkHex(pointerx,pointery);
     
-    var overGuy = null;
+    
     if(moveIndex!=null)
     {
         if(moveIndex!=undefined)
@@ -154,13 +161,17 @@ InputHandler.prototype.clickedHex = function(pointer,eventt)
             {
                 //this.gameref.map.highlightHex.moveCursor(moveIndex);
                 moveIndex.moverontile.handleOver();
-                overGuy = moveIndex.moverontile;
+                this.overGuy = moveIndex.moverontile;
             }
         }
         //if moveIndex contains another player don't move
-        if(this.game.currentAction==this.game.WALK && !(overGuy!=null && !overGuy.IsPlayer))
+        if(this.game.currentAction==this.game.WALK && !(this.overGuy!=null && !this.overGuy.IsPlayer))
         {
             this.gameref.map.playerCharacter.moveto(moveIndex, {x:pointerx, y:pointery});
         }
     }
-} 
+    else
+    {
+        this.overGuy = null;
+    }
+}

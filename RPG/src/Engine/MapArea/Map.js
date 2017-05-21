@@ -22,7 +22,7 @@ var Map = function (game, gameRef)
     this.highlightArray;
     
     this.mapGroup;
-    this.scaledto = 0.4;
+    this.scaledto = 1;
     
     this.redoMap = false;
 }

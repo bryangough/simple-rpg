@@ -21,23 +21,8 @@ InputHandlerBattle.prototype.onMove = function(pointer, x, y)
     //if(!pointer.active)
     //    return;
     
-    if(this.dragScreen)
-    {
-        var diffx = this.dragPoint.x-x;
-        var diffy = this.dragPoint.y-y;
-
-        this.dragPoint.x = x;
-        this.dragPoint.y = y;
-
-        if(diffx!=0||diffy!=0)
-            this.didDrag = true;
-        this.gameref.map.mapGroup.x -= diffx;
-        this.gameref.map.mapGroup.y -= diffy;
-
-        //console.log(diffx,diffy);
-        //move around
-        return;
-    }
+    this.doDragScreenMove(x,y);
+    
     if(this.overEnemy!=null)
     {
         this.overEnemy.handleOut();

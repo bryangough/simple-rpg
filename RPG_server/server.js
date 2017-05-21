@@ -17,9 +17,9 @@ app.get('/',function(req,res){
     res.sendFile(__dirname+'/index.html');
 });
 
-/*server.listen(8081,function(){ // Listens to port 8081
+server.listen(8081,function(){ // Listens to port 8081
     console.log('Listening on '+server.address().port);
-});*/
+});
 
 
 server.lastPlayderID = 0;
@@ -37,7 +37,6 @@ io.use(function(socket, next) {
 
 
 io.on('connection',function(socket){
-    console.log("connection");
     // socket.on('customEvent', function(customEventData) {
     socket.on('newplayer',function(){
         console.log('new player');
@@ -55,12 +54,12 @@ io.on('connection',function(socket){
             socket.player.y = data.y;
             io.emit('move',socket.player);
         });*/
-        socket.on('disconnect',function(){
-                io.emit('remove',socket.player.id);
-            });
+
     });
     
-    
+    socket.on('disconnect',function(){
+        io.emit('remove',socket.player.id);
+    });
 
     socket.on('test',function(){
         console.log('test received');
@@ -79,13 +78,3 @@ function getAllPlayers(){
 function randomInt (low, high) {
     return Math.floor(Math.random() * (high - low) + low);
 }
-
-server.addToRoom = function(socketID,room){
-    var socket = server.getSocket(socketID);
-    socket.join(room);
-};
-
-server.leaveRoom = function(socketID,room){
-    var socket = server.getSocket(socketID);
-    if(socket) socket.leave(room);
-};

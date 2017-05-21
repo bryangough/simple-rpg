@@ -485,7 +485,7 @@ InteractiveObject.prototype.setupReactToAction = function()
 }
 InteractiveObject.prototype.handleClick = function(touchedSprite, pointer) 
 {
-    console.log('handleClick ',touchedSprite, pointer);
+    console.log('handleClick ',this,touchedSprite, pointer, GlobalEvents.currentAction);
     if(pointer==this.lastpointer && pointer!=null)
     {
         console.log('** handleClick ** Ignore this touch.')
@@ -505,8 +505,12 @@ InteractiveObject.prototype.handleClick = function(touchedSprite, pointer)
         this.eventDispatcher.doAction("OnUseItem", this.map.playerCharacter);
     else if(GlobalEvents.currentAction == GlobalEvents.COMBATSELECT)
     {
+        
         if(this.attackable && !this.dead)
+        {
+            console.log(this.maingame.gGameMode.mCurrentState.inputHandler)
             this.maingame.gGameMode.mCurrentState.inputHandler.clickedObject(this);
+        }
     }
     if(pointer!=null)
         pointer.active = false;
