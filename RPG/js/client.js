@@ -23,6 +23,8 @@ Client.sendClick = function(x,y){
 };
 
 Client.setupSockect = function(){
+    if(!this.socket)
+        return;
     this.socket.on('open', function(data){
         console.log('on open')
     });

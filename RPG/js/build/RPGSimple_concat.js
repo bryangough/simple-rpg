@@ -1,4 +1,4 @@
-"use strict";
+//"use strict";
 var BasicGame = {
 };
 var gameInit = {
@@ -28,6 +28,7 @@ var gameInit = {
         }
     }
 };
+
 /*
 public interface IState
 {
@@ -38,7 +39,7 @@ public interface IState
 }
 */
 
-EmptyState = function (game) {
+var EmptyState = function (game) {
 
 }
 EmptyState.prototype.update = function(elapsedTime) 
@@ -391,6 +392,7 @@ var Weapon = function (action)
     this.dmg = action.dmg;
     this.range = action.range;
     this.acc = action.acc;
+    
     this.clipsize = action.clipsize;
     
     this.AIPower = action.AIPower;//weight for AI attack, not in yet
@@ -401,9 +403,38 @@ var Weapon = function (action)
     this.cost = action.cost;//points cost to use
     this.cooldown = action.cooldown;
     this.description = action.description;
+    
+    this.onCooldown = false;
+    this.cooldownTimer = 0;
 };
 Weapon.prototype = Object.create(Item.prototype);
 Weapon.constructor = Weapon;
+
+Weapon.prototype.step = function(elapseTime)
+{
+    if(this.onCooldown)
+    {
+        this.cooldownTimer -= elapseTime;
+        if(this.cooldownTimer<=0)
+        {
+            this.onCooldown = false;
+            //throw done event... event dispatchre?
+        }
+    }
+}
+//different weapon types...
+// cooldown, use energy, clipsize/multiple uses per cooldown
+//
+Weapon.prototype.use = function()
+{
+    if(this.onCooldown)
+    {
+        return false;
+    }
+    this.onCooldown = true;
+    this.cooldownTimer = this.cooldown;
+    return true;
+}
 var Condition = function ()
 {
     this.logic = "Any";
@@ -1547,7 +1578,7 @@ InteractiveObject.prototype.setupReactToAction = function()
 }
 InteractiveObject.prototype.handleClick = function(touchedSprite, pointer) 
 {
-    console.log('handleClick ',touchedSprite, pointer);
+    console.log('handleClick ',this,touchedSprite, pointer, GlobalEvents.currentAction);
     if(pointer==this.lastpointer && pointer!=null)
     {
         console.log('** handleClick ** Ignore this touch.')
@@ -1567,8 +1598,12 @@ InteractiveObject.prototype.handleClick = function(touchedSprite, pointer)
         this.eventDispatcher.doAction("OnUseItem", this.map.playerCharacter);
     else if(GlobalEvents.currentAction == GlobalEvents.COMBATSELECT)
     {
+        
         if(this.attackable && !this.dead)
+        {
+            console.log(this.maingame.gGameMode.mCurrentState.inputHandler)
             this.maingame.gGameMode.mCurrentState.inputHandler.clickedObject(this);
+        }
     }
     if(pointer!=null)
         pointer.active = false;
@@ -2326,7 +2361,6 @@ var CombatCharacter = function (maingame, jsondata, map)
     this.displayNameText = "";
     this.dead = false;
     
-    
     this.faction = [];
     
     this.applyCombatActions(actions);
@@ -2440,7 +2474,10 @@ CombatCharacter.prototype.finalSetup = function()
     if(this.currentTile!=null)
         this.setLocationByTile(this.currentTile);
     if(!this.notcreated)
+    {
+        
         this.setupHealthBar();
+    }    
 }
 
 //
@@ -2494,6 +2531,10 @@ CombatCharacter.prototype.setupHealthBar = function()
     this.healthuigroup.x = -this.width/2;
     this.healthuigroup.y = -this.height;//*this.maingame.map.scaledto;//-this.healthuigroup.height;
     this.healthuigroup.visible = false;
+    
+        //realtime combat
+    this.startCombat()
+
 }
 CombatCharacter.prototype.boostShield = function(heal)
 {
@@ -2574,12 +2615,14 @@ CombatCharacter.prototype.startCombat = function()
     //show health bar
     this.moveToCenter();
     this.healthuigroup.visible = true;
+
     // stop movement when in combat
     if(!this.dead)
         this.changeMoveState("idle");
 }
 CombatCharacter.prototype.endCombat = function()
 {
+    
     this.healthuigroup.visible = false;
     //hide health bar
     //give back control?
@@ -3961,6 +4004,7 @@ var InputHandler = function (game, gameref)
     this.dragScreen = false;
     this.didDrag = false;
     this.dragPoint = new Point(0,0);
+    this.overGuy = null;
 };
 //
 InputHandler.prototype.turnOn = function()
@@ -3980,25 +4024,15 @@ InputHandler.prototype.turnOff = function()
     this.gameref.input.onDown.remove(this.doDragScreen, this);
     this.gameref.input.onUp.remove(this.clickedHex, this);
 }
+
 //
 InputHandler.prototype.onMove = function(pointer, x, y)
 {
     //console.log("move ",pointer.active);
     //if(!pointer.active)
     //    return;
-    if(this.dragScreen)
-    {
-        var diffx = this.dragPoint.x-x;
-        var diffy = this.dragPoint.y-y;
-
-        this.dragPoint.x = x;
-        this.dragPoint.y = y;
-
-        if(diffx!=0||diffy!=0)
-            this.didDrag = true;
-        this.gameref.camera.adjustPosition(-diffx, -diffy);
-        return;
-    }
+    this.doDragScreenMove(x,y)
+    
     if(GlobalEvents.currentAction != GlobalEvents.WALK)
     {
         //return;
@@ -4066,16 +4100,28 @@ InputHandler.prototype.doDragScreen = function(pointer)
     this.dragPoint.x = pointer.x;
     this.dragPoint.y = pointer.y;
 }
+InputHandler.prototype.doDragScreenMove = function(x,y)
+{
+    if(this.dragScreen)
+    {
+        var diffx = this.dragPoint.x-x;
+        var diffy = this.dragPoint.y-y;
+
+        this.dragPoint.x = x;
+        this.dragPoint.y = y;
+
+        if(diffx!=0||diffy!=0)
+            this.didDrag = true;
+        this.gameref.camera.adjustPosition(-diffx, -diffy);
+        return;
+    }
+}
 InputHandler.prototype.clickedObject = function(clickedObject)
 {
 }
 InputHandler.prototype.clickedHex = function(pointer,eventt)
 {
-    //console.log('****** clicked hex ',pointer)
     if (!pointer.withinGame) { return; }
-    
-    //console.log("hex",pointer.active);
-    
     //this needs to be blocked if clicking ui
     this.dragScreen = false;
     if(this.didDrag)//test distance did it actually drag. or do I make a drag screen button?
@@ -4086,19 +4132,23 @@ InputHandler.prototype.clickedHex = function(pointer,eventt)
     //pointers will be false by other input ui methods so the character isn't randomly walking around
     if(!pointer.active)
         return;
-
+    //
     if(GlobalEvents.currentAction != GlobalEvents.WALK)
         return;
     if(this.game.global.pause)
     {
         return;
     }
-    
+    //
+    this.handleCharMove();
+} 
+InputHandler.prototype.handleCharMove = function()
+{
     var pointerx = (this.gameref.input.worldX-this.gameref.map.mapGroup.x)/this.gameref.map.scaledto;
     var pointery = (this.gameref.input.worldY-this.gameref.map.mapGroup.y)/this.gameref.map.scaledto;
     var moveIndex =  this.gameref.map.hexHandler.checkHex(pointerx,pointery);
     
-    var overGuy = null;
+    
     if(moveIndex!=null)
     {
         if(moveIndex!=undefined)
@@ -4108,16 +4158,20 @@ InputHandler.prototype.clickedHex = function(pointer,eventt)
             {
                 //this.gameref.map.highlightHex.moveCursor(moveIndex);
                 moveIndex.moverontile.handleOver();
-                overGuy = moveIndex.moverontile;
+                this.overGuy = moveIndex.moverontile;
             }
         }
         //if moveIndex contains another player don't move
-        if(this.game.currentAction==this.game.WALK && !(overGuy!=null && !overGuy.IsPlayer))
+        if(this.game.currentAction==this.game.WALK && !(this.overGuy!=null && !this.overGuy.IsPlayer))
         {
             this.gameref.map.playerCharacter.moveto(moveIndex, {x:pointerx, y:pointery});
         }
     }
-} 
+    else
+    {
+        this.overGuy = null;
+    }
+}
 var InputHandlerBattle = function (game, gameref)
 {
     InputHandler.call(this, game, gameref);
@@ -4141,23 +4195,8 @@ InputHandlerBattle.prototype.onMove = function(pointer, x, y)
     //if(!pointer.active)
     //    return;
     
-    if(this.dragScreen)
-    {
-        var diffx = this.dragPoint.x-x;
-        var diffy = this.dragPoint.y-y;
-
-        this.dragPoint.x = x;
-        this.dragPoint.y = y;
-
-        if(diffx!=0||diffy!=0)
-            this.didDrag = true;
-        this.gameref.map.mapGroup.x -= diffx;
-        this.gameref.map.mapGroup.y -= diffy;
-
-        //console.log(diffx,diffy);
-        //move around
-        return;
-    }
+    this.doDragScreenMove(x,y);
+    
     if(this.overEnemy!=null)
     {
         this.overEnemy.handleOut();
@@ -4306,6 +4345,104 @@ InputHandlerBattle.prototype.cleanUpPlayer = function()
 }
 //if recieve both use the touched
 
+var InputHandlerRealTimeBattle = function (game, gameref)
+{
+    InputHandler.call(this, game, gameref);
+    
+    
+    this.playerDecide = null;
+    this.frindges = null;
+    
+    this.overEnemy = null;
+    this.battleState = null;
+    
+    //this.pauseInput = false;
+};
+InputHandlerRealTimeBattle.prototype = Object.create(InputHandler.prototype);
+InputHandlerRealTimeBattle.constructor = InputHandlerRealTimeBattle;
+
+InputHandlerRealTimeBattle.prototype.onMove = function(pointer, x, y)
+{
+    //console.log("move2 ",pointer.active);
+    //if(!pointer.active)
+    //    return;
+    
+    this.doDragScreenMove(x,y);
+    
+    if(this.overEnemy!=null)
+    {
+        this.overEnemy.handleOut();
+        this.overEnemy = null;
+    }
+    //console.log("this.playerDecide ",this.playerDecide)
+    //if(this.playerDecide==null)
+    //    return;
+    //if(GlobalEvents.currentAction != GlobalEvents.WALK && GlobalEvents.currentAction != GlobalEvents.COMBATSELECT)
+        //return;
+    if(!pointer.active)
+        return;
+    if(this.game.global.pause)
+    {
+        return;
+    }
+    var pointerx = (this.gameref.input.worldX-this.gameref.map.mapGroup.x)/this.gameref.map.scaledto;
+    var pointery = (this.gameref.input.worldY-this.gameref.map.mapGroup.y)/this.gameref.map.scaledto;
+    var moveIndex =  this.gameref.map.hexHandler.checkHex(pointerx, pointery);
+
+    //this.handleCharMove();
+    if(moveIndex!=undefined)
+    {
+       //console.log(moveIndex.moverontile);
+        if(moveIndex.moverontile!=null)
+        {   
+            moveIndex.moverontile.handleOver();
+            this.overEnemy = moveIndex.moverontile;
+        }
+        
+    }
+    this.gameref.map.highlightHex.moveCursor(moveIndex);
+}
+InputHandlerRealTimeBattle.prototype.clickedHex = function(pointer,eventt)
+{
+    if (!pointer.withinGame) { return; }
+    //this needs to be blocked if clicking ui
+    this.dragScreen = false;
+    if(this.didDrag)//test distance did it actually drag. or do I make a drag screen button?
+    {
+        this.didDrag = false;
+        return;
+    }
+    //pointers will be false by other input ui methods so the character isn't randomly walking around
+    if(!pointer.active)
+        return;
+    
+    if(this.overEnemy)
+    {
+        this.overEnemy.handleClick(pointer);
+        if(this.overEnemy.IsPlayer)
+        {
+            //this.clickedPlayer(this.overEnemy,pointer);
+        }
+    }
+    //
+    if(GlobalEvents.currentAction != GlobalEvents.WALK && GlobalEvents.currentAction != GlobalEvents.COMBATSELECT)
+        return;
+    if(this.game.global.pause)
+    {
+        return;
+    }
+    //
+    this.handleCharMove();
+} 
+InputHandlerRealTimeBattle.prototype.clickedObject = function(clickedObject)
+{
+    //if(this.pauseInput)
+    //    return;
+    console.log('**** clickedObject ',clickedObject,this.playerDecide);
+    if(this.playerDecide==null || !this.playerDecide.dotouched)
+        return;
+    this.playerDecide.dotouched(clickedObject);
+}
 // 
 var DiamondHexHandler = function (maingame, game, hexagonWidth, hexagonHeight, tiletype) 
 {
@@ -5085,7 +5222,7 @@ var Map = function (game, gameRef)
     this.highlightArray;
     
     this.mapGroup;
-    this.scaledto = 0.4;
+    this.scaledto = 1;
     
     this.redoMap = false;
 }
@@ -8361,6 +8498,187 @@ NormalState.prototype.onExit = function()
 {
     this.inputHandler.turnOff();
 }
+// start combat
+// remove normal ui
+
+// player decides
+// player action
+// ai decides
+// ai action
+//
+//
+//
+RealTimeCombatState = function (statemachine, game, gameref) {
+    this.statemachine = statemachine;
+    this.game = game;
+    this.gameref = gameref;
+    this.inputHandler = new InputHandlerRealTimeBattle(this.game, this.gameref);
+    this.inputHandler.battleState = this;
+    this.enemyRollover = new EnemyTargetRollOver(this.game, this.gameref, this);
+    
+    this.mEntities = [];//entitys
+    this.mRealTimeCombatStates = new StateMachine();
+    
+    //player turn, enemy turn, other turn
+    //plus allow everyone more turns
+    this.battleOrder = ["Player"];
+    this.currentOrder = -1;
+    
+    this.mRealTimeCombatStates.add("Player", new BattleHeroTurnState(this, game, gameref, true, this.inputHandler));
+
+    this.activeButtons = new CombatButtons(this.game, this.gameref);
+    this.activeButtons.x = 50;
+    this.activeButtons.y = 430;
+    this.game.add.existing(this.activeButtons);
+    this.gameref.uiGroup.add(this.activeButtons);
+    this.activeButtons.visible = false;
+    //
+}
+RealTimeCombatState.prototype = Object.create(EmptyState.prototype);
+RealTimeCombatState.constructor = RealTimeCombatState;
+//
+RealTimeCombatState.prototype.init = function(map) 
+{
+}
+/*RealTimeCombatState.prototype.nextTeam = function() 
+{
+    this.currentOrder++;
+    if(this.currentOrder>this.battleOrder.length-1)
+        this.currentOrder = 0;
+    this.mRealTimeCombatStates.change(this.battleOrder[this.currentOrder]);
+    return this.battleOrder[this.currentOrder];
+}*/
+RealTimeCombatState.prototype.endPlayerTurn = function() 
+{
+    console.log('Endplayer turn.')
+    if(this.battleOrder[this.currentOrder]=="Player")
+    {
+        this.nextTeam();
+    }
+}
+
+//why is this here?
+RealTimeCombatState.prototype.handleOver = function(combat) 
+{
+    if(!this.gameref.map.playerCharacter.currentSelectedWeapon)
+    {
+        this.handleOut();
+        return;
+    }
+    if(combat.hostile)
+    {
+        //check line of site
+        //do acc check
+        var hasLineOfSite = this.gameref.map.hexHandler.lineOfSite(combat.currentTile, this.gameref.map.playerCharacter.currentTile)
+        if(!hasLineOfSite)
+        {
+            this.enemyRollover.showText(combat.x, combat.y, "NO LOS");    
+            return;
+        }
+        
+        var distanceTo = this.gameref.map.hexHandler.testRange(combat.currentTile, this.gameref.map.playerCharacter.currentTile, false)
+        var range = this.gameref.map.playerCharacter.currentSelectedWeapon.range;
+        if(distanceTo > range * 60)
+        {
+            this.enemyRollover.showText(combat.x, combat.y, "Out of range");    
+            return;
+        }
+        var acc = this.gameref.map.playerCharacter.currentSelectedWeapon.acc - (distanceTo/(range * 60))/5;
+        acc *= 100;
+        this.enemyRollover.showText(combat.x, combat.y, "Chance to hit: " + acc.toFixed(0) + "%");    
+    }
+    else
+    {
+        this.enemyRollover.showText(combat.x, combat.y, "Civilian.");
+    }
+    
+}
+RealTimeCombatState.prototype.handleOut = function() 
+{
+    this.enemyRollover.visible = false;
+}
+//
+RealTimeCombatState.prototype.update = function(elapsedTime) 
+{
+    this.mRealTimeCombatStates.update(elapsedTime); 
+}
+RealTimeCombatState.prototype.render = function() 
+{
+    this.mRealTimeCombatStates.render();
+}
+RealTimeCombatState.prototype.onEnter = function(params) 
+{
+    this.activeButtons.visible = true;
+    this.inputHandler.turnOn();
+ 
+    //this.mEntities = params.entities;
+    
+    /*for(var i=0;i<this.mEntities.length;i++)
+    {
+        this.mEntities[i].startCombat();
+    }
+    //
+    //this.NextTick();
+ 
+    this.mEntities = params.entities;
+    for(var i=0;i<this.mEntities.length;i++)
+    {
+        var e = this.mEntities[i];
+        if(e.IsPlayer)
+        {
+            var playerTurn = this.mRealTimeCombatStates.getByName("Player");
+            playerTurn.addTeamate(e);
+            
+            //pass to player state
+        }
+        else
+        {
+            var playerTurn = this.mRealTimeCombatStates.getByName("AI");
+            playerTurn.addTeamate(e);
+            //pass to enemy state
+        }
+    }
+    this.nextTeam();*/
+    //
+    //Sort(this.mActions, this.SortByTime);
+    //
+}
+RealTimeCombatState.prototype.onExit = function() 
+{
+    console.log("RealTimeCombatState **  onExit")
+    this.mActions = [];//flush actions
+    /*
+    this.activeButtons.visible = false;
+    this.inputHandler.turnOff();
+    
+    this.inputHandler.hideInputAreas();
+    
+    for(var i=0;i<this.mEntities.length;i++)
+    {
+        this.mEntities[i].endCombat();
+    }
+    
+    if(GlobalEvents.currentAction == GlobalEvents.COMBATSELECT)
+    {
+        GlobalEvents.currentAction = GlobalEvents.WALK;
+    }*/
+}
+RealTimeCombatState.prototype.leaveThisState = function() 
+{
+    for(var i=0;i<this.mEntities.length;i++)
+    {
+        if(this.mEntities[i].isAlive() && this.mEntities[i].hostile && !this.mEntities[i].IsPlayer)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+RealTimeCombatState.prototype.getActions = function()
+{
+    return this.mActions;
+}
+
 //I need to find where I got this from so I can properly link to it.
 StateMachine = function (game) {
     this.mStates = [];//associative
@@ -8990,6 +9308,10 @@ BasicGame.Game = function (game) {
     this.textUIHandler = null;
     this.dialoghandler;
     this.bulletHandler;
+    
+    //this.client = Client
+    //this.client.doConnect();
+    //this.client.setupSockect();
 };
 
 //
@@ -9001,6 +9323,7 @@ BasicGame.Game.prototype = {
         
     },
     create: function () {
+        this.game.stage.disableVisibilityChange = true;
         this.game.time.advancedTiming = true;
         this.stage.backgroundColor = "#444444"
         
@@ -9035,6 +9358,7 @@ BasicGame.Game.prototype = {
         this.bulletHandler = new BulletHandler(this.game, this, this.map.objectGroup, 'gameplayinterface', "combat_actionpoints0002.png");
         //
         this.gGameMode = new StateMachine();
+        //this.gGameMode.add("normal", new RealTimeCombatState(this.gGameMode, this.game, this));
         this.gGameMode.add("normal", new NormalState(this.gGameMode, this.game, this));
         this.gGameMode.add("combat", new BattleState(this.gGameMode, this.game, this));
         this.gGameMode.add("dialog", new DiaglogState(this.gGameMode, this.game, this, this.dialoghandler, this.uiGroup));
@@ -9069,6 +9393,7 @@ BasicGame.Game.prototype = {
         //this.camera.step(elapsedTime);
         
         //this.toggleCombat();
+        //Client.askNewPlayer();
     },
     //
     update: function () {
@@ -9201,6 +9526,9 @@ BasicGame.Game.prototype = {
             //console.log(fn,this);
             fn.apply(this, fnparams);
         }
+    },
+    addNewPlayer: function(id,x,y){
+        Game.playerMap[id] = game.add.sprite(x,y,'sprite');
     }
 };
 

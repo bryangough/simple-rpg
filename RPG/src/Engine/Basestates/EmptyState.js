@@ -8,7 +8,7 @@ public interface IState
 }
 */
 
-EmptyState = function (game) {
+var EmptyState = function (game) {
 
 }
 EmptyState.prototype.update = function(elapsedTime) 

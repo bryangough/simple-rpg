@@ -74,7 +74,7 @@ InputHandlerRealTimeBattle.prototype.clickedHex = function(pointer,eventt)
         this.overEnemy.handleClick(pointer);
         if(this.overEnemy.IsPlayer)
         {
-            this.clickedPlayer(this.overEnemy,pointer);
+            //this.clickedPlayer(this.overEnemy,pointer);
         }
     }
     //
